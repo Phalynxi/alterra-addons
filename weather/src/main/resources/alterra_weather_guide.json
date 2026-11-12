@@ -11,16 +11,16 @@
       "hint": "",
       "pages": [
         {
-          "text": "Storms in Alterra have a life of their own. They are not vanilla rain: each kind has its own schedule, builds up over a minute or so, holds, and fades. Every region of the world keeps its own, so one desert can be in a sandstorm while another is clear."
+          "text": "Storms don't depend on vanilla rain. Each kind runs on its own timer, builds up for a minute or so, then fades. Every part of the world has its own timer, so one desert can have a sandstorm while another is clear."
         },
         {
-          "text": "Deserts and badlands: sandstorms - dust racing along the ground, a haze over the screen, a close sandy fog. Snowy lands: blizzards - driven snow and a white-out. Misty places: fog banks, thickest at dawn. Blossom woods: storms of petals."
+          "text": "Deserts and badlands get sandstorms: dust along the ground, a sandy fog and a haze over the screen. Snowy land gets blizzards. Misty places get fog, worst at dawn. Blossom woods get petal storms."
         },
         {
-          "text": "Flower fields: pollen drifts by on warm, clear days. Burnt lands: ash falls. On clear nights the snowy lands show an aurora. The bigger storms howl. Indoors the effects fade away."
+          "text": "Flower fields have pollen on sunny days. Burnt land has ash falling. The snowy biomes show an aurora on clear nights. Bigger storms are loud. Indoors you barely notice any of it."
         },
         {
-          "text": "Every effect has a switch (and a particle amount) in the Weather settings, and they step aside by themselves when another weather or fog mod is installed."
+          "text": "Every effect can be turned off in the Weather settings, and they turn themselves off if another weather or fog mod is installed. /alterraweather <storm> shows one right away."
         }
       ]
     }

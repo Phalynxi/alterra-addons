@@ -40,9 +40,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * What the player sees and hears of the weather (client side). Each storm kind has a strength 0..1 that follows its schedule
- * ({@link Storms}) where the player is, only inside the biomes of its tag, eased so that borders and changes never pop. That strength
- * drives particles (spawned in the open air upwind of the player), the fog, a haze over the screen, the aurora, and looping wind.
+ * Client side of the weather. Each storm kind has a strength from 0 to 1 (its timer, only inside the biomes of its tag, eased so nothing pops).
+ * It drives the particles, fog, screen haze, aurora and wind sound.
  */
 @EventBusSubscriber(modid = AlterraWeather.ID, value = Dist.CLIENT)
 public final class WeatherEffects {
@@ -51,14 +50,14 @@ public final class WeatherEffects {
     private static final Map<Kind, TagKey<Biome>> TAGS = new EnumMap<>(Kind.class);
     static { for (Kind k : Kind.values()) TAGS.put(k, TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(AlterraWeather.ID, "weather/" + k.tag))); }
 
-    /** Current and previous-tick strengths (previous: so rendering between ticks is smooth). */
+    // strengths now and one tick ago (for smooth rendering)
     private static final float[] now = new float[Kind.values().length], before = new float[Kind.values().length];
     private static float outdoors, outdoorsBefore, gust = 1f;
     private static double wind;                                    // direction of the strongest storm's wind
     private static final Map<Kind, StormSound> SOUNDS = new EnumMap<>(Kind.class);
-    /** Storms switched on by hand with /alterraweather (to look at them without waiting): kind -> true. */
+    /** storms turned on by hand with /alterraweather */
     static final Map<Kind, Boolean> FORCED = new EnumMap<>(Kind.class);
-    /** Set if an effect ever threw: the effects switch themselves off for the rest of the session instead of crashing the game. */
+    /** if an effect throws, they all turn off until restart instead of crashing */
     private static volatile boolean broken;
     private static void fail(Throwable t) {
         if (broken) return;
@@ -70,7 +69,7 @@ public final class WeatherEffects {
     // ---------------------------------------------------------------- compat
     private static Boolean allClash, fogClash;
     private static boolean loaded(String... ids) { for (String id : ids) if (ModList.get().isLoaded(id)) return true; return false; }
-    /** Is this effect on (its switch), and not left to another mod? fog: the effect changes the fog distance. */
+    /** is it switched on, and not left to another mod */
     private static boolean allowed(boolean switchedOn, boolean fog) {
         if (!switchedOn) return false;
         if (!WeatherConfig.get(WeatherConfig.STEP_ASIDE)) return true;
@@ -154,7 +153,7 @@ public final class WeatherEffects {
         float amount = quality * WeatherConfig.get(WeatherConfig.INTENSITY).floatValue() * gust;
         var r = level.random;
         double wx = Math.cos(windDir), wz = Math.sin(windDir);
-        // a point in the open air around the player, upwind: base = just above the ground there, so nothing spawns inside terrain or under a roof
+        // a point upwind of the player, just above the ground so nothing spawns inside terrain
         java.util.function.BiFunction<Double, Double, double[]> upwind = (dist, spread) -> {
             double along = dist, across = (r.nextDouble() - 0.5) * 2 * spread;
             double x = p.getX() - wx * along - wz * across, z = p.getZ() - wz * along + wx * across;
@@ -262,7 +261,7 @@ public final class WeatherEffects {
         for (Kind k : Kind.values()) {
             float a = Mth.lerp(pt, before[k.ordinal()], now[k.ordinal()]) * o;
             if (a < 0.01f) continue;
-            float dense = switch (k) {   // the fog distance at full strength
+            float dense = switch (k) {   // fog distance at full strength
                 case SANDSTORM -> 15f * (0.85f + 0.3f * gust);
                 case BLIZZARD -> 12f * (0.85f + 0.3f * gust);
                 case FOG -> {   // banks: thicker and thinner patches, slowly rolling past

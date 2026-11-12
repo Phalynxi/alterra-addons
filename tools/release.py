@@ -11,12 +11,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "Phalynxi/alterra-addons"
 META = {   # id -> folder, name, description, requires, oldest Alterra
-    "alterra_kitchen": ("kitchen", "Alterra Kitchen", "Fruit juices in their own glasses (and as fluids), a fruit press, fruit crates and a grape trellis.", [], "1.0"),
-    "alterra_weather": ("weather", "Alterra Weather", "Storms with a life of their own: sandstorms, blizzards, fog banks, petal storms, pollen, ashfall and an aurora, with wind.", [], "1.0"),
-    "alterra_music": ("music", "Alterra Music", "Original background music for Alterra's biomes: tracks for cold, temperate, warm and dry lands, the seas, caves and the sky.", [], "1.0"),
-    "alterra_farmersdelight": ("farmersdelight", "Alterra for Farmer's Delight", "Crystal, Ember and Frost knives, and cooking pot and cutting board recipes for Alterra's logs, flowers and juices.", ["farmersdelight"], "1.0"),
-    "alterra_create": ("create", "Alterra for Create", "Create recipes: millstone and crushing for flowers, cacti and crystals, the saw for logs, Astral Water, and juice pressing, mixing and bottling.", ["create"], "1.0"),
-    "alterra_aeronautics": ("aeronautics", "Alterra for Create Aeronautics", "Alterra's clouds are almost weightless and lift an airship like levitite does.", ["aeronautics"], "1.0"),
+    "alterra_kitchen": ("kitchen", "Alterra Kitchen", "Juices (each with its own glass), a fruit press, fruit crates and a grape trellis.", [], "1.0"),
+    "alterra_weather": ("weather", "Alterra Weather", "Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.", [], "1.0"),
+    "alterra_music": ("music", "Alterra Music", "Background music for Alterra's biomes: two tracks each for cold, temperate, warm and dry land, the sea and caves, plus one for the sky.", [], "1.0"),
+    "alterra_farmersdelight": ("farmersdelight", "Alterra for Farmer's Delight", "Crystal, Ember and Frost knives, and some cooking pot and cutting board recipes.", ["farmersdelight"], "1.0"),
+    "alterra_create": ("create", "Alterra for Create", "Create recipes for Alterra: millstone, crushing, saw, Astral Water, and juice pressing, mixing and bottling.", ["create"], "1.0"),
+    "alterra_aeronautics": ("aeronautics", "Alterra for Create Aeronautics", "Alterra's clouds lift airships like levitite.", ["aeronautics"], "1.0"),
 }
 
 def version_of(folder):

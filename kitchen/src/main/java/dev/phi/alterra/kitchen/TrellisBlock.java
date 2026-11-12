@@ -31,11 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * A wooden trellis. Use grapes (or white grapes) on one standing on dirt or farmland to plant a vine: it leafs out (AGE 0-2), fruits
- * (AGE 3), and climbs into trellises stacked above it, up to three high. Right-click a fruiting vine to pick 2-3 bunches; it fruits again.
- * One block class for both: VINE says whether a vine grows on it (NONE, PURPLE, WHITE).
- */
+/** Trellis. Use grapes on one standing on dirt or farmland to plant a vine; it grows leaves and grapes (AGE 0-3) and spreads up into trellises above it, 3 high at most. Right-click ripe grapes to pick them. */
 public class TrellisBlock extends Block implements net.minecraft.world.level.block.BonemealableBlock {
     public static final MapCodec<TrellisBlock> CODEC = simpleCodec(TrellisBlock::new);
     public enum Vine implements net.minecraft.util.StringRepresentable {

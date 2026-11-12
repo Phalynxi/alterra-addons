@@ -17,7 +17,7 @@
       "hint": "",
       "pages": [
         {
-          "text": "Three knives of Alterra's own: the Crystal Knife; the Ember Knife, which sets what it hits alight and cooks what it cuts or kills; and the Frost Knife, which freezes what it hits."
+          "text": "Three knives: the Crystal Knife, the Ember Knife (sets things on fire, and cooks the meat it kills or cuts) and the Frost Knife (freezes what it hits)."
         },
         {
           "item": "alterra_farmersdelight:crystal_knife"
@@ -40,7 +40,7 @@
       "hint": "",
       "pages": [
         {
-          "text": "The cooking pot makes every juice from its fruit and sugar - take it out with a glass bottle. The cutting board strips Alterra's logs (with tree bark) and cuts its flowers into dye."
+          "text": "The cooking pot makes every juice from fruit and sugar; take it out with a glass bottle. The cutting board strips Alterra logs (you get tree bark too) and cuts flowers into dye."
         }
       ],
       "mod": "farmersdelight"

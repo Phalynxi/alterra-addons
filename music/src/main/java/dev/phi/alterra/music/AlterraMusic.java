@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- * Alterra Music: original background music for Alterra's biomes - a few tracks for each kind of land (cold, temperate, warm, dry, sea,
- * caves) and one for the sky. They play instead of the vanilla tracks; which kind a biome gets is a biome tag (alterra_music:music/*).
- */
+/** Alterra Music. Which kind of track a biome gets is set by the biome tags alterra_music:music/*. */
 @Mod(AlterraMusic.ID)
 public final class AlterraMusic {
     public static final String ID = "alterra_music";
@@ -46,11 +43,11 @@ public final class AlterraMusic {
     public AlterraMusic(IEventBus bus, ModContainer container) {
         SOUNDS.register(bus);
         container.registerConfig(ModConfig.Type.CLIENT, MusicConfig.SPEC);
-        AlterraApi.addSettingsCategory("Music", "Alterra's own music.", () -> new ItemStack(Items.JUKEBOX), List.of(
-                AlterraApi.Option.bool("Alterra music", "Play Alterra's own tracks in Alterra's biomes instead of the vanilla ones.", MusicConfig.ENABLED),
-                AlterraApi.Option.bool("Sky music", "A track of its own on the sky islands.", MusicConfig.SKY),
-                AlterraApi.Option.integer("Shortest quiet", "Shortest pause between two tracks, in minutes.", MusicConfig.MIN_MINUTES, 0, 30, ""),
-                AlterraApi.Option.integer("Longest quiet", "Longest pause between two tracks, in minutes.", MusicConfig.MAX_MINUTES, 1, 60, "")));
+        AlterraApi.addSettingsCategory("Music", "Alterra's music.", () -> new ItemStack(Items.JUKEBOX), List.of(
+                AlterraApi.Option.bool("Alterra music", "Use Alterra's tracks in its biomes instead of the vanilla ones.", MusicConfig.ENABLED),
+                AlterraApi.Option.bool("Sky music", "A track for the sky islands.", MusicConfig.SKY),
+                AlterraApi.Option.integer("Shortest quiet", "Shortest pause between tracks, in minutes.", MusicConfig.MIN_MINUTES, 0, 30, ""),
+                AlterraApi.Option.integer("Longest quiet", "Longest pause, in minutes.", MusicConfig.MAX_MINUTES, 1, 60, "")));
         if (FMLEnvironment.dist == Dist.CLIENT) MusicClient.init();
     }
 }

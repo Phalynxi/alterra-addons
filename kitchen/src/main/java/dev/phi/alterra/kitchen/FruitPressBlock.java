@@ -26,11 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
-/**
- * A hand-cranked fruit press: put fruit in (one kind at a time, up to 8; sneak to put in all you hold), then use a glass bottle on it to
- * press a juice once there is enough fruit (2, a coconut 1). FILL shows how full it is. Which fruit gives which juice:
- * alterra_press.json (generated from the juice recipes).
- */
+/** Fruit press: right-click with fruit to fill it (sneak = all you hold), right-click with a glass bottle to get juice. Fruit to juice table is in alterra_kitchen_press.json. */
 public class FruitPressBlock extends BaseEntityBlock {
     public static final MapCodec<FruitPressBlock> CODEC = simpleCodec(FruitPressBlock::new);
     public static final IntegerProperty FILL = IntegerProperty.create("fill", 0, 2);

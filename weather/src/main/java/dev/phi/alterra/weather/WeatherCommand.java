@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import java.util.Arrays;
 import java.util.Locale;
 
-/** /alterraweather <storm> | off - switches a storm on for yourself, wherever you are (to look at it without waiting); client side only. */
+/** /alterraweather <storm> or off: shows a storm wherever you are. Client only. */
 @EventBusSubscriber(modid = AlterraWeather.ID, value = Dist.CLIENT)
 public final class WeatherCommand {
     private WeatherCommand() {}

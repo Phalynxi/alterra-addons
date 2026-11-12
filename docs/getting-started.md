@@ -1,14 +1,12 @@
 # Using addons
 
-Open the game's mod list, pick **Alterra**, press **Config**, and choose **Addons** in the sidebar.
+Mods > Alterra > Config > Addons.
 
-* **Listed** - the official addons, plus any added to [`addons.json`](../addons.json) by pull request.
-* **Community** - repositories on GitHub that carry the topic `alterra-addon`. Nobody has checked these.
+Listed is the official list. Community is every GitHub repo with the topic `alterra-addon`, which nobody has looked at.
 
-Each row shows the addon, its version, and a button: **Install**, **Update** (a newer version is listed), **Remove**.
-Installing downloads the jar into your `mods` folder after checking it against the SHA-256 in the list. The game tells you when a restart
-is needed; nothing changes until then. An addon that needs another mod (Create, Farmer's Delight...) cannot be installed until that mod
-is there, and says so.
+Each row has a button: Install, Update (if a newer version is listed) or Remove. Install downloads the jar into your mods folder and checks it
+against the checksum in the list. Nothing changes until you restart. If an addon needs another mod (Create, Farmer's Delight) you can't
+install it until that mod is there.
 
-If the list cannot be loaded ("HTTP 404", "timed out"), the computer is offline or the list is not published; **Refresh** tries again.
-Alterra never downloads anything on its own: only when you press a button.
+If the list doesn't load (404, timed out) you're offline or the list isn't published. Refresh tries again. Alterra only downloads when you
+press a button.

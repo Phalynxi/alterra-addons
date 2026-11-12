@@ -3,9 +3,8 @@ package dev.phi.alterra.weather;
 import net.minecraft.util.Mth;
 
 /**
- * The weather timeline. Storms are not tied to vanilla rain: each kind has its own schedule, worked out from the game time and the
- * player's region of the world (2048-block squares), so a desert can be in a sandstorm while another stays clear, and every client
- * agrees without any network traffic. A storm builds up over a minute or so, holds, and fades; its wind blows from a fixed direction.
+ * When storms happen. Not vanilla rain: every kind has its own timer, worked out from the game time and the player's region (2048-block squares),
+ * so clients agree without sending anything. A storm builds up, holds, fades, and its wind has a fixed direction.
  */
 final class Storms {
     private Storms() {}

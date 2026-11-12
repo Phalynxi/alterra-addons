@@ -1,5 +1,5 @@
-# Push a tag like v1.0.0: this builds the jar, publishes it as a release, and writes the new version, download link and SHA-256
-# into alterra-addon.json on the default branch (the file Alterra's in-game list reads).
+# Push a tag like v1.0.0: builds the jar, makes a release, and writes the new version, link and SHA-256
+# into alterra-addon.json on the default branch (the file the in-game list reads).
 name: Release
 on:
   push:

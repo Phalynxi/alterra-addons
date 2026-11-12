@@ -7,7 +7,7 @@ issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
 modId="alterra_music"
 version="@VERSION@"
 displayName="Alterra Music"
-description='''Original background music for Alterra's biomes: tracks for cold, temperate, warm and dry lands, the seas, the caves and the sky.'''
+description='''Background music for Alterra's biomes: two tracks each for cold, temperate, warm and dry land, the sea and caves, plus one for the sky.'''
 authors="Phalynxi"
 
 [[dependencies.alterra_music]]

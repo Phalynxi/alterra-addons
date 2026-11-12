@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/** Client: swaps the game's situational music for Alterra's track when the player is in the right place. */
+/** Replaces the game's background music with an Alterra track in the right places. */
 final class MusicClient {
     private MusicClient() {}
     private static String lastKind = "", lastTrack = "";
@@ -32,7 +32,7 @@ final class MusicClient {
         Minecraft mc = Minecraft.getInstance();
         var level = mc.level; var player = mc.player;
         if (level == null || player == null || level.dimension() != Level.OVERWORLD) { chosen = null; return; }
-        // only where the game would play ordinary background music (not a jukebox / boss / menu / credits)
+        // only where the game would play normal background music
         Music original = e.getOriginalMusic();
         if (original == null) return;
         String kind = null;
@@ -42,7 +42,7 @@ final class MusicClient {
             for (String k : AlterraMusic.KINDS) if (!k.equals("sky") && biome.is(tag(k))) { kind = k; break; }
         }
         if (kind == null) { chosen = null; return; }
-        // keep the same track while one is playing; pick another (not the last one) when the game asks for the next
+        // same track while one plays, a different one for the next
         if (chosen == null || !kind.equals(lastKind) || e.getPlayingMusic() == null) {
             List<Supplier<SoundEvent>> tracks = AlterraMusic.MUSIC.get(kind);
             int i = level.random.nextInt(tracks.size());

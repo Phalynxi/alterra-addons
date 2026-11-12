@@ -39,10 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- * Alterra Kitchen: bottled fruit juices (each with its own glass), the juices as fluids for pipes and tanks, the fruit press, fruit crates
- * and the grape trellis. The list of juices, crates and the press table are data files written with the art (alterra_kitchen_*.json).
- */
+/** Alterra Kitchen: juices (items and fluids), the fruit press, crates and the trellis. The lists of juices and crates are in the json files next to the art. */
 @Mod(AlterraKitchen.ID)
 public final class AlterraKitchen {
     public static final String ID = "alterra_kitchen";

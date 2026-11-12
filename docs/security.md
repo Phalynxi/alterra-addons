@@ -1,16 +1,14 @@
 # Security
 
-An addon is a mod jar: it runs code with the game's permissions. That is why the in-game manager is careful.
+An addon is a mod jar and runs with the game's permissions, so the manager is careful:
 
-What the manager does:
+- it only downloads github.com links ending in .jar, and for community addons the jar has to be a release of the repo that lists it
+- every download is checked against the SHA-256 in the list, and thrown away if it doesn't match
+- there's a 64 MB limit, ids and versions are validated, and control characters are stripped from text it shows
+- it only downloads or deletes when you press a button, nothing in the background, and nothing loads until you restart
+- community addons are marked as not reviewed and it asks a second time
 
-* Downloads only `https://github.com/...` links ending in `.jar`; a community addon's jar must be a release asset of the repository that lists it.
-* Checks every download against the **SHA-256** in the listing before it goes into `mods`; a mismatch is deleted.
-* Limits the size (64 MB), validates ids, versions and file names, and strips control characters from text it shows.
-* Downloads and removes **only when you press a button**. Nothing happens in the background, and nothing is loaded until you restart.
-* Marks anything from the Community tab as *not reviewed* and asks a second time.
+It can't tell you if a jar is harmless. Listed addons get looked at (the addon and its source) before they're added, and pull requests are
+checked automatically. For community addons, look at the repo first.
 
-What it cannot do: tell you whether a jar is harmless. For the Listed tab, a maintainer reviews the addon and its source before it is
-added, and pull requests are checked automatically. For community addons, look at the repository first; install what you trust.
-
-Found a problem with an addon or with the manager? Open an issue, or for something serious use GitHub's "Report a vulnerability" on this repository.
+If you find a problem with an addon or the manager, open an issue. For something serious use "Report a vulnerability" on this repo.

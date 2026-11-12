@@ -9,15 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 /**
- * What an Alterra addon can hook into. Call these from the addon's mod constructor (they only collect; Alterra applies them later, so
- * the order mods are constructed in does not matter).
- *
- * <ul>
- * <li>Creative tab: a section of its own in the Alterra tab, or items added to the "Boats &amp; More" section.</li>
- * <li>Settings: a page of options in Alterra's settings screen.</li>
- * <li>Field guide: no call needed - put a file named {@code <modid>_guide.json} in the root of the addon's jar (chapters, entries and
- *     items to watch; see docs/field-guide.md). Alterra merges every such file into the book.</li>
- * </ul>
+ * What addons can hook into. Call these from your mod constructor; Alterra uses them once every mod has loaded.
+ * Creative tab sections, settings pages. Guide pages need no call: put a file named {@code <modid>_guide.json} in your jar (docs/field-guide.md).
  */
 public final class AlterraApi {
     private AlterraApi() {}

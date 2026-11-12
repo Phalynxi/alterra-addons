@@ -42,7 +42,7 @@
               "out": "alterra_kitchen:peach_juice",
               "via": "create:mechanical_press",
               "amount": "250 mB",
-              "text": "A mechanical press over a basin squeezes two fruit into juice."
+              "text": "A press over a basin: two fruit make juice."
             },
             {
               "in": [
@@ -50,13 +50,13 @@
               ],
               "out": "alterra_kitchen:peach_juice",
               "via": "create:fluid_pipe",
-              "text": "Pipe it out of the basin into a tank."
+              "text": "Pipe it from the basin into a tank."
             }
           ],
-          "text": "Every fruit with a juice works."
+          "text": "Works with every fruit that has a juice."
         },
         {
-          "text": "Any fruit that makes a juice can be pressed: two fruit give 250 mB (a coconut gives it alone). The basin holds the juice until a pipe or a spout takes it."
+          "text": "Any fruit with a juice can be pressed: two fruit give 250 mB, one coconut gives 250 on its own. The basin keeps the juice until a pipe or spout takes it."
         }
       ],
       "mod": "create"
@@ -97,7 +97,7 @@
               "out": "alterra_kitchen:orange_juice",
               "via": "create:mechanical_mixer",
               "amount": "500 mB",
-              "text": "Fruit, a sugar and 250 mB of water in a basin, under a mixer: twice the juice of pressing."
+              "text": "Fruit, sugar and 250 mB of water in a basin with a mixer: twice as much juice as pressing."
             }
           ]
         }
@@ -136,7 +136,7 @@
               ],
               "out": "alterra_kitchen:orange_juice",
               "via": "create:spout",
-              "text": "A spout fills glass bottles passing under it on a belt or a depot - 250 mB each."
+              "text": "A spout fills glass bottles on a belt or depot, 250 mB each."
             },
             {
               "in": [
@@ -145,7 +145,7 @@
               "out": "minecraft:glass_bottle",
               "via": "create:item_drain",
               "amount": "250 mB",
-              "text": "An item drain empties bottles back into juice."
+              "text": "An item drain turns them back into juice."
             }
           ]
         }
@@ -175,7 +175,7 @@
               "out": "alterra_kitchen:tropical_punch",
               "via": "create:mechanical_mixer",
               "amount": "500 mB",
-              "text": "250 mB each of mango and orange juice and a banana, mixed."
+              "text": "250 mB each of mango and orange juice, plus a banana."
             },
             {
               "in": [
@@ -218,7 +218,7 @@
       "hint": "Pick a fruit first.",
       "pages": [
         {
-          "text": "A simple juice line: drop fruit into a funnel feeding a basin; a mechanical press above presses it; a fluid pipe carries the juice to a tank; a spout over a belt fills bottles from the tank, and a funnel at the end of the belt collects them."
+          "text": "A basic juice line: a funnel puts fruit into a basin, a press above it presses the fruit, a pipe takes the juice to a tank, and a spout over a belt fills bottles from the tank. A funnel at the end of the belt picks them up."
         },
         {
           "steps": [
@@ -302,7 +302,7 @@
               "out": "minecraft:light_blue_dye",
               "via": "create:millstone",
               "amount": "x2",
-              "text": "Alterra's flowers grind into dye."
+              "text": "Flowers turn into dye."
             },
             {
               "in": [
@@ -311,7 +311,7 @@
               "out": "minecraft:green_dye",
               "via": "create:millstone",
               "amount": "x2",
-              "text": "Cacti grind into green dye, sometimes with the colour of their flowers."
+              "text": "Cacti give green dye, sometimes the flower colour too."
             },
             {
               "in": [
@@ -320,7 +320,7 @@
               "out": "minecraft:amethyst_shard",
               "via": "create:crushing_wheel",
               "amount": "x2",
-              "text": "Crystals break into shards, glowstone and experience."
+              "text": "Crystals break into shards, sometimes with glowstone and xp."
             }
           ]
         }

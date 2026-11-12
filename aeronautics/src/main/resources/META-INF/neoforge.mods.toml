@@ -7,7 +7,7 @@ issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
 modId="alterra_aeronautics"
 version="@VERSION@"
 displayName="Alterra for Create Aeronautics"
-description='''Alterra's cloud blocks are almost weightless and lift an airship like levitite does: snow clouds the most, rain clouds the least.'''
+description='''Alterra's clouds lift airships like levitite.'''
 authors="Phalynxi"
 
 [[dependencies.alterra_aeronautics]]

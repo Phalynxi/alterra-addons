@@ -1,25 +1,18 @@
 # Making an addon
 
-An addon is an ordinary NeoForge 1.21.1 mod that depends on Alterra. Alterra does not load addons specially; it gives them a few
-places to plug in ([the API](api.md)) and the in-game page to install them.
+An addon is a normal NeoForge 1.21.1 mod that depends on Alterra. Alterra gives you a few hooks ([api.md](api.md)) and the in-game page
+for installing.
 
-## Start from the template
+## Template
 
-Copy [`template/`](../template) into a new repository and rename: the folder, `mod_id` in `build.gradle`, the package, the id in
-`neoforge.mods.toml` and in `alterra-addon.json`. The id must be lowercase letters, digits and `_`; start it with `alterra_` so people
-can find it, and use it as the namespace of everything you add (`my_addon:thing`).
+Copy [template/](../template) into a new repo and rename things: the folder, `mod_id` in build.gradle, the package, the id in
+neoforge.mods.toml and alterra-addon.json. The id is lowercase letters, digits and `_`. Starting it with `alterra_` helps people find it.
+Use it as the namespace for everything you add.
 
-```
-build.gradle                  NeoForge MDK-style build; compile against the API jar from this repository
-src/main/java/...             your mod class
-src/main/resources/META-INF/neoforge.mods.toml
-src/main/resources/assets/<id>/...   models, textures, lang
-src/main/resources/data/<id>/...     recipes, loot tables, tags
-alterra-addon.json            what the in-game list reads (see publishing.md)
-.github/workflows/release.yml builds the jar, makes a release, fills in the version, link and checksum
-```
+What's in it: a build.gradle (compiles against the API jar in `libs/`), a mod class, neoforge.mods.toml, assets and data folders,
+`alterra-addon.json` (what the in-game list reads) and a workflow that makes releases.
 
-`neoforge.mods.toml` must list Alterra as a required dependency:
+Your neoforge.mods.toml needs Alterra as a dependency:
 
 ```toml
 [[dependencies.my_addon]]
@@ -30,35 +23,32 @@ ordering="AFTER"
 side="BOTH"
 ```
 
-## Hooking in
+## Hooks
 
-Everything is in `dev.phi.alterra.api.AlterraApi`; call it from your mod constructor.
+All in `AlterraApi`. Call from your mod constructor.
 
 ```java
 @Mod("alterra_example")
 public class Example {
     public Example(IEventBus bus, ModContainer container) {
-        // a section in the Alterra creative tab: banner texture, title key and items
         AlterraApi.addTabSection(ResourceLocation.fromNamespaceAndPath("alterra_example", "things"), 0xFFF2E6C8,
                 () -> List.of(new ItemStack(MyItems.THING.get())));
-        // a page in Alterra's settings screen
         AlterraApi.addSettingsCategory("Example", "What my addon does.", () -> new ItemStack(Items.APPLE),
                 List.of(AlterraApi.Option.bool("Fancy mode", "Makes things fancy.", MyConfig.FANCY)));
     }
 }
 ```
 
-Field guide pages need no code: put `alterra_example_guide.json` in the jar ([format](field-guide.md)).
+Guide pages don't need code, just a `alterra_example_guide.json` in the jar ([field-guide.md](field-guide.md)).
 
 ## Data-only addons
 
-If your addon is only recipes, tags, loot or biome modifiers, it needs no Java: a jar with `neoforge.mods.toml` and a `data/` folder is
-a mod. [`create/`](../create) and [`aeronautics/`](../aeronautics) are examples (their build file is three lines). Make the recipes depend
-on what they use with `neoforge:conditions` if the other mod is optional.
+If you only have recipes, tags, loot tables or biome modifiers you don't need Java. A jar with a neoforge.mods.toml and a data folder is a mod.
+[create/](../create) and [aeronautics/](../aeronautics) are like that. If the recipes use another mod, put a `neoforge:conditions` mod_loaded
+condition on them.
 
-## Things worth knowing
+## Notes
 
-* Alterra's own items are in the `alterra` namespace (`alterra:peach`, `alterra:redwood_log`...). Use them in recipes and tags freely.
-* Alterra's biomes carry the vanilla and common (`c:`) biome tags of the biome they are based on, so tag-based mods treat them correctly.
-* Test with Alterra's jar and your jar in the same `mods` folder; the API is only a compile-time stub.
-* Keep to the style: no glow, no marketing text, plain wording, vanilla-like pixel art.
+- Alterra's own stuff is in the `alterra` namespace (`alterra:peach`, `alterra:redwood_log`). Use it in recipes and tags.
+- Alterra's biomes are in the vanilla and `c:` biome tags of the biome they're based on.
+- The API jar is only for compiling. To test, put Alterra and your jar in the same mods folder.

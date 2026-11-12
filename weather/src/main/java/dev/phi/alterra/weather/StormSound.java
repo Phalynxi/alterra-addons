@@ -7,7 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-/** A wind loop that follows the player and fades smoothly towards the volume the storm asks for. */
+/** Looping wind that stays with the player and fades to the wanted volume. */
 final class StormSound extends AbstractTickableSoundInstance {
     private float goal;
     private boolean ending;

@@ -22,10 +22,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * Alterra Weather: sandstorms, fog banks, petal storms, an aurora, blizzards, pollen and ashfall. Where each happens is a biome tag
- * (alterra_weather:weather/*), so datapacks can move them; every effect has a switch; effects step aside for other weather mods.
- */
+/** Alterra Weather. Which biomes get which storm is set by the biome tags alterra_weather:weather/*. */
 @Mod(AlterraWeather.ID)
 public final class AlterraWeather {
     public static final String ID = "alterra_weather";
@@ -46,16 +43,16 @@ public final class AlterraWeather {
     public AlterraWeather(IEventBus bus, ModContainer container) {
         PARTICLES.register(bus); SOUNDS.register(bus);
         container.registerConfig(ModConfig.Type.CLIENT, WeatherConfig.SPEC);
-        AlterraApi.addSettingsCategory("Weather", "Biome weather effects on this computer.", () -> new ItemStack(Items.SAND), List.of(
-                AlterraApi.Option.bool("Sandstorms", "Deserts: blowing dust and close, sandy fog while it rains elsewhere.", WeatherConfig.SANDSTORMS),
-                AlterraApi.Option.bool("Fog banks", "Misty biomes: thick fog at dawn and in rain.", WeatherConfig.FOG_BANKS),
-                AlterraApi.Option.bool("Petal storms", "Blossom woods: gusts of petals when the weather turns.", WeatherConfig.PETAL_STORMS),
-                AlterraApi.Option.bool("Aurora", "Snowy biomes: an aurora on clear nights.", WeatherConfig.AURORA),
-                AlterraApi.Option.bool("Blizzards", "Snowy biomes: driven snow and a white-out while it snows.", WeatherConfig.BLIZZARDS),
-                AlterraApi.Option.bool("Pollen", "Flower biomes: pollen drifting by on warm, clear days.", WeatherConfig.POLLEN),
-                AlterraApi.Option.bool("Ashfall", "Burnt and ember biomes: ash drifting down.", WeatherConfig.ASHFALL),
-                AlterraApi.Option.number("Intensity", "How many particles the effects use.", WeatherConfig.INTENSITY, 0.1, 2.0, 0.1, "x"),
-                AlterraApi.Option.bool("Step aside for other mods", "Turn off effects that a weather, fog or sky mod you have installed already does.", WeatherConfig.STEP_ASIDE)));
+        AlterraApi.addSettingsCategory("Weather", "Weather effects. Only on your computer.", () -> new ItemStack(Items.SAND), List.of(
+                AlterraApi.Option.bool("Sandstorms", "Dust and sandy fog in deserts.", WeatherConfig.SANDSTORMS),
+                AlterraApi.Option.bool("Fog banks", "Thick fog in misty biomes.", WeatherConfig.FOG_BANKS),
+                AlterraApi.Option.bool("Petal storms", "Petals blowing around in blossom woods.", WeatherConfig.PETAL_STORMS),
+                AlterraApi.Option.bool("Aurora", "Northern lights over snowy biomes at night.", WeatherConfig.AURORA),
+                AlterraApi.Option.bool("Blizzards", "Driven snow and bad visibility in snowy biomes.", WeatherConfig.BLIZZARDS),
+                AlterraApi.Option.bool("Pollen", "Pollen floating around flower biomes on sunny days.", WeatherConfig.POLLEN),
+                AlterraApi.Option.bool("Ashfall", "Ash falling in burnt biomes.", WeatherConfig.ASHFALL),
+                AlterraApi.Option.number("Intensity", "How many particles. Lower it if the game runs badly.", WeatherConfig.INTENSITY, 0.1, 2.0, 0.1, "x"),
+                AlterraApi.Option.bool("Step aside for other mods", "Turn off effects that another weather or fog mod already does.", WeatherConfig.STEP_ASIDE)));
         if (FMLEnvironment.dist == Dist.CLIENT) WeatherClient.init(bus);
     }
 }

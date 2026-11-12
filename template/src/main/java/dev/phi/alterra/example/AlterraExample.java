@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
 
-/** An example Alterra addon: one setting on Alterra's settings screen. Replace it with your own. */
+/** Example addon: one setting on Alterra's settings screen. Replace with your own stuff. */
 @Mod(AlterraExample.ID)
 public final class AlterraExample {
     public static final String ID = "alterra_example";

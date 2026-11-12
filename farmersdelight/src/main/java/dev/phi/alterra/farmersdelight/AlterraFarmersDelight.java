@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 
-/** Alterra for Farmer's Delight: the Crystal, Ember and Frost knives, and recipes for the cooking pot and the cutting board. */
+/** Alterra for Farmer's Delight: three knives, plus cooking pot and cutting board recipes. */
 @Mod(AlterraFarmersDelight.ID)
 public final class AlterraFarmersDelight {
     public static final String ID = "alterra_farmersdelight";
