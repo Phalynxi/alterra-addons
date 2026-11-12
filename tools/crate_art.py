@@ -41,6 +41,18 @@ def blob(w, h, p, rng, kind):
     elif kind == "eyes":
         for q in ((1, 1), (2, 1), (1, 2)):
             if q in out: out[q] = p["accent"]
+    elif kind == "husk":                        # hairy coconut: fibres, then three eyes and a shine
+        for q, c in list(out.items()):
+            r = rng.random()
+            if r < .16: out[q] = p["fibre"] if c != p["shade"] else p["accent"]
+            elif r < .26 and c != p["shade"]: out[q] = p["light"]
+        for q in ((1, 1), (2, 1), (1, 2)):
+            if q in out: out[q] = p["accent"]
+        out[best[1]] = p["glint"]
+    elif kind == "wrinkle":                     # date: a dark crease along the fruit and a stem nub at one end
+        for x in range(1, w - 1):
+            if (x, h // 2) in out and (x + 1) % 2: out[(x, h // 2)] = p["shade"]
+        if (0, h // 2) in out: out[(0, h // 2)] = p["accent"]
     elif kind == "tip":
         if (w - 1, h - 1) in out: out[(w - 1, h - 1)] = p["accent"]
         elif (w - 2, h - 1) in out: out[(w - 2, h - 1)] = p["accent"]
@@ -62,11 +74,12 @@ def blob(w, h, p, rng, kind):
 
 
 # name: (sprite w, h, pitch w, h, decoration, colors). Colors are hex: shade, base, light, glint, then optional accent/spark.
-def pal(shade, base, light, glint, accent=None, spark=None, glow=None, gap=None):
+def pal(shade, base, light, glint, accent=None, spark=None, glow=None, gap=None, fibre=None):
     p = dict(shade=rgb(shade), base=rgb(base), light=rgb(light), glint=rgb(glint))
     if accent: p["accent"] = rgb(accent)
     if spark: p["spark"] = rgb(spark)
     if glow: p["glow"] = rgb(glow)
+    if fibre: p["fibre"] = rgb(fibre)
     p["gap"] = rgb(gap) if gap else GAP
     return p
 
@@ -75,8 +88,8 @@ CRATES = {
     "banana":       (6, 2, 6, 3, "tip",    pal("c49218", "ecc22a", "f6dc58", "fff6b0", "5c3e0a")),
     "baobab_fruit": (5, 4, 5, 4, "crease", pal("6d742c", "9ba03c", "b0bc47", "e2e1a3")),
     "cherry":       (3, 3, 3, 3, "stalk",  pal("7a0612", "c8102a", "e8505c", "ffb0b8", "5e6e2a")),
-    "coconut":      (6, 6, 6, 6, "eyes",   pal("5c3c22", "8a5e36", "a87a4c", "c89a66", "392515")),
-    "date":         (4, 3, 4, 3, None,     pal("6a3519", "a4582a", "c47a4a", "e4ba97")),
+    "coconut":      (6, 6, 6, 6, "husk",   pal("3a2210", "63401f", "8a5a2c", "c49a64", "1c0f06", gap="120b06", fibre="86582a")),
+    "date":         (5, 3, 5, 3, "wrinkle", pal("5a2c14", "93491f", "b8683a", "e8b888", "3a1c0c")),
     "fig":          (4, 4, 4, 4, "bloom",  pal("320f3e", "593466", "7a4c8a", "c5c89d", "969c4d")),
     "grapes":       (3, 3, 3, 3, None,     pal("1c0850", "43217e", "6a4aa8", "9c87b8")),
     "white_grapes": (3, 3, 3, 3, None,     pal("9a9760", "c8c58f", "e2e0c7", "f6f5e6")),
@@ -107,7 +120,7 @@ def placements(pw, row):
 def sprite_for(name, spec, rng, row, col):
     w, h, pw, ph, kind, p = spec
     s = blob(w, h, p, rng, kind)
-    if name == "banana" and row % 2:                      # bananas lie the other way every other row
+    if name in ("banana", "date") and row % 2:                      # bananas lie the other way every other row
         s = {(w - 1 - x, y): c for (x, y), c in s.items()}
     return s
 
