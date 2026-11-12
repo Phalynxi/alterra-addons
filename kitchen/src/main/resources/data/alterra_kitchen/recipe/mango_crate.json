@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "alterra:mango"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:mango_crate"
+  }
+}

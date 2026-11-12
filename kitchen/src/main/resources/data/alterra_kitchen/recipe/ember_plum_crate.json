@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "alterra:ember_plum"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:ember_plum_crate"
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "chapters": [
+    {
+      "id": "kitchen",
+      "title": "Food and Drink",
+      "icon": "alterra_kitchen:orange_juice"
+    }
+  ],
+  "entries": [
+    {
+      "id": "juices",
+      "chapter": "kitchen",
+      "title": "Juices",
+      "icon": "alterra_kitchen:orange_juice",
+      "unlock": [
+        "item:alterra_kitchen:apple_juice",
+        "item:alterra_kitchen:mango_juice",
+        "item:alterra_kitchen:peach_juice",
+        "item:alterra_kitchen:pomegranate_juice",
+        "item:alterra_kitchen:plum_juice",
+        "item:alterra_kitchen:orange_juice",
+        "item:alterra_kitchen:grape_juice",
+        "item:alterra_kitchen:white_grape_juice",
+        "item:alterra_kitchen:cherry_juice",
+        "item:alterra_kitchen:coconut_water",
+        "item:alterra_kitchen:prickly_pear_juice",
+        "item:alterra_kitchen:banana_smoothie",
+        "item:alterra_kitchen:tropical_punch",
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit, or find a juice.",
+      "pages": [
+        {
+          "text": "Two fruit, a sugar and a glass bottle make a juice, each in a glass of its own. Juice is drunk like honey and gives the bottle back. A Fruit Press, a Farmer's Delight cooking pot or Create can make them too."
+        },
+        {
+          "item": "alterra_kitchen:apple_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:apple_juice"
+        },
+        {
+          "item": "alterra_kitchen:mango_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:mango_juice"
+        },
+        {
+          "item": "alterra_kitchen:peach_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:peach_juice"
+        },
+        {
+          "item": "alterra_kitchen:pomegranate_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:pomegranate_juice"
+        },
+        {
+          "item": "alterra_kitchen:plum_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:plum_juice"
+        },
+        {
+          "item": "alterra_kitchen:orange_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:orange_juice"
+        },
+        {
+          "item": "alterra_kitchen:grape_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:grape_juice"
+        },
+        {
+          "item": "alterra_kitchen:white_grape_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:white_grape_juice"
+        },
+        {
+          "item": "alterra_kitchen:cherry_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:cherry_juice"
+        },
+        {
+          "item": "alterra_kitchen:coconut_water"
+        },
+        {
+          "recipe": "alterra_kitchen:coconut_water"
+        },
+        {
+          "item": "alterra_kitchen:prickly_pear_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:prickly_pear_juice"
+        },
+        {
+          "item": "alterra_kitchen:banana_smoothie"
+        },
+        {
+          "recipe": "alterra_kitchen:banana_smoothie"
+        },
+        {
+          "item": "alterra_kitchen:tropical_punch"
+        },
+        {
+          "recipe": "alterra_kitchen:tropical_punch"
+        }
+      ]
+    },
+    {
+      "id": "press",
+      "chapter": "kitchen",
+      "title": "Fruit Press",
+      "icon": "alterra_kitchen:fruit_press",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "text": "Put fruit into a fruit press - sneak to put in all you hold - then use a glass bottle on it: two fruit press one bottle (a coconut gives one on its own). It holds eight fruit of one kind, and breaking it gives the fruit back."
+        },
+        {
+          "recipe": "alterra_kitchen:fruit_press"
+        }
+      ]
+    },
+    {
+      "id": "crates",
+      "chapter": "kitchen",
+      "title": "Fruit Crates",
+      "icon": "alterra_kitchen:orange_crate",
+      "unlock": [
+        "item:alterra:coconut",
+        "item:alterra:baobab_fruit",
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:date",
+        "item:alterra:prickly_pear",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:sun_apple",
+        "item:alterra:ember_apple",
+        "item:alterra:ember_plum",
+        "item:alterra:frost_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:fig",
+        "item:alterra:orange",
+        "item:alterra:cherry",
+        "item:alterra:ember_pear",
+        "item:alterra:frost_pear",
+        "item:alterra:frost_plum",
+        "item:alterra:banana"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "text": "Nine fruit pack into a crate, and a crate unpacks back into nine. Good for storing a harvest, and good looking stacked up."
+        },
+        {
+          "recipe": "alterra_kitchen:coconut_crate"
+        },
+        {
+          "recipe": "alterra_kitchen:baobab_fruit_crate"
+        },
+        {
+          "recipe": "alterra_kitchen:mango_crate"
+        },
+        {
+          "recipe": "alterra_kitchen:peach_crate"
+        },
+        {
+          "recipe": "alterra_kitchen:pomegranate_crate"
+        },
+        {
+          "recipe": "alterra_kitchen:plum_crate"
+        }
+      ]
+    },
+    {
+      "id": "trellis",
+      "chapter": "fruit",
+      "title": "Grape Trellis",
+      "icon": "alterra_kitchen:trellis",
+      "unlock": [
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra_kitchen:trellis"
+      ],
+      "hint": "Find some grapes.",
+      "pages": [
+        {
+          "text": "Stand a trellis on dirt or farmland and use grapes (or white grapes) on it to plant a vine. The vine leafs out, fruits, and climbs into trellises stacked above it, up to three high. Right-click a fruiting vine to pick two or three bunches; it fruits again. Bone meal speeds it up."
+        },
+        {
+          "recipe": "alterra_kitchen:trellis"
+        }
+      ]
+    }
+  ],
+  "watch": [
+    "minecraft:glass_bottle"
+  ]
+}

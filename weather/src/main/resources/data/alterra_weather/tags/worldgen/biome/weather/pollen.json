@@ -1,0 +1,19 @@
+{
+  "values": [
+    "alterra:heather_moor",
+    "alterra:bluebell_wood",
+    "alterra:golden_steppe",
+    "alterra:poppy_plains",
+    "alterra:lavender_fields",
+    "alterra:sunflower_prairie",
+    "alterra:wildflower_meadow",
+    "alterra:marigold_plains",
+    "alterra:orchid_jungle",
+    "alterra:aspen_parkland",
+    "alterra:kelp_meadow",
+    "alterra:alpine_meadow",
+    "minecraft:flower_forest",
+    "minecraft:meadow",
+    "minecraft:sunflower_plains"
+  ]
+}

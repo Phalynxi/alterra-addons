@@ -1,0 +1,50 @@
+{
+  "chapters": [
+    {
+      "id": "farmersdelight",
+      "title": "Farmer's Delight",
+      "icon": "farmersdelight:cooking_pot",
+      "mod": "farmersdelight"
+    }
+  ],
+  "entries": [
+    {
+      "id": "knives",
+      "chapter": "farmersdelight",
+      "title": "Knives",
+      "icon": "farmersdelight:iron_knife",
+      "unlock": [],
+      "hint": "",
+      "pages": [
+        {
+          "text": "Three knives of Alterra's own: the Crystal Knife; the Ember Knife, which sets what it hits alight and cooks what it cuts or kills; and the Frost Knife, which freezes what it hits."
+        },
+        {
+          "item": "alterra_farmersdelight:crystal_knife"
+        },
+        {
+          "item": "alterra_farmersdelight:ember_knife"
+        },
+        {
+          "item": "alterra_farmersdelight:frost_knife"
+        }
+      ],
+      "mod": "farmersdelight"
+    },
+    {
+      "id": "cooking",
+      "chapter": "farmersdelight",
+      "title": "Cooking Pot and Board",
+      "icon": "farmersdelight:cooking_pot",
+      "unlock": [],
+      "hint": "",
+      "pages": [
+        {
+          "text": "The cooking pot makes every juice from its fruit and sugar - take it out with a glass bottle. The cutting board strips Alterra's logs (with tree bark) and cuts its flowers into dye."
+        }
+      ],
+      "mod": "farmersdelight"
+    }
+  ],
+  "watch": []
+}

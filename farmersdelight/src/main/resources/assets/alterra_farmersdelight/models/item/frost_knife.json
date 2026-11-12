@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "alterra_farmersdelight:item/frost_knife"
+  }
+}

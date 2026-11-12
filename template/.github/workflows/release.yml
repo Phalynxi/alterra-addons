@@ -1,0 +1,36 @@
+# Push a tag like v1.0.0: this builds the jar, publishes it as a release, and writes the new version, download link and SHA-256
+# into alterra-addon.json on the default branch (the file Alterra's in-game list reads).
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew build -Pmod_version="${GITHUB_REF_NAME#v}"
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ID=$(jq -r .id alterra-addon.json)
+          JAR="build/libs/${ID}.jar"
+          NAMED="${ID}-${VERSION}.jar"
+          cp "$JAR" "$NAMED"
+          gh release create "$GITHUB_REF_NAME" "$NAMED" --title "$ID $VERSION" --notes "Install it from Alterra's addon page, or put the jar in your mods folder."
+          SHA=$(sha256sum "$NAMED" | cut -d' ' -f1)
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/${NAMED}"
+          git fetch origin "${{ github.event.repository.default_branch }}"
+          git checkout "${{ github.event.repository.default_branch }}"
+          jq --arg v "$VERSION" --arg u "$URL" --arg s "$SHA" '.version=$v | .download=$u | .sha256=$s' alterra-addon.json > tmp.json && mv tmp.json alterra-addon.json
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add alterra-addon.json && git commit -m "Release $VERSION" && git push

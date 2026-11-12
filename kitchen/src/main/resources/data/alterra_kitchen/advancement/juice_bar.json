@@ -1,0 +1,168 @@
+{
+  "display": {
+    "icon": {
+      "id": "alterra_kitchen:tropical_punch"
+    },
+    "title": {
+      "translate": "advancements.alterra_kitchen.juice_bar.title"
+    },
+    "description": {
+      "translate": "advancements.alterra_kitchen.juice_bar.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "apple_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:apple_juice"
+        }
+      }
+    },
+    "mango_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:mango_juice"
+        }
+      }
+    },
+    "peach_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:peach_juice"
+        }
+      }
+    },
+    "pomegranate_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:pomegranate_juice"
+        }
+      }
+    },
+    "plum_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:plum_juice"
+        }
+      }
+    },
+    "orange_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:orange_juice"
+        }
+      }
+    },
+    "grape_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:grape_juice"
+        }
+      }
+    },
+    "white_grape_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:white_grape_juice"
+        }
+      }
+    },
+    "cherry_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:cherry_juice"
+        }
+      }
+    },
+    "coconut_water": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:coconut_water"
+        }
+      }
+    },
+    "prickly_pear_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:prickly_pear_juice"
+        }
+      }
+    },
+    "banana_smoothie": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:banana_smoothie"
+        }
+      }
+    },
+    "tropical_punch": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:tropical_punch"
+        }
+      }
+    }
+  },
+  "parent": "alterra_kitchen:bottoms_up",
+  "requirements": [
+    [
+      "apple_juice"
+    ],
+    [
+      "mango_juice"
+    ],
+    [
+      "peach_juice"
+    ],
+    [
+      "pomegranate_juice"
+    ],
+    [
+      "plum_juice"
+    ],
+    [
+      "orange_juice"
+    ],
+    [
+      "grape_juice"
+    ],
+    [
+      "white_grape_juice"
+    ],
+    [
+      "cherry_juice"
+    ],
+    [
+      "coconut_water"
+    ],
+    [
+      "prickly_pear_juice"
+    ],
+    [
+      "banana_smoothie"
+    ],
+    [
+      "tropical_punch"
+    ]
+  ],
+  "rewards": {
+    "experience": 250
+  }
+}

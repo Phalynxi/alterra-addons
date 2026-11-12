@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "alterra_kitchen:apple_juice",
+    "alterra_kitchen:mango_juice",
+    "alterra_kitchen:peach_juice",
+    "alterra_kitchen:pomegranate_juice",
+    "alterra_kitchen:plum_juice",
+    "alterra_kitchen:orange_juice",
+    "alterra_kitchen:grape_juice",
+    "alterra_kitchen:white_grape_juice",
+    "alterra_kitchen:cherry_juice",
+    "alterra_kitchen:coconut_water",
+    "alterra_kitchen:prickly_pear_juice",
+    "alterra_kitchen:banana_smoothie",
+    "alterra_kitchen:tropical_punch"
+  ]
+}

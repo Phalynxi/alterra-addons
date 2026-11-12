@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "id": "alterra_kitchen:orange_juice"
+    },
+    "title": {
+      "translate": "advancements.alterra_kitchen.bottoms_up.title"
+    },
+    "description": {
+      "translate": "advancements.alterra_kitchen.bottoms_up.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "d": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "#c:drinks/juice"
+        }
+      }
+    }
+  },
+  "parent": "alterra:first_fruit",
+  "requirements": [
+    [
+      "d"
+    ]
+  ]
+}

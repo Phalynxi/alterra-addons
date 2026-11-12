@@ -1,0 +1,88 @@
+{
+  "variants": {
+    "age=0,axis=x,vine=none": {
+      "model": "alterra_kitchen:block/trellis"
+    },
+    "age=1,axis=x,vine=none": {
+      "model": "alterra_kitchen:block/trellis"
+    },
+    "age=2,axis=x,vine=none": {
+      "model": "alterra_kitchen:block/trellis"
+    },
+    "age=3,axis=x,vine=none": {
+      "model": "alterra_kitchen:block/trellis"
+    },
+    "age=0,axis=z,vine=none": {
+      "model": "alterra_kitchen:block/trellis",
+      "y": 90
+    },
+    "age=1,axis=z,vine=none": {
+      "model": "alterra_kitchen:block/trellis",
+      "y": 90
+    },
+    "age=2,axis=z,vine=none": {
+      "model": "alterra_kitchen:block/trellis",
+      "y": 90
+    },
+    "age=3,axis=z,vine=none": {
+      "model": "alterra_kitchen:block/trellis",
+      "y": 90
+    },
+    "age=0,axis=x,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_0"
+    },
+    "age=0,axis=z,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_0",
+      "y": 90
+    },
+    "age=1,axis=x,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_1"
+    },
+    "age=1,axis=z,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_1",
+      "y": 90
+    },
+    "age=2,axis=x,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_2"
+    },
+    "age=2,axis=z,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_2",
+      "y": 90
+    },
+    "age=3,axis=x,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_3"
+    },
+    "age=3,axis=z,vine=purple": {
+      "model": "alterra_kitchen:block/trellis_purple_3",
+      "y": 90
+    },
+    "age=0,axis=x,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_0"
+    },
+    "age=0,axis=z,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_0",
+      "y": 90
+    },
+    "age=1,axis=x,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_1"
+    },
+    "age=1,axis=z,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_1",
+      "y": 90
+    },
+    "age=2,axis=x,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_2"
+    },
+    "age=2,axis=z,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_2",
+      "y": 90
+    },
+    "age=3,axis=x,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_3"
+    },
+    "age=3,axis=z,vine=white": {
+      "model": "alterra_kitchen:block/trellis_white_3",
+      "y": 90
+    }
+  }
+}

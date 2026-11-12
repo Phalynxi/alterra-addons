@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "alterra_farmersdelight:crystal_knife",
+      "required": false
+    },
+    {
+      "id": "alterra_farmersdelight:ember_knife",
+      "required": false
+    },
+    {
+      "id": "alterra_farmersdelight:frost_knife",
+      "required": false
+    }
+  ]
+}

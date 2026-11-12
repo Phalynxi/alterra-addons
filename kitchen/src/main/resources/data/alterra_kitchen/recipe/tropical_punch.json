@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alterra:mango"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "alterra:banana"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:tropical_punch"
+  }
+}

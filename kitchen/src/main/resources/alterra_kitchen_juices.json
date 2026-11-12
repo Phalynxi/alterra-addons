@@ -1,0 +1,54 @@
+[
+  {
+    "id": "apple_juice",
+    "color": 15118918
+  },
+  {
+    "id": "mango_juice",
+    "color": 16434226
+  },
+  {
+    "id": "peach_juice",
+    "color": 16033396
+  },
+  {
+    "id": "pomegranate_juice",
+    "color": 14959932
+  },
+  {
+    "id": "plum_juice",
+    "color": 7746688
+  },
+  {
+    "id": "orange_juice",
+    "color": 16026660
+  },
+  {
+    "id": "grape_juice",
+    "color": 4536441
+  },
+  {
+    "id": "white_grape_juice",
+    "color": 13819000
+  },
+  {
+    "id": "cherry_juice",
+    "color": 11470103
+  },
+  {
+    "id": "coconut_water",
+    "color": 14870744
+  },
+  {
+    "id": "prickly_pear_juice",
+    "color": 12855388
+  },
+  {
+    "id": "banana_smoothie",
+    "color": 15785622
+  },
+  {
+    "id": "tropical_punch",
+    "color": 15759430
+  }
+]

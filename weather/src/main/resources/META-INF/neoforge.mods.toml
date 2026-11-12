@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
+
+[[mods]]
+modId="alterra_weather"
+version="@VERSION@"
+displayName="Alterra Weather"
+description='''Storms with a life of their own for Alterra's biomes: sandstorms, blizzards, fog banks, petal storms, pollen, ashfall and an aurora, with their own wind.'''
+authors="Phalynxi"
+
+[[dependencies.alterra_weather]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_weather]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_weather]]
+modId="alterra"
+type="required"
+versionRange="[1.0,)"
+ordering="AFTER"
+side="BOTH"

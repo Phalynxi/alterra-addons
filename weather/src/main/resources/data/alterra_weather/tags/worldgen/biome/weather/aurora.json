@@ -1,0 +1,25 @@
+{
+  "values": [
+    "alterra:glacial_barrens",
+    "alterra:sapphire_tundra",
+    "alterra:aurora_steppe",
+    "alterra:frostwood",
+    "alterra:glowfrost_forest",
+    "alterra:frozen_fen",
+    "alterra:fir_snow_forest",
+    "alterra:frostpeak_heath",
+    "alterra:glacial_crags",
+    "alterra:frozen_shallows",
+    "alterra:pack_ice_shelf",
+    "alterra:frozen_deep",
+    "alterra:frost_caverns",
+    "alterra:frost_archipelago",
+    "minecraft:snowy_plains",
+    "minecraft:ice_spikes",
+    "minecraft:snowy_taiga",
+    "minecraft:frozen_peaks",
+    "minecraft:snowy_slopes",
+    "minecraft:frozen_ocean",
+    "minecraft:deep_frozen_ocean"
+  ]
+}

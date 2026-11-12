@@ -1,0 +1,114 @@
+{
+  "music.cold_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/cold_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.cold_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/cold_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.temperate_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/temperate_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.temperate_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/temperate_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.warm_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/warm_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.warm_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/warm_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.dry_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/dry_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.dry_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/dry_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.seas_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/seas_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.seas_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/seas_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.caves_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/caves_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.caves_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/caves_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.sky_1": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/sky_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.sky_2": {
+    "sounds": [
+      {
+        "name": "alterra_music:music/sky_2",
+        "stream": true
+      }
+    ]
+  }
+}

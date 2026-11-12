@@ -1,0 +1,12 @@
+{
+  "id": "alterra_example",
+  "name": "Alterra Example",
+  "description": "An example addon for Alterra.",
+  "author": "you",
+  "version": "1.0.0",
+  "alterra": "1.0",
+  "requires": [],
+  "download": "https://github.com/you/alterra-example/releases/download/v1.0.0/alterra_example-1.0.0.jar",
+  "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "homepage": "https://github.com/you/alterra-example"
+}

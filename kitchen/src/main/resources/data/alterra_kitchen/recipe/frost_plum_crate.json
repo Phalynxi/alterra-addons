@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "alterra:frost_plum"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:frost_plum_crate"
+  }
+}

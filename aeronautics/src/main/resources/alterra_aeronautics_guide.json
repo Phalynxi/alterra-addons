@@ -1,0 +1,27 @@
+{
+  "chapters": [
+    {
+      "id": "aeronautics",
+      "title": "Aeronautics",
+      "icon": "alterra:cloud",
+      "mod": "aeronautics"
+    }
+  ],
+  "entries": [
+    {
+      "id": "clouds_lift",
+      "chapter": "aeronautics",
+      "title": "Cloud Lift",
+      "icon": "alterra:cloud",
+      "unlock": [],
+      "hint": "",
+      "pages": [
+        {
+          "text": "Cloud blocks are nearly weightless and lift an airship the way levitite does: snow clouds lift the most, rain clouds the least. Gather them from the sky islands."
+        }
+      ],
+      "mod": "aeronautics"
+    }
+  ],
+  "watch": []
+}

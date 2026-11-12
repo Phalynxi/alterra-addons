@@ -1,0 +1,14 @@
+{
+  "values": [
+    "alterra:mossy_glen",
+    "alterra:elderwood",
+    "alterra:sporeglade",
+    "alterra:frozen_fen",
+    "alterra:willow_wetland",
+    "alterra:misty_crags",
+    "alterra:cloud_forest",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    "minecraft:dark_forest"
+  ]
+}

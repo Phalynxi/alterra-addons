@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="alterra_example"
+version="@VERSION@"
+displayName="Alterra Example"
+description='''An example addon for Alterra.'''
+authors="you"
+
+[[dependencies.alterra_example]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_example]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_example]]
+modId="alterra"
+type="required"
+versionRange="[1.0,)"
+ordering="AFTER"
+side="BOTH"

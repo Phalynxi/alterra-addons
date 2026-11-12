@@ -1,0 +1,62 @@
+{
+  "alterra:sun_apple": [
+    "alterra_kitchen:apple_juice",
+    2
+  ],
+  "alterra:sour_apple": [
+    "alterra_kitchen:apple_juice",
+    2
+  ],
+  "alterra:frost_apple": [
+    "alterra_kitchen:apple_juice",
+    2
+  ],
+  "alterra:ember_apple": [
+    "alterra_kitchen:apple_juice",
+    2
+  ],
+  "minecraft:apple": [
+    "alterra_kitchen:apple_juice",
+    2
+  ],
+  "alterra:mango": [
+    "alterra_kitchen:mango_juice",
+    2
+  ],
+  "alterra:peach": [
+    "alterra_kitchen:peach_juice",
+    2
+  ],
+  "alterra:pomegranate": [
+    "alterra_kitchen:pomegranate_juice",
+    2
+  ],
+  "alterra:plum": [
+    "alterra_kitchen:plum_juice",
+    2
+  ],
+  "alterra:orange": [
+    "alterra_kitchen:orange_juice",
+    2
+  ],
+  "alterra:grapes": [
+    "alterra_kitchen:grape_juice",
+    2
+  ],
+  "alterra:white_grapes": [
+    "alterra_kitchen:white_grape_juice",
+    2
+  ],
+  "alterra:cherry": [
+    "alterra_kitchen:cherry_juice",
+    2
+  ],
+  "alterra:coconut": [
+    "alterra_kitchen:coconut_water",
+    1
+  ],
+  "alterra:prickly_pear": [
+    "alterra_kitchen:prickly_pear_juice",
+    2
+  ]
+}

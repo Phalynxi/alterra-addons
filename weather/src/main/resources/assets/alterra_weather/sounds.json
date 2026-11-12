@@ -1,0 +1,29 @@
+{
+  "wind_dust": {
+    "sounds": [
+      {
+        "name": "alterra_weather:wind_dust",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.wind_dust"
+  },
+  "wind_snow": {
+    "sounds": [
+      {
+        "name": "alterra_weather:wind_snow",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.wind_snow"
+  },
+  "wind_calm": {
+    "sounds": [
+      {
+        "name": "alterra_weather:wind_calm",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.wind_calm"
+  }
+}

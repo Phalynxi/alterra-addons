@@ -1,0 +1,22 @@
+{
+  "chapters": [],
+  "watch": [],
+  "entries": [
+    {
+      "id": "music",
+      "chapter": "world",
+      "title": "Music",
+      "icon": "minecraft:jukebox",
+      "unlock": [],
+      "hint": "",
+      "pages": [
+        {
+          "text": "Alterra Music plays original tracks in Alterra's biomes. Cold, temperate, warm and dry lands, the seas and the caves each have their own, and the sky islands have one too."
+        },
+        {
+          "text": "They take the place of the vanilla tracks there. In between comes a long quiet - how long is up to you, in the Music settings, where you can also switch the tracks off."
+        }
+      ]
+    }
+  ]
+}

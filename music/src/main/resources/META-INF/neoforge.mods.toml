@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
+
+[[mods]]
+modId="alterra_music"
+version="@VERSION@"
+displayName="Alterra Music"
+description='''Original background music for Alterra's biomes: tracks for cold, temperate, warm and dry lands, the seas, the caves and the sky.'''
+authors="Phalynxi"
+
+[[dependencies.alterra_music]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_music]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_music]]
+modId="alterra"
+type="required"
+versionRange="[1.0,)"
+ordering="AFTER"
+side="BOTH"

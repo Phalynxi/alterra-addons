@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "alterra_kitchen:block/grapes_crate_top",
+    "bottom": "alterra_kitchen:block/crate_bottom",
+    "side": "alterra_kitchen:block/grapes_crate_side"
+  }
+}

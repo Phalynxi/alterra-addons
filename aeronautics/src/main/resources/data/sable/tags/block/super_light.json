@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "alterra:cloud",
+    "alterra:rain_cloud",
+    "alterra:snow_cloud"
+  ]
+}

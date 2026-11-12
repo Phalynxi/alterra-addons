@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "alterra:fig"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:fig_crate"
+  }
+}

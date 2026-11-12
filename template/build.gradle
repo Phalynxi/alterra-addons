@@ -1,0 +1,17 @@
+plugins { id 'java'; id 'net.neoforged.moddev' version '2.0.148' }
+version = project.findProperty('mod_version') ?: '1.0.0'     // the release workflow passes the tag as mod_version
+base { archivesName = 'alterra_example' }                      // rename: the jar is build/libs/alterra_example.jar
+tasks.withType(Jar).configureEach { archiveVersion = '' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+repositories { mavenCentral() }
+dependencies {
+    compileOnly files('libs/alterra-api.jar')                  // Alterra's addon API (compile time only: the real class comes with Alterra)
+}
+neoForge {
+    version = neo_version
+    mods { alterra_example { sourceSet sourceSets.main } }     // rename to your mod id
+}
+processResources {
+    inputs.property 'v', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { filter { line -> line.replace('@VERSION@', project.version.toString()) } }
+}

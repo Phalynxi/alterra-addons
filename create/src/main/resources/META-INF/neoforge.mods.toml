@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
+
+[[mods]]
+modId="alterra_create"
+version="@VERSION@"
+displayName="Alterra for Create"
+description='''Create recipes for Alterra: millstone and crushing for flowers, cacti and crystals, the saw for Alterra's logs, brewing Astral Water, and (with Alterra Kitchen) pressing, mixing and bottling juice.'''
+authors="Phalynxi"
+
+[[dependencies.alterra_create]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.alterra_create]]
+modId="alterra"
+type="required"
+versionRange="[1.0,)"
+ordering="AFTER"
+side="BOTH"
+[[dependencies.alterra_create]]
+modId="create"
+type="required"
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"

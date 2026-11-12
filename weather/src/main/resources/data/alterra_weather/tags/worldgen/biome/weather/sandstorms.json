@@ -1,0 +1,13 @@
+{
+  "values": [
+    "alterra:scorched_dunes",
+    "alterra:salt_flats",
+    "alterra:saffron_dunes",
+    "alterra:red_dunes",
+    "alterra:cactus_garden",
+    "alterra:cinder_flats",
+    "alterra:oasis_dunes",
+    "minecraft:desert",
+    "#minecraft:is_badlands"
+  ]
+}

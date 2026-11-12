@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "alterra:ember_apple"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "alterra_kitchen:ember_apple_crate"
+  }
+}

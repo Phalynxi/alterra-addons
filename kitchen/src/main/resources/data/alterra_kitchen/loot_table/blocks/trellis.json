@@ -1,0 +1,95 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alterra_kitchen:trellis"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "alterra:grapes",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 2
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alterra_kitchen:trellis",
+                  "properties": {
+                    "vine": "purple",
+                    "age": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alterra:grapes",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alterra_kitchen:trellis",
+                  "properties": {
+                    "vine": "purple"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alterra:white_grapes",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 2
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alterra_kitchen:trellis",
+                  "properties": {
+                    "vine": "white",
+                    "age": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alterra:white_grapes",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alterra_kitchen:trellis",
+                  "properties": {
+                    "vine": "white"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

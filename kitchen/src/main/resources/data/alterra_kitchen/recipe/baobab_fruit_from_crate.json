@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:baobab_fruit_crate"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "alterra:baobab_fruit"
+  }
+}

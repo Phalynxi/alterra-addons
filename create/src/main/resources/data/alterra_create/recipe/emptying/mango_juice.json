@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alterra_kitchen"
+    }
+  ],
+  "type": "create:emptying",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:mango_juice"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:glass_bottle"
+    },
+    {
+      "id": "alterra_kitchen:mango_juice",
+      "amount": 250
+    }
+  ]
+}

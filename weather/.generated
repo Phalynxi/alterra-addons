@@ -1,0 +1,7 @@
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/ashfall.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/aurora.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/blizzards.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/fog_banks.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/petal_storms.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/pollen.json
+src/main/resources/data/alterra_weather/tags/worldgen/biome/weather/sandstorms.json

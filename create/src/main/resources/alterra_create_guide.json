@@ -1,0 +1,397 @@
+{
+  "chapters": [
+    {
+      "id": "create",
+      "title": "Create",
+      "icon": "create:mechanical_press",
+      "mod": "create"
+    }
+  ],
+  "entries": [
+    {
+      "id": "juice_press",
+      "chapter": "create",
+      "title": "Pressing Juice",
+      "icon": "create:mechanical_press",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra:peach",
+                "alterra:peach"
+              ],
+              "out": "alterra_kitchen:peach_juice",
+              "via": "create:mechanical_press",
+              "amount": "250 mB",
+              "text": "A mechanical press over a basin squeezes two fruit into juice."
+            },
+            {
+              "in": [
+                "create:basin"
+              ],
+              "out": "alterra_kitchen:peach_juice",
+              "via": "create:fluid_pipe",
+              "text": "Pipe it out of the basin into a tank."
+            }
+          ],
+          "text": "Every fruit with a juice works."
+        },
+        {
+          "text": "Any fruit that makes a juice can be pressed: two fruit give 250 mB (a coconut gives it alone). The basin holds the juice until a pipe or a spout takes it."
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "juice_mix",
+      "chapter": "create",
+      "title": "Mixing Juice",
+      "icon": "create:mechanical_mixer",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra:orange",
+                "alterra:orange",
+                "minecraft:sugar",
+                "minecraft:water_bucket"
+              ],
+              "out": "alterra_kitchen:orange_juice",
+              "via": "create:mechanical_mixer",
+              "amount": "500 mB",
+              "text": "Fruit, a sugar and 250 mB of water in a basin, under a mixer: twice the juice of pressing."
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "bottling",
+      "chapter": "create",
+      "title": "Bottling",
+      "icon": "create:spout",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "minecraft:glass_bottle"
+              ],
+              "out": "alterra_kitchen:orange_juice",
+              "via": "create:spout",
+              "text": "A spout fills glass bottles passing under it on a belt or a depot - 250 mB each."
+            },
+            {
+              "in": [
+                "alterra_kitchen:orange_juice"
+              ],
+              "out": "minecraft:glass_bottle",
+              "via": "create:item_drain",
+              "amount": "250 mB",
+              "text": "An item drain empties bottles back into juice."
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "blends",
+      "chapter": "create",
+      "title": "Blends",
+      "icon": "alterra_kitchen:tropical_punch",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:orange",
+        "item:alterra:banana"
+      ],
+      "hint": "Find mangoes, oranges or bananas.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra_kitchen:mango_juice",
+                "alterra_kitchen:orange_juice",
+                "alterra:banana"
+              ],
+              "out": "alterra_kitchen:tropical_punch",
+              "via": "create:mechanical_mixer",
+              "amount": "500 mB",
+              "text": "250 mB each of mango and orange juice and a banana, mixed."
+            },
+            {
+              "in": [
+                "alterra:banana",
+                "alterra:banana",
+                "minecraft:milk_bucket"
+              ],
+              "out": "alterra_kitchen:banana_smoothie",
+              "via": "create:mechanical_mixer",
+              "amount": "500 mB",
+              "text": "Two bananas and 250 mB of milk."
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "factory",
+      "chapter": "create",
+      "title": "A Juice Line",
+      "icon": "create:belt_connector",
+      "unlock": [
+        "item:alterra:mango",
+        "item:alterra:peach",
+        "item:alterra:pomegranate",
+        "item:alterra:plum",
+        "item:alterra:orange",
+        "item:alterra:grapes",
+        "item:alterra:white_grapes",
+        "item:alterra:cherry",
+        "item:alterra:coconut",
+        "item:alterra:prickly_pear",
+        "item:alterra:banana",
+        "item:alterra:sun_apple",
+        "item:alterra:sour_apple",
+        "item:alterra:frost_apple",
+        "item:alterra:ember_apple"
+      ],
+      "hint": "Pick a fruit first.",
+      "pages": [
+        {
+          "text": "A simple juice line: drop fruit into a funnel feeding a basin; a mechanical press above presses it; a fluid pipe carries the juice to a tank; a spout over a belt fills bottles from the tank, and a funnel at the end of the belt collects them."
+        },
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra:mango"
+              ],
+              "out": "create:basin",
+              "via": "create:andesite_funnel"
+            },
+            {
+              "in": [
+                "create:basin"
+              ],
+              "out": "alterra_kitchen:mango_juice",
+              "via": "create:mechanical_press",
+              "amount": "250 mB"
+            },
+            {
+              "in": [
+                "alterra_kitchen:mango_juice"
+              ],
+              "out": "create:fluid_tank",
+              "via": "create:fluid_pipe"
+            },
+            {
+              "in": [
+                "minecraft:glass_bottle"
+              ],
+              "out": "alterra_kitchen:mango_juice",
+              "via": "create:spout"
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "dyes",
+      "chapter": "create",
+      "title": "Dyes and Crystals",
+      "icon": "create:millstone",
+      "unlock": [
+        "item:alterra:azure_poppy",
+        "item:alterra:dusk_tulip",
+        "item:alterra:sunset_poppy",
+        "item:alterra:frost_bloom",
+        "item:alterra:pampas_grass",
+        "item:alterra:frost_fern",
+        "item:alterra:ember_fern",
+        "item:alterra:teal_grass",
+        "item:alterra:glowcap",
+        "item:alterra:ember_cap",
+        "item:alterra:lumen_fern",
+        "item:alterra:teal_fern",
+        "item:alterra:glow_sprout",
+        "item:alterra:nebula_reed",
+        "item:alterra:pink_bud",
+        "item:alterra:pale_tuft",
+        "item:alterra:fire_lily",
+        "item:alterra:ash_tuft",
+        "item:alterra:sulphur_shroom",
+        "item:alterra:bloodcap",
+        "item:alterra:soul_bloom",
+        "item:alterra:lumen_lily",
+        "item:alterra:sea_lettuce",
+        "item:alterra:red_sea_fern",
+        "item:alterra:glowweed",
+        "item:alterra:saguaro",
+        "item:alterra:crystal_teal",
+        "item:alterra:crystal_pink"
+      ],
+      "hint": "Gather a flower, a cactus or a crystal.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra:azure_poppy"
+              ],
+              "out": "minecraft:light_blue_dye",
+              "via": "create:millstone",
+              "amount": "x2",
+              "text": "Alterra's flowers grind into dye."
+            },
+            {
+              "in": [
+                "alterra:saguaro"
+              ],
+              "out": "minecraft:green_dye",
+              "via": "create:millstone",
+              "amount": "x2",
+              "text": "Cacti grind into green dye, sometimes with the colour of their flowers."
+            },
+            {
+              "in": [
+                "alterra:crystal_teal"
+              ],
+              "out": "minecraft:amethyst_shard",
+              "via": "create:crushing_wheel",
+              "amount": "x2",
+              "text": "Crystals break into shards, glowstone and experience."
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "saw",
+      "chapter": "create",
+      "title": "Sawing Logs",
+      "icon": "create:mechanical_saw",
+      "unlock": [
+        "item:alterra:redwood_log",
+        "item:alterra:palm_log",
+        "item:alterra:willow_log",
+        "item:alterra:maple_log",
+        "item:alterra:umbra_log",
+        "item:alterra:sandalwood_log",
+        "item:alterra:baobab_log"
+      ],
+      "hint": "Cut down an Alterra tree.",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra:redwood_log"
+              ],
+              "out": "alterra:stripped_redwood_log",
+              "via": "create:mechanical_saw"
+            },
+            {
+              "in": [
+                "alterra:stripped_redwood_log"
+              ],
+              "out": "alterra:redwood_planks",
+              "via": "create:mechanical_saw",
+              "amount": "x6"
+            }
+          ],
+          "text": "Every Alterra wood."
+        }
+      ],
+      "mod": "create"
+    },
+    {
+      "id": "astral_mix",
+      "chapter": "create",
+      "title": "Brewing Astral Water",
+      "icon": "create:mechanical_mixer",
+      "unlock": [],
+      "hint": "",
+      "pages": [
+        {
+          "steps": [
+            {
+              "in": [
+                "minecraft:water_bucket",
+                "minecraft:popped_chorus_fruit",
+                "minecraft:glowstone_dust"
+              ],
+              "out": "alterra:astral_water_bucket",
+              "via": "create:mechanical_mixer",
+              "amount": "1000 mB",
+              "text": "1000 mB of water, a popped chorus fruit and glowstone dust."
+            }
+          ]
+        }
+      ],
+      "mod": "create"
+    }
+  ],
+  "watch": []
+}

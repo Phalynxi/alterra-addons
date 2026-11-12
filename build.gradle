@@ -1,0 +1,8 @@
+// Shared settings. Each addon builds one jar: build/libs/<id>-<version>.jar (what goes on the GitHub release).
+subprojects {
+    group = 'dev.phi.alterra.addons'
+    repositories {
+        mavenCentral()
+        maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
+    }
+}
