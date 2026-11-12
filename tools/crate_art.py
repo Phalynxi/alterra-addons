@@ -46,14 +46,10 @@ def blob(w, h, p, rng, kind):
         elif (w - 2, h - 1) in out: out[(w - 2, h - 1)] = p["accent"]
     elif kind == "stalk":
         out[(w - 1, 0)] = p["accent"]
-    elif kind == "ember":                       # charred shell, glowing from inside: hot underside and a crack
-        for q, c in list(out.items()):
-            if q[1] == h - 1 and c == p["shade"]: out[q] = p["glow"]
-        if (0, 0) != best[1]: out[best[1]] = p["light"]
-        if rng.random() < .7:
-            x, y = rng.randint(1, max(1, w - 2)), rng.randint(1, max(1, h - 2))
-            if (x, y) in out and (x, y) != best[1]: out[(x, y)] = p["spark"]
-            if rng.random() < .4 and (x - 1, y + 1) in out: out[(x - 1, y + 1)] = p["glint"]
+    elif kind == "ember":
+        inner = [q for q in out if 0 < q[0] < w - 1 or 0 < q[1] < h - 1]
+        for q in rng.sample(inner, min(len(inner), 2)): out[q] = p["spark"]
+        if inner and rng.random() < .6: out[rng.choice(inner)] = p["glint"]
     elif kind == "frost":
         inner = [q for q in out if out[q] in (p["light"], p["base"])]
         if inner and rng.random() < .3: out[rng.choice(inner)] = p["spark"]
@@ -92,9 +88,9 @@ CRATES = {
     "prickly_pear": (4, 5, 4, 5, "spines", pal("8a1040", "c4285c", "ec5c8e", "f4a5c0")),
     "sour_apple":   (4, 4, 4, 4, "stem",   pal("167502", "6fb413", "9dff1c", "c9ff82", "3a2819")),
     "sun_apple":    (4, 4, 4, 4, "stem",   pal("a84d10", "e8863d", "f0b04a", "f3f5a2", "3a2819")),
-    "ember_apple":  (4, 4, 4, 4, "ember",  pal("3a120c", "6e2616", "94402a", "ffd060", None, "ff8a1c", "e0500e", "1e0d0a")),
-    "ember_pear":   (4, 5, 4, 5, "ember",  pal("36100a", "66241a", "8a3a24", "ffd060", None, "ff8218", "d84a0c", "1e0d0a")),
-    "ember_plum":   (4, 4, 4, 4, "ember",  pal("2e0e10", "5e2018", "823426", "ffc850", None, "ff7a14", "d0440c", "1e0d0a")),
+    "ember_apple":  (4, 4, 4, 4, "ember",  pal("45130b", "7a2210", "9a3414", "ffc446", None, "ffde99")),
+    "ember_pear":   (4, 5, 4, 5, "ember",  pal("3b110a", "6e1c0d", "8a2810", "ffc446", None, "ffde99")),
+    "ember_plum":   (4, 4, 4, 4, "ember",  pal("2e0c12", "5b180c", "7a2414", "ffc446", None, "ffde99")),
     "frost_apple":  (4, 4, 4, 4, "frost",  pal("467ba7", "66a2c9", "8acdee", "bee3f5", None, "ffffff")),
     "frost_pear":   (4, 5, 4, 5, "frost",  pal("2c5c8c", "6eacd2", "9fd4ee", "b8dcf0", None, "ffffff")),
     "frost_plum":   (4, 4, 4, 4, "frost",  pal("2c5c8c", "5f9ac2", "a2d8f2", "cbe9f7", None, "ffffff")),
