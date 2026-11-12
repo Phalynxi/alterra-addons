@@ -44,8 +44,8 @@ def blob(w, h, p, rng, kind):
     elif kind == "husk":                        # hairy coconut: fibres, then three eyes and a shine
         for q, c in list(out.items()):
             r = rng.random()
-            if r < .16: out[q] = p["fibre"] if c != p["shade"] else p["accent"]
-            elif r < .26 and c != p["shade"]: out[q] = p["light"]
+            if r < .07: out[q] = p["fibre"] if c != p["shade"] else p["accent"]
+            elif r < .12 and c != p["shade"]: out[q] = p["light"]
         for q in ((1, 1), (2, 1), (1, 2)):
             if q in out: out[q] = p["accent"]
         out[best[1]] = p["glint"]
@@ -88,7 +88,7 @@ CRATES = {
     "banana":       (6, 2, 6, 3, "tip",    pal("c49218", "ecc22a", "f6dc58", "fff6b0", "5c3e0a")),
     "baobab_fruit": (5, 4, 5, 4, "crease", pal("6d742c", "9ba03c", "b0bc47", "e2e1a3")),
     "cherry":       (3, 3, 3, 3, "stalk",  pal("7a0612", "c8102a", "e8505c", "ffb0b8", "5e6e2a")),
-    "coconut":      (6, 6, 6, 6, "husk",   pal("3a2210", "63401f", "8a5a2c", "c49a64", "1c0f06", gap="120b06", fibre="86582a")),
+    "coconut":      (5, 5, 5, 5, "husk",   pal("5e3c1e", "9a7040", "bc9258", "e2c48c", "3a2410", gap="2a1a0e", fibre="7a5428")),
     "date":         (5, 3, 5, 3, "wrinkle", pal("5a2c14", "93491f", "b8683a", "e8b888", "3a1c0c")),
     "fig":          (4, 4, 4, 4, "bloom",  pal("320f3e", "593466", "7a4c8a", "c5c89d", "969c4d")),
     "grapes":       (3, 3, 3, 3, None,     pal("1c0850", "43217e", "6a4aa8", "9c87b8")),
@@ -109,47 +109,68 @@ CRATES = {
     "frost_plum":   (4, 4, 4, 4, "frost",  pal("2c5c8c", "5f9ac2", "a2d8f2", "cbe9f7", None, "ffffff")),
 }
 
-def placements(pw, row):
-    """x offsets (the first can be left of the area) for one row of fruit; every other row is shifted half a fruit."""
-    xs, x = [], -(row % 2) * (pw // 2)
-    while x < HI - LO + 1:
-        xs.append(x); x += pw
-    return xs
+def tinted(p, d):
+    """The same fruit a bit lighter or darker (ripeness), so no two look identical. Accents and glints stay."""
+    q = dict(p)
+    for k in ("shade", "base", "light"):
+        r, g, b, _ = p[k]
+        q[k] = (max(0, min(255, r + d)), max(0, min(255, g + d)), max(0, min(255, b + d)), 255)
+    return q
 
 
-def sprite_for(name, spec, rng, row, col):
+def scatter(name, spec, rng, area_w, area_h, one_row=False):
+    """Fruit as a loose heap: uneven spacing and rows, sizes and tones that vary, gaps where one is missing.
+    Returns [(x, y, sprite)] back to front, with x and y counted from the top left of the fruit area (they can be negative)."""
     w, h, pw, ph, kind, p = spec
-    s = blob(w, h, p, rng, kind)
-    if name in ("banana", "date") and row % 2:                      # bananas lie the other way every other row
-        s = {(w - 1 - x, y): c for (x, y), c in s.items()}
-    return s
+    out, y = [], -rng.randint(0, max(0, (ph - 2) if ph < 5 else ph // 3))
+    while y < area_h:
+        x = -rng.randint(0, pw - 1 if pw < 5 else pw // 3)
+        while x < area_w:
+            if w >= 5 or rng.random() > .04:
+                jw, jh = w, h
+                if rng.random() < .3: jw, jh = (w + rng.choice((-1, 1)), h) if rng.random() < .5 else (w, h + rng.choice((-1, 1)))
+                jw, jh = max(3 if w > 2 else 2, jw), max(2, jh)
+                if name == "banana": jh = 2
+                sp = blob(jw, jh, tinted(p, rng.randint(-11, 11)), rng, kind)
+                if name in ("banana", "date") and rng.random() < .5:
+                    sp = {(jw - 1 - sx, sy): col for (sx, sy), col in sp.items()}
+                dy = rng.choice((0, 0, 0, 1, -1))
+                out.append((x, y + dy, sp))
+            x += pw + (rng.choice((-1, 0, 0, 0, 1)) if pw >= 4 else rng.choice((0, 0, 0, 1)))
+        if one_row: break
+        y += ph + (rng.choice((-1, 0, 0, 0, 1)) if ph >= 4 else rng.choice((0, 0, 0, 1)))
+    out.sort(key=lambda t: t[1])
+    return out
 
 
 def draw(name):
     spec = CRATES[name]
-    w, h, pw, ph, kind, p = spec
-    rng = random.Random(name)
+    p = spec[5]
     n = HI - LO + 1
-    # --- top: a pile of fruit
+    # --- top: a heap of fruit, with the crate's walls shading its edges
+    rng = random.Random(name + "top")
     top = Image.open(TEX / f"{name}_crate_top.png").convert("RGBA"); px = top.load()
     for y in range(LO, HI + 1):
         for x in range(LO, HI + 1): px[x, y] = p["gap"]
-    rows = (n + ph - 1) // ph
-    for r in range(rows):
-        y0 = r * ph
-        for c, x0 in enumerate(placements(pw, r)):
-            for (sx, sy), col in sprite_for(name, spec, rng, r, c).items():
-                x, y = LO + x0 + sx, LO + y0 + sy
-                if LO <= x <= HI and LO <= y <= HI: px[x, y] = col
+    for x0, y0, sp in scatter(name, spec, rng, n, n):
+        for (sx, sy), col in sp.items():
+            x, y = LO + x0 + sx, LO + y0 + sy
+            if LO <= x <= HI and LO <= y <= HI: px[x, y] = col
+    for y in range(LO, HI + 1):
+        for x in range(LO, HI + 1):
+            k = .72 if x == LO or y == LO else .86 if x == HI or y == HI else 1
+            if k < 1 and px[x, y] != p["gap"]:
+                r, g, b, _ = px[x, y]; px[x, y] = (int(r * k), int(g * k), int(b * k), 255)
     top.save(TEX / f"{name}_crate_top.png")
-    # --- side: the upper part of the fruit shows between the slats
+    # --- side: the upper part of the fruit shows between the slats, a different heap in each gap
     side = Image.open(TEX / f"{name}_crate_side.png").convert("RGBA"); sx_ = side.load()
     for k, wy in enumerate(WINDOWS):
+        rng = random.Random(f"{name}side{k}")
         for y in (wy, wy + 1):
             for x in range(LO, HI + 1): sx_[x, y] = p["gap"]
-        for c, x0 in enumerate(placements(pw, k)):
-            for (sx, sy), col in sprite_for(name, spec, rng, k, c).items():
-                x, y = LO + x0 + sx, wy + sy
+        for x0, y0, sp in scatter(name, spec, rng, n, 2, one_row=True):
+            for (sx, sy), col in sp.items():
+                x, y = LO + x0 + sx, wy + y0 + sy
                 if LO <= x <= HI and wy <= y <= wy + 1: sx_[x, y] = col
     side.save(TEX / f"{name}_crate_side.png")
 
