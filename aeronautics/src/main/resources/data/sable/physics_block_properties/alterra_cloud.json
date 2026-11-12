@@ -1,7 +1,0 @@
-{
-  "selector": "alterra:cloud",
-  "properties": {
-    "sable:floating_material": "aeronautics:levitite",
-    "sable:floating_scale": 1.0
-  }
-}

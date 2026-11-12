@@ -44,7 +44,7 @@ Guide pages don't need code, just a `alterra_example_guide.json` in the jar ([fi
 ## Data-only addons
 
 If you only have recipes, tags, loot tables or biome modifiers you don't need Java. A jar with a neoforge.mods.toml and a data folder is a mod.
-[create/](../create) and [aeronautics/](../aeronautics) are like that. If the recipes use another mod, put a `neoforge:conditions` mod_loaded
+If the recipes use another mod, put a `neoforge:conditions` mod_loaded
 condition on them.
 
 ## Notes

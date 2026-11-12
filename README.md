@@ -3,13 +3,10 @@
 Addons for Alterra, a NeoForge 1.21.1 mod that adds biomes, tall mountains, sky islands and fruit trees. Alterra itself is closed source.
 The addons, the API they use and these docs are open (MIT).
 
-What's here:
+Alterra has Farmer's Delight, Create and Aeronautics support built in. These are the addons:
 
 - **alterra_kitchen**: juices (each with its own glass), a fruit press, crates, a grape trellis
 - **alterra_weather**: sandstorms, blizzards, fog, petals, pollen, ash and an aurora, on their own timers
-- **alterra_farmersdelight**: three knives and some recipes (needs Farmer's Delight)
-- **alterra_create**: Create recipes, including juice pressing and bottling (needs Create)
-- **alterra_aeronautics**: clouds lift airships (needs Create Aeronautics)
 
 ## Installing
 

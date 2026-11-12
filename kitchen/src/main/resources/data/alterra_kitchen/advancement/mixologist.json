@@ -1,0 +1,212 @@
+{
+  "display": {
+    "icon": {
+      "id": "alterra_kitchen:sunrise"
+    },
+    "title": {
+      "translate": "advancements.alterra_kitchen.mixologist.title"
+    },
+    "description": {
+      "translate": "advancements.alterra_kitchen.mixologist.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sunrise": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:sunrise"
+        }
+      }
+    },
+    "berry_blast": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:berry_blast"
+        }
+      }
+    },
+    "summer_berries": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:summer_berries"
+        }
+      }
+    },
+    "dark_berries": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:dark_berries"
+        }
+      }
+    },
+    "peach_mango": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:peach_mango"
+        }
+      }
+    },
+    "orchard_blend": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:orchard_blend"
+        }
+      }
+    },
+    "melon_cooler": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:melon_cooler"
+        }
+      }
+    },
+    "island_cooler": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:island_cooler"
+        }
+      }
+    },
+    "plum_fig": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:plum_fig"
+        }
+      }
+    },
+    "hot_and_cold": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:hot_and_cold"
+        }
+      }
+    },
+    "cherry_orange": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:cherry_orange"
+        }
+      }
+    },
+    "honeyed_apple": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:honeyed_apple"
+        }
+      }
+    },
+    "mango_lassi": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:mango_lassi"
+        }
+      }
+    },
+    "strawberry_shake": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:strawberry_shake"
+        }
+      }
+    },
+    "berry_smoothie": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:berry_smoothie"
+        }
+      }
+    },
+    "peach_smoothie": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:peach_smoothie"
+        }
+      }
+    },
+    "date_shake": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:date_shake"
+        }
+      }
+    }
+  },
+  "parent": "alterra_kitchen:juice_bar",
+  "requirements": [
+    [
+      "sunrise"
+    ],
+    [
+      "berry_blast"
+    ],
+    [
+      "summer_berries"
+    ],
+    [
+      "dark_berries"
+    ],
+    [
+      "peach_mango"
+    ],
+    [
+      "orchard_blend"
+    ],
+    [
+      "melon_cooler"
+    ],
+    [
+      "island_cooler"
+    ],
+    [
+      "plum_fig"
+    ],
+    [
+      "hot_and_cold"
+    ],
+    [
+      "cherry_orange"
+    ],
+    [
+      "honeyed_apple"
+    ],
+    [
+      "mango_lassi"
+    ],
+    [
+      "strawberry_shake"
+    ],
+    [
+      "berry_smoothie"
+    ],
+    [
+      "peach_smoothie"
+    ],
+    [
+      "date_shake"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

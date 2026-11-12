@@ -2,69 +2,27 @@
   "addons": [
     {
       "id": "alterra_kitchen",
-      "name": "Alterra Kitchen",
+      "name": "Kitchen",
       "description": "Juices (each with its own glass), a fruit press, fruit crates and a grape trellis.",
       "author": "Phalynxi",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "alterra": "1.0",
       "requires": [],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_kitchen-1.0.1.jar",
-      "sha256": "8d904250bcb046fef8a546876dcf33a24eb49bc6b28288aa401ccca07f1600b7",
+      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.2/alterra_kitchen-1.0.2.jar",
+      "sha256": "fac72457f81c43d0cd32c8cf61ad5261dda2593ab69eb750d259b30393ea7c1a",
       "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/kitchen"
     },
     {
       "id": "alterra_weather",
-      "name": "Alterra Weather",
+      "name": "Weather",
       "description": "Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.",
       "author": "Phalynxi",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "alterra": "1.0",
       "requires": [],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_weather-1.0.1.jar",
-      "sha256": "ac895a2baddf282ac7ce3f9099e588f453fdfca13279cbed817dca0961ef1344",
+      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.2/alterra_weather-1.0.2.jar",
+      "sha256": "7588dcab4519d1cb56badb18b3802ab0212a228669b4da0858edd1eb0498b0a0",
       "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/weather"
-    },
-    {
-      "id": "alterra_farmersdelight",
-      "name": "Alterra for Farmer's Delight",
-      "description": "Crystal, Ember and Frost knives, and some cooking pot and cutting board recipes.",
-      "author": "Phalynxi",
-      "version": "1.0.1",
-      "alterra": "1.0",
-      "requires": [
-        "farmersdelight"
-      ],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_farmersdelight-1.0.1.jar",
-      "sha256": "ef2963a94d851e77e8b542f6d8ca6db780fb310bd266751452d4ab9189bb67d5",
-      "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/farmersdelight"
-    },
-    {
-      "id": "alterra_create",
-      "name": "Alterra for Create",
-      "description": "Create recipes for Alterra: millstone, crushing, saw, Astral Water, and juice pressing, mixing and bottling.",
-      "author": "Phalynxi",
-      "version": "1.0.1",
-      "alterra": "1.0",
-      "requires": [
-        "create"
-      ],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_create-1.0.1.jar",
-      "sha256": "c9da093d64d61e0e82989978e67ad4ddc19b6d0566ebec17e672a2a5a3df74e0",
-      "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/create"
-    },
-    {
-      "id": "alterra_aeronautics",
-      "name": "Alterra for Create Aeronautics",
-      "description": "Alterra's clouds lift airships like levitite.",
-      "author": "Phalynxi",
-      "version": "1.0.1",
-      "alterra": "1.0",
-      "requires": [
-        "aeronautics"
-      ],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_aeronautics-1.0.1.jar",
-      "sha256": "9f6df475f850fb2d4905997761feb40daa59a9a7c58070f12c17509879ac7710",
-      "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/aeronautics"
     }
   ]
 }

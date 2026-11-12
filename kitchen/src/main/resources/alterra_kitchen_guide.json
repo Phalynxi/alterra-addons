@@ -26,6 +26,18 @@
         "item:alterra_kitchen:prickly_pear_juice",
         "item:alterra_kitchen:banana_smoothie",
         "item:alterra_kitchen:tropical_punch",
+        "item:alterra_kitchen:strawberry_juice",
+        "item:alterra_kitchen:blueberry_juice",
+        "item:alterra_kitchen:raspberry_juice",
+        "item:alterra_kitchen:blackberry_juice",
+        "item:alterra_kitchen:redcurrant_juice",
+        "item:alterra_kitchen:honeymelon_juice",
+        "item:alterra_kitchen:fig_nectar",
+        "item:alterra_kitchen:baobab_drink",
+        "item:alterra_kitchen:ember_juice",
+        "item:alterra_kitchen:frost_juice",
+        "item:alterra_kitchen:sun_juice",
+        "item:alterra_kitchen:gilded_nectar",
         "item:alterra:mango",
         "item:alterra:peach",
         "item:alterra:pomegranate",
@@ -34,10 +46,18 @@
         "item:alterra:grapes",
         "item:alterra:white_grapes",
         "item:alterra:cherry",
-        "item:alterra:coconut",
         "item:alterra:prickly_pear",
         "item:alterra:banana",
+        "item:alterra:strawberry",
+        "item:alterra:blueberry",
+        "item:alterra:raspberry",
+        "item:alterra:blackberry",
+        "item:alterra:redcurrant",
+        "item:alterra:honeymelon",
+        "item:alterra:fig",
+        "item:alterra:baobab_pulp",
         "item:alterra:sun_apple",
+        "item:alterra:gilded_peach",
         "item:alterra:sour_apple",
         "item:alterra:frost_apple",
         "item:alterra:ember_apple"
@@ -45,7 +65,7 @@
       "hint": "Pick a fruit, or find a juice.",
       "pages": [
         {
-          "text": "Two fruit, a sugar and a glass bottle make juice. Every juice has its own glass. You drink it like honey and keep the bottle. You can also make it in a fruit press, a Farmer's Delight cooking pot or with Create."
+          "text": "Two fruit, a sugar and a glass bottle make juice. Every juice has its own glass. You drink it like honey and keep the bottle. You can also make it in a fruit press, a Farmer's Delight cooking pot or with Create. Coconut water is different: crack a coconut open with a glass bottle in your other hand."
         },
         {
           "item": "alterra_kitchen:apple_juice"
@@ -105,9 +125,6 @@
           "item": "alterra_kitchen:coconut_water"
         },
         {
-          "recipe": "alterra_kitchen:coconut_water"
-        },
-        {
           "item": "alterra_kitchen:prickly_pear_juice"
         },
         {
@@ -124,6 +141,258 @@
         },
         {
           "recipe": "alterra_kitchen:tropical_punch"
+        },
+        {
+          "item": "alterra_kitchen:strawberry_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:strawberry_juice"
+        },
+        {
+          "item": "alterra_kitchen:blueberry_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:blueberry_juice"
+        },
+        {
+          "item": "alterra_kitchen:raspberry_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:raspberry_juice"
+        },
+        {
+          "item": "alterra_kitchen:blackberry_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:blackberry_juice"
+        },
+        {
+          "item": "alterra_kitchen:redcurrant_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:redcurrant_juice"
+        },
+        {
+          "item": "alterra_kitchen:honeymelon_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:honeymelon_juice"
+        },
+        {
+          "item": "alterra_kitchen:fig_nectar"
+        },
+        {
+          "recipe": "alterra_kitchen:fig_nectar"
+        },
+        {
+          "item": "alterra_kitchen:baobab_drink"
+        },
+        {
+          "recipe": "alterra_kitchen:baobab_drink"
+        },
+        {
+          "item": "alterra_kitchen:ember_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:ember_juice"
+        },
+        {
+          "item": "alterra_kitchen:frost_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:frost_juice"
+        },
+        {
+          "item": "alterra_kitchen:sun_juice"
+        },
+        {
+          "recipe": "alterra_kitchen:sun_juice"
+        },
+        {
+          "item": "alterra_kitchen:gilded_nectar"
+        },
+        {
+          "recipe": "alterra_kitchen:gilded_nectar"
+        }
+      ]
+    },
+    {
+      "id": "mixes",
+      "chapter": "kitchen",
+      "title": "Mixed Drinks",
+      "icon": "alterra_kitchen:sunrise",
+      "unlock": [
+        "item:alterra_kitchen:apple_juice",
+        "item:alterra_kitchen:mango_juice",
+        "item:alterra_kitchen:peach_juice",
+        "item:alterra_kitchen:pomegranate_juice",
+        "item:alterra_kitchen:plum_juice",
+        "item:alterra_kitchen:orange_juice",
+        "item:alterra_kitchen:grape_juice",
+        "item:alterra_kitchen:white_grape_juice",
+        "item:alterra_kitchen:cherry_juice",
+        "item:alterra_kitchen:coconut_water",
+        "item:alterra_kitchen:prickly_pear_juice",
+        "item:alterra_kitchen:banana_smoothie",
+        "item:alterra_kitchen:tropical_punch",
+        "item:alterra_kitchen:strawberry_juice",
+        "item:alterra_kitchen:blueberry_juice",
+        "item:alterra_kitchen:raspberry_juice",
+        "item:alterra_kitchen:blackberry_juice",
+        "item:alterra_kitchen:redcurrant_juice",
+        "item:alterra_kitchen:honeymelon_juice",
+        "item:alterra_kitchen:fig_nectar",
+        "item:alterra_kitchen:baobab_drink",
+        "item:alterra_kitchen:ember_juice",
+        "item:alterra_kitchen:frost_juice",
+        "item:alterra_kitchen:sun_juice",
+        "item:alterra_kitchen:gilded_nectar"
+      ],
+      "hint": "Find some juices first.",
+      "pages": [
+        {
+          "text": "Put two bottled juices together in the crafting grid and you get two bottles of the mix. A honey bottle with apple juice makes Honeyed Apple. Some mixes have two layers."
+        },
+        {
+          "item": "alterra_kitchen:sunrise"
+        },
+        {
+          "recipe": "alterra_kitchen:sunrise"
+        },
+        {
+          "item": "alterra_kitchen:berry_blast"
+        },
+        {
+          "recipe": "alterra_kitchen:berry_blast"
+        },
+        {
+          "item": "alterra_kitchen:summer_berries"
+        },
+        {
+          "recipe": "alterra_kitchen:summer_berries"
+        },
+        {
+          "item": "alterra_kitchen:dark_berries"
+        },
+        {
+          "recipe": "alterra_kitchen:dark_berries"
+        },
+        {
+          "item": "alterra_kitchen:peach_mango"
+        },
+        {
+          "recipe": "alterra_kitchen:peach_mango"
+        },
+        {
+          "item": "alterra_kitchen:orchard_blend"
+        },
+        {
+          "recipe": "alterra_kitchen:orchard_blend"
+        },
+        {
+          "item": "alterra_kitchen:melon_cooler"
+        },
+        {
+          "recipe": "alterra_kitchen:melon_cooler"
+        },
+        {
+          "item": "alterra_kitchen:island_cooler"
+        },
+        {
+          "recipe": "alterra_kitchen:island_cooler"
+        },
+        {
+          "item": "alterra_kitchen:plum_fig"
+        },
+        {
+          "recipe": "alterra_kitchen:plum_fig"
+        },
+        {
+          "item": "alterra_kitchen:hot_and_cold"
+        },
+        {
+          "recipe": "alterra_kitchen:hot_and_cold"
+        },
+        {
+          "item": "alterra_kitchen:cherry_orange"
+        },
+        {
+          "recipe": "alterra_kitchen:cherry_orange"
+        },
+        {
+          "item": "alterra_kitchen:honeyed_apple"
+        },
+        {
+          "recipe": "alterra_kitchen:honeyed_apple"
+        }
+      ]
+    },
+    {
+      "id": "shakes",
+      "chapter": "kitchen",
+      "title": "Shakes and Smoothies",
+      "icon": "alterra_kitchen:mango_lassi",
+      "unlock": [
+        "item:alterra_kitchen:apple_juice",
+        "item:alterra_kitchen:mango_juice",
+        "item:alterra_kitchen:peach_juice",
+        "item:alterra_kitchen:pomegranate_juice",
+        "item:alterra_kitchen:plum_juice",
+        "item:alterra_kitchen:orange_juice",
+        "item:alterra_kitchen:grape_juice",
+        "item:alterra_kitchen:white_grape_juice",
+        "item:alterra_kitchen:cherry_juice",
+        "item:alterra_kitchen:coconut_water",
+        "item:alterra_kitchen:prickly_pear_juice",
+        "item:alterra_kitchen:banana_smoothie",
+        "item:alterra_kitchen:tropical_punch",
+        "item:alterra_kitchen:strawberry_juice",
+        "item:alterra_kitchen:blueberry_juice",
+        "item:alterra_kitchen:raspberry_juice",
+        "item:alterra_kitchen:blackberry_juice",
+        "item:alterra_kitchen:redcurrant_juice",
+        "item:alterra_kitchen:honeymelon_juice",
+        "item:alterra_kitchen:fig_nectar",
+        "item:alterra_kitchen:baobab_drink",
+        "item:alterra_kitchen:ember_juice",
+        "item:alterra_kitchen:frost_juice",
+        "item:alterra_kitchen:sun_juice",
+        "item:alterra_kitchen:gilded_nectar"
+      ],
+      "hint": "Find some juices first.",
+      "pages": [
+        {
+          "text": "A bottled drink, a glass bottle and a bucket of milk make two shakes or smoothies (you get the bucket back). Dates, sugar and milk make a date shake. Banana Smoothie is older: bananas and milk."
+        },
+        {
+          "item": "alterra_kitchen:mango_lassi"
+        },
+        {
+          "recipe": "alterra_kitchen:mango_lassi"
+        },
+        {
+          "item": "alterra_kitchen:strawberry_shake"
+        },
+        {
+          "recipe": "alterra_kitchen:strawberry_shake"
+        },
+        {
+          "item": "alterra_kitchen:berry_smoothie"
+        },
+        {
+          "recipe": "alterra_kitchen:berry_smoothie"
+        },
+        {
+          "item": "alterra_kitchen:peach_smoothie"
+        },
+        {
+          "recipe": "alterra_kitchen:peach_smoothie"
+        },
+        {
+          "item": "alterra_kitchen:date_shake"
+        },
+        {
+          "recipe": "alterra_kitchen:date_shake"
         }
       ]
     },
@@ -141,10 +410,18 @@
         "item:alterra:grapes",
         "item:alterra:white_grapes",
         "item:alterra:cherry",
-        "item:alterra:coconut",
         "item:alterra:prickly_pear",
         "item:alterra:banana",
+        "item:alterra:strawberry",
+        "item:alterra:blueberry",
+        "item:alterra:raspberry",
+        "item:alterra:blackberry",
+        "item:alterra:redcurrant",
+        "item:alterra:honeymelon",
+        "item:alterra:fig",
+        "item:alterra:baobab_pulp",
         "item:alterra:sun_apple",
+        "item:alterra:gilded_peach",
         "item:alterra:sour_apple",
         "item:alterra:frost_apple",
         "item:alterra:ember_apple"

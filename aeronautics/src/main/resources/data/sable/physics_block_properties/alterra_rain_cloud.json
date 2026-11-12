@@ -1,7 +1,0 @@
-{
-  "selector": "alterra:rain_cloud",
-  "properties": {
-    "sable:floating_material": "aeronautics:levitite",
-    "sable:floating_scale": 0.6
-  }
-}

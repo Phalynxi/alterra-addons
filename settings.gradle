@@ -1,5 +1,5 @@
 pluginManagement { repositories { gradlePluginPortal(); maven { url = 'https://maven.neoforged.net/releases' } } }
 rootProject.name = 'alterra-addons'
 // api: the small public API of Alterra (compile-time only; the real classes come with the Alterra mod)
-// kitchen, weather, farmersdelight: addons with code. create, aeronautics: data-only addons.
-include 'api', 'kitchen', 'weather', 'farmersdelight', 'create', 'aeronautics'
+// kitchen and weather are the addons
+include 'api', 'kitchen', 'weather'

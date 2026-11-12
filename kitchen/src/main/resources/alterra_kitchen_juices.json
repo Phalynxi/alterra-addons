@@ -50,5 +50,121 @@
   {
     "id": "tropical_punch",
     "color": 15759430
+  },
+  {
+    "id": "strawberry_juice",
+    "color": 12259089
+  },
+  {
+    "id": "blueberry_juice",
+    "color": 2117741
+  },
+  {
+    "id": "raspberry_juice",
+    "color": 10430010
+  },
+  {
+    "id": "blackberry_juice",
+    "color": 3738899
+  },
+  {
+    "id": "redcurrant_juice",
+    "color": 9442583
+  },
+  {
+    "id": "honeymelon_juice",
+    "color": 12366140
+  },
+  {
+    "id": "fig_nectar",
+    "color": 7832118
+  },
+  {
+    "id": "baobab_drink",
+    "color": 15524542
+  },
+  {
+    "id": "ember_juice",
+    "color": 14701598
+  },
+  {
+    "id": "frost_juice",
+    "color": 8702702
+  },
+  {
+    "id": "sun_juice",
+    "color": 15118918
+  },
+  {
+    "id": "gilded_nectar",
+    "color": 16174712
+  },
+  {
+    "id": "sunrise",
+    "color": 16026660
+  },
+  {
+    "id": "berry_blast",
+    "color": 6834866
+  },
+  {
+    "id": "summer_berries",
+    "color": 14827598
+  },
+  {
+    "id": "dark_berries",
+    "color": 6302846
+  },
+  {
+    "id": "peach_mango",
+    "color": 16568444
+  },
+  {
+    "id": "orchard_blend",
+    "color": 15779412
+  },
+  {
+    "id": "melon_cooler",
+    "color": 12903578
+  },
+  {
+    "id": "island_cooler",
+    "color": 16314052
+  },
+  {
+    "id": "plum_fig",
+    "color": 8666748
+  },
+  {
+    "id": "hot_and_cold",
+    "color": 14965800
+  },
+  {
+    "id": "cherry_orange",
+    "color": 15356478
+  },
+  {
+    "id": "honeyed_apple",
+    "color": 15248954
+  },
+  {
+    "id": "mango_lassi",
+    "color": 16572030
+  },
+  {
+    "id": "strawberry_shake",
+    "color": 16429760
+  },
+  {
+    "id": "berry_smoothie",
+    "color": 9985196
+  },
+  {
+    "id": "peach_smoothie",
+    "color": 16567974
+  },
+  {
+    "id": "date_shake",
+    "color": 11303512
   }
 ]

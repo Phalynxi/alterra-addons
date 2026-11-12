@@ -118,6 +118,102 @@
           "items": "alterra_kitchen:tropical_punch"
         }
       }
+    },
+    "strawberry_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:strawberry_juice"
+        }
+      }
+    },
+    "blueberry_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:blueberry_juice"
+        }
+      }
+    },
+    "raspberry_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:raspberry_juice"
+        }
+      }
+    },
+    "blackberry_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:blackberry_juice"
+        }
+      }
+    },
+    "redcurrant_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:redcurrant_juice"
+        }
+      }
+    },
+    "honeymelon_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:honeymelon_juice"
+        }
+      }
+    },
+    "fig_nectar": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:fig_nectar"
+        }
+      }
+    },
+    "baobab_drink": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:baobab_drink"
+        }
+      }
+    },
+    "ember_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:ember_juice"
+        }
+      }
+    },
+    "frost_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:frost_juice"
+        }
+      }
+    },
+    "sun_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:sun_juice"
+        }
+      }
+    },
+    "gilded_nectar": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:gilded_nectar"
+        }
+      }
     }
   },
   "parent": "alterra_kitchen:bottoms_up",
@@ -160,6 +256,42 @@
     ],
     [
       "tropical_punch"
+    ],
+    [
+      "strawberry_juice"
+    ],
+    [
+      "blueberry_juice"
+    ],
+    [
+      "raspberry_juice"
+    ],
+    [
+      "blackberry_juice"
+    ],
+    [
+      "redcurrant_juice"
+    ],
+    [
+      "honeymelon_juice"
+    ],
+    [
+      "fig_nectar"
+    ],
+    [
+      "baobab_drink"
+    ],
+    [
+      "ember_juice"
+    ],
+    [
+      "frost_juice"
+    ],
+    [
+      "sun_juice"
+    ],
+    [
+      "gilded_nectar"
     ]
   ],
   "rewards": {
