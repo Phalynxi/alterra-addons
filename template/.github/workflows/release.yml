@@ -32,5 +32,5 @@ jobs:
           git fetch origin "${{ github.event.repository.default_branch }}"
           git checkout "${{ github.event.repository.default_branch }}"
           jq --arg v "$VERSION" --arg u "$URL" --arg s "$SHA" '.version=$v | .download=$u | .sha256=$s' alterra-addon.json > tmp.json && mv tmp.json alterra-addon.json
-          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git config user.name "${{ github.actor }}"; git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git add alterra-addon.json && git commit -m "Release $VERSION" && git push
