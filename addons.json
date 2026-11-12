@@ -25,18 +25,6 @@
       "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/weather"
     },
     {
-      "id": "alterra_music",
-      "name": "Alterra Music",
-      "description": "Background music for Alterra's biomes: two tracks each for cold, temperate, warm and dry land, the sea and caves, plus one for the sky.",
-      "author": "Phalynxi",
-      "version": "1.0.1",
-      "alterra": "1.0",
-      "requires": [],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.1/alterra_music-1.0.1.jar",
-      "sha256": "8ffe2651003234f5a891b2bdedac4544941e192744c42dcffa785f26ddefc954",
-      "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/music"
-    },
-    {
       "id": "alterra_farmersdelight",
       "name": "Alterra for Farmer's Delight",
       "description": "Crystal, Ember and Frost knives, and some cooking pot and cutting board recipes.",

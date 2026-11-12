@@ -7,7 +7,6 @@ What's here:
 
 - **alterra_kitchen**: juices (each with its own glass), a fruit press, crates, a grape trellis
 - **alterra_weather**: sandstorms, blizzards, fog, petals, pollen, ash and an aurora, on their own timers
-- **alterra_music**: background music for the biomes
 - **alterra_farmersdelight**: three knives and some recipes (needs Farmer's Delight)
 - **alterra_create**: Create recipes, including juice pressing and bottling (needs Create)
 - **alterra_aeronautics**: clouds lift airships (needs Create Aeronautics)
@@ -29,5 +28,5 @@ so the game asks twice before installing one.
 ## Layout
 
 `api/` is the small API (only needed to compile), `template/` is a starting point, `addons.json` is the list the game reads, and `tools/`
-has the release script, the list checker and the scripts that make the weather sounds and the music. Each addon has its own folder.
+has the release script, the list checker and the script that makes the weather sounds. Each addon has its own folder.
 `./gradlew build` builds everything (Java 21).
