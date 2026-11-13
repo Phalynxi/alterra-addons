@@ -3,13 +3,13 @@
     {
       "id": "alterra_kitchen",
       "name": "Kitchen",
-      "description": "Juices (each with its own glass), a fruit press, fruit crates and a grape trellis.",
+      "description": "Juices (each with its own glass), wine and a keg, a fruit press, fruit crates and a grape trellis.",
       "author": "Phalynxi",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "alterra": "1.0",
       "requires": [],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.2/alterra_kitchen-1.0.2.jar",
-      "sha256": "fac72457f81c43d0cd32c8cf61ad5261dda2593ab69eb750d259b30393ea7c1a",
+      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.3/alterra_kitchen-1.0.3.jar",
+      "sha256": "da5364eba8ebd65eea3bed4f429ae90e4fbb14b58a3af7d5679086e486f9134e",
       "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/kitchen"
     },
     {
@@ -17,11 +17,11 @@
       "name": "Weather",
       "description": "Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.",
       "author": "Phalynxi",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "alterra": "1.0",
       "requires": [],
-      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.2/alterra_weather-1.0.2.jar",
-      "sha256": "7588dcab4519d1cb56badb18b3802ab0212a228669b4da0858edd1eb0498b0a0",
+      "download": "https://github.com/Phalynxi/alterra-addons/releases/download/v1.0.3/alterra_weather-1.0.3.jar",
+      "sha256": "bab259281bb5da29af954f9cce4682d259e78c0c0d71baa5e0c4967a87ab333a",
       "homepage": "https://github.com/Phalynxi/alterra-addons/tree/main/weather"
     }
   ]
