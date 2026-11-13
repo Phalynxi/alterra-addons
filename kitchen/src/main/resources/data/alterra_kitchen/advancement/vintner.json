@@ -1,0 +1,278 @@
+{
+  "display": {
+    "icon": {
+      "id": "alterra_kitchen:red_wine"
+    },
+    "title": {
+      "translate": "advancements.alterra_kitchen.vintner.title"
+    },
+    "description": {
+      "translate": "advancements.alterra_kitchen.vintner.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "red_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:red_wine"
+        }
+      }
+    },
+    "white_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:white_wine"
+        }
+      }
+    },
+    "cider": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:cider"
+        }
+      }
+    },
+    "plum_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:plum_wine"
+        }
+      }
+    },
+    "cherry_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:cherry_wine"
+        }
+      }
+    },
+    "peach_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:peach_wine"
+        }
+      }
+    },
+    "mango_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:mango_wine"
+        }
+      }
+    },
+    "pomegranate_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:pomegranate_wine"
+        }
+      }
+    },
+    "orange_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:orange_wine"
+        }
+      }
+    },
+    "strawberry_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:strawberry_wine"
+        }
+      }
+    },
+    "blueberry_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:blueberry_wine"
+        }
+      }
+    },
+    "raspberry_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:raspberry_wine"
+        }
+      }
+    },
+    "blackberry_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:blackberry_wine"
+        }
+      }
+    },
+    "redcurrant_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:redcurrant_wine"
+        }
+      }
+    },
+    "fig_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:fig_wine"
+        }
+      }
+    },
+    "cactus_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:cactus_wine"
+        }
+      }
+    },
+    "palm_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:palm_wine"
+        }
+      }
+    },
+    "baobab_ale": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:baobab_ale"
+        }
+      }
+    },
+    "honeymelon_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:honeymelon_wine"
+        }
+      }
+    },
+    "ember_liqueur": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:ember_liqueur"
+        }
+      }
+    },
+    "ice_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:ice_wine"
+        }
+      }
+    },
+    "sun_wine": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:sun_wine"
+        }
+      }
+    },
+    "mead": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:mead"
+        }
+      }
+    }
+  },
+  "parent": "alterra_kitchen:bottoms_up",
+  "requirements": [
+    [
+      "red_wine"
+    ],
+    [
+      "white_wine"
+    ],
+    [
+      "cider"
+    ],
+    [
+      "plum_wine"
+    ],
+    [
+      "cherry_wine"
+    ],
+    [
+      "peach_wine"
+    ],
+    [
+      "mango_wine"
+    ],
+    [
+      "pomegranate_wine"
+    ],
+    [
+      "orange_wine"
+    ],
+    [
+      "strawberry_wine"
+    ],
+    [
+      "blueberry_wine"
+    ],
+    [
+      "raspberry_wine"
+    ],
+    [
+      "blackberry_wine"
+    ],
+    [
+      "redcurrant_wine"
+    ],
+    [
+      "fig_wine"
+    ],
+    [
+      "cactus_wine"
+    ],
+    [
+      "palm_wine"
+    ],
+    [
+      "baobab_ale"
+    ],
+    [
+      "honeymelon_wine"
+    ],
+    [
+      "ember_liqueur"
+    ],
+    [
+      "ice_wine"
+    ],
+    [
+      "sun_wine"
+    ],
+    [
+      "mead"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

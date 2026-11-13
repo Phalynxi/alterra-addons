@@ -2,10 +2,10 @@
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "minecraft:block/spruce_planks",
-    "wood": "minecraft:block/spruce_planks",
-    "log": "minecraft:block/stripped_spruce_log",
-    "iron": "minecraft:block/iron_block",
+    "particle": "alterra_kitchen:block/press_planks",
+    "wood": "alterra_kitchen:block/press_planks",
+    "log": "alterra_kitchen:block/press_beam",
+    "iron": "alterra_kitchen:block/press_iron",
     "pulp": "alterra_kitchen:block/press_pulp"
   },
   "elements": [

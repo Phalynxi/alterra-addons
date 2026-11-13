@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alterra_kitchen:item/fig_gold_hour"
+  }
+}

@@ -214,6 +214,30 @@
           "items": "alterra_kitchen:gilded_nectar"
         }
       }
+    },
+    "golden_carrot_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:golden_carrot_juice"
+        }
+      }
+    },
+    "golden_apple_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:golden_apple_juice"
+        }
+      }
+    },
+    "enchanted_golden_apple_juice": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alterra_kitchen:enchanted_golden_apple_juice"
+        }
+      }
     }
   },
   "parent": "alterra_kitchen:bottoms_up",
@@ -292,6 +316,15 @@
     ],
     [
       "gilded_nectar"
+    ],
+    [
+      "golden_carrot_juice"
+    ],
+    [
+      "golden_apple_juice"
+    ],
+    [
+      "enchanted_golden_apple_juice"
     ]
   ],
   "rewards": {

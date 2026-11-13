@@ -1,0 +1,94 @@
+{
+  "alterra_kitchen:grape_juice": {
+    "out": "alterra_kitchen:red_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:white_grape_juice": {
+    "out": "alterra_kitchen:white_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:apple_juice": {
+    "out": "alterra_kitchen:cider",
+    "ticks": 12000
+  },
+  "alterra_kitchen:plum_juice": {
+    "out": "alterra_kitchen:plum_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:cherry_juice": {
+    "out": "alterra_kitchen:cherry_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:peach_juice": {
+    "out": "alterra_kitchen:peach_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:mango_juice": {
+    "out": "alterra_kitchen:mango_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:pomegranate_juice": {
+    "out": "alterra_kitchen:pomegranate_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:orange_juice": {
+    "out": "alterra_kitchen:orange_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:strawberry_juice": {
+    "out": "alterra_kitchen:strawberry_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:blueberry_juice": {
+    "out": "alterra_kitchen:blueberry_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:raspberry_juice": {
+    "out": "alterra_kitchen:raspberry_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:blackberry_juice": {
+    "out": "alterra_kitchen:blackberry_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:redcurrant_juice": {
+    "out": "alterra_kitchen:redcurrant_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:fig_nectar": {
+    "out": "alterra_kitchen:fig_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:prickly_pear_juice": {
+    "out": "alterra_kitchen:cactus_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:coconut_water": {
+    "out": "alterra_kitchen:palm_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:baobab_drink": {
+    "out": "alterra_kitchen:baobab_ale",
+    "ticks": 12000
+  },
+  "alterra_kitchen:honeymelon_juice": {
+    "out": "alterra_kitchen:honeymelon_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:ember_juice": {
+    "out": "alterra_kitchen:ember_liqueur",
+    "ticks": 12000
+  },
+  "alterra_kitchen:frost_juice": {
+    "out": "alterra_kitchen:ice_wine",
+    "ticks": 12000
+  },
+  "alterra_kitchen:sun_juice": {
+    "out": "alterra_kitchen:sun_wine",
+    "ticks": 12000
+  },
+  "minecraft:honey_bottle": {
+    "out": "alterra_kitchen:mead",
+    "ticks": 12000
+  }
+}

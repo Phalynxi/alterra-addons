@@ -1,9 +1,13 @@
 plugins { id 'java'; id 'net.neoforged.moddev' version '2.0.148' }
-version = '1.0.2'
+version = '1.0.3'
 base { archivesName = 'alterra_kitchen' }
 tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named alterra_kitchen.jar; the version lives in neoforge.mods.toml
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-dependencies { compileOnly project(':api') }
+repositories { maven { url = 'https://maven.blamejared.com/' } }
+dependencies {
+    compileOnly project(':api')
+    compileOnly 'mezz.jei:jei-1.21.1-neoforge-api:19.70.0.469'   // only to hide the secret recipes; JEI itself is optional
+}
 neoForge {
     version = neo_version
     mods { alterra_kitchen { sourceSet sourceSets.main } }

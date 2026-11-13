@@ -1,8 +1,8 @@
 """Generates Alterra Weather's own assets into weather/src/main/resources/assets/alterra_weather:
  - particles: dust (8x8 specks) and puff (16x16 clumpy pixel clouds, tinted and made translucent in game)
  - sounds: three seamless stereo wind loops (synthesised: shaped noise, gusts, a faint whistle), as Ogg Vorbis
-Needs numpy, Pillow and ffmpeg. Run: python3 tools/weather_art.py"""
-import json, math, random, subprocess, tempfile, wave
+Needs numpy, Pillow and ffmpeg. Run: python3 tools/weather_art.py   (python3 tools/weather_art.py particles = only the particles)"""
+import json, math, random, subprocess, sys, tempfile, wave
 from pathlib import Path
 import numpy as np
 from PIL import Image
@@ -27,6 +27,23 @@ def dust():
         im.save(d / f"dust_{i}.png"); names.append(f"{NS}:dust_{i}")
     (OUT / "particles").mkdir(parents=True, exist_ok=True)
     (OUT / "particles/dust.json").write_text(json.dumps({"textures": names}, indent=2) + "\n")
+
+def mote():
+    """Pollen and ash, tinted in game (yellow / grey): two soft glowing pollen grains and two ragged ash flakes. Same size as the dust, a little bolder."""
+    W, S, M = (255, 255, 255, 255), (226, 226, 226, 255), (150, 150, 150, 255)
+    h = lambda a: (255, 255, 255, a)
+    frames = [(["........", "........", "...b....", "..bab...", "...b....", "........", "........", "........"], {"a": W, "b": h(110)}),
+              (["........", "........", "........", "...ab...", "...bb...", "........", "........", "........"], {"a": W, "b": h(150)}),
+              (["........", "........", "..sam...", "..ass...", "...sm...", "........", "........", "........"], {"a": W, "s": S, "m": M}),
+              (["........", "........", "....a...", "...sa...", "..sm....", "..m.....", "........", "........"], {"a": W, "s": S, "m": M})]
+    d = OUT / "textures/particle"; d.mkdir(parents=True, exist_ok=True)
+    names = []
+    for i, (rows, pal) in enumerate(frames):
+        im = Image.new("RGBA", (8, 8), (0, 0, 0, 0)); px = im.load()
+        for y, row in enumerate(rows):
+            for x, ch in enumerate(row):
+                if ch in pal: px[x, y] = pal[ch]
+        im.save(d / f"mote_{i}.png"); names.append(f"{NS}:mote_{i}")
     (OUT / "particles/mote.json").write_text(json.dumps({"textures": names}, indent=2) + "\n")
 
 def puff():
@@ -106,5 +123,6 @@ def sounds():
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    dust(); puff(); sounds()
+    if sys.argv[1:] == ["particles"]: dust(); puff(); mote()      # leave the sounds alone
+    else: dust(); puff(); mote(); sounds()
     print("weather assets written to", OUT)

@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "Phalynxi/alterra-addons"
 META = {   # id -> folder, name, description, requires, oldest Alterra
-    "alterra_kitchen": ("kitchen", "Kitchen", "Juices (each with its own glass), a fruit press, fruit crates and a grape trellis.", [], "1.0"),
+    "alterra_kitchen": ("kitchen", "Kitchen", "Juices (each with its own glass), wine and a keg, a fruit press, fruit crates and a grape trellis.", [], "1.0"),
     "alterra_weather": ("weather", "Weather", "Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.", [], "1.0"),
 }
 

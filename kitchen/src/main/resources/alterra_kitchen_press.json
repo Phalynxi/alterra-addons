@@ -106,5 +106,17 @@
   "alterra:gilded_peach": [
     "alterra_kitchen:gilded_nectar",
     2
+  ],
+  "minecraft:golden_carrot": [
+    "alterra_kitchen:golden_carrot_juice",
+    1
+  ],
+  "minecraft:golden_apple": [
+    "alterra_kitchen:golden_apple_juice",
+    1
+  ],
+  "minecraft:enchanted_golden_apple": [
+    "alterra_kitchen:enchanted_golden_apple_juice",
+    1
   ]
 }
