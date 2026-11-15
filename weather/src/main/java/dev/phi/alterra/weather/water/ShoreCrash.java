@@ -60,7 +60,7 @@ public final class ShoreCrash {
                 double sx = x + 0.5 + d.getStepX() * 0.45, sz = z + 0.5 + d.getStepZ() * 0.45;
                 for (int k = 0; k < n; k++) {
                     double v = (0.10 + r.nextDouble() * 0.16) * (0.65 + 0.7 * storm), up = (0.15 + r.nextDouble() * 0.2) * (0.65 + 0.8 * storm), side = (r.nextDouble() - 0.5) * 0.12;
-                    level.addParticle(AlterraWeather.SPRAY.get(), sx + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepZ()), h + 0.05, sz + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepX()),
+                    dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.SPRAY.get(), sx + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepZ()), h + 0.05, sz + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepX()),
                             d.getStepX() * v + side * Math.abs(d.getStepZ()), up, d.getStepZ() * v + side * Math.abs(d.getStepX()));
                 }
                 Look.splashOnLand.accept(new double[] {x + 0.5 + d.getStepX() * (1.6 + 1.4 * storm), z + 0.5 + d.getStepZ() * (1.6 + 1.4 * storm), 1.3, 0.012 + 0.03 * storm});

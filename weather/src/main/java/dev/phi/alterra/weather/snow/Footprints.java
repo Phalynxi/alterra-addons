@@ -83,9 +83,9 @@ public final class Footprints {
     private static void splash(ClientLevel level, LivingEntity le, float depth, int drops, float up) {
         Look.splashOnLand.accept(new double[] {le.getX(), le.getZ(), 1.0, 0.012});
         var r = level.random; double y = surface(level, le.getX(), le.getY(), le.getZ()) + 0.03;
-        level.addParticle(AlterraWeather.RIPPLE.get(), le.getX() + (r.nextDouble() - 0.5) * 0.3, y, le.getZ() + (r.nextDouble() - 0.5) * 0.3, 0, 0, 0);
+        dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.RIPPLE.get(), le.getX() + (r.nextDouble() - 0.5) * 0.3, y, le.getZ() + (r.nextDouble() - 0.5) * 0.3, 0, 0, 0);
         for (int i = 0; i < drops; i++)
-            level.addParticle(AlterraWeather.SPRAY.get(), le.getX() + (r.nextDouble() - 0.5) * 0.5, y, le.getZ() + (r.nextDouble() - 0.5) * 0.5, (r.nextDouble() - 0.5) * 0.08, up * (0.6 + r.nextDouble() * 0.8), (r.nextDouble() - 0.5) * 0.08);
+            dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.SPRAY.get(), le.getX() + (r.nextDouble() - 0.5) * 0.5, y, le.getZ() + (r.nextDouble() - 0.5) * 0.5, (r.nextDouble() - 0.5) * 0.08, up * (0.6 + r.nextDouble() * 0.8), (r.nextDouble() - 0.5) * 0.08);
     }
 
     /** What the thing stands on, if it is snow, sand or mud. */
@@ -125,7 +125,7 @@ public final class Footprints {
         double x = le.getX() - Math.cos(yaw) * side, z = le.getZ() - Math.sin(yaw) * side;   // sideways from where it faces (the facing vector is (-sin, cos))
         double y = surface(level, x, le.getY(), z) + 0.012;
         int life = Math.round((g == Ground.SNOW ? 900 : g == Ground.SAND ? 700 : g == Ground.WET ? 500 : g == Ground.SOFT ? 380 : 1200) * (1f - 0.65f * rain) * (0.85f + 0.3f * level.random.nextFloat()));
-        level.addParticle(ColorParticleOption.create(AlterraWeather.PRINT.get(), 0xFF000000 | colour(level, x, le.getY(), z, g)), x, y, z, foot, Math.toRadians(le.yBodyRot), life);
+        dev.phi.alterra.weather.WeatherParticles.add(level, ColorParticleOption.create(AlterraWeather.PRINT.get(), 0xFF000000 | colour(level, x, le.getY(), z, g)), x, y, z, foot, Math.toRadians(le.yBodyRot), life);
     }
 
     private static void puff(ClientLevel level, LivingEntity le, Ground g, int n, float up) {
@@ -134,7 +134,7 @@ public final class Footprints {
         var r = level.random;
         for (int i = 0; i < n; i++) {
             int rgb = g == Ground.SNOW ? 0xF2F7FC : g == Ground.SAND ? (r.nextBoolean() ? 0xE4CB92 : 0xC9A56A) : 0x4A3626;
-            level.addParticle(ColorParticleOption.create(AlterraWeather.DUST.get(), 0xFF000000 | rgb), le.getX() + (r.nextDouble() - 0.5) * 0.4, y, le.getZ() + (r.nextDouble() - 0.5) * 0.4,
+            dev.phi.alterra.weather.WeatherParticles.add(level, ColorParticleOption.create(AlterraWeather.DUST.get(), 0xFF000000 | rgb), le.getX() + (r.nextDouble() - 0.5) * 0.4, y, le.getZ() + (r.nextDouble() - 0.5) * 0.4,
                     (r.nextDouble() - 0.5) * 0.05, up * (0.4 + r.nextDouble()), (r.nextDouble() - 0.5) * 0.05);
         }
     }

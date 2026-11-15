@@ -25,18 +25,18 @@ public final class Splashes {
         int crown = 4 + (int) (sc * 2.5);   // the crown: a ring of drops thrown out and up from the rim of the hole
         for (int i = 0; i < crown; i++) {
             double a = (i + r.nextDouble() * 0.8) / crown * Math.PI * 2, r0 = 0.1 + 0.08 * sc, out = (0.05 + 0.04 * s2) * (0.8 + 0.4 * r.nextDouble()), up = (0.12 + 0.05 * s2) * (0.8 + 0.4 * r.nextDouble());
-            level.addParticle(sp, x + Math.cos(a) * r0, y + 0.05, z + Math.sin(a) * r0, Math.cos(a) * out, up, Math.sin(a) * out);
+            dev.phi.alterra.weather.WeatherParticles.add(level, sp, x + Math.cos(a) * r0, y + 0.05, z + Math.sin(a) * r0, Math.cos(a) * out, up, Math.sin(a) * out);
         }
         int jet = 2 + (int) (sc * 1.2);   // the jet that rises in the middle as the hole closes: fastest at the top, so the column stretches and breaks into drops
         for (int i = 0; i < jet; i++) {
             double f = (i + 0.5) / jet, up = Math.min(0.38, (0.10 + 0.05 * s2) * (0.55 + 0.9 * f) * (0.9 + 0.2 * r.nextDouble()));
-            level.addParticle(sp, x + (r.nextDouble() - 0.5) * 0.04, y + 0.05 + i * 0.05, z + (r.nextDouble() - 0.5) * 0.04, (r.nextDouble() - 0.5) * 0.02, up, (r.nextDouble() - 0.5) * 0.02);
+            dev.phi.alterra.weather.WeatherParticles.add(level, sp, x + (r.nextDouble() - 0.5) * 0.04, y + 0.05 + i * 0.05, z + (r.nextDouble() - 0.5) * 0.04, (r.nextDouble() - 0.5) * 0.02, up, (r.nextDouble() - 0.5) * 0.02);
         }
         Look.splashOnLand.accept(new double[] {x, z, 1.2 + sc * 1.1, 0.04 * sc});   // and the water that is thrown out lands on the shore
         int loose = (int) Math.min(6, 1 + sc * 1.5);   // a few flung wide
         for (int i = 0; i < loose; i++) {
             double a = r.nextDouble() * Math.PI * 2, out = (0.03 + r.nextDouble() * 0.07) * (0.6 + 0.4 * s2), up = 0.10 + r.nextDouble() * 0.15;
-            level.addParticle(sp, x, y + 0.1, z, Math.cos(a) * out, up, Math.sin(a) * out);
+            dev.phi.alterra.weather.WeatherParticles.add(level, sp, x, y + 0.1, z, Math.cos(a) * out, up, Math.sin(a) * out);
         }
     }
 
@@ -50,7 +50,7 @@ public final class Splashes {
         for (int i = 0; i < drops; i++) {
             double side = (r.nextBoolean() ? 1 : -1) * (0.05 + r.nextDouble() * 0.18) * (0.6 + 0.4 * sc), fwd = (0.06 + r.nextDouble() * 0.16) * (0.6 + 0.4 * sc);
             double vx = dirX * fwd - dirZ * side, vz = dirZ * fwd + dirX * side, up = 0.10 + r.nextDouble() * 0.16 * (0.6 + 0.4 * sc);
-            level.addParticle(AlterraWeather.SPRAY.get(), x - dirZ * side * 2, y + 0.1, z + dirX * side * 2, vx, up, vz);
+            dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.SPRAY.get(), x - dirZ * side * 2, y + 0.1, z + dirX * side * 2, vx, up, vz);
         }
     }
 

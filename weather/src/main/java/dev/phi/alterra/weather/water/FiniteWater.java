@@ -183,8 +183,8 @@ public final class FiniteWater {
     public static void animate(Level l, BlockPos p, FluidState fs, RandomSource r) {
         if (!heated(l, p) || l.getFluidState(p.above()).is(FluidTags.WATER)) return;
         double top = p.getY() + fs.getHeight(l, p);
-        if (r.nextInt(2) == 0) l.addParticle(ParticleTypes.BUBBLE_POP, p.getX() + r.nextDouble(), top, p.getZ() + r.nextDouble(), 0, 0.02, 0);
-        if (r.nextInt(3) == 0) l.addParticle(ParticleTypes.CLOUD, p.getX() + r.nextDouble(), top + 0.1, p.getZ() + r.nextDouble(), 0, 0.03, 0);
+        if (r.nextInt(2) == 0) dev.phi.alterra.weather.WeatherParticles.add(l, ParticleTypes.BUBBLE_POP, p.getX() + r.nextDouble(), top, p.getZ() + r.nextDouble(), 0, 0.02, 0);
+        if (r.nextInt(3) == 0) dev.phi.alterra.weather.WeatherParticles.add(l, ParticleTypes.CLOUD, p.getX() + r.nextDouble(), top + 0.1, p.getZ() + r.nextDouble(), 0, 0.03, 0);
         if (r.nextInt(30) == 0) l.playLocalSound(p.getX() + 0.5, top, p.getZ() + 0.5, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, 0.4f, 1.4f, false);
     }
 

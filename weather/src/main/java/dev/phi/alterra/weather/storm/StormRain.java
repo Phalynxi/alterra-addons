@@ -139,16 +139,16 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
             double top = st.getFluidState().isEmpty() ? st.getCollisionShape(level, pos).max(net.minecraft.core.Direction.Axis.Y) : st.getFluidState().getHeight(level, pos);
             if (st.getFluidState().is(net.minecraft.tags.FluidTags.WATER) && WeatherConfig.get(WeatherConfig.RIPPLES)) {   // a drop on water: a ring, and now and then a small splash
                 double sy = pos.getY() + Math.max(0, top) + 0.02;
-                if (!Look.shaderWater.getAsBoolean()) level.addParticle(AlterraWeather.RIPPLE.get(), x + rnd.nextDouble(), sy, z + rnd.nextDouble(), 0, 0, 0);   // the rings are drawn by the water shader when it is in use
-                if (rnd.nextInt(5) == 0) level.addParticle(ParticleTypes.SPLASH, x + rnd.nextDouble(), sy + 0.05, z + rnd.nextDouble(), 0, 0.02, 0);
+                if (!Look.shaderWater.getAsBoolean()) dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.RIPPLE.get(), x + rnd.nextDouble(), sy, z + rnd.nextDouble(), 0, 0, 0);   // the rings are drawn by the water shader when it is in use
+                if (rnd.nextInt(5) == 0) dev.phi.alterra.weather.WeatherParticles.add(level, ParticleTypes.SPLASH, x + rnd.nextDouble(), sy + 0.05, z + rnd.nextDouble(), 0, 0.02, 0);
             } else {   // a drop on the ground: a small crown of light droplets, and a ring where water already stands (a puddle)
                 double gx = x + rnd.nextDouble(), gz = z + rnd.nextDouble(), gy = pos.getY() + Math.max(0, top);
                 float pud = Look.puddleAt.apply(x, z);
-                if (pud > 0.03f) level.addParticle(AlterraWeather.RIPPLE.get(), gx, gy + 0.03, gz, 0, 0, 0);
+                if (pud > 0.03f) dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.RIPPLE.get(), gx, gy + 0.03, gz, 0, 0, 0);
                 int drops = 2 + (pud > 0.03f ? 1 : 0);
                 for (int k = 0; k < drops; k++) {
                     double a = rnd.nextDouble() * Math.PI * 2, out = 0.012 + rnd.nextDouble() * 0.02;
-                    level.addParticle(AlterraWeather.DROP.get(), gx, gy + 0.04, gz, Math.cos(a) * out, 0.06 + rnd.nextDouble() * 0.06, Math.sin(a) * out);
+                    dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.DROP.get(), gx, gy + 0.04, gz, Math.cos(a) * out, 0.06 + rnd.nextDouble() * 0.06, Math.sin(a) * out);
                 }
             }
         }

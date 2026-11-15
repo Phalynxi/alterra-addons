@@ -215,7 +215,7 @@ public final class WeatherEffects {
                 if (!level.hasChunk(Mth.floor(x) >> 4, Mth.floor(z) >> 4)) continue;
                 int ground = WeatherHooks.ground(level, Mth.floor(x), Mth.floor(z));
                 var type = k == Kind.PETALS ? petal() : AlterraWeather.PUFF.get();
-                level.addParticle(color(type, rgb), x, ground + 1 + r.nextDouble() * 14, z, wx * 0.35, 0.02, wz * 0.35);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(type, rgb), x, ground + 1 + r.nextDouble() * 14, z, wx * 0.35, 0.02, wz * 0.35);
             }
         }
     }
@@ -240,7 +240,7 @@ public final class WeatherEffects {
                 boolean land = !level.getBlockState(n).getCollisionShape(level, n).isEmpty() || !level.getBlockState(n.below()).getCollisionShape(level, n.below()).isEmpty() && level.getBlockState(n).isAir();
                 if (!land) continue;
                 double surface = y + fluid.getHeight(level, pos);
-                level.addParticle(AlterraWeather.FOAM.get(), x + 0.5 + d.getStepX() * (0.3 + r.nextDouble() * 0.15) + (r.nextDouble() - 0.5) * 0.5 * Math.abs(d.getStepZ()), surface + 0.03, z + 0.5 + d.getStepZ() * (0.3 + r.nextDouble() * 0.15) + (r.nextDouble() - 0.5) * 0.5 * Math.abs(d.getStepX()), d.getStepX(), 0, d.getStepZ());
+                dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.FOAM.get(), x + 0.5 + d.getStepX() * (0.3 + r.nextDouble() * 0.15) + (r.nextDouble() - 0.5) * 0.5 * Math.abs(d.getStepZ()), surface + 0.03, z + 0.5 + d.getStepZ() * (0.3 + r.nextDouble() * 0.15) + (r.nextDouble() - 0.5) * 0.5 * Math.abs(d.getStepX()), d.getStepX(), 0, d.getStepZ());
                 spawned++; break;
             }
         }
@@ -267,24 +267,24 @@ public final class WeatherEffects {
             int n = Math.round(sand * 40 * amount * out);
             for (int i = 0; i < n; i++) {
                 var o = upwind.apply(5 + r.nextDouble() * 26, 26.0); double sp = 0.9 + r.nextDouble() * 0.6;
-                level.addParticle(color(AlterraWeather.DUST.get(), r.nextInt(3) == 0 ? 0xC8A66E : 0xE4CB92), o[0], o[1] + r.nextDouble() * r.nextDouble() * 8, o[2], wx * sp, -0.01, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DUST.get(), r.nextInt(3) == 0 ? 0xC8A66E : 0xE4CB92), o[0], o[1] + r.nextDouble() * r.nextDouble() * 8, o[2], wx * sp, -0.01, wz * sp);
             }
             int g = Math.round(sand * 70 * amount * out);   // sand lifted off the ground: low streaks skimming fast with the wind, only off loose sand
             for (int i = 0; i < g; i++) {
                 var o = upwind.apply(1 + r.nextDouble() * 13, 14.0); double sp = 0.45 + r.nextDouble() * 0.4;   // a strong wind's speed along the ground (faster ones only flashed past, far away)
                 if (!loose(level, o, false)) continue;   // (paler and darker than the sand, so it shows against it)
-                level.addParticle(color(AlterraWeather.DUST.get(), r.nextInt(2) == 0 ? 0xEFE0B8 : 0xB8925A), o[0], o[1] + 0.04 + r.nextDouble() * r.nextDouble() * 0.6, o[2], wx * sp, 0.004 + r.nextDouble() * 0.01, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DUST.get(), r.nextInt(2) == 0 ? 0xEFE0B8 : 0xB8925A), o[0], o[1] + 0.04 + r.nextDouble() * r.nextDouble() * 0.6, o[2], wx * sp, 0.004 + r.nextDouble() * 0.01, wz * sp);
             }
             int v = Math.round(sand * 16 * amount * out);   // veils of sand skimming the ground (the specks above are too small to see on their own)
             for (int i = 0; i < v; i++) {
                 var o = upwind.apply(1 + r.nextDouble() * 12, 13.0); double sp = 0.3 + r.nextDouble() * 0.3;
                 if (!loose(level, o, false)) continue;
-                level.addParticle(color(AlterraWeather.DRIFT.get(), r.nextInt(3) == 0 ? 0xC9A66C : 0xE6D2A0), o[0], o[1] + 0.2 + r.nextDouble() * 0.35, o[2], wx * sp, 0.0, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DRIFT.get(), r.nextInt(3) == 0 ? 0xC9A66C : 0xE6D2A0), o[0], o[1] + 0.2 + r.nextDouble() * 0.35, o[2], wx * sp, 0.0, wz * sp);
             }
             int c = Math.round(sand * 2.2f * amount * out + (r.nextFloat() < sand * 2.2f * amount * out % 1 ? 1 : 0));
             for (int i = 0; i < c; i++) {
                 var o = upwind.apply(9 + r.nextDouble() * 22, 24.0);
-                level.addParticle(color(AlterraWeather.PUFF.get(), 0xD2B27A), o[0], o[1] + r.nextDouble() * 5, o[2], wx * 0.55, 0.0, wz * 0.55);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.PUFF.get(), 0xD2B27A), o[0], o[1] + r.nextDouble() * 5, o[2], wx * 0.55, 0.0, wz * 0.55);
             }
         }
         float snow = s(Kind.BLIZZARD);
@@ -292,24 +292,24 @@ public final class WeatherEffects {
             int n = Math.round(snow * 55 * amount * out);
             for (int i = 0; i < n; i++) {
                 var o = upwind.apply(4 + r.nextDouble() * 24, 24.0); double sp = 1.0 + r.nextDouble() * 0.7;
-                level.addParticle(color(AlterraWeather.DUST.get(), 0xF4F8FC), o[0], o[1] + r.nextDouble() * 12, o[2], wx * sp, -0.07 - r.nextDouble() * 0.05, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DUST.get(), 0xF4F8FC), o[0], o[1] + r.nextDouble() * 12, o[2], wx * sp, -0.07 - r.nextDouble() * 0.05, wz * sp);
             }
             int g = Math.round(snow * 80 * amount * out);   // snow blown off the ground: low drifting streaks, only off snow
             for (int i = 0; i < g; i++) {
                 var o = upwind.apply(1 + r.nextDouble() * 13, 14.0); double sp = 0.45 + r.nextDouble() * 0.4;
                 if (!loose(level, o, true)) continue;
-                level.addParticle(color(AlterraWeather.DUST.get(), 0xF6FAFF), o[0], o[1] + 0.04 + r.nextDouble() * r.nextDouble() * 0.7, o[2], wx * sp, 0.005 + r.nextDouble() * 0.012, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DUST.get(), 0xF6FAFF), o[0], o[1] + 0.04 + r.nextDouble() * r.nextDouble() * 0.7, o[2], wx * sp, 0.005 + r.nextDouble() * 0.012, wz * sp);
             }
             int v = Math.round(snow * 18 * amount * out);   // veils of snow skimming the ground
             for (int i = 0; i < v; i++) {
                 var o = upwind.apply(1 + r.nextDouble() * 12, 13.0); double sp = 0.3 + r.nextDouble() * 0.3;
                 if (!loose(level, o, true)) continue;
-                level.addParticle(color(AlterraWeather.DRIFT.get(), 0xF4F8FC), o[0], o[1] + 0.2 + r.nextDouble() * 0.35, o[2], wx * sp, 0.0, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.DRIFT.get(), 0xF4F8FC), o[0], o[1] + 0.2 + r.nextDouble() * 0.35, o[2], wx * sp, 0.0, wz * sp);
             }
             int c = Math.round(snow * 2.4f * amount * out + (r.nextFloat() < snow * 2.4f * amount * out % 1 ? 1 : 0));
             for (int i = 0; i < c; i++) {
                 var o = upwind.apply(8 + r.nextDouble() * 20, 22.0);
-                level.addParticle(color(AlterraWeather.PUFF.get(), 0xE6EEF6), o[0], o[1] + r.nextDouble() * 9, o[2], wx * 0.7, -0.02, wz * 0.7);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.PUFF.get(), 0xE6EEF6), o[0], o[1] + r.nextDouble() * 9, o[2], wx * 0.7, -0.02, wz * 0.7);
             }
         }
         float fog = s(Kind.FOG);
@@ -318,7 +318,7 @@ public final class WeatherEffects {
             double x = p.getX() + Math.cos(a) * d, z = p.getZ() + Math.sin(a) * d;
             int ground = WeatherHooks.ground(level, Mth.floor(x), Mth.floor(z));
             if (Math.abs(ground - p.getY()) < 20)
-                level.addParticle(color(AlterraWeather.PUFF.get(), 0xF3F6F9), x, ground + r.nextDouble() * 2.5, z, wx * 0.03, 0.0, wz * 0.03);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.PUFF.get(), 0xF3F6F9), x, ground + r.nextDouble() * 2.5, z, wx * 0.03, 0.0, wz * 0.03);
         }
         float petals = s(Kind.PETALS); var petalType = petals > 0.03f ? petal() : null;
         if (petalType != null) {
@@ -326,7 +326,7 @@ public final class WeatherEffects {
             int[] pinks = {0xF4B6D2, 0xF9D0E2, 0xFFFFFF, 0xEFA3C4};
             for (int i = 0; i < n; i++) {
                 var o = upwind.apply(4 + r.nextDouble() * 18, 20.0); double sp = 0.28 + r.nextDouble() * 0.3;
-                level.addParticle(color(petalType, pinks[r.nextInt(pinks.length)]), o[0], o[1] + 1 + r.nextDouble() * 9, o[2], wx * sp, -0.01, wz * sp);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(petalType, pinks[r.nextInt(pinks.length)]), o[0], o[1] + 1 + r.nextDouble() * 9, o[2], wx * sp, -0.01, wz * sp);
             }
         }
         float pollen = s(Kind.POLLEN);
@@ -337,7 +337,7 @@ public final class WeatherEffects {
                 double x = p.getX() + Math.cos(a) * d, z = p.getZ() + Math.sin(a) * d;
                 int ground = WeatherHooks.ground(level, Mth.floor(x), Mth.floor(z));
                 if (Math.abs(ground - p.getY()) < 14)
-                    level.addParticle(color(AlterraWeather.MOTE.get(), r.nextInt(4) == 0 ? 0xFFF4B0 : 0xF3D95C), x, ground + 0.4 + r.nextDouble() * 4, z, wx * 0.02, 0.006, wz * 0.02);
+                    dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.MOTE.get(), r.nextInt(4) == 0 ? 0xFFF4B0 : 0xF3D95C), x, ground + 0.4 + r.nextDouble() * 4, z, wx * 0.02, 0.006, wz * 0.02);
             }
         }
         float ash = s(Kind.ASH);
@@ -346,11 +346,11 @@ public final class WeatherEffects {
             for (int i = 0; i < n; i++) {
                 double x = p.getX() + (r.nextDouble() - 0.5) * 36, z = p.getZ() + (r.nextDouble() - 0.5) * 36, y = p.getY() + 3 + r.nextDouble() * 14;
                 if (WeatherHooks.ground(level, Mth.floor(x), Mth.floor(z)) <= y)
-                    level.addParticle(color(AlterraWeather.MOTE.get(), r.nextInt(5) == 0 ? 0x4C4846 : 0xA6A09A), x, y, z, wx * 0.03, -0.03 - r.nextDouble() * 0.02, wz * 0.03);
+                    dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.MOTE.get(), r.nextInt(5) == 0 ? 0x4C4846 : 0xA6A09A), x, y, z, wx * 0.03, -0.03 - r.nextDouble() * 0.02, wz * 0.03);
             }
             if (ash > 0.4f && r.nextFloat() < ash * 0.5f * amount * out) {   // and now and then a big drifting cloud of it
                 var o = upwind.apply(12 + r.nextDouble() * 20, 24.0);
-                level.addParticle(color(AlterraWeather.PUFF.get(), 0x7E7A76), o[0], o[1] + r.nextDouble() * 8, o[2], wx * 0.3, 0.0, wz * 0.3);
+                dev.phi.alterra.weather.WeatherParticles.add(level, color(AlterraWeather.PUFF.get(), 0x7E7A76), o[0], o[1] + r.nextDouble() * 8, o[2], wx * 0.3, 0.0, wz * 0.3);
             }
         }
     }

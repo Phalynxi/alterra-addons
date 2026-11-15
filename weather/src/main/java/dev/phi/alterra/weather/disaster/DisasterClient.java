@@ -88,15 +88,15 @@ public final class DisasterClient {
                 double spin = f.type == Disasters.TORNADO ? 0.14 : 0.07, vx = -Math.sin(ang) * spin, vz = Math.cos(ang) * spin;
                 double px = f.x + Math.cos(ang) * rad, pz = f.z + Math.sin(ang) * rad, py = f.y + h + 0.3;
                 int rgb = f.type == Disasters.TORNADO ? (r.nextInt(3) == 0 ? 0x2e2a26 : 0x6e655a) : f.type == Disasters.DUST_DEVIL ? (r.nextBoolean() ? 0xE4CB92 : 0xC9A56A) : (r.nextBoolean() ? 0xE6F0F6 : 0xB9CBD6);
-                level.addParticle(ColorParticleOption.create(AlterraWeather.DUST.get(), 0xFF000000 | rgb), px, py, pz, vx, f.type == Disasters.VORTEX ? 0.03 : 0.12, vz);
+                dev.phi.alterra.weather.WeatherParticles.add(level, ColorParticleOption.create(AlterraWeather.DUST.get(), 0xFF000000 | rgb), px, py, pz, vx, f.type == Disasters.VORTEX ? 0.03 : 0.12, vz);
             }
             if (f.type != Disasters.VORTEX && r.nextFloat() < 0.5f * f.strength * q) {   // a low skirt of dust at the foot
                 double ang = r.nextDouble() * Math.PI * 2, rad = f.radius * (1.2 + r.nextDouble() * 1.4);
-                level.addParticle(ColorParticleOption.create(AlterraWeather.PUFF.get(), 0xFF000000 | (f.type == Disasters.TORNADO ? 0x7a7165 : 0xD2B27A)), f.x + Math.cos(ang) * rad, f.y + 0.6, f.z + Math.sin(ang) * rad, -Math.sin(ang) * 0.12, 0.05, Math.cos(ang) * 0.12);
+                dev.phi.alterra.weather.WeatherParticles.add(level, ColorParticleOption.create(AlterraWeather.PUFF.get(), 0xFF000000 | (f.type == Disasters.TORNADO ? 0x7a7165 : 0xD2B27A)), f.x + Math.cos(ang) * rad, f.y + 0.6, f.z + Math.sin(ang) * rad, -Math.sin(ang) * 0.12, 0.05, Math.cos(ang) * 0.12);
             }
             if (f.type == Disasters.VORTEX && r.nextFloat() < 0.8f * q) {   // spray thrown off the whirlpool
                 double ang = r.nextDouble() * Math.PI * 2, rad = f.radius * (0.5 + r.nextDouble() * 0.6);
-                level.addParticle(AlterraWeather.SPRAY.get(), f.x + Math.cos(ang) * rad, f.y + 0.1, f.z + Math.sin(ang) * rad, -Math.sin(ang) * 0.2, 0.15, Math.cos(ang) * 0.2);
+                dev.phi.alterra.weather.WeatherParticles.add(level, AlterraWeather.SPRAY.get(), f.x + Math.cos(ang) * rad, f.y + 0.1, f.z + Math.sin(ang) * rad, -Math.sin(ang) * 0.2, 0.15, Math.cos(ang) * 0.2);
             }
         }
     }
