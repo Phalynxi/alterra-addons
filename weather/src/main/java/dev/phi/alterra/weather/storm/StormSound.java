@@ -1,4 +1,4 @@
-package dev.phi.alterra.weather;
+package dev.phi.alterra.weather.storm;
 
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
 /** Looping wind that stays with the player and fades to the wanted volume. */
-final class StormSound extends AbstractTickableSoundInstance {
+public final class StormSound extends AbstractTickableSoundInstance {
     private float goal;
     private boolean ending;
 

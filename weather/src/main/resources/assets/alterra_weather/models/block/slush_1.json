@@ -1,0 +1,1 @@
+{"parent": "minecraft:block/snow_height2", "render_type": "minecraft:translucent", "textures": {"texture": "alterra_weather:block/slush", "particle": "alterra_weather:block/slush"}}

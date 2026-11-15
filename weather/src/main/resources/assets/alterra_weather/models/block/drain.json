@@ -1,0 +1,1 @@
+{"parent": "minecraft:block/cube_bottom_top", "textures": {"top": "alterra_weather:block/drain_top", "bottom": "alterra_weather:block/drain_side", "side": "alterra_weather:block/drain_side"}}

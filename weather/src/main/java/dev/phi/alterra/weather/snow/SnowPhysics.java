@@ -1,0 +1,126 @@
+package dev.phi.alterra.weather.snow;
+
+import dev.phi.alterra.weather.AlterraWeather;
+import dev.phi.alterra.weather.config.HeavyConfig;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+
+/**
+ * Snow as a loose pile. Near the players, every so often, a layer of snow on a slope moves to the lower neighbour when the surface drops
+ * by more than a repose angle (3 eighths of a block per block, about 20 degrees). Piles level out, drifts smooth, and snow is left lying
+ * where it was heaped; a steep slope holds more than it should, which is what {@link Avalanche} lets go of.
+ * It only happens on about level ground (drifts even out) and where deep snow hangs over a one-block step (it slumps off); snow on steeper ground holds, as it does in life,
+ * until something sets it off. Heights are counted in eighths of a block: the top of the snow in a column, or the ground where there is none.
+ */
+@EventBusSubscriber(modid = AlterraWeather.ID)
+public final class SnowPhysics {
+    private SnowPhysics() {}
+    private static final Direction[] SIDES = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    private static final int REPOSE = 3, LEDGE = 12;   // eighths: slides above REPOSE, but not off a drop of more than a block and a half (that is a cliff, not a slope)
+
+    /** What the top of a column is: the position of its topmost snow (a layer or a block), or null where there is none. */
+    static BlockPos snowAt(ServerLevel l, int x, int z, int top) {
+        BlockPos p = new BlockPos(x, top, z);
+        if (l.getBlockState(p).is(Blocks.SNOW)) return p;   // a single layer does not block motion, so it sits in the first air
+        BlockPos b = p.below(); BlockState st = l.getBlockState(b);
+        return st.is(Blocks.SNOW) || st.is(Blocks.SNOW_BLOCK) ? b : null;
+    }
+
+    /** The surface of a column in eighths of a block (snow included). */
+    static int units(ServerLevel l, int x, int z, int top) {
+        BlockPos s = snowAt(l, x, z, top);
+        if (s == null) return top * 8;
+        BlockState st = l.getBlockState(s);
+        return s.getY() * 8 + (st.is(Blocks.SNOW) ? st.getValue(SnowLayerBlock.LAYERS) : 8);
+    }
+
+    private static final java.util.Map<net.minecraft.world.entity.LivingEntity, Float> STEPPED = new java.util.WeakHashMap<>();
+
+    /** Tracks: whatever walks across layers of snow presses them down, a layer a step (never below one layer; blocks of snow are not dented). Players and mobs near players. */
+    private static void tracks(ServerLevel l) {
+        int dented = 0;
+        for (ServerPlayer pl : l.players()) {
+            if (pl.isSpectator()) continue;
+            for (var le : l.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, pl.getBoundingBox().inflate(24, 8, 24), x -> x.onGround() && !x.isSpectator() && !x.isInWater() && !x.isPassenger() && !(x instanceof net.minecraft.world.entity.player.Player pp && pp.getAbilities().flying))) {
+                float walked = le.walkDist, was = STEPPED.getOrDefault(le, walked);
+                if (Math.abs(walked - was) > 8f) { STEPPED.put(le, walked); continue; }
+                if (Math.abs(walked - was) < 0.55f) continue;
+                STEPPED.put(le, walked);
+                BlockPos at = le.blockPosition(); BlockState st = l.getBlockState(at);
+                if (!st.is(Blocks.SNOW) || dented >= 24) continue;
+                int n = st.getValue(SnowLayerBlock.LAYERS);
+                if (n >= 2) { l.setBlock(at, st.setValue(SnowLayerBlock.LAYERS, n - 1), 3); dented++; }
+            }
+        }
+        if (STEPPED.size() > 600) STEPPED.clear();
+    }
+
+    @SubscribeEvent
+    public static void tick(LevelTickEvent.Post e) {
+        if (e.getLevel() instanceof ServerLevel t && HeavyConfig.get(HeavyConfig.SNOW_TRACKS) && t.getGameTime() % 2 == 0) tracks(t);
+        if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.SNOW_SETTLES) || l.getGameTime() % 10 != 3) return;
+        for (ServerPlayer pl : l.players()) for (int i = 0; i < 24; i++) {
+            int x = pl.getBlockX() + l.random.nextInt(81) - 40, z = pl.getBlockZ() + l.random.nextInt(81) - 40;
+            if (!l.hasChunkAt(new BlockPos(x, pl.getBlockY(), z))) continue;
+            creep(l, x, z);
+        }
+    }
+
+    /** One column: if its snow stands more than the repose angle above a neighbour, a layer moves there. */
+    static boolean creep(ServerLevel l, int x, int z) {
+        int top = l.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+        BlockPos src = snowAt(l, x, z, top);
+        if (src == null) return false;
+        int here = units(l, x, z, top), srcGround = src.getY() * 8, depth = here - srcGround, best = 0, bx = 0, bz = 0, btop = 0;
+        for (Direction d : SIDES) {
+            int nx = x + d.getStepX(), nz = z + d.getStepZ();
+            if (!l.hasChunkAt(new BlockPos(nx, top, nz))) continue;
+            int ntop = l.getHeight(Heightmap.Types.MOTION_BLOCKING, nx, nz), diff = here - units(l, nx, nz, ntop);
+            BlockPos ns = snowAt(l, nx, nz, ntop); int step = srcGround - (ns != null ? ns.getY() * 8 : ntop * 8);   // how far the ground itself drops to that neighbour
+            boolean flat = Math.abs(step) <= 2, slump = step > 2 && step <= 8 && depth >= 6;   // level ground: drifts even out; one step down: only deep snow slumps off the edge; anything steeper holds (until an avalanche)
+            if ((flat || slump) && diff > REPOSE && diff <= LEDGE && diff > best) { best = diff; bx = nx; bz = nz; btop = ntop; }
+        }
+        if (best == 0 || l.random.nextInt(4) != 0) return false;   // a slow creep, not a flood
+        return give(l, bx, bz, btop) && take(l, src);   // (added first: if there is no room, nothing is taken)
+    }
+
+    /** Take one eighth off a pile (false if it cannot be). */
+    static boolean take(ServerLevel l, BlockPos p) {
+        BlockState st = l.getBlockState(p);
+        if (st.is(Blocks.SNOW_BLOCK)) { l.setBlock(p, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7), 3); return true; }
+        if (!st.is(Blocks.SNOW)) return false;
+        int n = st.getValue(SnowLayerBlock.LAYERS);
+        l.setBlock(p, n <= 1 ? Blocks.AIR.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n - 1), 3);
+        return true;
+    }
+
+    /** Add one eighth to a column (false if there is no room). */
+    static boolean give(ServerLevel l, int x, int z, int top) {
+        BlockPos s = snowAt(l, x, z, top);
+        if (s != null) {
+            BlockState st = l.getBlockState(s);
+            if (st.is(Blocks.SNOW) && st.getValue(SnowLayerBlock.LAYERS) < 8) {
+                int n = st.getValue(SnowLayerBlock.LAYERS) + 1;
+                l.setBlock(s, n >= 8 ? Blocks.SNOW_BLOCK.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n), 3);
+                return true;
+            }
+            top = s.getY() + 1;   // a full block: start a new layer on top
+        }
+        BlockPos p = new BlockPos(x, top, z); BlockState at = l.getBlockState(p);
+        if (!(at.isAir() || at.canBeReplaced()) || !at.getFluidState().isEmpty()) return false;
+        BlockState put = Blocks.SNOW.defaultBlockState();
+        if (!put.canSurvive(l, p)) return false;
+        l.setBlock(p, put, 3);
+        return true;
+    }
+}

@@ -1,5 +1,13 @@
 {
   "subtitles.alterra_weather.wind_dust": "Sandstorm howls",
   "subtitles.alterra_weather.wind_snow": "Blizzard howls",
-  "subtitles.alterra_weather.wind_calm": "Wind blows"
+  "subtitles.alterra_weather.ash_rumble": "Ash rumbles and crackles",
+  "subtitles.alterra_weather.fog_hush": "Fog hushes",
+  "subtitles.alterra_weather.petal_rustle": "Petals rustle",
+  "subtitles.alterra_weather.pollen_hum": "Insects hum",
+  "subtitles.alterra_weather.aurora_chime": "Aurora shimmers",
+  "subtitles.alterra_weather.rain_light": "Rain falls",
+  "subtitles.alterra_weather.rain_heavy": "Rain pours",
+  "block.alterra_weather.drain": "Drain",
+  "block.alterra_weather.slush": "Slush"
 }

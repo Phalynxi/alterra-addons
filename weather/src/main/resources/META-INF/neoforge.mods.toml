@@ -10,6 +10,9 @@ displayName="Alterra Weather"
 description='''Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.'''
 authors="Phalynxi"
 
+[[mixins]]
+config="alterra_weather.mixins.json"
+
 [[dependencies.alterra_weather]]
 modId="neoforge"
 type="required"

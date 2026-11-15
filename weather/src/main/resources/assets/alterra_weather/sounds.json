@@ -17,13 +17,67 @@
     ],
     "subtitle": "subtitles.alterra_weather.wind_snow"
   },
-  "wind_calm": {
+  "rain_light": {
     "sounds": [
       {
-        "name": "alterra_weather:wind_calm",
+        "name": "alterra_weather:rain_light",
         "stream": true
       }
     ],
-    "subtitle": "subtitles.alterra_weather.wind_calm"
+    "subtitle": "subtitles.alterra_weather.rain_light"
+  },
+  "rain_heavy": {
+    "sounds": [
+      {
+        "name": "alterra_weather:rain_heavy",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.rain_heavy"
+  },
+  "ash_rumble": {
+    "sounds": [
+      {
+        "name": "alterra_weather:ash_rumble",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.ash_rumble"
+  },
+  "fog_hush": {
+    "sounds": [
+      {
+        "name": "alterra_weather:fog_hush",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.fog_hush"
+  },
+  "petal_rustle": {
+    "sounds": [
+      {
+        "name": "alterra_weather:petal_rustle",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.petal_rustle"
+  },
+  "pollen_hum": {
+    "sounds": [
+      {
+        "name": "alterra_weather:pollen_hum",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.pollen_hum"
+  },
+  "aurora_chime": {
+    "sounds": [
+      {
+        "name": "alterra_weather:aurora_chime",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.aurora_chime"
   }
 }
