@@ -23,6 +23,26 @@ public final class AlterraApi {
     private static final List<TabSection> SECTIONS = new CopyOnWriteArrayList<>();
     private static final List<Supplier<List<ItemStack>>> EXTRA_ITEMS = new CopyOnWriteArrayList<>();
 
+    // ---------------------------------------------------------------- compat switches
+    private static final java.util.Map<String, java.util.function.BooleanSupplier> COMPAT = new java.util.concurrent.ConcurrentHashMap<>();
+    /** Alterra registers its compat switches here (config values). */
+    public static void registerCompat(String key, java.util.function.BooleanSupplier value) { COMPAT.put(key, value); }
+    /** Whether a compat feature is switched on in Alterra's settings (true when the key is not known). Addons use this to follow the same switches. */
+    public static boolean compat(String key) { var v = COMPAT.get(key); return v == null || v.getAsBoolean(); }
+
+    private static final java.util.Map<String, java.util.function.IntSupplier> NUMBERS = new java.util.concurrent.ConcurrentHashMap<>();
+    public static void registerNumber(String key, java.util.function.IntSupplier value) { NUMBERS.put(key, value); }
+    /** A number from Alterra's settings (the given default when the key is not known). */
+    public static int number(String key, int fallback) { var v = NUMBERS.get(key); return v == null ? fallback : v.getAsInt(); }
+
+    // ---------------------------------------------------------------- wind
+    /** Where the wind comes from (the Weather addon sets it). */
+    public interface WindProvider { net.minecraft.world.phys.Vec3 wind(net.minecraft.world.level.Level level, double x, double z); }
+    private static volatile WindProvider WIND;
+    public static void setWindProvider(WindProvider provider) { WIND = provider; }
+    /** The wind at a place: a horizontal vector pointing the way it blows, its length the speed (0 calm, 1 a hard storm wind, up to 1.5). Zero when no weather addon is installed. */
+    public static net.minecraft.world.phys.Vec3 wind(net.minecraft.world.level.Level level, double x, double z) { var p = WIND; return p == null ? net.minecraft.world.phys.Vec3.ZERO : p.wind(level, x, z); }
+
     public static void addTabSection(ResourceLocation id, int textColor, Supplier<List<ItemStack>> items) { SECTIONS.add(new TabSection(id, textColor, items)); }
     /** Items for the tab's last section ("Boats &amp; More"), for addons too small for a section of their own. */
     public static void addTabItems(Supplier<List<ItemStack>> items) { EXTRA_ITEMS.add(items); }
