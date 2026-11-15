@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "tag": "alterra_kitchen:sun_fruits_dried"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:sun_zest",
+    "count": 2
+  }
+}

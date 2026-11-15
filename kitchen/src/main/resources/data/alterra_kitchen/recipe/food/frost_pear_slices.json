@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:frost_pear"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:frost_pear_slices",
+    "count": 2
+  }
+}

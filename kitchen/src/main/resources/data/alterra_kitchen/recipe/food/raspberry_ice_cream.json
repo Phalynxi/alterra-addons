@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:wafer_cone"
+    },
+    {
+      "item": "alterra:raspberry"
+    },
+    {
+      "item": "alterra:raspberry"
+    },
+    {
+      "item": "minecraft:snowball"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:raspberry_ice_cream",
+    "count": 1
+  }
+}

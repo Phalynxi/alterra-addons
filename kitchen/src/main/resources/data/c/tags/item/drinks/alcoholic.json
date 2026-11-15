@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "alterra_kitchen:red_wine",
+    "alterra_kitchen:white_wine",
+    "alterra_kitchen:cider",
+    "alterra_kitchen:plum_wine",
+    "alterra_kitchen:cherry_wine",
+    "alterra_kitchen:peach_wine",
+    "alterra_kitchen:mango_wine",
+    "alterra_kitchen:pomegranate_wine",
+    "alterra_kitchen:orange_wine",
+    "alterra_kitchen:strawberry_wine",
+    "alterra_kitchen:blueberry_wine",
+    "alterra_kitchen:raspberry_wine",
+    "alterra_kitchen:blackberry_wine",
+    "alterra_kitchen:redcurrant_wine",
+    "alterra_kitchen:fig_wine",
+    "alterra_kitchen:cactus_wine",
+    "alterra_kitchen:palm_wine",
+    "alterra_kitchen:baobab_ale",
+    "alterra_kitchen:honeymelon_wine",
+    "alterra_kitchen:ember_liqueur",
+    "alterra_kitchen:ice_wine",
+    "alterra_kitchen:sun_wine",
+    "alterra_kitchen:mead"
+  ]
+}

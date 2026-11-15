@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:bun"
+    },
+    {
+      "item": "alterra:strawberry"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:strawberry_muffin",
+    "count": 2
+  }
+}

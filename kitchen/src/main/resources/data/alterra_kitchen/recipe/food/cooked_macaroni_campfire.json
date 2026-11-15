@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra_kitchen:macaroni"
+  },
+  "result": {
+    "id": "alterra_kitchen:cooked_macaroni",
+    "count": 1
+  },
+  "experience": 0.15,
+  "cookingtime": 400
+}

@@ -1,0 +1,13 @@
+{
+  "type": "alterra_kitchen:freezing",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra_kitchen:honeymelon_ice_cream"
+  },
+  "result": {
+    "id": "alterra_kitchen:honeymelon_soft_serve",
+    "count": 1
+  },
+  "experience": 0.0,
+  "cookingtime": 100
+}

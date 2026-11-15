@@ -278,7 +278,34 @@
       "hint": "Find some juices first.",
       "pages": [
         {
-          "text": "Mixes are not written down here. Put two bottled drinks together in the crafting grid and see what you get. You can also try a honey bottle. Some mixes have two layers."
+          "text": "Put two bottled drinks together in the crafting grid and you get two of a mix. With Create, pour them into a basin with a mixer instead. The order does not matter. You can also try a honey bottle. Some mixes have two layers."
+        },
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra_kitchen:orange_juice",
+                "alterra_kitchen:pomegranate_juice"
+              ],
+              "out": "alterra_kitchen:sunrise",
+              "via": "minecraft:crafting_table",
+              "text": "Orange juice and pomegranate juice make two Sunrises."
+            }
+          ],
+          "text": "This is the only mix written down here. The rest are yours to find."
+        },
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra_kitchen:orange_juice",
+                "alterra_kitchen:pomegranate_juice"
+              ],
+              "out": "alterra_kitchen:sunrise",
+              "via": "create:mechanical_mixer",
+              "text": "Pour both into a basin with a mixer, in any amounts: equal parts mix into the same amount of Sunrise."
+            }
+          ]
         },
         {
           "item": "alterra_kitchen:sunrise"
@@ -356,7 +383,35 @@
       "hint": "Find some juices first.",
       "pages": [
         {
-          "text": "Shakes are not written down either. A bottled drink, a glass bottle and a bucket of milk is a good start. Banana Smoothie is the old one: bananas and milk."
+          "text": "A bottled drink, a glass bottle and a bucket of milk make two shakes. With Create, mix the drink with milk in a basin. Banana Smoothie is the old one: bananas and milk."
+        },
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra_kitchen:mango_juice",
+                "minecraft:glass_bottle",
+                "minecraft:milk_bucket"
+              ],
+              "out": "alterra_kitchen:mango_lassi",
+              "via": "minecraft:crafting_table",
+              "text": "Mango juice, a glass bottle and milk make two Mango Lassis."
+            }
+          ],
+          "text": "The other shakes are yours to find."
+        },
+        {
+          "steps": [
+            {
+              "in": [
+                "alterra_kitchen:mango_juice",
+                "minecraft:milk_bucket"
+              ],
+              "out": "alterra_kitchen:mango_lassi",
+              "via": "create:mechanical_mixer",
+              "text": "Mango juice and milk in a basin with a mixer, equal parts, any amount."
+            }
+          ]
         },
         {
           "item": "alterra_kitchen:mango_lassi"

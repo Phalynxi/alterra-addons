@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:flatbread"
+    },
+    {
+      "item": "alterra_kitchen:flatbread"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:pastry_crust",
+    "count": 1
+  }
+}

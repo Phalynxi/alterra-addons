@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "tag": "alterra_kitchen:ember_fruits_dried"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:ember_flakes",
+    "count": 2
+  }
+}

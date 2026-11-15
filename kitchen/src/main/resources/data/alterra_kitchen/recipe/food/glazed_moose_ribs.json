@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alexsmobs:cooked_moose_ribs"
+    },
+    {
+      "tag": "alterra_kitchen:jams"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:glazed_moose_ribs",
+    "count": 1
+  }
+}

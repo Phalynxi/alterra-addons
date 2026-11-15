@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:white_grapes_ice_cream"
+    },
+    {
+      "item": "minecraft:snowball"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:white_grapes_soft_serve",
+    "count": 1
+  }
+}

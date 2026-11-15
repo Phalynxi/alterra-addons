@@ -1,0 +1,292 @@
+{
+  "sun_apple_ice_cream": [
+    15906362,
+    0,
+    "Sun Apple"
+  ],
+  "sun_apple_soft_serve": [
+    15906362,
+    1,
+    "Sun Apple"
+  ],
+  "sour_apple_ice_cream": [
+    15906362,
+    0,
+    "Sour Apple"
+  ],
+  "sour_apple_soft_serve": [
+    15906362,
+    1,
+    "Sour Apple"
+  ],
+  "frost_apple_ice_cream": [
+    4831730,
+    0,
+    "Frost Apple"
+  ],
+  "frost_apple_soft_serve": [
+    4831730,
+    1,
+    "Frost Apple"
+  ],
+  "ember_apple_ice_cream": [
+    15617295,
+    0,
+    "Ember Apple"
+  ],
+  "ember_apple_soft_serve": [
+    15617295,
+    1,
+    "Ember Apple"
+  ],
+  "apple_ice_cream": [
+    15906362,
+    0,
+    "Apple"
+  ],
+  "apple_soft_serve": [
+    15906362,
+    1,
+    "Apple"
+  ],
+  "mango_ice_cream": [
+    16762413,
+    0,
+    "Mango"
+  ],
+  "mango_soft_serve": [
+    16762413,
+    1,
+    "Mango"
+  ],
+  "peach_ice_cream": [
+    16615743,
+    0,
+    "Peach"
+  ],
+  "peach_soft_serve": [
+    16615743,
+    1,
+    "Peach"
+  ],
+  "pomegranate_ice_cream": [
+    15743279,
+    0,
+    "Pomegranate"
+  ],
+  "pomegranate_soft_serve": [
+    15743279,
+    1,
+    "Pomegranate"
+  ],
+  "plum_ice_cream": [
+    8007301,
+    0,
+    "Plum"
+  ],
+  "plum_soft_serve": [
+    8007301,
+    1,
+    "Plum"
+  ],
+  "orange_ice_cream": [
+    16747545,
+    0,
+    "Orange"
+  ],
+  "orange_soft_serve": [
+    16747545,
+    1,
+    "Orange"
+  ],
+  "grapes_ice_cream": [
+    4338557,
+    0,
+    "Grapes"
+  ],
+  "grapes_soft_serve": [
+    4338557,
+    1,
+    "Grapes"
+  ],
+  "white_grapes_ice_cream": [
+    13819740,
+    0,
+    "White Grapes"
+  ],
+  "white_grapes_soft_serve": [
+    13819740,
+    1,
+    "White Grapes"
+  ],
+  "cherry_ice_cream": [
+    11796499,
+    0,
+    "Cherry"
+  ],
+  "cherry_soft_serve": [
+    11796499,
+    1,
+    "Cherry"
+  ],
+  "prickly_pear_ice_cream": [
+    13573208,
+    0,
+    "Prickly Pear"
+  ],
+  "prickly_pear_soft_serve": [
+    13573208,
+    1,
+    "Prickly Pear"
+  ],
+  "strawberry_ice_cream": [
+    13042180,
+    0,
+    "Strawberry"
+  ],
+  "strawberry_soft_serve": [
+    13042180,
+    1,
+    "Strawberry"
+  ],
+  "blueberry_ice_cream": [
+    1857660,
+    0,
+    "Blueberry"
+  ],
+  "blueberry_soft_serve": [
+    1857660,
+    1,
+    "Blueberry"
+  ],
+  "raspberry_ice_cream": [
+    11017267,
+    0,
+    "Raspberry"
+  ],
+  "raspberry_soft_serve": [
+    11017267,
+    1,
+    "Raspberry"
+  ],
+  "blackberry_ice_cream": [
+    8590628,
+    0,
+    "Blackberry"
+  ],
+  "blackberry_soft_serve": [
+    8590628,
+    1,
+    "Blackberry"
+  ],
+  "redcurrant_ice_cream": [
+    10029838,
+    0,
+    "Redcurrant"
+  ],
+  "redcurrant_soft_serve": [
+    10029838,
+    1,
+    "Redcurrant"
+  ],
+  "honeymelon_ice_cream": [
+    12957746,
+    0,
+    "Honeymelon"
+  ],
+  "honeymelon_soft_serve": [
+    12957746,
+    1,
+    "Honeymelon"
+  ],
+  "fig_ice_cream": [
+    8095536,
+    0,
+    "Fig"
+  ],
+  "fig_soft_serve": [
+    8095536,
+    1,
+    "Fig"
+  ],
+  "baobab_ice_cream": [
+    14401633,
+    0,
+    "Baobab"
+  ],
+  "baobab_soft_serve": [
+    14401633,
+    1,
+    "Baobab"
+  ],
+  "ember_plum_ice_cream": [
+    15617295,
+    0,
+    "Ember Plum"
+  ],
+  "ember_plum_soft_serve": [
+    15617295,
+    1,
+    "Ember Plum"
+  ],
+  "ember_pear_ice_cream": [
+    15617295,
+    0,
+    "Ember Pear"
+  ],
+  "ember_pear_soft_serve": [
+    15617295,
+    1,
+    "Ember Pear"
+  ],
+  "frost_pear_ice_cream": [
+    4831730,
+    0,
+    "Frost Pear"
+  ],
+  "frost_pear_soft_serve": [
+    4831730,
+    1,
+    "Frost Pear"
+  ],
+  "frost_plum_ice_cream": [
+    4831730,
+    0,
+    "Frost Plum"
+  ],
+  "frost_plum_soft_serve": [
+    4831730,
+    1,
+    "Frost Plum"
+  ],
+  "gilded_peach_ice_cream": [
+    16761149,
+    0,
+    "Gilded Peach"
+  ],
+  "gilded_peach_soft_serve": [
+    16761149,
+    1,
+    "Gilded Peach"
+  ],
+  "honey_ice_cream": [
+    16170560,
+    0,
+    "Honey"
+  ],
+  "honey_soft_serve": [
+    16170560,
+    1,
+    "Honey"
+  ],
+  "chocolate_ice_cream": [
+    7357998,
+    0,
+    "Chocolate"
+  ],
+  "chocolate_soft_serve": [
+    7357998,
+    1,
+    "Chocolate"
+  ]
+}

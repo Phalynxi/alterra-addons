@@ -1,0 +1,206 @@
+[
+  {
+    "id": "dish_noodles",
+    "name": "Noodles",
+    "nutrition": 4,
+    "zones": 3,
+    "zoneNames": [
+      "green",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      11197300,
+      9667701,
+      16748041
+    ]
+  },
+  {
+    "id": "dish_spaghetti",
+    "name": "Spaghetti",
+    "nutrition": 4,
+    "zones": 3,
+    "zoneNames": [
+      "red",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      12596255,
+      9989454,
+      15254628
+    ]
+  },
+  {
+    "id": "dish_macaroni",
+    "name": "Macaroni",
+    "nutrition": 4,
+    "zones": 4,
+    "zoneNames": [
+      "green",
+      "red",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      5082171,
+      8933184,
+      9989454,
+      15254628
+    ]
+  },
+  {
+    "id": "dish_flatbread",
+    "name": "Flatbread",
+    "nutrition": 4,
+    "zones": 1,
+    "zoneNames": [
+      "sauce"
+    ],
+    "defaults": [
+      15122040
+    ]
+  },
+  {
+    "id": "dish_burger",
+    "name": "Burger",
+    "nutrition": 6,
+    "zones": 4,
+    "zoneNames": [
+      "lettuce",
+      "tomato",
+      "patty",
+      "slice"
+    ],
+    "defaults": [
+      8041028,
+      12596255,
+      9327164,
+      4140558
+    ]
+  },
+  {
+    "id": "dish_stuffed_potato",
+    "name": "Stuffed Potato",
+    "nutrition": 5,
+    "zones": 4,
+    "zoneNames": [
+      "green",
+      "red",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      8041028,
+      8933184,
+      10319662,
+      14264913
+    ]
+  },
+  {
+    "id": "dish_wrap",
+    "name": "Wrap",
+    "nutrition": 5,
+    "zones": 3,
+    "zoneNames": [
+      "lettuce",
+      "meat",
+      "sauce"
+    ],
+    "defaults": [
+      8041028,
+      10711130,
+      12037019
+    ]
+  },
+  {
+    "id": "dish_rice_bowl",
+    "name": "Rice Bowl",
+    "nutrition": 6,
+    "zones": 2,
+    "zoneNames": [
+      "green",
+      "warm"
+    ],
+    "defaults": [
+      8041028,
+      15848003
+    ]
+  },
+  {
+    "id": "dish_pie",
+    "name": "Pie",
+    "nutrition": 7,
+    "zones": 1,
+    "zoneNames": [
+      "filling"
+    ],
+    "defaults": [
+      12151059
+    ]
+  },
+  {
+    "id": "dish_skewer",
+    "name": "Skewer",
+    "nutrition": 4,
+    "zones": 3,
+    "zoneNames": [
+      "meat",
+      "red",
+      "pale"
+    ],
+    "defaults": [
+      11296049,
+      16744563,
+      15319958
+    ]
+  },
+  {
+    "id": "dish_sushi",
+    "name": "Sushi Roll",
+    "nutrition": 5,
+    "zones": 3,
+    "zoneNames": [
+      "green",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      3424304,
+      9864820,
+      14643494
+    ]
+  },
+  {
+    "id": "dish_dumplings",
+    "name": "Dumplings",
+    "nutrition": 5,
+    "zones": 3,
+    "zoneNames": [
+      "green",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      11197300,
+      9793318,
+      14596998
+    ]
+  },
+  {
+    "id": "dish_rolls",
+    "name": "Cabbage Rolls",
+    "nutrition": 5,
+    "zones": 3,
+    "zoneNames": [
+      "green",
+      "brown",
+      "gold"
+    ],
+    "defaults": [
+      13107079,
+      10319662,
+      14264913
+    ]
+  }
+]

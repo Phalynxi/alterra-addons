@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:honeymelon"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:honeymelon_slices",
+    "count": 2
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alexsmobs:cooked_lobster_tail"
+    },
+    {
+      "item": "alterra_kitchen:orchard_salad"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:lobster_orchard_salad",
+    "count": 1
+  }
+}

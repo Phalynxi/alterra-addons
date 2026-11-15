@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "alterra_kitchen:blocks/ice_machine",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alterra_kitchen:ice_machine"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

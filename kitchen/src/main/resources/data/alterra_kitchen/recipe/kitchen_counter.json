@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SSS",
+    "PTP"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "T": {
+      "item": "alterra_kitchen:prep_table"
+    }
+  },
+  "result": {
+    "id": "alterra_kitchen:kitchen_counter",
+    "count": 1
+  }
+}

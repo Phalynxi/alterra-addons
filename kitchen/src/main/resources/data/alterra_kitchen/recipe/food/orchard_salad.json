@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:orchard_salad",
+    "count": 1
+  }
+}

@@ -1,0 +1,3679 @@
+[
+  {
+    "id": "sun_apple_jam",
+    "name": "Sun Apple Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "sun_apple_fruit_pie",
+    "name": "Sun Apple Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "sun_apple_muffin",
+    "name": "Sun Apple Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "sun_apple_dried",
+    "name": "Dried Sun Apple",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "sun_apple_bar",
+    "name": "Sun Apple Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "sun_apple_sorbet",
+    "name": "Sun Apple Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "sun_apple_slices",
+    "name": "Sun Apple Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "sun_apple_compote",
+    "name": "Sun Apple Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "sour_apple_jam",
+    "name": "Sour Apple Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "sour_apple_fruit_pie",
+    "name": "Sour Apple Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "sour_apple_muffin",
+    "name": "Sour Apple Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "sour_apple_dried",
+    "name": "Dried Sour Apple",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "sour_apple_bar",
+    "name": "Sour Apple Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "sour_apple_sorbet",
+    "name": "Sour Apple Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "sour_apple_slices",
+    "name": "Sour Apple Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "sour_apple_compote",
+    "name": "Sour Apple Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "frost_apple_jam",
+    "name": "Frost Apple Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "frost_apple_fruit_pie",
+    "name": "Frost Apple Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "frost_apple_muffin",
+    "name": "Frost Apple Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "frost_apple_dried",
+    "name": "Dried Frost Apple",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "frost_apple_bar",
+    "name": "Frost Apple Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "frost_apple_sorbet",
+    "name": "Frost Apple Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "frost_apple_slices",
+    "name": "Frost Apple Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "frost_apple_compote",
+    "name": "Frost Apple Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "ember_apple_jam",
+    "name": "Ember Apple Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "ember_apple_fruit_pie",
+    "name": "Ember Apple Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "ember_apple_muffin",
+    "name": "Ember Apple Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "ember_apple_dried",
+    "name": "Dried Ember Apple",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "ember_apple_bar",
+    "name": "Ember Apple Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "ember_apple_sorbet",
+    "name": "Ember Apple Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "ember_apple_slices",
+    "name": "Ember Apple Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "ember_apple_compote",
+    "name": "Ember Apple Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "apple_jam",
+    "name": "Apple Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "apple_fruit_pie",
+    "name": "Apple Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "apple_muffin",
+    "name": "Apple Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "apple_dried",
+    "name": "Dried Apple",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "apple_bar",
+    "name": "Apple Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "apple_sorbet",
+    "name": "Apple Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "apple_slices",
+    "name": "Apple Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "apple_compote",
+    "name": "Apple Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "mango_jam",
+    "name": "Mango Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "mango_fruit_pie",
+    "name": "Mango Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "mango_muffin",
+    "name": "Mango Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "mango_dried",
+    "name": "Dried Mango",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "mango_bar",
+    "name": "Mango Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "mango_sorbet",
+    "name": "Mango Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "mango_slices",
+    "name": "Mango Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "mango_compote",
+    "name": "Mango Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "peach_jam",
+    "name": "Peach Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "peach_fruit_pie",
+    "name": "Peach Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "peach_muffin",
+    "name": "Peach Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "peach_dried",
+    "name": "Dried Peach",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "peach_bar",
+    "name": "Peach Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "peach_sorbet",
+    "name": "Peach Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "peach_slices",
+    "name": "Peach Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "peach_compote",
+    "name": "Peach Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "pomegranate_jam",
+    "name": "Pomegranate Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "pomegranate_fruit_pie",
+    "name": "Pomegranate Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "pomegranate_muffin",
+    "name": "Pomegranate Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "pomegranate_dried",
+    "name": "Dried Pomegranate",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "pomegranate_bar",
+    "name": "Pomegranate Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "pomegranate_sorbet",
+    "name": "Pomegranate Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "pomegranate_slices",
+    "name": "Pomegranate Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "pomegranate_compote",
+    "name": "Pomegranate Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "plum_jam",
+    "name": "Plum Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "plum_fruit_pie",
+    "name": "Plum Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "plum_muffin",
+    "name": "Plum Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "plum_dried",
+    "name": "Dried Plum",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "plum_bar",
+    "name": "Plum Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "plum_sorbet",
+    "name": "Plum Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "plum_slices",
+    "name": "Plum Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "plum_compote",
+    "name": "Plum Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "orange_jam",
+    "name": "Orange Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "orange_fruit_pie",
+    "name": "Orange Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "orange_muffin",
+    "name": "Orange Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "orange_dried",
+    "name": "Dried Orange",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "orange_bar",
+    "name": "Orange Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "orange_sorbet",
+    "name": "Orange Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "orange_slices",
+    "name": "Orange Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "orange_compote",
+    "name": "Orange Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "grapes_jam",
+    "name": "Grapes Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "grapes_fruit_pie",
+    "name": "Grapes Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "grapes_muffin",
+    "name": "Grapes Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "grapes_dried",
+    "name": "Dried Grapes",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "grapes_bar",
+    "name": "Grapes Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "grapes_sorbet",
+    "name": "Grapes Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "grapes_slices",
+    "name": "Grapes Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "grapes_compote",
+    "name": "Grapes Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "white_grapes_jam",
+    "name": "White Grapes Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "white_grapes_fruit_pie",
+    "name": "White Grapes Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "white_grapes_muffin",
+    "name": "White Grapes Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "white_grapes_dried",
+    "name": "Dried White Grapes",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "white_grapes_bar",
+    "name": "White Grapes Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "white_grapes_sorbet",
+    "name": "White Grapes Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "white_grapes_slices",
+    "name": "White Grapes Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "white_grapes_compote",
+    "name": "White Grapes Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "cherry_jam",
+    "name": "Cherry Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "cherry_fruit_pie",
+    "name": "Cherry Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "cherry_muffin",
+    "name": "Cherry Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "cherry_dried",
+    "name": "Dried Cherry",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "cherry_bar",
+    "name": "Cherry Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "cherry_sorbet",
+    "name": "Cherry Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "cherry_slices",
+    "name": "Cherry Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "cherry_compote",
+    "name": "Cherry Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "prickly_pear_jam",
+    "name": "Prickly Pear Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "prickly_pear_fruit_pie",
+    "name": "Prickly Pear Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "prickly_pear_muffin",
+    "name": "Prickly Pear Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "prickly_pear_dried",
+    "name": "Dried Prickly Pear",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "prickly_pear_bar",
+    "name": "Prickly Pear Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "prickly_pear_sorbet",
+    "name": "Prickly Pear Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "prickly_pear_slices",
+    "name": "Prickly Pear Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "prickly_pear_compote",
+    "name": "Prickly Pear Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "strawberry_jam",
+    "name": "Strawberry Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "strawberry_fruit_pie",
+    "name": "Strawberry Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "strawberry_muffin",
+    "name": "Strawberry Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "strawberry_dried",
+    "name": "Dried Strawberry",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "strawberry_bar",
+    "name": "Strawberry Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "strawberry_sorbet",
+    "name": "Strawberry Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "strawberry_slices",
+    "name": "Strawberry Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "strawberry_compote",
+    "name": "Strawberry Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "blueberry_jam",
+    "name": "Blueberry Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "blueberry_fruit_pie",
+    "name": "Blueberry Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "blueberry_muffin",
+    "name": "Blueberry Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "blueberry_dried",
+    "name": "Dried Blueberry",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "blueberry_bar",
+    "name": "Blueberry Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "blueberry_sorbet",
+    "name": "Blueberry Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "blueberry_slices",
+    "name": "Blueberry Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "blueberry_compote",
+    "name": "Blueberry Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "raspberry_jam",
+    "name": "Raspberry Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "raspberry_fruit_pie",
+    "name": "Raspberry Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "raspberry_muffin",
+    "name": "Raspberry Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "raspberry_dried",
+    "name": "Dried Raspberry",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "raspberry_bar",
+    "name": "Raspberry Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "raspberry_sorbet",
+    "name": "Raspberry Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "raspberry_slices",
+    "name": "Raspberry Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "raspberry_compote",
+    "name": "Raspberry Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "blackberry_jam",
+    "name": "Blackberry Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "blackberry_fruit_pie",
+    "name": "Blackberry Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "blackberry_muffin",
+    "name": "Blackberry Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "blackberry_dried",
+    "name": "Dried Blackberry",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "blackberry_bar",
+    "name": "Blackberry Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "blackberry_sorbet",
+    "name": "Blackberry Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "blackberry_slices",
+    "name": "Blackberry Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "blackberry_compote",
+    "name": "Blackberry Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "redcurrant_jam",
+    "name": "Redcurrant Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "redcurrant_fruit_pie",
+    "name": "Redcurrant Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "redcurrant_muffin",
+    "name": "Redcurrant Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "redcurrant_dried",
+    "name": "Dried Redcurrant",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "redcurrant_bar",
+    "name": "Redcurrant Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "redcurrant_sorbet",
+    "name": "Redcurrant Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "redcurrant_slices",
+    "name": "Redcurrant Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "redcurrant_compote",
+    "name": "Redcurrant Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "honeymelon_jam",
+    "name": "Honeymelon Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "honeymelon_fruit_pie",
+    "name": "Honeymelon Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "honeymelon_muffin",
+    "name": "Honeymelon Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "honeymelon_dried",
+    "name": "Dried Honeymelon",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "honeymelon_bar",
+    "name": "Honeymelon Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "honeymelon_sorbet",
+    "name": "Honeymelon Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "honeymelon_slices",
+    "name": "Honeymelon Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "honeymelon_compote",
+    "name": "Honeymelon Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "fig_jam",
+    "name": "Fig Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "fig_fruit_pie",
+    "name": "Fig Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "fig_muffin",
+    "name": "Fig Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "fig_dried",
+    "name": "Dried Fig",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "fig_bar",
+    "name": "Fig Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "fig_sorbet",
+    "name": "Fig Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "fig_slices",
+    "name": "Fig Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "fig_compote",
+    "name": "Fig Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "baobab_jam",
+    "name": "Baobab Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "baobab_fruit_pie",
+    "name": "Baobab Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "baobab_muffin",
+    "name": "Baobab Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "baobab_dried",
+    "name": "Dried Baobab",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "baobab_bar",
+    "name": "Baobab Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "baobab_sorbet",
+    "name": "Baobab Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "baobab_slices",
+    "name": "Baobab Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "baobab_compote",
+    "name": "Baobab Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "ember_plum_jam",
+    "name": "Ember Plum Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "ember_plum_fruit_pie",
+    "name": "Ember Plum Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "ember_plum_muffin",
+    "name": "Ember Plum Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "ember_plum_dried",
+    "name": "Dried Ember Plum",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "ember_plum_bar",
+    "name": "Ember Plum Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "ember_plum_sorbet",
+    "name": "Ember Plum Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "ember_plum_slices",
+    "name": "Ember Plum Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "ember_plum_compote",
+    "name": "Ember Plum Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "ember_pear_jam",
+    "name": "Ember Pear Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "ember_pear_fruit_pie",
+    "name": "Ember Pear Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "ember_pear_muffin",
+    "name": "Ember Pear Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "ember_pear_dried",
+    "name": "Dried Ember Pear",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "ember_pear_bar",
+    "name": "Ember Pear Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "ember_pear_sorbet",
+    "name": "Ember Pear Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "ember_pear_slices",
+    "name": "Ember Pear Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "ember_pear_compote",
+    "name": "Ember Pear Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "frost_pear_jam",
+    "name": "Frost Pear Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "frost_pear_fruit_pie",
+    "name": "Frost Pear Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "frost_pear_muffin",
+    "name": "Frost Pear Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "frost_pear_dried",
+    "name": "Dried Frost Pear",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "frost_pear_bar",
+    "name": "Frost Pear Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "frost_pear_sorbet",
+    "name": "Frost Pear Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "frost_pear_slices",
+    "name": "Frost Pear Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "frost_pear_compote",
+    "name": "Frost Pear Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "frost_plum_jam",
+    "name": "Frost Plum Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "frost_plum_fruit_pie",
+    "name": "Frost Plum Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "frost_plum_muffin",
+    "name": "Frost Plum Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "frost_plum_dried",
+    "name": "Dried Frost Plum",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "frost_plum_bar",
+    "name": "Frost Plum Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "frost_plum_sorbet",
+    "name": "Frost Plum Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "frost_plum_slices",
+    "name": "Frost Plum Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "frost_plum_compote",
+    "name": "Frost Plum Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "gilded_peach_jam",
+    "name": "Gilded Peach Jam",
+    "group": "preserves",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.6,
+    "returns": "minecraft:glass_bottle",
+    "stack": 16,
+    "taste": 62
+  },
+  {
+    "id": "gilded_peach_fruit_pie",
+    "name": "Gilded Peach Pie",
+    "group": "baking",
+    "nutrition": 8,
+    "saturation": 0.5,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "gilded_peach_muffin",
+    "name": "Gilded Peach Muffin",
+    "group": "baking",
+    "nutrition": 5,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 74
+  },
+  {
+    "id": "gilded_peach_dried",
+    "name": "Dried Gilded Peach",
+    "group": "preserves",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "gilded_peach_bar",
+    "name": "Gilded Peach Bar",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.6,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "gilded_peach_sorbet",
+    "name": "Gilded Peach Sorbet",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.45,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "gilded_peach_slices",
+    "name": "Gilded Peach Slices",
+    "group": "preserves",
+    "nutrition": 2,
+    "saturation": 0.25,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "gilded_peach_compote",
+    "name": "Gilded Peach Compote",
+    "group": "preserves",
+    "nutrition": 6,
+    "saturation": 0.55,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 76
+  },
+  {
+    "id": "trail_mix",
+    "name": "Trail Mix",
+    "group": "meals",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.2,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 60
+  },
+  {
+    "id": "orchard_salad",
+    "name": "Orchard Salad",
+    "group": "meals",
+    "nutrition": 8,
+    "saturation": 0.7,
+    "eat": 1.6,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "fruit_porridge",
+    "name": "Fruit Porridge",
+    "group": "meals",
+    "nutrition": 9,
+    "saturation": 0.8,
+    "eat": 1.8,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 70
+  },
+  {
+    "id": "fruit_bread",
+    "name": "Fruit Bread",
+    "group": "baking",
+    "nutrition": 7,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 64,
+    "taste": 68
+  },
+  {
+    "id": "jam_toast",
+    "name": "Jam Toast",
+    "group": "baking",
+    "nutrition": 7,
+    "saturation": 0.65,
+    "eat": 1.4,
+    "stack": 64,
+    "taste": 66
+  },
+  {
+    "id": "berry_cookies",
+    "name": "Berry Cookies",
+    "group": "baking",
+    "nutrition": 3,
+    "saturation": 0.3,
+    "eat": 0.8,
+    "stack": 64,
+    "taste": 72
+  },
+  {
+    "id": "noodles",
+    "name": "Noodles",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "spaghetti",
+    "name": "Spaghetti",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "macaroni",
+    "name": "Macaroni",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "cooked_noodles",
+    "name": "Cooked Noodles",
+    "group": "pantry",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "cooked_spaghetti",
+    "name": "Cooked Spaghetti",
+    "group": "pantry",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "cooked_macaroni",
+    "name": "Cooked Macaroni",
+    "group": "pantry",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 55
+  },
+  {
+    "id": "glazed_moose_ribs",
+    "name": "Glazed Moose Ribs",
+    "group": "meals",
+    "nutrition": 10,
+    "saturation": 0.85,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 90,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "kangaroo_skewer",
+    "name": "Kangaroo Skewer",
+    "group": "meals",
+    "nutrition": 8,
+    "saturation": 0.8,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 82,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "moose_stew",
+    "name": "Moose Stew",
+    "group": "meals",
+    "nutrition": 11,
+    "saturation": 0.85,
+    "eat": 2.0,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 88,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "kangaroo_stew",
+    "name": "Kangaroo and Fruit Stew",
+    "group": "meals",
+    "nutrition": 11,
+    "saturation": 0.85,
+    "eat": 2.0,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 86,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "citrus_lobster",
+    "name": "Citrus Lobster",
+    "group": "meals",
+    "nutrition": 10,
+    "saturation": 0.8,
+    "eat": 1.8,
+    "stack": 16,
+    "taste": 92,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "catfish_with_plum_sauce",
+    "name": "Catfish with Plum Sauce",
+    "group": "meals",
+    "nutrition": 9,
+    "saturation": 0.8,
+    "eat": 1.8,
+    "stack": 16,
+    "taste": 84,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "emu_egg_pie",
+    "name": "Emu Egg Pie",
+    "group": "meals",
+    "nutrition": 10,
+    "saturation": 0.7,
+    "eat": 2.0,
+    "stack": 16,
+    "taste": 86,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "fried_flying_fish",
+    "name": "Fried Flying Fish",
+    "group": "meals",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 70,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "hunters_platter",
+    "name": "Hunter's Platter",
+    "group": "meals",
+    "nutrition": 14,
+    "saturation": 0.9,
+    "eat": 2.4,
+    "stack": 16,
+    "taste": 98,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "lobster_orchard_salad",
+    "name": "Lobster Orchard Salad",
+    "group": "meals",
+    "nutrition": 12,
+    "saturation": 0.85,
+    "eat": 2.0,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 90,
+    "needs": "alexsmobs"
+  },
+  {
+    "id": "bun",
+    "name": "Bun",
+    "group": "baking",
+    "nutrition": 3,
+    "saturation": 0.4,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 52
+  },
+  {
+    "id": "tortilla",
+    "name": "Tortilla",
+    "group": "baking",
+    "nutrition": 3,
+    "saturation": 0.35,
+    "eat": 1.0,
+    "stack": 64,
+    "taste": 50
+  },
+  {
+    "id": "pastry_crust",
+    "name": "Pie Crust",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "flatbread",
+    "name": "Flatbread",
+    "group": "baking",
+    "nutrition": 4,
+    "saturation": 0.45,
+    "eat": 1.2,
+    "stack": 64,
+    "taste": 58
+  },
+  {
+    "id": "salt",
+    "name": "Salt",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "smoked_salt",
+    "name": "Smoked Salt",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "ember_flakes",
+    "name": "Ember Flakes",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "frost_crystals",
+    "name": "Frost Crystals",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "sun_zest",
+    "name": "Sun Zest",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "herb_salt",
+    "name": "Herb Salt",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "kelp_salt",
+    "name": "Kelp Salt",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "cocoa_sugar",
+    "name": "Cocoa Sugar",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "berry_dust",
+    "name": "Berry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "autumn_spice",
+    "name": "Autumn Spice",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "tart_zest",
+    "name": "Tart Zest",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "onion_salt",
+    "name": "Onion Salt",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "glow_spice",
+    "name": "Glow Spice",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "sun_apple_dust",
+    "name": "Sun Apple Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "sour_apple_dust",
+    "name": "Sour Apple Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "frost_apple_dust",
+    "name": "Frost Apple Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "ember_apple_dust",
+    "name": "Ember Apple Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "apple_dust",
+    "name": "Apple Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "mango_dust",
+    "name": "Mango Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "peach_dust",
+    "name": "Peach Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "pomegranate_dust",
+    "name": "Pomegranate Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "plum_dust",
+    "name": "Plum Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "orange_dust",
+    "name": "Orange Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "grapes_dust",
+    "name": "Grapes Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "white_grapes_dust",
+    "name": "White Grapes Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "cherry_dust",
+    "name": "Cherry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "prickly_pear_dust",
+    "name": "Prickly Pear Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "strawberry_dust",
+    "name": "Strawberry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "blueberry_dust",
+    "name": "Blueberry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "raspberry_dust",
+    "name": "Raspberry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "blackberry_dust",
+    "name": "Blackberry Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "redcurrant_dust",
+    "name": "Redcurrant Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "honeymelon_dust",
+    "name": "Honeymelon Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "fig_dust",
+    "name": "Fig Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "baobab_dust",
+    "name": "Baobab Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "ember_plum_dust",
+    "name": "Ember Plum Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "ember_pear_dust",
+    "name": "Ember Pear Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "frost_pear_dust",
+    "name": "Frost Pear Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "frost_plum_dust",
+    "name": "Frost Plum Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "gilded_peach_dust",
+    "name": "Gilded Peach Dust",
+    "group": "seasonings",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "dough",
+    "name": "Dough",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "dumpling_wrapper",
+    "name": "Dumpling Wrapper",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "wafer_cone",
+    "name": "Wafer Cone",
+    "group": "pantry",
+    "ingredient": true,
+    "stack": 64
+  },
+  {
+    "id": "sun_apple_ice_cream",
+    "name": "Sun Apple Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "sun_apple_popsicle",
+    "name": "Sun Apple Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "sour_apple_ice_cream",
+    "name": "Sour Apple Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "sour_apple_popsicle",
+    "name": "Sour Apple Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "frost_apple_ice_cream",
+    "name": "Frost Apple Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_apple_popsicle",
+    "name": "Frost Apple Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "ember_apple_ice_cream",
+    "name": "Ember Apple Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_apple_popsicle",
+    "name": "Ember Apple Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "apple_ice_cream",
+    "name": "Apple Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "apple_popsicle",
+    "name": "Apple Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "mango_ice_cream",
+    "name": "Mango Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "mango_popsicle",
+    "name": "Mango Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "peach_ice_cream",
+    "name": "Peach Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "peach_popsicle",
+    "name": "Peach Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "pomegranate_ice_cream",
+    "name": "Pomegranate Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "pomegranate_popsicle",
+    "name": "Pomegranate Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "plum_ice_cream",
+    "name": "Plum Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "plum_popsicle",
+    "name": "Plum Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "orange_ice_cream",
+    "name": "Orange Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "orange_popsicle",
+    "name": "Orange Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "grapes_ice_cream",
+    "name": "Grapes Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "grapes_popsicle",
+    "name": "Grapes Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "white_grapes_ice_cream",
+    "name": "White Grapes Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "white_grapes_popsicle",
+    "name": "White Grapes Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "cherry_ice_cream",
+    "name": "Cherry Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "cherry_popsicle",
+    "name": "Cherry Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "prickly_pear_ice_cream",
+    "name": "Prickly Pear Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "prickly_pear_popsicle",
+    "name": "Prickly Pear Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "strawberry_ice_cream",
+    "name": "Strawberry Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "strawberry_popsicle",
+    "name": "Strawberry Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "blueberry_ice_cream",
+    "name": "Blueberry Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "blueberry_popsicle",
+    "name": "Blueberry Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "raspberry_ice_cream",
+    "name": "Raspberry Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "raspberry_popsicle",
+    "name": "Raspberry Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "blackberry_ice_cream",
+    "name": "Blackberry Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "blackberry_popsicle",
+    "name": "Blackberry Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "redcurrant_ice_cream",
+    "name": "Redcurrant Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "redcurrant_popsicle",
+    "name": "Redcurrant Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "honeymelon_ice_cream",
+    "name": "Honeymelon Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "honeymelon_popsicle",
+    "name": "Honeymelon Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "fig_ice_cream",
+    "name": "Fig Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "fig_popsicle",
+    "name": "Fig Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "baobab_ice_cream",
+    "name": "Baobab Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "baobab_popsicle",
+    "name": "Baobab Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "ember_plum_ice_cream",
+    "name": "Ember Plum Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_plum_popsicle",
+    "name": "Ember Plum Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "ember_pear_ice_cream",
+    "name": "Ember Pear Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_pear_popsicle",
+    "name": "Ember Pear Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "frost_pear_ice_cream",
+    "name": "Frost Pear Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_pear_popsicle",
+    "name": "Frost Pear Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "frost_plum_ice_cream",
+    "name": "Frost Plum Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_plum_popsicle",
+    "name": "Frost Plum Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "gilded_peach_ice_cream",
+    "name": "Gilded Peach Ice Cream",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "gilded_peach_popsicle",
+    "name": "Gilded Peach Popsicle",
+    "group": "frozen",
+    "nutrition": 4,
+    "saturation": 0.4,
+    "eat": 1.2,
+    "stack": 16,
+    "taste": 72
+  },
+  {
+    "id": "honey_ice_cream",
+    "name": "Honey Ice Cream",
+    "group": "frozen",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 86
+  },
+  {
+    "id": "chocolate_ice_cream",
+    "name": "Chocolate Ice Cream",
+    "group": "frozen",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 88
+  },
+  {
+    "id": "ice_cream_sandwich",
+    "name": "Ice Cream Sandwich",
+    "group": "frozen",
+    "nutrition": 7,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 80
+  },
+  {
+    "id": "sundae",
+    "name": "Sundae",
+    "group": "frozen",
+    "nutrition": 9,
+    "saturation": 0.8,
+    "eat": 2.0,
+    "returns": "minecraft:bowl",
+    "stack": 16,
+    "taste": 94
+  },
+  {
+    "id": "sun_apple_soft_serve",
+    "name": "Sun Apple Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "sour_apple_soft_serve",
+    "name": "Sour Apple Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_apple_soft_serve",
+    "name": "Frost Apple Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_apple_soft_serve",
+    "name": "Ember Apple Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "apple_soft_serve",
+    "name": "Apple Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "mango_soft_serve",
+    "name": "Mango Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "peach_soft_serve",
+    "name": "Peach Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "pomegranate_soft_serve",
+    "name": "Pomegranate Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "plum_soft_serve",
+    "name": "Plum Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "orange_soft_serve",
+    "name": "Orange Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "grapes_soft_serve",
+    "name": "Grapes Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "white_grapes_soft_serve",
+    "name": "White Grapes Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "cherry_soft_serve",
+    "name": "Cherry Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "prickly_pear_soft_serve",
+    "name": "Prickly Pear Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "strawberry_soft_serve",
+    "name": "Strawberry Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "blueberry_soft_serve",
+    "name": "Blueberry Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "raspberry_soft_serve",
+    "name": "Raspberry Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "blackberry_soft_serve",
+    "name": "Blackberry Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "redcurrant_soft_serve",
+    "name": "Redcurrant Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "honeymelon_soft_serve",
+    "name": "Honeymelon Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "fig_soft_serve",
+    "name": "Fig Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "baobab_soft_serve",
+    "name": "Baobab Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_plum_soft_serve",
+    "name": "Ember Plum Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "ember_pear_soft_serve",
+    "name": "Ember Pear Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_pear_soft_serve",
+    "name": "Frost Pear Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "frost_plum_soft_serve",
+    "name": "Frost Plum Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "gilded_peach_soft_serve",
+    "name": "Gilded Peach Soft Serve",
+    "group": "frozen",
+    "nutrition": 5,
+    "saturation": 0.5,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 84
+  },
+  {
+    "id": "honey_soft_serve",
+    "name": "Honey Soft Serve",
+    "group": "frozen",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 86
+  },
+  {
+    "id": "chocolate_soft_serve",
+    "name": "Chocolate Soft Serve",
+    "group": "frozen",
+    "nutrition": 6,
+    "saturation": 0.6,
+    "eat": 1.6,
+    "stack": 16,
+    "taste": 86
+  }
+]

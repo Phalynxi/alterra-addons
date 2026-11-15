@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "alterra_kitchen:block/counter_top",
+    "bottom": "alterra_kitchen:block/counter_bottom",
+    "side": "alterra_kitchen:block/counter_side"
+  }
+}

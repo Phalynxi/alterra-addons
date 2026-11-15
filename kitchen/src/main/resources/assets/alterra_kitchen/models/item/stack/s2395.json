@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alterra_kitchen:item/stack/cone_5",
+    "layer1": "alterra_kitchen:item/stack/scoop_5_0_1",
+    "layer2": "alterra_kitchen:item/stack/twist_5_0",
+    "layer3": "alterra_kitchen:item/stack/scoop_5_1_1",
+    "layer5": "alterra_kitchen:item/stack/scoop_5_2_1",
+    "layer6": "alterra_kitchen:item/stack/twist_5_2",
+    "layer7": "alterra_kitchen:item/stack/scoop_5_3_1",
+    "layer8": "alterra_kitchen:item/stack/twist_5_3",
+    "layer9": "alterra_kitchen:item/stack/scoop_5_4_1",
+    "layer10": "alterra_kitchen:item/stack/twist_5_4"
+  }
+}

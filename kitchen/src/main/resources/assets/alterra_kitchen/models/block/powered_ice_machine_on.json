@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "alterra_kitchen:block/powered_ice_machine_side",
+    "down": "alterra_kitchen:block/powered_ice_machine_back",
+    "up": "alterra_kitchen:block/powered_ice_machine_top",
+    "north": "alterra_kitchen:block/powered_ice_machine_front_on",
+    "south": "alterra_kitchen:block/powered_ice_machine_back",
+    "east": "alterra_kitchen:block/powered_ice_machine_side",
+    "west": "alterra_kitchen:block/powered_ice_machine_side"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "create:dough"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:spaghetti",
+    "count": 3
+  }
+}

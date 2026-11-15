@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:white_grapes"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:white_grapes_slices",
+    "count": 2
+  }
+}

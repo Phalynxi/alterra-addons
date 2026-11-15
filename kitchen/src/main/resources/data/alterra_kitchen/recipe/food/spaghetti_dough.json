@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:dough"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:spaghetti",
+    "count": 3
+  }
+}

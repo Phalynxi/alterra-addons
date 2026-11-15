@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:wafer_cone"
+    },
+    {
+      "item": "alterra:gilded_peach"
+    },
+    {
+      "item": "alterra:gilded_peach"
+    },
+    {
+      "item": "minecraft:snowball"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "results": [
+    {
+      "id": "alterra_kitchen:ember_apple_ice_cream",
+      "count": 1
+    }
+  ]
+}

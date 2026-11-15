@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:raspberry"
+    },
+    {
+      "item": "alterra:raspberry"
+    },
+    {
+      "item": "alterra:raspberry"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:raspberry_compote",
+    "count": 1
+  }
+}

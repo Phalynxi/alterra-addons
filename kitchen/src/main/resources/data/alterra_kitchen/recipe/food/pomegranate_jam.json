@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:pomegranate"
+    },
+    {
+      "item": "alterra:pomegranate"
+    },
+    {
+      "item": "alterra:pomegranate"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:pomegranate_jam",
+    "count": 1
+  }
+}

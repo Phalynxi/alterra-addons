@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:pastry_crust"
+    },
+    {
+      "item": "alterra:gilded_peach"
+    },
+    {
+      "item": "alterra:gilded_peach"
+    },
+    {
+      "item": "alterra:gilded_peach"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:gilded_peach_fruit_pie",
+    "count": 1
+  }
+}

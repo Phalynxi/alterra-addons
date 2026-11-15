@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:flatbread"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:fruit_porridge",
+    "count": 1
+  }
+}

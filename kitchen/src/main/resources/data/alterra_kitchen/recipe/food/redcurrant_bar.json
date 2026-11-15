@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:redcurrant"
+    },
+    {
+      "item": "alterra_kitchen:flatbread"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:redcurrant_bar",
+    "count": 3
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "values": [
+    "alterra_kitchen:sun_apple_jam",
+    "alterra_kitchen:sour_apple_jam",
+    "alterra_kitchen:frost_apple_jam",
+    "alterra_kitchen:ember_apple_jam",
+    "alterra_kitchen:apple_jam",
+    "alterra_kitchen:mango_jam",
+    "alterra_kitchen:peach_jam",
+    "alterra_kitchen:pomegranate_jam",
+    "alterra_kitchen:plum_jam",
+    "alterra_kitchen:orange_jam",
+    "alterra_kitchen:grapes_jam",
+    "alterra_kitchen:white_grapes_jam",
+    "alterra_kitchen:cherry_jam",
+    "alterra_kitchen:prickly_pear_jam",
+    "alterra_kitchen:strawberry_jam",
+    "alterra_kitchen:blueberry_jam",
+    "alterra_kitchen:raspberry_jam",
+    "alterra_kitchen:blackberry_jam",
+    "alterra_kitchen:redcurrant_jam",
+    "alterra_kitchen:honeymelon_jam",
+    "alterra_kitchen:fig_jam",
+    "alterra_kitchen:baobab_jam",
+    "alterra_kitchen:ember_plum_jam",
+    "alterra_kitchen:ember_pear_jam",
+    "alterra_kitchen:frost_pear_jam",
+    "alterra_kitchen:frost_plum_jam",
+    "alterra_kitchen:gilded_peach_jam",
+    "minecraft:honey_bottle",
+    "minecraft:milk_bucket",
+    {
+      "id": "farmersdelight:tomato_sauce",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:milk_bottle",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alterra_kitchen:item/stack/cone_4",
+    "layer1": "alterra_kitchen:item/stack/scoop_4_0_1",
+    "layer2": "alterra_kitchen:item/stack/twist_4_0",
+    "layer3": "alterra_kitchen:item/stack/scoop_4_1_1",
+    "layer5": "alterra_kitchen:item/stack/scoop_4_2_1",
+    "layer7": "alterra_kitchen:item/stack/scoop_4_3_1"
+  }
+}

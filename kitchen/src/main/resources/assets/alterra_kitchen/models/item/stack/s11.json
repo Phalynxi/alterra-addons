@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alterra_kitchen:item/stack/cone_1",
+    "layer1": "alterra_kitchen:item/stack/scoop_1_0_1"
+  }
+}

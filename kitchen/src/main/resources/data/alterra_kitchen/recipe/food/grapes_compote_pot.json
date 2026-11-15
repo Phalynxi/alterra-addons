@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersdelight"
+    },
+    {
+      "type": "alterra:config",
+      "option": "fdCooking"
+    }
+  ],
+  "type": "farmersdelight:cooking",
+  "experience": 0.4,
+  "container": {
+    "id": "minecraft:bowl"
+  },
+  "recipe_book_tab": "meals",
+  "ingredients": [
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:grapes_compote",
+    "count": 1
+  }
+}

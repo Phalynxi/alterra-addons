@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:orange_jam",
+    "count": 1
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alexsmobs:cooked_moose_ribs"
+    },
+    {
+      "item": "alexsmobs:cooked_kangaroo_meat"
+    },
+    {
+      "item": "alexsmobs:cooked_catfish"
+    },
+    {
+      "item": "alexsmobs:cooked_lobster_tail"
+    },
+    {
+      "item": "alterra_kitchen:orchard_salad"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:hunters_platter",
+    "count": 1
+  }
+}

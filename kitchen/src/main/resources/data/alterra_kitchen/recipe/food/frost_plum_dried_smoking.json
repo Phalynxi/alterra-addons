@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra:frost_plum"
+  },
+  "result": {
+    "id": "alterra_kitchen:frost_plum_dried",
+    "count": 1
+  },
+  "experience": 0.1,
+  "cookingtime": 100
+}

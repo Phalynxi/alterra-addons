@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:redcurrant"
+    },
+    {
+      "item": "alterra:redcurrant"
+    },
+    {
+      "item": "alterra:redcurrant"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:redcurrant_jam",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:rock_salt"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:salt",
+    "count": 4
+  }
+}

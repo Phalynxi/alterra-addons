@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:pastry_crust"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "alterra:orange"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:orange_fruit_pie",
+    "count": 1
+  }
+}

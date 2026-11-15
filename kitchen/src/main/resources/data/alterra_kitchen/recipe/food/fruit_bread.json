@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:bun"
+    },
+    {
+      "item": "alterra_kitchen:bun"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:fruit_bread",
+    "count": 1
+  }
+}

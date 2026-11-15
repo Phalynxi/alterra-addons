@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "tag": "alterra_kitchen:dried_fruits"
+    },
+    {
+      "tag": "alterra_kitchen:dried_fruits"
+    },
+    {
+      "tag": "alterra_kitchen:dried_fruits"
+    },
+    {
+      "item": "minecraft:pumpkin_seeds"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:trail_mix",
+    "count": 1
+  }
+}

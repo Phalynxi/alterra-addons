@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:prickly_pear"
+    },
+    {
+      "item": "alterra:prickly_pear"
+    },
+    {
+      "item": "alterra:prickly_pear"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:prickly_pear_jam",
+    "count": 1
+  }
+}

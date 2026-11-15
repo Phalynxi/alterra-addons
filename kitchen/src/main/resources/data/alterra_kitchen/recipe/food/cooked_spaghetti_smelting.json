@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra_kitchen:spaghetti"
+  },
+  "result": {
+    "id": "alterra_kitchen:cooked_spaghetti",
+    "count": 1
+  },
+  "experience": 0.15,
+  "cookingtime": 200
+}

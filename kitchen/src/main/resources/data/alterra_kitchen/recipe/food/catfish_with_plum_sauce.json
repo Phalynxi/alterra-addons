@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alexsmobs:cooked_catfish"
+    },
+    {
+      "item": "alterra_kitchen:plum_jam"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:catfish_with_plum_sauce",
+    "count": 1
+  }
+}

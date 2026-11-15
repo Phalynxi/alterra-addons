@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:frost_pear"
+    },
+    {
+      "item": "alterra:frost_pear"
+    },
+    {
+      "item": "alterra:frost_pear"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:frost_pear_jam",
+    "count": 1
+  }
+}

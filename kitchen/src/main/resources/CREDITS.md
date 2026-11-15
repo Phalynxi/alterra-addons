@@ -20,3 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Dish textures
+The made-up burger, wrap, rice bowl, pie and skewer are adapted from the hamburger, mutton wrap, fried rice, apple pie and barbecue stick textures of Farmer's Delight (vectorwing and contributors, MIT License, https://github.com/vectorwing/FarmersDelight): cut into parts that are tinted by the fillings, with sesame seeds added to the bun.

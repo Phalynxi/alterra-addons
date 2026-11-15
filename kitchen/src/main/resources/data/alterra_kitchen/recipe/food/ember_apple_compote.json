@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:ember_apple"
+    },
+    {
+      "item": "alterra:ember_apple"
+    },
+    {
+      "item": "alterra:ember_apple"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:ember_apple_compote",
+    "count": 1
+  }
+}

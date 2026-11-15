@@ -1,0 +1,1 @@
+{"parent": "minecraft:item/generated", "textures": {"layer0": "alterra_kitchen:item/mixed_drink/martini_top", "layer1": "alterra_kitchen:item/mixed_drink/martini_bottom", "layer2": "alterra_kitchen:item/mixed_drink/martini_mint"}}

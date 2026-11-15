@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:pastry_crust"
+    },
+    {
+      "item": "alexsmobs:boiled_emu_egg"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "tag": "alterra_kitchen:fruits"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:emu_egg_pie",
+    "count": 1
+  }
+}

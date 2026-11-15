@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "alterra_kitchen:block/stove_top",
+    "front": "alterra_kitchen:block/stove_front_on",
+    "side": "alterra_kitchen:block/stove_side"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "alterra_kitchen:rock_salt",
+    "alterra_kitchen:stove",
+    "alterra_kitchen:oven",
+    "alterra_kitchen:ice_machine",
+    {
+      "id": "alterra_kitchen:powered_ice_machine",
+      "required": false
+    }
+  ]
+}

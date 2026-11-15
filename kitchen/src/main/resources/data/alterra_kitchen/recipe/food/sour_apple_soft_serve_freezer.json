@@ -1,0 +1,13 @@
+{
+  "type": "alterra_kitchen:freezing",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra_kitchen:sour_apple_ice_cream"
+  },
+  "result": {
+    "id": "alterra_kitchen:sour_apple_soft_serve",
+    "count": 1
+  },
+  "experience": 0.0,
+  "cookingtime": 100
+}

@@ -1,0 +1,2187 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alterra_kitchen:item/stack/cone_1",
+    "layer1": "alterra_kitchen:item/stack/scoop_1_0_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "alterra_kitchen:item/stack/s1"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "alterra_kitchen:item/stack/s2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "alterra_kitchen:item/stack/s3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "alterra_kitchen:item/stack/s4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "alterra_kitchen:item/stack/s5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 11
+      },
+      "model": "alterra_kitchen:item/stack/s11"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 12
+      },
+      "model": "alterra_kitchen:item/stack/s12"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 13
+      },
+      "model": "alterra_kitchen:item/stack/s13"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 14
+      },
+      "model": "alterra_kitchen:item/stack/s14"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 15
+      },
+      "model": "alterra_kitchen:item/stack/s15"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 21
+      },
+      "model": "alterra_kitchen:item/stack/s21"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 22
+      },
+      "model": "alterra_kitchen:item/stack/s22"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 23
+      },
+      "model": "alterra_kitchen:item/stack/s23"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 24
+      },
+      "model": "alterra_kitchen:item/stack/s24"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 25
+      },
+      "model": "alterra_kitchen:item/stack/s25"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 32
+      },
+      "model": "alterra_kitchen:item/stack/s32"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 33
+      },
+      "model": "alterra_kitchen:item/stack/s33"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 34
+      },
+      "model": "alterra_kitchen:item/stack/s34"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 35
+      },
+      "model": "alterra_kitchen:item/stack/s35"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 42
+      },
+      "model": "alterra_kitchen:item/stack/s42"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 43
+      },
+      "model": "alterra_kitchen:item/stack/s43"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 44
+      },
+      "model": "alterra_kitchen:item/stack/s44"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 45
+      },
+      "model": "alterra_kitchen:item/stack/s45"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 52
+      },
+      "model": "alterra_kitchen:item/stack/s52"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 53
+      },
+      "model": "alterra_kitchen:item/stack/s53"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 54
+      },
+      "model": "alterra_kitchen:item/stack/s54"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 55
+      },
+      "model": "alterra_kitchen:item/stack/s55"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 62
+      },
+      "model": "alterra_kitchen:item/stack/s62"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 63
+      },
+      "model": "alterra_kitchen:item/stack/s63"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 64
+      },
+      "model": "alterra_kitchen:item/stack/s64"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 65
+      },
+      "model": "alterra_kitchen:item/stack/s65"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 72
+      },
+      "model": "alterra_kitchen:item/stack/s72"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 73
+      },
+      "model": "alterra_kitchen:item/stack/s73"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 74
+      },
+      "model": "alterra_kitchen:item/stack/s74"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 75
+      },
+      "model": "alterra_kitchen:item/stack/s75"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 82
+      },
+      "model": "alterra_kitchen:item/stack/s82"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 83
+      },
+      "model": "alterra_kitchen:item/stack/s83"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 84
+      },
+      "model": "alterra_kitchen:item/stack/s84"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 85
+      },
+      "model": "alterra_kitchen:item/stack/s85"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 93
+      },
+      "model": "alterra_kitchen:item/stack/s93"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 94
+      },
+      "model": "alterra_kitchen:item/stack/s94"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 95
+      },
+      "model": "alterra_kitchen:item/stack/s95"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 103
+      },
+      "model": "alterra_kitchen:item/stack/s103"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 104
+      },
+      "model": "alterra_kitchen:item/stack/s104"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 105
+      },
+      "model": "alterra_kitchen:item/stack/s105"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 113
+      },
+      "model": "alterra_kitchen:item/stack/s113"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 114
+      },
+      "model": "alterra_kitchen:item/stack/s114"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 115
+      },
+      "model": "alterra_kitchen:item/stack/s115"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 123
+      },
+      "model": "alterra_kitchen:item/stack/s123"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 124
+      },
+      "model": "alterra_kitchen:item/stack/s124"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 125
+      },
+      "model": "alterra_kitchen:item/stack/s125"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 133
+      },
+      "model": "alterra_kitchen:item/stack/s133"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 134
+      },
+      "model": "alterra_kitchen:item/stack/s134"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 135
+      },
+      "model": "alterra_kitchen:item/stack/s135"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 143
+      },
+      "model": "alterra_kitchen:item/stack/s143"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 144
+      },
+      "model": "alterra_kitchen:item/stack/s144"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 145
+      },
+      "model": "alterra_kitchen:item/stack/s145"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 153
+      },
+      "model": "alterra_kitchen:item/stack/s153"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 154
+      },
+      "model": "alterra_kitchen:item/stack/s154"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 155
+      },
+      "model": "alterra_kitchen:item/stack/s155"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 163
+      },
+      "model": "alterra_kitchen:item/stack/s163"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 164
+      },
+      "model": "alterra_kitchen:item/stack/s164"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 165
+      },
+      "model": "alterra_kitchen:item/stack/s165"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 173
+      },
+      "model": "alterra_kitchen:item/stack/s173"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 174
+      },
+      "model": "alterra_kitchen:item/stack/s174"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 175
+      },
+      "model": "alterra_kitchen:item/stack/s175"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 183
+      },
+      "model": "alterra_kitchen:item/stack/s183"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 184
+      },
+      "model": "alterra_kitchen:item/stack/s184"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 185
+      },
+      "model": "alterra_kitchen:item/stack/s185"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 193
+      },
+      "model": "alterra_kitchen:item/stack/s193"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 194
+      },
+      "model": "alterra_kitchen:item/stack/s194"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 195
+      },
+      "model": "alterra_kitchen:item/stack/s195"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 203
+      },
+      "model": "alterra_kitchen:item/stack/s203"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 204
+      },
+      "model": "alterra_kitchen:item/stack/s204"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 205
+      },
+      "model": "alterra_kitchen:item/stack/s205"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 213
+      },
+      "model": "alterra_kitchen:item/stack/s213"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 214
+      },
+      "model": "alterra_kitchen:item/stack/s214"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 215
+      },
+      "model": "alterra_kitchen:item/stack/s215"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 223
+      },
+      "model": "alterra_kitchen:item/stack/s223"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 224
+      },
+      "model": "alterra_kitchen:item/stack/s224"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 225
+      },
+      "model": "alterra_kitchen:item/stack/s225"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 233
+      },
+      "model": "alterra_kitchen:item/stack/s233"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 234
+      },
+      "model": "alterra_kitchen:item/stack/s234"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 235
+      },
+      "model": "alterra_kitchen:item/stack/s235"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 243
+      },
+      "model": "alterra_kitchen:item/stack/s243"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 244
+      },
+      "model": "alterra_kitchen:item/stack/s244"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 245
+      },
+      "model": "alterra_kitchen:item/stack/s245"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 253
+      },
+      "model": "alterra_kitchen:item/stack/s253"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 254
+      },
+      "model": "alterra_kitchen:item/stack/s254"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 255
+      },
+      "model": "alterra_kitchen:item/stack/s255"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 263
+      },
+      "model": "alterra_kitchen:item/stack/s263"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 264
+      },
+      "model": "alterra_kitchen:item/stack/s264"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 265
+      },
+      "model": "alterra_kitchen:item/stack/s265"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 274
+      },
+      "model": "alterra_kitchen:item/stack/s274"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 275
+      },
+      "model": "alterra_kitchen:item/stack/s275"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 284
+      },
+      "model": "alterra_kitchen:item/stack/s284"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 285
+      },
+      "model": "alterra_kitchen:item/stack/s285"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 294
+      },
+      "model": "alterra_kitchen:item/stack/s294"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 295
+      },
+      "model": "alterra_kitchen:item/stack/s295"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 304
+      },
+      "model": "alterra_kitchen:item/stack/s304"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 305
+      },
+      "model": "alterra_kitchen:item/stack/s305"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 314
+      },
+      "model": "alterra_kitchen:item/stack/s314"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 315
+      },
+      "model": "alterra_kitchen:item/stack/s315"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 324
+      },
+      "model": "alterra_kitchen:item/stack/s324"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 325
+      },
+      "model": "alterra_kitchen:item/stack/s325"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 334
+      },
+      "model": "alterra_kitchen:item/stack/s334"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 335
+      },
+      "model": "alterra_kitchen:item/stack/s335"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 344
+      },
+      "model": "alterra_kitchen:item/stack/s344"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 345
+      },
+      "model": "alterra_kitchen:item/stack/s345"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 354
+      },
+      "model": "alterra_kitchen:item/stack/s354"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 355
+      },
+      "model": "alterra_kitchen:item/stack/s355"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 364
+      },
+      "model": "alterra_kitchen:item/stack/s364"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 365
+      },
+      "model": "alterra_kitchen:item/stack/s365"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 374
+      },
+      "model": "alterra_kitchen:item/stack/s374"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 375
+      },
+      "model": "alterra_kitchen:item/stack/s375"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 384
+      },
+      "model": "alterra_kitchen:item/stack/s384"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 385
+      },
+      "model": "alterra_kitchen:item/stack/s385"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 394
+      },
+      "model": "alterra_kitchen:item/stack/s394"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 395
+      },
+      "model": "alterra_kitchen:item/stack/s395"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 404
+      },
+      "model": "alterra_kitchen:item/stack/s404"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 405
+      },
+      "model": "alterra_kitchen:item/stack/s405"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 414
+      },
+      "model": "alterra_kitchen:item/stack/s414"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 415
+      },
+      "model": "alterra_kitchen:item/stack/s415"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 424
+      },
+      "model": "alterra_kitchen:item/stack/s424"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 425
+      },
+      "model": "alterra_kitchen:item/stack/s425"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 434
+      },
+      "model": "alterra_kitchen:item/stack/s434"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 435
+      },
+      "model": "alterra_kitchen:item/stack/s435"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 444
+      },
+      "model": "alterra_kitchen:item/stack/s444"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 445
+      },
+      "model": "alterra_kitchen:item/stack/s445"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 454
+      },
+      "model": "alterra_kitchen:item/stack/s454"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 455
+      },
+      "model": "alterra_kitchen:item/stack/s455"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 464
+      },
+      "model": "alterra_kitchen:item/stack/s464"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 465
+      },
+      "model": "alterra_kitchen:item/stack/s465"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 474
+      },
+      "model": "alterra_kitchen:item/stack/s474"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 475
+      },
+      "model": "alterra_kitchen:item/stack/s475"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 484
+      },
+      "model": "alterra_kitchen:item/stack/s484"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 485
+      },
+      "model": "alterra_kitchen:item/stack/s485"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 494
+      },
+      "model": "alterra_kitchen:item/stack/s494"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 495
+      },
+      "model": "alterra_kitchen:item/stack/s495"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 504
+      },
+      "model": "alterra_kitchen:item/stack/s504"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 505
+      },
+      "model": "alterra_kitchen:item/stack/s505"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 514
+      },
+      "model": "alterra_kitchen:item/stack/s514"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 515
+      },
+      "model": "alterra_kitchen:item/stack/s515"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 524
+      },
+      "model": "alterra_kitchen:item/stack/s524"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 525
+      },
+      "model": "alterra_kitchen:item/stack/s525"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 534
+      },
+      "model": "alterra_kitchen:item/stack/s534"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 535
+      },
+      "model": "alterra_kitchen:item/stack/s535"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 544
+      },
+      "model": "alterra_kitchen:item/stack/s544"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 545
+      },
+      "model": "alterra_kitchen:item/stack/s545"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 554
+      },
+      "model": "alterra_kitchen:item/stack/s554"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 555
+      },
+      "model": "alterra_kitchen:item/stack/s555"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 564
+      },
+      "model": "alterra_kitchen:item/stack/s564"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 565
+      },
+      "model": "alterra_kitchen:item/stack/s565"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 574
+      },
+      "model": "alterra_kitchen:item/stack/s574"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 575
+      },
+      "model": "alterra_kitchen:item/stack/s575"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 584
+      },
+      "model": "alterra_kitchen:item/stack/s584"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 585
+      },
+      "model": "alterra_kitchen:item/stack/s585"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 594
+      },
+      "model": "alterra_kitchen:item/stack/s594"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 595
+      },
+      "model": "alterra_kitchen:item/stack/s595"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 604
+      },
+      "model": "alterra_kitchen:item/stack/s604"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 605
+      },
+      "model": "alterra_kitchen:item/stack/s605"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 614
+      },
+      "model": "alterra_kitchen:item/stack/s614"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 615
+      },
+      "model": "alterra_kitchen:item/stack/s615"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 624
+      },
+      "model": "alterra_kitchen:item/stack/s624"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 625
+      },
+      "model": "alterra_kitchen:item/stack/s625"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 634
+      },
+      "model": "alterra_kitchen:item/stack/s634"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 635
+      },
+      "model": "alterra_kitchen:item/stack/s635"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 644
+      },
+      "model": "alterra_kitchen:item/stack/s644"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 645
+      },
+      "model": "alterra_kitchen:item/stack/s645"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 654
+      },
+      "model": "alterra_kitchen:item/stack/s654"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 655
+      },
+      "model": "alterra_kitchen:item/stack/s655"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 664
+      },
+      "model": "alterra_kitchen:item/stack/s664"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 665
+      },
+      "model": "alterra_kitchen:item/stack/s665"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 674
+      },
+      "model": "alterra_kitchen:item/stack/s674"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 675
+      },
+      "model": "alterra_kitchen:item/stack/s675"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 684
+      },
+      "model": "alterra_kitchen:item/stack/s684"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 685
+      },
+      "model": "alterra_kitchen:item/stack/s685"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 694
+      },
+      "model": "alterra_kitchen:item/stack/s694"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 695
+      },
+      "model": "alterra_kitchen:item/stack/s695"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 704
+      },
+      "model": "alterra_kitchen:item/stack/s704"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 705
+      },
+      "model": "alterra_kitchen:item/stack/s705"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 714
+      },
+      "model": "alterra_kitchen:item/stack/s714"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 715
+      },
+      "model": "alterra_kitchen:item/stack/s715"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 724
+      },
+      "model": "alterra_kitchen:item/stack/s724"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 725
+      },
+      "model": "alterra_kitchen:item/stack/s725"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 734
+      },
+      "model": "alterra_kitchen:item/stack/s734"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 735
+      },
+      "model": "alterra_kitchen:item/stack/s735"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 744
+      },
+      "model": "alterra_kitchen:item/stack/s744"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 745
+      },
+      "model": "alterra_kitchen:item/stack/s745"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 754
+      },
+      "model": "alterra_kitchen:item/stack/s754"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 755
+      },
+      "model": "alterra_kitchen:item/stack/s755"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 764
+      },
+      "model": "alterra_kitchen:item/stack/s764"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 765
+      },
+      "model": "alterra_kitchen:item/stack/s765"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 774
+      },
+      "model": "alterra_kitchen:item/stack/s774"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 775
+      },
+      "model": "alterra_kitchen:item/stack/s775"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 784
+      },
+      "model": "alterra_kitchen:item/stack/s784"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 785
+      },
+      "model": "alterra_kitchen:item/stack/s785"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 794
+      },
+      "model": "alterra_kitchen:item/stack/s794"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 795
+      },
+      "model": "alterra_kitchen:item/stack/s795"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 804
+      },
+      "model": "alterra_kitchen:item/stack/s804"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 805
+      },
+      "model": "alterra_kitchen:item/stack/s805"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 815
+      },
+      "model": "alterra_kitchen:item/stack/s815"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 825
+      },
+      "model": "alterra_kitchen:item/stack/s825"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 835
+      },
+      "model": "alterra_kitchen:item/stack/s835"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 845
+      },
+      "model": "alterra_kitchen:item/stack/s845"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 855
+      },
+      "model": "alterra_kitchen:item/stack/s855"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 865
+      },
+      "model": "alterra_kitchen:item/stack/s865"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 875
+      },
+      "model": "alterra_kitchen:item/stack/s875"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 885
+      },
+      "model": "alterra_kitchen:item/stack/s885"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 895
+      },
+      "model": "alterra_kitchen:item/stack/s895"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 905
+      },
+      "model": "alterra_kitchen:item/stack/s905"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 915
+      },
+      "model": "alterra_kitchen:item/stack/s915"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 925
+      },
+      "model": "alterra_kitchen:item/stack/s925"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 935
+      },
+      "model": "alterra_kitchen:item/stack/s935"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 945
+      },
+      "model": "alterra_kitchen:item/stack/s945"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 955
+      },
+      "model": "alterra_kitchen:item/stack/s955"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 965
+      },
+      "model": "alterra_kitchen:item/stack/s965"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 975
+      },
+      "model": "alterra_kitchen:item/stack/s975"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 985
+      },
+      "model": "alterra_kitchen:item/stack/s985"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 995
+      },
+      "model": "alterra_kitchen:item/stack/s995"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1005
+      },
+      "model": "alterra_kitchen:item/stack/s1005"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1015
+      },
+      "model": "alterra_kitchen:item/stack/s1015"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1025
+      },
+      "model": "alterra_kitchen:item/stack/s1025"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1035
+      },
+      "model": "alterra_kitchen:item/stack/s1035"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1045
+      },
+      "model": "alterra_kitchen:item/stack/s1045"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1055
+      },
+      "model": "alterra_kitchen:item/stack/s1055"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1065
+      },
+      "model": "alterra_kitchen:item/stack/s1065"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1075
+      },
+      "model": "alterra_kitchen:item/stack/s1075"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1085
+      },
+      "model": "alterra_kitchen:item/stack/s1085"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1095
+      },
+      "model": "alterra_kitchen:item/stack/s1095"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1105
+      },
+      "model": "alterra_kitchen:item/stack/s1105"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1115
+      },
+      "model": "alterra_kitchen:item/stack/s1115"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1125
+      },
+      "model": "alterra_kitchen:item/stack/s1125"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1135
+      },
+      "model": "alterra_kitchen:item/stack/s1135"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1145
+      },
+      "model": "alterra_kitchen:item/stack/s1145"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1155
+      },
+      "model": "alterra_kitchen:item/stack/s1155"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1165
+      },
+      "model": "alterra_kitchen:item/stack/s1165"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1175
+      },
+      "model": "alterra_kitchen:item/stack/s1175"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1185
+      },
+      "model": "alterra_kitchen:item/stack/s1185"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1195
+      },
+      "model": "alterra_kitchen:item/stack/s1195"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1205
+      },
+      "model": "alterra_kitchen:item/stack/s1205"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1215
+      },
+      "model": "alterra_kitchen:item/stack/s1215"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1225
+      },
+      "model": "alterra_kitchen:item/stack/s1225"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1235
+      },
+      "model": "alterra_kitchen:item/stack/s1235"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1245
+      },
+      "model": "alterra_kitchen:item/stack/s1245"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1255
+      },
+      "model": "alterra_kitchen:item/stack/s1255"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1265
+      },
+      "model": "alterra_kitchen:item/stack/s1265"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1275
+      },
+      "model": "alterra_kitchen:item/stack/s1275"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1285
+      },
+      "model": "alterra_kitchen:item/stack/s1285"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1295
+      },
+      "model": "alterra_kitchen:item/stack/s1295"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1305
+      },
+      "model": "alterra_kitchen:item/stack/s1305"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1315
+      },
+      "model": "alterra_kitchen:item/stack/s1315"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1325
+      },
+      "model": "alterra_kitchen:item/stack/s1325"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1335
+      },
+      "model": "alterra_kitchen:item/stack/s1335"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1345
+      },
+      "model": "alterra_kitchen:item/stack/s1345"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1355
+      },
+      "model": "alterra_kitchen:item/stack/s1355"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1365
+      },
+      "model": "alterra_kitchen:item/stack/s1365"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1375
+      },
+      "model": "alterra_kitchen:item/stack/s1375"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1385
+      },
+      "model": "alterra_kitchen:item/stack/s1385"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1395
+      },
+      "model": "alterra_kitchen:item/stack/s1395"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1405
+      },
+      "model": "alterra_kitchen:item/stack/s1405"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1415
+      },
+      "model": "alterra_kitchen:item/stack/s1415"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1425
+      },
+      "model": "alterra_kitchen:item/stack/s1425"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1435
+      },
+      "model": "alterra_kitchen:item/stack/s1435"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1445
+      },
+      "model": "alterra_kitchen:item/stack/s1445"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1455
+      },
+      "model": "alterra_kitchen:item/stack/s1455"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1465
+      },
+      "model": "alterra_kitchen:item/stack/s1465"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1475
+      },
+      "model": "alterra_kitchen:item/stack/s1475"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1485
+      },
+      "model": "alterra_kitchen:item/stack/s1485"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1495
+      },
+      "model": "alterra_kitchen:item/stack/s1495"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1505
+      },
+      "model": "alterra_kitchen:item/stack/s1505"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1515
+      },
+      "model": "alterra_kitchen:item/stack/s1515"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1525
+      },
+      "model": "alterra_kitchen:item/stack/s1525"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1535
+      },
+      "model": "alterra_kitchen:item/stack/s1535"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1545
+      },
+      "model": "alterra_kitchen:item/stack/s1545"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1555
+      },
+      "model": "alterra_kitchen:item/stack/s1555"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1565
+      },
+      "model": "alterra_kitchen:item/stack/s1565"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1575
+      },
+      "model": "alterra_kitchen:item/stack/s1575"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1585
+      },
+      "model": "alterra_kitchen:item/stack/s1585"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1595
+      },
+      "model": "alterra_kitchen:item/stack/s1595"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1605
+      },
+      "model": "alterra_kitchen:item/stack/s1605"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1615
+      },
+      "model": "alterra_kitchen:item/stack/s1615"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1625
+      },
+      "model": "alterra_kitchen:item/stack/s1625"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1635
+      },
+      "model": "alterra_kitchen:item/stack/s1635"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1645
+      },
+      "model": "alterra_kitchen:item/stack/s1645"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1655
+      },
+      "model": "alterra_kitchen:item/stack/s1655"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1665
+      },
+      "model": "alterra_kitchen:item/stack/s1665"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1675
+      },
+      "model": "alterra_kitchen:item/stack/s1675"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1685
+      },
+      "model": "alterra_kitchen:item/stack/s1685"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1695
+      },
+      "model": "alterra_kitchen:item/stack/s1695"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1705
+      },
+      "model": "alterra_kitchen:item/stack/s1705"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1715
+      },
+      "model": "alterra_kitchen:item/stack/s1715"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1725
+      },
+      "model": "alterra_kitchen:item/stack/s1725"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1735
+      },
+      "model": "alterra_kitchen:item/stack/s1735"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1745
+      },
+      "model": "alterra_kitchen:item/stack/s1745"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1755
+      },
+      "model": "alterra_kitchen:item/stack/s1755"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1765
+      },
+      "model": "alterra_kitchen:item/stack/s1765"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1775
+      },
+      "model": "alterra_kitchen:item/stack/s1775"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1785
+      },
+      "model": "alterra_kitchen:item/stack/s1785"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1795
+      },
+      "model": "alterra_kitchen:item/stack/s1795"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1805
+      },
+      "model": "alterra_kitchen:item/stack/s1805"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1815
+      },
+      "model": "alterra_kitchen:item/stack/s1815"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1825
+      },
+      "model": "alterra_kitchen:item/stack/s1825"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1835
+      },
+      "model": "alterra_kitchen:item/stack/s1835"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1845
+      },
+      "model": "alterra_kitchen:item/stack/s1845"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1855
+      },
+      "model": "alterra_kitchen:item/stack/s1855"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1865
+      },
+      "model": "alterra_kitchen:item/stack/s1865"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1875
+      },
+      "model": "alterra_kitchen:item/stack/s1875"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1885
+      },
+      "model": "alterra_kitchen:item/stack/s1885"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1895
+      },
+      "model": "alterra_kitchen:item/stack/s1895"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1905
+      },
+      "model": "alterra_kitchen:item/stack/s1905"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1915
+      },
+      "model": "alterra_kitchen:item/stack/s1915"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1925
+      },
+      "model": "alterra_kitchen:item/stack/s1925"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1935
+      },
+      "model": "alterra_kitchen:item/stack/s1935"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1945
+      },
+      "model": "alterra_kitchen:item/stack/s1945"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1955
+      },
+      "model": "alterra_kitchen:item/stack/s1955"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1965
+      },
+      "model": "alterra_kitchen:item/stack/s1965"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1975
+      },
+      "model": "alterra_kitchen:item/stack/s1975"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1985
+      },
+      "model": "alterra_kitchen:item/stack/s1985"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1995
+      },
+      "model": "alterra_kitchen:item/stack/s1995"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2005
+      },
+      "model": "alterra_kitchen:item/stack/s2005"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2015
+      },
+      "model": "alterra_kitchen:item/stack/s2015"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2025
+      },
+      "model": "alterra_kitchen:item/stack/s2025"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2035
+      },
+      "model": "alterra_kitchen:item/stack/s2035"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2045
+      },
+      "model": "alterra_kitchen:item/stack/s2045"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2055
+      },
+      "model": "alterra_kitchen:item/stack/s2055"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2065
+      },
+      "model": "alterra_kitchen:item/stack/s2065"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2075
+      },
+      "model": "alterra_kitchen:item/stack/s2075"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2085
+      },
+      "model": "alterra_kitchen:item/stack/s2085"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2095
+      },
+      "model": "alterra_kitchen:item/stack/s2095"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2105
+      },
+      "model": "alterra_kitchen:item/stack/s2105"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2115
+      },
+      "model": "alterra_kitchen:item/stack/s2115"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2125
+      },
+      "model": "alterra_kitchen:item/stack/s2125"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2135
+      },
+      "model": "alterra_kitchen:item/stack/s2135"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2145
+      },
+      "model": "alterra_kitchen:item/stack/s2145"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2155
+      },
+      "model": "alterra_kitchen:item/stack/s2155"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2165
+      },
+      "model": "alterra_kitchen:item/stack/s2165"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2175
+      },
+      "model": "alterra_kitchen:item/stack/s2175"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2185
+      },
+      "model": "alterra_kitchen:item/stack/s2185"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2195
+      },
+      "model": "alterra_kitchen:item/stack/s2195"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2205
+      },
+      "model": "alterra_kitchen:item/stack/s2205"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2215
+      },
+      "model": "alterra_kitchen:item/stack/s2215"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2225
+      },
+      "model": "alterra_kitchen:item/stack/s2225"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2235
+      },
+      "model": "alterra_kitchen:item/stack/s2235"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2245
+      },
+      "model": "alterra_kitchen:item/stack/s2245"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2255
+      },
+      "model": "alterra_kitchen:item/stack/s2255"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2265
+      },
+      "model": "alterra_kitchen:item/stack/s2265"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2275
+      },
+      "model": "alterra_kitchen:item/stack/s2275"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2285
+      },
+      "model": "alterra_kitchen:item/stack/s2285"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2295
+      },
+      "model": "alterra_kitchen:item/stack/s2295"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2305
+      },
+      "model": "alterra_kitchen:item/stack/s2305"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2315
+      },
+      "model": "alterra_kitchen:item/stack/s2315"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2325
+      },
+      "model": "alterra_kitchen:item/stack/s2325"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2335
+      },
+      "model": "alterra_kitchen:item/stack/s2335"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2345
+      },
+      "model": "alterra_kitchen:item/stack/s2345"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2355
+      },
+      "model": "alterra_kitchen:item/stack/s2355"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2365
+      },
+      "model": "alterra_kitchen:item/stack/s2365"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2375
+      },
+      "model": "alterra_kitchen:item/stack/s2375"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2385
+      },
+      "model": "alterra_kitchen:item/stack/s2385"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2395
+      },
+      "model": "alterra_kitchen:item/stack/s2395"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2405
+      },
+      "model": "alterra_kitchen:item/stack/s2405"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2415
+      },
+      "model": "alterra_kitchen:item/stack/s2415"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2425
+      },
+      "model": "alterra_kitchen:item/stack/s2425"
+    }
+  ]
+}

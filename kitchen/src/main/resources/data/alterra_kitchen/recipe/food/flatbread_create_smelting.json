@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "create:dough"
+  },
+  "result": {
+    "id": "alterra_kitchen:flatbread",
+    "count": 1
+  },
+  "experience": 0.2,
+  "cookingtime": 200
+}

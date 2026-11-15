@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "tag": "alterra_kitchen:jams"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:jam_toast",
+    "count": 1
+  }
+}

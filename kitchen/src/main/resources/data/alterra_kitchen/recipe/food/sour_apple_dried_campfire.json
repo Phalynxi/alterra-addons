@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "ingredient": {
+    "item": "alterra:sour_apple"
+  },
+  "result": {
+    "id": "alterra_kitchen:sour_apple_dried",
+    "count": 1
+  },
+  "experience": 0.1,
+  "cookingtime": 400
+}

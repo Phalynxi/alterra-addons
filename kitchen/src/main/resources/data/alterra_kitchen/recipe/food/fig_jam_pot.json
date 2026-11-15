@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersdelight"
+    },
+    {
+      "type": "alterra:config",
+      "option": "fdCooking"
+    }
+  ],
+  "type": "farmersdelight:cooking",
+  "experience": 0.35,
+  "container": {
+    "id": "minecraft:glass_bottle"
+  },
+  "recipe_book_tab": "misc",
+  "ingredients": [
+    {
+      "item": "alterra:fig"
+    },
+    {
+      "item": "alterra:fig"
+    },
+    {
+      "item": "alterra:fig"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:fig_jam",
+    "count": 1
+  }
+}

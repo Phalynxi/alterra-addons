@@ -1,0 +1,93 @@
+{
+ "unknown": {
+  "main": "8A7FA8",
+  "dark": "3C3550",
+  "light": "C8BEE0",
+  "gem": "B0A4D0",
+  "bg": "141118",
+  "bg2": "201B28"
+ },
+ "top": [
+  "........G........",
+  "...M..MGGGM..M...",
+  ".MMM.MMLLLMM.MMM.",
+  "MMMMMMMMMMMMMMMMM"
+ ],
+ "topHigh": [
+  ".........MGGGM.........",
+  "..M....MMLGGGLMM....M..",
+  ".MLM..MMMMLLLMMMM..MLM.",
+  "MMMMMMMMMMMMMMMMMMMMMMM"
+ ],
+ "bottom": [
+  "MMMMMMMMMMM",
+  ".MMMDGDMMM.",
+  "..MMDGDMM..",
+  ".....G....."
+ ],
+ "tiers": [
+  {
+   "min": 0,
+   "main": "A02828",
+   "dark": "4A1010",
+   "light": "E06060",
+   "gem": "FF6A6A",
+   "bg": "1C0C0C",
+   "bg2": "2C1313"
+  },
+  {
+   "min": 20,
+   "main": "9A9A9A",
+   "dark": "454545",
+   "light": "D8D8D8",
+   "gem": "E4E4E4",
+   "bg": "17171A",
+   "bg2": "232328"
+  },
+  {
+   "min": 40,
+   "main": "E8E0D0",
+   "dark": "6B6350",
+   "light": "FFFFFF",
+   "gem": "FFF6DC",
+   "bg": "1A1814",
+   "bg2": "2A261E"
+  },
+  {
+   "min": 60,
+   "main": "F2C84B",
+   "dark": "6B5418",
+   "light": "FFE9A0",
+   "gem": "FFF08A",
+   "bg": "1D1708",
+   "bg2": "2D240D"
+  },
+  {
+   "min": 80,
+   "main": "F29A3A",
+   "dark": "6B3A10",
+   "light": "FFD090",
+   "gem": "FFC070",
+   "bg": "1F1208",
+   "bg2": "30190B"
+  },
+  {
+   "min": 95,
+   "main": "D878F0",
+   "dark": "5A2A6B",
+   "light": "F5C0FF",
+   "gem": "F0B0FF",
+   "bg": "190D20",
+   "bg2": "281238"
+  },
+  {
+   "min": 120,
+   "main": "FFE9A8",
+   "dark": "5A4A20",
+   "light": "FFFFFF",
+   "gem": "FFFFFF",
+   "bg": "0B0A1E",
+   "bg2": "1A1238"
+  }
+ ]
+}

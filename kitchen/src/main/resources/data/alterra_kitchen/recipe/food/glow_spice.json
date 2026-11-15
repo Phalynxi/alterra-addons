@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "minecraft:glow_berries"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "alterra_kitchen:salt"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:glow_spice",
+    "count": 2
+  }
+}

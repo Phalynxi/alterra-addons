@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:wafer_cone"
+    },
+    {
+      "item": "alterra:sour_apple"
+    },
+    {
+      "item": "alterra:sour_apple"
+    },
+    {
+      "item": "minecraft:snowball"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:sour_apple_ice_cream",
+    "count": 1
+  }
+}

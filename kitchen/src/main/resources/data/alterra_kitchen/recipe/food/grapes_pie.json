@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:pastry_crust"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:grapes_fruit_pie",
+    "count": 1
+  }
+}

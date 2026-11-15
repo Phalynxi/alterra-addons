@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:frost_apple"
+    },
+    {
+      "item": "alterra:frost_apple"
+    },
+    {
+      "item": "alterra:frost_apple"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:frost_apple_compote",
+    "count": 1
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "size": 14,
+    "discard_chance_on_air_exposure": 0.0,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:base_stone_overworld"
+        },
+        "state": {
+          "Name": "alterra_kitchen:rock_salt"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:sandstone"
+        },
+        "state": {
+          "Name": "alterra_kitchen:rock_salt"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:red_sandstone"
+        },
+        "state": {
+          "Name": "alterra_kitchen:rock_salt"
+        }
+      }
+    ]
+  }
+}

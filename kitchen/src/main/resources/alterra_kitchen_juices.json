@@ -239,11 +239,13 @@
   },
   {
     "id": "red_wine",
-    "color": 8002618
+    "color": 8002618,
+    "thirst": 0.3
   },
   {
     "id": "white_wine",
-    "color": 14866048
+    "color": 14866048,
+    "thirst": 0.3
   },
   {
     "id": "cider",
@@ -251,83 +253,103 @@
   },
   {
     "id": "plum_wine",
-    "color": 6563418
+    "color": 6563418,
+    "thirst": 0.3
   },
   {
     "id": "cherry_wine",
-    "color": 10098732
+    "color": 10098732,
+    "thirst": 0.3
   },
   {
     "id": "peach_wine",
-    "color": 15772768
+    "color": 15772768,
+    "thirst": 0.3
   },
   {
     "id": "mango_wine",
-    "color": 15774252
+    "color": 15774252,
+    "thirst": 0.3
   },
   {
     "id": "pomegranate_wine",
-    "color": 9968692
+    "color": 9968692,
+    "thirst": 0.3
   },
   {
     "id": "orange_wine",
-    "color": 15768112
+    "color": 15768112,
+    "thirst": 0.3
   },
   {
     "id": "strawberry_wine",
-    "color": 13910110
+    "color": 13910110,
+    "thirst": 0.3
   },
   {
     "id": "blueberry_wine",
-    "color": 4076668
+    "color": 4076668,
+    "thirst": 0.3
   },
   {
     "id": "raspberry_wine",
-    "color": 11936340
+    "color": 11936340,
+    "thirst": 0.3
   },
   {
     "id": "blackberry_wine",
-    "color": 3414600
+    "color": 3414600,
+    "thirst": 0.3
   },
   {
     "id": "redcurrant_wine",
-    "color": 13380672
+    "color": 13380672,
+    "thirst": 0.3
   },
   {
     "id": "fig_wine",
-    "color": 7353426
+    "color": 7353426,
+    "thirst": 0.3
   },
   {
     "id": "cactus_wine",
-    "color": 13256816
+    "color": 13256816,
+    "thirst": 0.3
   },
   {
     "id": "palm_wine",
-    "color": 15263440
+    "color": 15263440,
+    "thirst": 0.3
   },
   {
     "id": "baobab_ale",
-    "color": 13941882
+    "color": 13941882,
+    "thirst": 0.3
   },
   {
     "id": "honeymelon_wine",
-    "color": 12770940
+    "color": 12770940,
+    "thirst": 0.3
   },
   {
     "id": "ember_liqueur",
-    "color": 13385752
+    "color": 13385752,
+    "thirst": 0.5
   },
   {
     "id": "ice_wine",
-    "color": 11327726
+    "color": 11327726,
+    "thirst": 0.3
   },
   {
     "id": "sun_wine",
-    "color": 15777350
+    "color": 15777350,
+    "thirst": 0.3
   },
   {
     "id": "mead",
-    "color": 15247914
+    "color": 15247914,
+    "thirst": 0.3
   },
   {
     "id": "golden_orchard",

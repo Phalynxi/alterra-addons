@@ -1,0 +1,52 @@
+{
+ "glasses": [
+  "mug",
+  "highball",
+  "goblet",
+  "flute",
+  "tumbler",
+  "jar",
+  "flask",
+  "teacup",
+  "shake",
+  "hurricane",
+  "coupe",
+  "cup",
+  "pitcher",
+  "martini",
+  "snifter",
+  "tiki",
+  "milk_bottle",
+  "pint",
+  "shot"
+ ],
+ "garnishes": [
+  "none",
+  "lemon",
+  "lime",
+  "orange",
+  "cherries",
+  "mint",
+  "red_straw",
+  "blue_straw",
+  "pink_umbrella",
+  "teal_umbrella",
+  "berries",
+  "cream",
+  "lemon_wheel",
+  "lime_wheel",
+  "cinnamon",
+  "green_straw",
+  "cherry_straw",
+  "mint_lemon",
+  "gold_flecks",
+  "flame",
+  "crystal",
+  "sparkle"
+ ],
+ "special": {
+  "flame": 19,
+  "crystal": 20,
+  "sparkle": 21
+ }
+}

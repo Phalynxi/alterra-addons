@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:salt"
+    },
+    {
+      "item": "minecraft:fern"
+    },
+    {
+      "item": "minecraft:fern"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:herb_salt",
+    "count": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "tag": "alterra_kitchen:frost_fruits_dried"
+    },
+    {
+      "item": "alterra_kitchen:salt"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:frost_crystals",
+    "count": 2
+  }
+}

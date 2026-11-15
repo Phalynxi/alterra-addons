@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra_kitchen:dough"
+    },
+    {
+      "item": "alterra_kitchen:dough"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:noodles",
+    "count": 8
+  }
+}

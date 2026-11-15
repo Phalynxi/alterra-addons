@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "alterra:grapes"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:grapes_jam",
+    "count": 1
+  }
+}

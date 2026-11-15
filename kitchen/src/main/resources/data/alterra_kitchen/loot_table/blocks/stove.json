@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "alterra_kitchen:blocks/stove",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alterra_kitchen:stove"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

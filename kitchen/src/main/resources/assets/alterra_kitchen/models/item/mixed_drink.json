@@ -1,0 +1,2513 @@
+{
+ "parent": "alterra_kitchen:item/mixed_drink/mug_none",
+ "overrides": [
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0009765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.001953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0029296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.00390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0048828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.005859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0068359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0087890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.009765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0107421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.01171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0126953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.013671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0146484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0166015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.017578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0185546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.01953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0205078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/mug_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.021484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0224609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0244140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.025390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0263671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.02734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0283203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.029296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0302734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.03125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0322265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.033203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0341796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.03515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0361328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.037109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0380859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0400390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.041015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0419921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/highball_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.04296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0439453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.044921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0458984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0478515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.048828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0498046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.05078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0517578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.052734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0537109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0556640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.056640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0576171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.05859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0595703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.060546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0615234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0634765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/goblet_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.064453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0654296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.06640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0673828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.068359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0693359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0712890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.072265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0732421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.07421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0751953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.076171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0771484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0791015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.080078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0810546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.08203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0830078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.083984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0849609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flute_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0869140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.087890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0888671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.08984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0908203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.091796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0927734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.09375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0947265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.095703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0966796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.09765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.0986328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.099609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1005859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1025390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.103515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1044921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.10546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1064453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tumbler_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.107421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1083984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1103515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.111328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1123046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.11328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1142578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.115234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1162109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1181640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.119140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1201171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.12109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1220703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.123046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1240234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1259765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.126953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1279296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/jar_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.12890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1298828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.130859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1318359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1337890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.134765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1357421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.13671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1376953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.138671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1396484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1416015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.142578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1435546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.14453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1455078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.146484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1474609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1494140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/flask_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.150390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1513671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.15234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1533203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.154296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1552734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.15625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1572265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.158203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1591796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.16015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1611328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.162109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1630859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1650390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.166015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1669921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.16796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1689453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.169921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1708984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/teacup_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1728515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.173828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1748046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.17578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1767578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.177734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1787109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1806640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.181640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1826171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.18359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1845703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.185546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1865234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1884765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.189453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1904296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.19140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1923828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shake_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.193359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1943359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1962890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.197265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.1982421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.19921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2001953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.201171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2021484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2041015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.205078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2060546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.20703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2080078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.208984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2099609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2119140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.212890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2138671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/hurricane_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.21484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2158203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.216796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2177734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.21875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2197265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.220703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2216796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.22265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2236328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.224609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2255859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2275390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.228515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2294921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.23046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2314453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.232421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2333984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2353515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/coupe_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.236328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2373046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.23828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2392578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.240234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2412109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2431640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.244140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2451171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.24609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2470703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.248046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2490234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.25
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2509765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.251953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2529296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.25390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2548828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.255859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2568359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/cup_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2587890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.259765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2607421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.26171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2626953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.263671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2646484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2666015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.267578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2685546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.26953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2705078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.271484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2724609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2744140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.275390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2763671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.27734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2783203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pitcher_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.279296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2802734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.28125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2822265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.283203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2841796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.28515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2861328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.287109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2880859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2900390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.291015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2919921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.29296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2939453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.294921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2958984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2978515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.298828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.2998046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/martini_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.30078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3017578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.302734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3037109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3056640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.306640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3076171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.30859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3095703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.310546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3115234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3134765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.314453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3154296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.31640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3173828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.318359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3193359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3212890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/snifter_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.322265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3232421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.32421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3251953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.326171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3271484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3291015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.330078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3310546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.33203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3330078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.333984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3349609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3369140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.337890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3388671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.33984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3408203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.341796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3427734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/tiki_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.34375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3447265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.345703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3466796875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.34765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3486328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.349609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3505859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3525390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.353515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3544921875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.35546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3564453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.357421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3583984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3603515625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.361328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3623046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.36328125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3642578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/milk_bottle_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.365234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3662109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3681640625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.369140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3701171875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.37109375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3720703125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.373046875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3740234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3759765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.376953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3779296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.37890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3798828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.380859375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3818359375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3828125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3837890625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.384765625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3857421875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/pint_sparkle"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.38671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_none"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3876953125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.388671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_lime"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3896484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_orange"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_cherries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3916015625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_mint"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.392578125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_red_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3935546875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_blue_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.39453125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_pink_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3955078125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_teal_umbrella"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.396484375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_berries"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3974609375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_cream"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3984375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_lemon_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.3994140625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_lime_wheel"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.400390625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_cinnamon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.4013671875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_green_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.40234375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_cherry_straw"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.4033203125
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_mint_lemon"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.404296875
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_gold_flecks"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.4052734375
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_flame"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.40625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_crystal"
+  },
+  {
+   "predicate": {
+    "alterra_kitchen:look": 0.4072265625
+   },
+   "model": "alterra_kitchen:item/mixed_drink/shot_sparkle"
+  }
+ ]
+}

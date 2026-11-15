@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "alterra_kitchen:blocks/prep_table",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alterra_kitchen:prep_table"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

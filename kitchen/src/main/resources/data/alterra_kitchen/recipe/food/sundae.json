@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "tag": "alterra_kitchen:ice_creams"
+    },
+    {
+      "tag": "alterra_kitchen:ice_creams"
+    },
+    {
+      "tag": "alterra_kitchen:sauces"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:sundae",
+    "count": 1
+  }
+}

@@ -1,30 +1,8 @@
 {
   "replace": false,
   "values": [
-    "alterra_kitchen:trellis",
-    "alterra_kitchen:fruit_press",
-    "alterra_kitchen:keg",
-    "alterra_kitchen:coconut_crate",
-    "alterra_kitchen:baobab_fruit_crate",
-    "alterra_kitchen:mango_crate",
-    "alterra_kitchen:peach_crate",
-    "alterra_kitchen:pomegranate_crate",
-    "alterra_kitchen:plum_crate",
-    "alterra_kitchen:date_crate",
-    "alterra_kitchen:prickly_pear_crate",
-    "alterra_kitchen:grapes_crate",
-    "alterra_kitchen:white_grapes_crate",
-    "alterra_kitchen:sun_apple_crate",
-    "alterra_kitchen:ember_apple_crate",
-    "alterra_kitchen:ember_plum_crate",
-    "alterra_kitchen:frost_apple_crate",
-    "alterra_kitchen:sour_apple_crate",
-    "alterra_kitchen:fig_crate",
-    "alterra_kitchen:orange_crate",
-    "alterra_kitchen:cherry_crate",
-    "alterra_kitchen:ember_pear_crate",
-    "alterra_kitchen:frost_pear_crate",
-    "alterra_kitchen:frost_plum_crate",
-    "alterra_kitchen:banana_crate"
+    "alterra_kitchen:kitchen_counter",
+    "alterra_kitchen:prep_table",
+    "alterra_kitchen:ice_cream_stand"
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "alterra:baobab_pulp"
+    },
+    {
+      "item": "alterra_kitchen:flatbread"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "alterra_kitchen:baobab_bar",
+    "count": 3
+  }
+}
