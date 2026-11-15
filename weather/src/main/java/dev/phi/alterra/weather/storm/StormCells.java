@@ -55,13 +55,17 @@ public final class StormCells {
         return d >= 1.0 ? 0f : c.level() * (1f - (float) Mth.smoothstep((d - 0.3) / 0.7));
     }
 
-    private static final ThreadLocal<java.util.ArrayList<Cell>> SCRATCH = ThreadLocal.withInitial(java.util.ArrayList::new);
+    /** The cells that can touch a 256-block square, kept for the tick it was asked at (rain draws hundreds of columns a frame: each would otherwise search the lattice again). */
+    private static final class Bucket { long time = Long.MIN_VALUE; int bx, bz; final java.util.ArrayList<Cell> cells = new java.util.ArrayList<>(); }
+    private static final ThreadLocal<Bucket> BUCKET = ThreadLocal.withInitial(Bucket::new);
 
     /** The storm strength over a point, 0 (none) to 1, the strongest cell there. */
     public static float level(long time, double x, double z) {
-        var list = SCRATCH.get(); near(time, x, z, 0, list);
+        int bx = Math.floorDiv((int) Math.floor(x), 256), bz = Math.floorDiv((int) Math.floor(z), 256);
+        Bucket b = BUCKET.get();
+        if (b.time != time || b.bx != bx || b.bz != bz) { near(time, bx * 256 + 128.0, bz * 256 + 128.0, 200, b.cells); b.time = time; b.bx = bx; b.bz = bz; }   // 200 covers the square's corners
         float best = 0f;
-        for (Cell c : list) best = Math.max(best, at(c, x, z));
+        for (Cell c : b.cells) best = Math.max(best, at(c, x, z));
         return best;
     }
 }
