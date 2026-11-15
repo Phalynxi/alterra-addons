@@ -94,11 +94,11 @@ public final class Disasters {
     private static void roll(ServerLevel l) {
         float rate = DisasterConfig.get(DisasterConfig.RATE).floatValue();
         if (rate <= 0f) return;
-        float heavy = HeavyStorm.level(l);
         for (ServerPlayer pl : l.players()) {
             double a = l.random.nextDouble() * Math.PI * 2, d = 45 + l.random.nextDouble() * 65;
             double x = pl.getX() + Math.cos(a) * d, z = pl.getZ() + Math.sin(a) * d;
             if (!l.hasChunkAt(BlockPos.containing(x, 64, z)) || nearAny(l, x, z, 60)) continue;
+            float heavy = HeavyStorm.at(l, x, z);   // the world-wide storm or a cell over that spot
             BlockPos ground = new BlockPos((int) x, l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) x, (int) z) - 1, (int) z);
             var st = l.getBlockState(ground);
             if (DisasterConfig.get(DisasterConfig.TORNADOES) && heavy > 0.55f && count(l, TORNADO) < 2 && st.getFluidState().isEmpty()
@@ -138,7 +138,7 @@ public final class Disasters {
     private static void move(ServerLevel l, Event e) {
         if (e.still) return;
         if (e.type == VORTEX) { e.x += Math.cos(e.heading) * 0.03; e.z += Math.sin(e.heading) * 0.03; return; }   // a whirlpool hardly drifts
-        Vec3 w = Wind.at(l.getGameTime(), e.x, e.z, l.getRainLevel(1f), l.getThunderLevel(1f), HeavyStorm.level(l));
+        Vec3 w = Wind.at(l.getGameTime(), e.x, e.z, l.getRainLevel(1f), l.getThunderLevel(1f), HeavyStorm.at(l, e.x, e.z));
         e.heading += (l.random.nextFloat() - 0.5f) * 0.05f;
         double speed = e.type == TORNADO ? 0.20 : 0.10;   // blocks a tick: a tornado is faster than you walk, slower than you run
         e.vx += (w.x * speed + Math.cos(e.heading) * 0.04 - e.vx) * 0.05; e.vz += (w.z * speed + Math.sin(e.heading) * 0.04 - e.vz) * 0.05;

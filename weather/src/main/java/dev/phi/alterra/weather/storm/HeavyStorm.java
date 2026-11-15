@@ -22,6 +22,11 @@ public final class HeavyStorm {
     /** 0..1: how heavy the storm is here, now. */
     public static float level(Level level) { return strength[side(level)]; }
 
+    /** How heavy the storm is at a place: the world-wide heavy thunderstorm or a travelling cell over that spot, whichever is stronger. */
+    public static float at(Level level, double x, double z) { return Math.max(level(level), StormCells.level(level.getGameTime(), x, z)); }
+    /** The rain at a place: vanilla's rain level, or the downpour under a storm cell (a cell rains even when the weather is clear). */
+    public static float rainAt(Level level, double x, double z) { return Math.max(level.getRainLevel(1f), Math.min(1f, 1.4f * StormCells.level(level.getGameTime(), x, z))); }
+
     public static void update(Level level) {
         int i = side(level); long time = level.getGameTime();
         float thunder = level.getThunderLevel(1f);

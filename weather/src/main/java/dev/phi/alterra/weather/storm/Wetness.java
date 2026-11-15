@@ -40,7 +40,7 @@ public final class Wetness {
     public static void tick(PlayerTickEvent.Post e) {
         if (!(e.getEntity() instanceof ServerPlayer p) || p.tickCount % 10 != 0 || !SUBSCRIBED.contains(p.getUUID())) return;
         var level = p.serverLevel();
-        float rain = level.getRainLevel(1f);
+        float rain = HeavyStorm.rainAt(level, p.getX(), p.getZ());   // vanilla rain, or the downpour under a storm cell
         if (!level.dimensionType().hasSkyLight() || level.getBiome(p.blockPosition()).value().getPrecipitationAt(p.blockPosition()) != Biome.Precipitation.RAIN) rain = 0f;
         float wet = p.getPersistentData().getFloat(KEY);
         wet = Math.max(0f, Math.min(1f, wet + (rain > 0.05f ? rain * 0.5f / 25f : -0.5f / 120f * Drying.factor(level, p.blockPosition()))));   // half a second per step: wet in about 25 seconds of rain, dry in about two minutes (faster in warm places, slower in cold ones)

@@ -41,10 +41,10 @@ public final class CloudMap {
     public static float cover(Level l, double x, double z, float pt) {
         double cx = (x + drift(l.getGameTime(), pt)) % SPAN, cz = (z + driftZ(l.getGameTime(), pt) + 7.92) % SPAN;
         if (cx < 0) cx += SPAN; if (cz < 0) cz += SPAN;
-        float raw = fbm((float) cx * 0.0065f, (float) cz * 0.0065f, evolve(l.getGameTime(), pt)) + 0.16f * l.getRainLevel(pt) + 0.22f * l.getThunderLevel(pt);   // the same as the shader: storms bring more cloud but leave gaps
+        float raw = fbm((float) cx * 0.0065f, (float) cz * 0.0065f, evolve(l.getGameTime(), pt)) + 0.16f * l.getRainLevel(pt) + 0.22f * l.getThunderLevel(pt) + 0.55f * StormCells.level(l.getGameTime(), x, z);   // the same as the shader: storms bring more cloud but leave gaps
         return Math.max(0f, Math.min(1f, (raw - 0.47f) / 0.15f));   // the same as the shader: scattered cumulus in fair weather
     }
 
     /** Is it raining at this spot: the weather is rainy and a thick enough cloud is overhead. */
-    public static boolean rainsHere(Level l, double x, double z) { return cover(l, x, z, 1f) > 0.12f; }   // under any real cloud (only clear gaps stay dry) }
+    public static boolean rainsHere(Level l, double x, double z) { return StormCells.level(l.getGameTime(), x, z) > 0.1f || cover(l, x, z, 1f) > 0.12f; }   // under any real cloud (only clear gaps stay dry) }
 }

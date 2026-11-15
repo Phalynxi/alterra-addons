@@ -46,9 +46,9 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
     @Override
     public boolean renderSnowAndRain(ClientLevel level, int ticks, float pt, LightTexture lightTexture, double camX, double camY, double camZ) {
         if (!WeatherConfig.get(WeatherConfig.REPLACE_RAIN)) return false;
-        float rain = level.getRainLevel(pt);
+        float rain = HeavyStorm.rainAt(level, camX, camZ);   // vanilla rain or a storm cell overhead
         if (rain <= 0f) return true;
-        float heavy = HeavyStorm.level(level);
+        float heavy = HeavyStorm.at(level, camX, camZ);
         lightTexture.turnOnLightLayer();
         Vec3 wind = AethryonApi.wind().at(level, camX, camZ);
         float slant = (float) ((0.10 + 0.50 * wind.length()) * WeatherConfig.get(WeatherConfig.RAIN_SLANT));
@@ -121,9 +121,9 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
     @Override
     public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
         if (!WeatherConfig.get(WeatherConfig.REPLACE_RAIN)) return false;
-        float rain = level.getRainLevel(1f);
+        float rain = HeavyStorm.rainAt(level, camera.getPosition().x, camera.getPosition().z);
         if (rain <= 0f) return true;
-        float heavy = HeavyStorm.level(level);
+        float heavy = HeavyStorm.at(level, camera.getPosition().x, camera.getPosition().z);
         var rnd = RandomSource.create((long) ticks * 312987231L);
         BlockPos cam = BlockPos.containing(camera.getPosition());
         var pos = new BlockPos.MutableBlockPos();

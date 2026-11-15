@@ -372,7 +372,7 @@ public final class WeatherEffects {
         float rain = 0f, heavy = 0f;
         if (level != null && p != null && WeatherConfig.get(WeatherConfig.REPLACE_RAIN)) {
             var pos = p.blockPosition();
-            if (level.getBiome(pos).value().getPrecipitationAt(pos) == net.minecraft.world.level.biome.Biome.Precipitation.RAIN) { rain = level.getRainLevel(1f); heavy = HeavyStorm.level(level); }
+            if (level.getBiome(pos).value().getPrecipitationAt(pos) == net.minecraft.world.level.biome.Biome.Precipitation.RAIN) { rain = HeavyStorm.rainAt(level, p.getX(), p.getZ()); heavy = HeavyStorm.at(level, p.getX(), p.getZ()); }
         }
         float out = 0.25f + 0.75f * outdoors;
         loop(sm, "rain_light", AlterraWeather.RAIN_LIGHT.get(), rain * (1f - heavy) * 0.55f * out);
@@ -436,7 +436,7 @@ public final class WeatherEffects {
     }
     private static void do_fogColour(ViewportEvent.ComputeFogColor e) {
         float pt = (float) e.getPartialTick(), o = Mth.lerp(pt, outdoorsBefore, outdoors);
-        float heavy = Minecraft.getInstance().level == null ? 0f : HeavyStorm.level(Minecraft.getInstance().level) * o;   // a heavy storm turns the sky dark
+        var camPos = e.getCamera().getPosition(); float heavy = Minecraft.getInstance().level == null ? 0f : HeavyStorm.at(Minecraft.getInstance().level, camPos.x, camPos.z) * o;   // a heavy storm turns the sky dark
         if (heavy > 0.01f) { float m = heavy * 0.7f; e.setRed(Mth.lerp(m, e.getRed(), 0.10f)); e.setGreen(Mth.lerp(m, e.getGreen(), 0.12f)); e.setBlue(Mth.lerp(m, e.getBlue(), 0.16f)); }
         for (Kind k : Kind.values()) {
             float a = Mth.lerp(pt, before[k.ordinal()], now[k.ordinal()]) * o;

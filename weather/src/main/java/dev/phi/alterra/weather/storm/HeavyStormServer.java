@@ -23,10 +23,11 @@ public final class HeavyStormServer {
     public static void tick(LevelTickEvent.Post e) {
         if (!(e.getLevel() instanceof ServerLevel level) || !level.dimensionType().hasSkyLight()) return;
         HeavyStorm.update(level);
-        float heavy = HeavyStorm.level(level);
-        if (heavy < 0.35f || !level.isThundering() || !HeavyConfig.get(HeavyConfig.LIGHTNING)) return;
-        double rate = heavy * 0.016 * HeavyConfig.get(HeavyConfig.LIGHTNING_RATE);   // per player per tick
+        if (!HeavyConfig.get(HeavyConfig.LIGHTNING)) return;
         for (ServerPlayer p : level.players()) {
+            float heavy = HeavyStorm.at(level, p.getX(), p.getZ());   // the world-wide storm or a cell over this player
+            if (heavy < 0.35f) continue;
+            double rate = heavy * 0.016 * HeavyConfig.get(HeavyConfig.LIGHTNING_RATE);   // per player per tick
             if (level.random.nextDouble() >= rate) continue;
             double a = level.random.nextDouble() * Math.PI * 2, dist = 28 + level.random.nextDouble() * 56;
             int x = (int) (p.getX() + Math.cos(a) * dist), z = (int) (p.getZ() + Math.sin(a) * dist);

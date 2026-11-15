@@ -84,6 +84,8 @@ public final class PostFx {
             uniform float u_FunnelN;      // how many
             uniform float u_Shadows;      // 1: sun shadows and shafts through leaves on   // how far the clouds have changed (they form and fade)   // the clouds' own pass (premultiplied colour, cover)
             uniform float u_Storm;
+            uniform vec4 u_Cells[4];   // regional storm cells: x, z relative to the camera, radius, level
+            uniform float u_CellsN;
             uniform vec4 u_On;    // colour grade, glow, light shafts, haze
             uniform vec2 u_On2;   // clouds, underwater fog     // thunder, 0 to 1
             uniform vec3 u_WaterFog;   // the colour of the water around a diver (UnderwaterColour)
@@ -115,16 +117,26 @@ public final class PostFx {
                 }
                 return lit / max(n, 1.0);
             }
+            float cellCover(vec2 rel) {   // how strongly a storm cell is over this point (as StormCell.at)
+                float s = 0.0;
+                for (int i = 0; i < 4; i++) {
+                    if (float(i) >= u_CellsN) break;
+                    vec4 c = u_Cells[i]; float d = length(rel - c.xy) / c.z;
+                    float k = clamp((d - 0.3) / 0.7, 0.0, 1.0);
+                    s = max(s, d >= 1.0 ? 0.0 : c.w * (1.0 - k * k * k * (k * (k * 6.0 - 15.0) + 10.0)));
+                }
+                return s;
+            }
             float cloudShade(vec3 p) {   // the shadow of the clouds overhead along the sun (the same map as the clouds)
                 if (u_CloudInfo.w < 0.5 || u_Sun.y < 0.05) return 1.0;
                 vec3 at = p + u_Sun.xyz * ((u_CloudInfo.z + 20.0 - p.y) / u_Sun.y);
                 vec3 q = vec3(u_CloudInfo.x * 24.0 + at.x, 0.0, u_CloudInfo.y * 24.0 + at.z);
-                float cov = smoothstep(0.47, 0.62, fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm);
+                float cov = smoothstep(0.47, 0.62, fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cellCover(at.xz));
                 return 1.0 - 0.55 * cov;
             }
             float cloud(vec3 p, float y0) {   // p: relative to the camera. Natural cumulus: where they are comes from layered noise (no grid), more of them when it rains
                 vec3 q = vec3(u_CloudInfo.x * 24.0 + p.x, p.y - y0, u_CloudInfo.y * 24.0 + p.z);   // drifts with the wind
-                float cover = fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm;   // as CloudMap.cover: rain brings more cloud, thunder nearly closes the sky
+                float cover = fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cellCover(p.xz);   // as CloudMap.cover: rain brings more cloud, thunder nearly closes the sky
                 float cov = smoothstep(0.47, 0.62, cover);
                 if (cov < 0.01) return 0.0;
                 float h = q.y;
@@ -376,7 +388,7 @@ public final class PostFx {
             GL43C.glCopyImageSubData(rt.getDepthTextureId(), GL11C.GL_TEXTURE_2D, 0, 0, 0, 0, depth, GL11C.GL_TEXTURE_2D, 0, 0, 0, 0, w, h, 1);
             GlStateManager._bindTexture(color); GL30C.glGenerateMipmap(GL11C.GL_TEXTURE_2D);
 
-            float pt = e.getPartialTick().getGameTimeDeltaPartialTick(false), t = level.getTimeOfDay(pt) * (float) (Math.PI * 2), rain = level.getRainLevel(pt);
+            float pt = e.getPartialTick().getGameTimeDeltaPartialTick(false), t = level.getTimeOfDay(pt) * (float) (Math.PI * 2), rain = Sky.rain(level);
             float sx = -(float) Math.sin(t), sy = (float) Math.cos(t); boolean sun = sy > -0.05f; if (!sun) { sx = -sx; sy = -sy; }
             float len = (float) Math.sqrt(sx * sx + sy * sy), strength = (sun ? 1f : 0.2f) * Math.min(1f, Math.max(0f, (sy / len + 0.05f) * 6f));
             Matrix4f proj = new Matrix4f(e.getProjectionMatrix()), view = new Matrix4f(e.getModelViewMatrix());
@@ -401,7 +413,8 @@ public final class PostFx {
             GL20C.glUniform3f(u(p, "u_Horizon"), (float) Math.min(1, skyc.x * 0.8 + 0.16 * fday), (float) Math.min(1, skyc.y * 0.8 + 0.18 * fday), (float) Math.min(1, skyc.z * 0.8 + 0.20 * fday));
             GL20C.glUniform3f(u(p, "u_Zenith"), (float) skyc.x, (float) skyc.y, (float) skyc.z);
             GL20C.glUniform4f(u(p, "u_Params"), fday, frain, funder ? 1f : 0f, AethryonApi.clock().seconds());
-            GL20C.glUniform1f(u(p, "u_Storm"), level.getThunderLevel(pt));
+            GL20C.glUniform1f(u(p, "u_Storm"), Math.max(level.getThunderLevel(pt), AethryonApi.storm().heavy(level)));
+            int ncells = Sky.cells(level, pt); GL20C.glUniform4fv(u(p, "u_Cells"), Sky.CELLS); GL20C.glUniform1f(u(p, "u_CellsN"), ncells);
             GL20C.glUniform1f(u(p, "u_CloudFade"), 1f - Math.min(1f, AethryonApi.storm().fog() * 1.15f));
             GL20C.glUniform4f(u(p, "u_On"), on(IlluminateConfig.GRADE), on(IlluminateConfig.GLOW), on(IlluminateConfig.SHAFTS), on(IlluminateConfig.HAZE));
             GL20C.glUniform2f(u(p, "u_On2"), on(IlluminateConfig.CLOUDS), on(IlluminateConfig.UNDERWATER_FOG));

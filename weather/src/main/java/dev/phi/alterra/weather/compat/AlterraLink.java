@@ -15,7 +15,7 @@ import java.util.List;
 public final class AlterraLink {
     private AlterraLink() {}
     public static void register() {
-        AlterraApi.setWindProvider((level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.level(level)));   // other addons can ask for the wind
+        AlterraApi.setWindProvider((level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.at(level, x, z)));   // other addons can ask for the wind
         AlterraApi.addSettingsCategory("Weather", "Weather effects. Only on your computer.", () -> new ItemStack(Items.SAND), List.of(
                 AlterraApi.Option.bool("Sandstorms", "Dust and sandy fog in deserts.", WeatherConfig.SANDSTORMS),
                 AlterraApi.Option.bool("Fog banks", "Thick fog in misty biomes.", WeatherConfig.FOG_BANKS),

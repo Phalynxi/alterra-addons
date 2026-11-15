@@ -805,7 +805,7 @@ public final class Foliage {
     private static void skyUniforms(int sky, int zenith, int horizon) {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
         if (level == null || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK) || cam.getEntity() == null || !level.dimensionType().hasSkyLight()) { GL20C.glUniform4f(sky, 0, 1, 0, 0); return; }
-        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), t = level.getTimeOfDay(pt) * (float) (Math.PI * 2), rain = level.getRainLevel(pt);
+        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), t = level.getTimeOfDay(pt) * (float) (Math.PI * 2), rain = Sky.rain(level);
         float sx = -(float) Math.sin(t), sy = (float) Math.cos(t);   // the sun climbs the east and sets in the west (x)
         boolean sun = sy > -0.05f; if (!sun) { sx = -sx; sy = -sy; }   // by night the moon is opposite
         float len = (float) Math.sqrt(sx * sx + sy * sy + 0.0001f), strength = (sun ? 1f : 0.28f) * (1f - 0.85f * rain) * Math.min(1f, Math.max(0f, (sy / len + 0.05f) * 6f));
@@ -827,7 +827,7 @@ public final class Foliage {
         var mc = Minecraft.getInstance(); var level = mc.level; if (level == null) return 0f;
         float pt = mc.getTimer().getGameTimeDeltaPartialTick(false);
         var cp = mc.gameRenderer.getMainCamera().getPosition();
-        float storm = Math.max(AethryonApi.storm().heavy(level), Math.max(0.7f * level.getThunderLevel(pt), 0.35f * level.getRainLevel(pt)));
+        float storm = Math.max(AethryonApi.storm().heavy(level), Math.max(0.7f * level.getThunderLevel(pt), 0.35f * Sky.rain(level)));
         return Math.min(1f, storm + 0.25f * (float) Math.min(AethryonApi.wind().at(level, cp.x, cp.z).length(), 1.5));
     }
 
@@ -853,7 +853,7 @@ public final class Foliage {
     private static void seaUniforms(int sea, int sea2) {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
         if (level == null) { GL20C.glUniform4f(sea, 0, 0, 0, 0); GL20C.glUniform4f(sea2, 0, 0, 0, 0); return; }
-        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), rain = level.getRainLevel(pt), thunder = level.getThunderLevel(pt), heavy = AethryonApi.storm().heavy(level);
+        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), rain = Sky.rain(level), thunder = level.getThunderLevel(pt), heavy = AethryonApi.storm().heavy(level);
         var w = AethryonApi.wind().at(level, cam.getPosition().x, cam.getPosition().z);
         float storm = Math.min(1f, Math.max(heavy, Math.max(0.7f * thunder, 0.35f * rain)));
         float time = advance(storm, Math.min(1f, storm + 0.25f * (float) Math.min(w.length(), 1.5)));
@@ -867,7 +867,7 @@ public final class Foliage {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
         long now = System.nanoTime(); float dt = wetNano == 0 ? 0f : Math.min(0.2f, (now - wetNano) / 1.0e9f); wetNano = now;
         if (level == null) { GL20C.glUniform4f(loc, 0, 0, 0, 0); return; }
-        float rain = level.getRainLevel(mc.getTimer().getGameTimeDeltaPartialTick(false));
+        float rain = Sky.rain(level);
         var pos = cam.getBlockPosition();
         if (level.getGameTime() % 40 == 0 || dryNow == 0f) dryNow = AethryonApi.storm().drying(level, pos);
         if (level.getBiome(pos).value().getPrecipitationAt(pos) != net.minecraft.world.level.biome.Biome.Precipitation.RAIN) rain = 0f;   // it only wets the ground where it rains (not snow, not the desert)

@@ -41,9 +41,9 @@ public final class Hail {
     @SubscribeEvent public static void stopped(ServerStoppedEvent e) { FALLING.clear(); forcedUntil = 0; }
 
     /** Is it hailing here: forced, or a heavy storm that was rolled to bring it (about four in ten). */
-    public static boolean on(ServerLevel l) {
+    public static boolean on(ServerLevel l, double x, double z) {
         if (l.getGameTime() < forcedUntil) return true;
-        return DisasterConfig.get(DisasterConfig.HAIL) && HeavyStorm.level(l) > 0.4f && Storms.rollSlot(l.getGameTime() / 1200L + 7919L) < 0.4;
+        return DisasterConfig.get(DisasterConfig.HAIL) && HeavyStorm.at(l, x, z) > 0.4f && Storms.rollSlot(l.getGameTime() / 1200L + 7919L) < 0.4;
     }
 
     @SubscribeEvent
@@ -51,16 +51,17 @@ public final class Hail {
         if (!(ev.getLevel() instanceof ServerLevel l) || !l.dimensionType().hasSkyLight() || !Disasters.available()) return;
         long now = l.getGameTime();
         if (!FALLING.isEmpty()) land(l, now);
-        if (!on(l) || l.players().isEmpty()) return;
-        float strength = now < forcedUntil ? 1f : HeavyStorm.level(l);
+        if (l.players().isEmpty()) return;
         float rate = Math.max(0.1f, DisasterConfig.get(DisasterConfig.RATE).floatValue());
         for (ServerPlayer pl : l.players()) {
+            if (!on(l, pl.getX(), pl.getZ())) continue;
+            float strength = now < forcedUntil ? 1f : HeavyStorm.at(l, pl.getX(), pl.getZ());
             int n = Math.round(strength * 4f * Math.min(rate, 1.5f) + (l.random.nextFloat() < 0.5f ? 1 : 0));
             for (int i = 0; i < n; i++) {
                 double x = pl.getX() + (l.random.nextDouble() - 0.5) * 44, z = pl.getZ() + (l.random.nextDouble() - 0.5) * 44;
                 if (!l.hasChunkAt(BlockPos.containing(x, 64, z))) continue;
                 int top = l.getHeight(Heightmap.Types.MOTION_BLOCKING, (int) x, (int) z);
-                Vec3 w = Wind.at(now, x, z, l.getRainLevel(1f), l.getThunderLevel(1f), HeavyStorm.level(l));
+                Vec3 w = Wind.at(now, x, z, l.getRainLevel(1f), l.getThunderLevel(1f), HeavyStorm.at(l, x, z));
                 double vx = w.x * 0.45, vz = w.z * 0.45, drift = (FALL_FROM / SPEED);   // the wind leans the fall
                 double sx = x - vx * drift, sz = z - vz * drift;   // start upwind, land at (x, z)
                 l.sendParticles(AlterraWeather.HAIL.get(), sx, top + FALL_FROM, sz, 0, vx, -SPEED, vz, 1.0);
