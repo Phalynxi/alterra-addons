@@ -86,7 +86,9 @@ public final class SeaGrid {
         }
         tiles.values().removeIf(t -> now - t.seen > 200);
 
-        float storm = Math.max(HeavyStorm.level(level), Math.max(0.7f * level.getThunderLevel(1f), 0.35f * level.getRainLevel(1f)));
+        float cell = 0f;   // a storm cell over any player lifts the sea there too
+        for (var pl : level.players()) cell = Math.max(cell, HeavyStorm.at(level, pl.getX(), pl.getZ()));
+        float storm = Math.max(cell, Math.max(0.7f * level.getThunderLevel(1f), 0.35f * level.getRainLevel(1f)));
         float target = 1.1f * smooth(0.55f, 1.0f, storm);   // only a really bad storm lifts the sea
         float push = WIND * storm;
         boolean moving = false;

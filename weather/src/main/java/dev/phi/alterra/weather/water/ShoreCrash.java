@@ -39,7 +39,7 @@ public final class ShoreCrash {
 
     private static void crash(Minecraft mc, ClientLevel level) {
         var p = mc.player; var r = level.random;
-        float rain = level.getRainLevel(1f), thunder = level.getThunderLevel(1f), heavy = HeavyStorm.level(level);
+        float rain = HeavyStorm.rainAt(level, p.getX(), p.getZ()), thunder = level.getThunderLevel(1f), heavy = HeavyStorm.at(level, p.getX(), p.getZ());   // a storm cell over the player counts too
         var w = Wind.at(level.getGameTime(), p.getX(), p.getZ(), rain, thunder, heavy);
         float storm = Math.max(Math.max(thunder, heavy), Math.max(rain * 0.5f, Math.min(1f, (float) w.length() * 0.4f)));
         float q = (mc.options.particles().get() == net.minecraft.client.ParticleStatus.ALL ? 1f : mc.options.particles().get() == net.minecraft.client.ParticleStatus.DECREASED ? 0.5f : 0.2f) * WeatherConfig.get(WeatherConfig.INTENSITY).floatValue();

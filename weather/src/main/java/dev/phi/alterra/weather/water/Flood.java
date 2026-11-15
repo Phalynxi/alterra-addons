@@ -123,9 +123,12 @@ public final class Flood {
 
     // ---------------------------------------------------------------- rain in hollows
     private static void rain(ServerLevel level, Data d) {
-        float storm = Math.max(level.getRainLevel(1f), HeavyStorm.level(level) * 1.5f) + 0.5f * level.getThunderLevel(1f);
-        if (level.isRaining() && storm > 0.2f) for (ServerPlayer pl : level.players()) fill(level, d, pl.getBlockX(), pl.getBlockZ(), storm);
-        else if (!d.rain.isEmpty()) { if (FiniteWater.on()) { d.rain.clear(); d.stored.clear(); d.setDirty(); } else dry(level, d); }   // finite water dries up by itself
+        boolean any = false;
+        for (ServerPlayer pl : level.players()) {   // vanilla rain, or a storm cell over this player (it rains there even when the weather is clear)
+            float storm = Math.max(HeavyStorm.rainAt(level, pl.getX(), pl.getZ()), HeavyStorm.at(level, pl.getX(), pl.getZ()) * 1.5f) + 0.5f * level.getThunderLevel(1f);
+            if (storm > 0.2f && (level.isRaining() || HeavyStorm.rainAt(level, pl.getX(), pl.getZ()) > level.getRainLevel(1f))) { fill(level, d, pl.getBlockX(), pl.getBlockZ(), storm); any = true; }
+        }
+        if (!any && !d.rain.isEmpty()) { if (FiniteWater.on()) { d.rain.clear(); d.stored.clear(); d.setDirty(); } else dry(level, d); }   // finite water dries up by itself
     }
 
     /** Fill the hollows around a point: the ground (where rain lands) is filled up to where water would spill out of the area, and each hollow collects the rain on it and around it. */
