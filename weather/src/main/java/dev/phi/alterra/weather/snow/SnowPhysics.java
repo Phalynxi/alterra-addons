@@ -48,7 +48,6 @@ public final class SnowPhysics {
 
     /** Tracks: whatever walks across layers of snow presses them down, a layer a step (never below one layer; blocks of snow are not dented). Players and mobs near players. */
     private static void tracks(ServerLevel l) {
-        int dented = 0;
         for (ServerPlayer pl : l.players()) {
             if (pl.isSpectator()) continue;
             for (var le : l.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, pl.getBoundingBox().inflate(24, 8, 24), x -> x.onGround() && !x.isSpectator() && !x.isInWater() && !x.isPassenger() && !(x instanceof net.minecraft.world.entity.player.Player pp && pp.getAbilities().flying))) {
@@ -56,10 +55,8 @@ public final class SnowPhysics {
                 if (Math.abs(walked - was) > 8f) { STEPPED.put(le, walked); continue; }
                 if (Math.abs(walked - was) < 0.55f) continue;
                 STEPPED.put(le, walked);
-                BlockPos at = le.blockPosition(); BlockState st = l.getBlockState(at);
-                if (!st.is(Blocks.SNOW) || dented >= 24) continue;
-                int n = st.getValue(SnowLayerBlock.LAYERS);
-                if (n >= 2) { l.setBlock(at, st.setValue(SnowLayerBlock.LAYERS, n - 1), 3); dented++; }
+                float mass = Math.min(1f, le.getBbWidth() * le.getBbHeight() * 0.18f);   // a person 0.3, a cow 0.6, a horse about 0.7
+                dev.phi.aethryon.api.AethryonApi.disturb(l, new dev.phi.aethryon.api.Disturbance(dev.phi.aethryon.api.Disturbance.Kind.STEP, le.getX(), le.getY(), le.getZ(), Math.max(0.3f, le.getBbWidth() * 0.5f), mass, le.getDeltaMovement().x, 0, le.getDeltaMovement().z));
             }
         }
         if (STEPPED.size() > 600) STEPPED.clear();

@@ -67,6 +67,7 @@ public final class AlterraWeather {
     private static Supplier<SoundEvent> sound(String name) { return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ID, name))); }
 
     public AlterraWeather(IEventBus bus, ModContainer container) {
+        dev.phi.aethryon.service.Services.register(dev.phi.aethryon.api.DisturbanceListener.class, new dev.phi.alterra.weather.snow.SnowDisturbance(), 100, ID);   // snow answers every disturbance, from whatever mod
         PARTICLES.register(bus); SOUNDS.register(bus); WaterBlocks.register(bus);
         bus.addListener((net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent e) -> e.registrar("1").optional()
                 .playToClient(ForcedStorm.TYPE, ForcedStorm.CODEC, (payload, ctx) -> ctx.enqueueWork(() -> ForcedStorm.apply(payload)))
