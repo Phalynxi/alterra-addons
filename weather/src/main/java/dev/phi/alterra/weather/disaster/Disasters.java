@@ -52,7 +52,7 @@ public final class Disasters {
     public static final BlockPos SPIN_MARK = new BlockPos(0, -999, 0);   // a falling block's start position is synced to the client: this one marks "tumbling debris"
 
     public static final class Event {
-        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
+        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed, natural; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
     }
     private static final Map<net.minecraft.resources.ResourceKey<Level>, List<Event>> EVENTS = new HashMap<>();
     private static int nextId = 1;
@@ -102,7 +102,7 @@ public final class Disasters {
             BlockPos ground = new BlockPos((int) x, l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) x, (int) z) - 1, (int) z);
             var st = l.getBlockState(ground);
             if (DisasterConfig.get(DisasterConfig.TORNADOES) && heavy > 0.55f && count(l, TORNADO) < 2 && st.getFluidState().isEmpty()
-                    && l.random.nextFloat() < 0.0012f * heavy * rate) start(l, TORNADO, x, z);
+                    && l.random.nextFloat() < 0.0012f * heavy * rate) start(l, TORNADO, x, z).natural = true;
             else if (DisasterConfig.get(DisasterConfig.DUST_DEVILS) && !l.isRaining() && l.isDay() && st.is(BlockTags.SAND) && count(l, DUST_DEVIL) < 3
                     && l.random.nextFloat() < 0.004f * rate) start(l, DUST_DEVIL, x, z);
             else if (DisasterConfig.get(DisasterConfig.VORTEXES) && count(l, VORTEX) < 1 && l.random.nextFloat() < 0.0015f * rate) {
@@ -141,7 +141,17 @@ public final class Disasters {
         Vec3 w = Wind.at(l.getGameTime(), e.x, e.z, l.getRainLevel(1f), l.getThunderLevel(1f), HeavyStorm.at(l, e.x, e.z));
         e.heading += (l.random.nextFloat() - 0.5f) * 0.05f;
         double speed = e.type == TORNADO ? 0.20 : 0.10;   // blocks a tick: a tornado is faster than you walk, slower than you run
-        e.vx += (w.x * speed + Math.cos(e.heading) * 0.04 - e.vx) * 0.05; e.vz += (w.z * speed + Math.sin(e.heading) * 0.04 - e.vz) * 0.05;
+        double tx = w.x * speed + Math.cos(e.heading) * 0.04, tz = w.z * speed + Math.sin(e.heading) * 0.04;
+        if (e.type == TORNADO) {   // a tornado belongs to its storm cell: it travels with it, wanders inside it and is led back towards its heart
+            var cells = new java.util.ArrayList<dev.phi.alterra.weather.storm.StormCells.Cell>(); dev.phi.alterra.weather.storm.StormCells.near(l.getGameTime(), e.x, e.z, 0, cells);
+            dev.phi.alterra.weather.storm.StormCells.Cell best = null; float bl = 0.15f;
+            for (var c : cells) { float v = dev.phi.alterra.weather.storm.StormCells.at(c, e.x, e.z); if (v > bl) { bl = v; best = c; } }
+            if (best != null) {
+                double hx = best.x() - e.x, hz = best.z() - e.z, hd = Math.sqrt(hx * hx + hz * hz), lead = Math.min(0.06, hd * 0.0003);
+                tx = best.vx() + (w.x * 0.05 + Math.cos(e.heading) * 0.03) + (hd > 1 ? hx / hd * lead : 0); tz = best.vz() + (w.z * 0.05 + Math.sin(e.heading) * 0.03) + (hd > 1 ? hz / hd * lead : 0);
+            } else if (e.natural && e.age % 20 == 0 && HeavyStorm.at(l, e.x, e.z) < 0.2f) e.life = Math.min(e.life, e.age + 300);   // its storm has gone: it dies away
+        }
+        e.vx += (tx - e.vx) * 0.05; e.vz += (tz - e.vz) * 0.05;
         e.x += e.vx; e.z += e.vz;
         if (e.age % 4 == 0) e.y = l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) e.x, (int) e.z);
         if (e.age % 20 == 0 && e.type == TORNADO) {   // it dies over the sea
