@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.phi.alterra.illuminate.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "SodiumProgramMixin",
+    "SodiumShaderLoaderMixin",
+    "BoatRendererMixin",
+    "WaterLevelChangeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

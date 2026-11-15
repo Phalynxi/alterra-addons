@@ -1,0 +1,14 @@
+plugins { id 'java'; id 'net.neoforged.moddev' version '2.0.148' }
+version = '1.0.0'
+base { archivesName = 'alterra_illuminate' }
+tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named alterra_illuminate.jar; the version lives in neoforge.mods.toml
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+dependencies { compileOnly project(':api'); implementation project(':weather') }
+neoForge {
+    version = neo_version
+    mods { alterra_illuminate { sourceSet sourceSets.main } }
+}
+processResources {
+    inputs.property 'v', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { filter { line -> line.replace('@VERSION@', project.version.toString()) } }
+}
