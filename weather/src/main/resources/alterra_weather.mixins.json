@@ -20,6 +20,8 @@
     "WaterTicksMixin",
     "WaterBucketMixin",
     "BucketAimMixin",
-    "CloudRainMixin"
+    "CloudRainMixin",
+    "WheelMountMixin",
+    "PropellerBearingMixin"
   ]
 }

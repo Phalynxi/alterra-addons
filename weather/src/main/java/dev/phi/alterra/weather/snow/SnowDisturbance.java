@@ -75,7 +75,9 @@ public final class SnowDisturbance implements DisturbanceListener {
             if (!l.hasChunkAt(new BlockPos(x, (int) d.y(), z))) continue;
             BlockPos p = top(l, x, z); if (p == null || !l.getBlockState(p).is(Blocks.SNOW)) continue;   // blocks of snow stay: only loose layers fly
             int dist = 3 + l.random.nextInt(3 + r);
-            int tx = (int) Math.round(x + ux * dist), tz = (int) Math.round(z + uz * dist);
+            double vx = ux, vz = uz;
+            if (len <= 1e-4) { double ox = x + 0.5 - d.x(), oz = z + 0.5 - d.z(), ol = Math.sqrt(ox * ox + oz * oz); if (ol < 1e-3) continue; vx = ox / ol; vz = oz / ol; }   // no direction: away from the centre
+            int tx = (int) Math.round(x + vx * dist), tz = (int) Math.round(z + vz * dist);
             if (SnowPhysics.give(l, tx, tz, l.getHeight(Heightmap.Types.MOTION_BLOCKING, tx, tz)) && SnowPhysics.take(l, p)) continue;
         }
     }
