@@ -93,11 +93,11 @@ public final class Avalanche {
             BlockState st = l.getBlockState(p);
             if (st.is(Blocks.SNOW)) {
                 int n = st.getValue(SnowLayerBlock.LAYERS), add = Math.min(8 - n, layers);
-                if (add > 0) { l.setBlock(p, n + add >= 8 ? Blocks.SNOW_BLOCK.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n + add), 3); layers -= add; }
+                if (add > 0) { l.setBlock(p, n + add >= 8 ? Blocks.SNOW_BLOCK.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n + add), 3); layers -= add; SnowPhysics.wakeAround(l, p.getX(), p.getZ()); }
             } else if ((st.isAir() || st.canBeReplaced()) && st.getFluidState().isEmpty()) {
                 BlockState put = Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, Math.min(8, layers));
                 if (!put.canSurvive(l, p)) return;
-                l.setBlock(p, put, 3); layers -= Math.min(8, layers);
+                l.setBlock(p, put, 3); layers -= Math.min(8, layers); SnowPhysics.wakeAround(l, p.getX(), p.getZ());
             }
         }
     }

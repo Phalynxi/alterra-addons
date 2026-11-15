@@ -16,8 +16,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
- * Snow as a loose pile. Near the players, every so often, a layer of snow on a slope moves to the lower neighbour when the surface drops
- * by more than a repose angle (3 eighths of a block per block, about 20 degrees). Piles level out, drifts smooth, and snow is left lying
+ * Snow as a loose pile with sleeping columns. Anything that changes the snow in a column (a track, the wind, an avalanche, a layer that moved) wakes that column and its four neighbours.
+ * Every second tick a budget of awake columns near the players is relaxed: a layer moves to the lowest neighbour when the surface drops by more than the angle of repose
+ * (4 eighths of a block per block, about 27 degrees: packed enough to hold the walls of a track). A column that cannot move goes back to sleep; one that moved wakes its neighbours,
+ * so a heap collapses outwards like a flow and then rests. Nothing is scanned that has not changed (a few random columns are woken now and then to find old unsettled snow).
+ * Piles level out, drifts smooth, and snow is left lying
  * where it was heaped; a steep slope holds more than it should, which is what {@link Avalanche} lets go of.
  * It only happens on about level ground (drifts even out) and where deep snow hangs over a one-block step (it slumps off); snow on steeper ground holds, as it does in life,
  * until something sets it off. Heights are counted in eighths of a block: the top of the snow in a column, or the ground where there is none.
@@ -26,7 +29,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 public final class SnowPhysics {
     private SnowPhysics() {}
     private static final Direction[] SIDES = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-    private static final int REPOSE = 3, LEDGE = 12;   // eighths: slides above REPOSE, but not off a drop of more than a block and a half (that is a cliff, not a slope)
+    private static final int REPOSE = 4, LEDGE = 12, BUDGET = 96;   // eighths: slides above REPOSE, but not off a drop of more than a block and a half (that is a cliff, not a slope)
 
     /** What the top of a column is: the position of its topmost snow (a layer or a block), or null where there is none. */
     static BlockPos snowAt(ServerLevel l, int x, int z, int top) {
@@ -65,16 +68,39 @@ public final class SnowPhysics {
     @SubscribeEvent
     public static void tick(LevelTickEvent.Post e) {
         if (e.getLevel() instanceof ServerLevel t && HeavyConfig.get(HeavyConfig.SNOW_TRACKS) && t.getGameTime() % 2 == 0) tracks(t);
-        if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.SNOW_SETTLES) || l.getGameTime() % 10 != 3) return;
-        for (ServerPlayer pl : l.players()) for (int i = 0; i < 24; i++) {
+        if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.SNOW_SETTLES)) return;
+        if (l.getGameTime() % 10 == 3) for (ServerPlayer pl : l.players()) for (int i = 0; i < 24; i++) {   // now and then: wake a few random columns to find old unsettled snow
             int x = pl.getBlockX() + l.random.nextInt(81) - 40, z = pl.getBlockZ() + l.random.nextInt(81) - 40;
-            if (!l.hasChunkAt(new BlockPos(x, pl.getBlockY(), z))) continue;
-            creep(l, x, z);
+            if (l.hasChunkAt(new BlockPos(x, pl.getBlockY(), z))) wake(l, x, z);
+        }
+        if (l.getGameTime() % 2 != 0) return;
+        var awake = AWAKE.get(l); if (awake == null || awake.isEmpty()) return;
+        for (int n = 0; n < BUDGET && !awake.isEmpty(); n++) {
+            long k = awake.removeFirstLong(); int x = (int) k, z = (int) (k >> 32);
+            if (!near(l, x, z) || !l.hasChunkAt(new BlockPos(x, 0, z))) continue;   // too far from anyone: it sleeps until something wakes it again
+            relax(l, x, z);
         }
     }
 
-    /** One column: if its snow stands more than the repose angle above a neighbour, a layer moves there. */
-    static boolean creep(ServerLevel l, int x, int z) {
+    private static final java.util.Map<ServerLevel, it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet> AWAKE = new java.util.WeakHashMap<>();
+    private static final int MAX_AWAKE = 40_000;
+
+    /** Wake a column (and let it settle again if nothing is wrong with it). */
+    public static void wake(ServerLevel l, int x, int z) {
+        var s = AWAKE.computeIfAbsent(l, k -> new it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet());
+        if (s.size() >= MAX_AWAKE) s.removeFirstLong();
+        s.add((x & 0xFFFFFFFFL) | ((long) z << 32));
+    }
+    /** A column and its four neighbours: what a change in one column can disturb. */
+    static void wakeAround(ServerLevel l, int x, int z) { wake(l, x, z); wake(l, x + 1, z); wake(l, x - 1, z); wake(l, x, z + 1); wake(l, x, z - 1); }
+
+    private static boolean near(ServerLevel l, int x, int z) {
+        for (ServerPlayer pl : l.players()) { double dx = pl.getX() - x, dz = pl.getZ() - z; if (dx * dx + dz * dz < 112 * 112) return true; }
+        return false;
+    }
+
+    /** One column: if its snow stands more than the repose angle above a neighbour (the steepest one), a layer moves there; true if it did. */
+    static boolean relax(ServerLevel l, int x, int z) {
         int top = l.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
         BlockPos src = snowAt(l, x, z, top);
         if (src == null) return false;
@@ -87,17 +113,18 @@ public final class SnowPhysics {
             boolean flat = Math.abs(step) <= 2, slump = step > 2 && step <= 8 && depth >= 6;   // level ground: drifts even out; one step down: only deep snow slumps off the edge; anything steeper holds (until an avalanche)
             if ((flat || slump) && diff > REPOSE && diff <= LEDGE && diff > best) { best = diff; bx = nx; bz = nz; btop = ntop; }
         }
-        if (best == 0 || l.random.nextInt(4) != 0) return false;   // a slow creep, not a flood
+        if (best == 0) return false;   // at rest: it sleeps
         return give(l, bx, bz, btop) && take(l, src);   // (added first: if there is no room, nothing is taken)
     }
 
     /** Take one eighth off a pile (false if it cannot be). */
     static boolean take(ServerLevel l, BlockPos p) {
         BlockState st = l.getBlockState(p);
-        if (st.is(Blocks.SNOW_BLOCK)) { l.setBlock(p, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7), 3); return true; }
+        if (st.is(Blocks.SNOW_BLOCK)) { l.setBlock(p, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7), 3); wakeAround(l, p.getX(), p.getZ()); return true; }
         if (!st.is(Blocks.SNOW)) return false;
         int n = st.getValue(SnowLayerBlock.LAYERS);
         l.setBlock(p, n <= 1 ? Blocks.AIR.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n - 1), 3);
+        wakeAround(l, p.getX(), p.getZ());
         return true;
     }
 
@@ -109,6 +136,7 @@ public final class SnowPhysics {
             if (st.is(Blocks.SNOW) && st.getValue(SnowLayerBlock.LAYERS) < 8) {
                 int n = st.getValue(SnowLayerBlock.LAYERS) + 1;
                 l.setBlock(s, n >= 8 ? Blocks.SNOW_BLOCK.defaultBlockState() : st.setValue(SnowLayerBlock.LAYERS, n), 3);
+                wakeAround(l, x, z);
                 return true;
             }
             top = s.getY() + 1;   // a full block: start a new layer on top
@@ -118,6 +146,7 @@ public final class SnowPhysics {
         BlockState put = Blocks.SNOW.defaultBlockState();
         if (!put.canSurvive(l, p)) return false;
         l.setBlock(p, put, 3);
+        wakeAround(l, x, z);
         return true;
     }
 }

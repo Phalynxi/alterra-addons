@@ -55,6 +55,7 @@ public final class SnowDisturbance implements DisturbanceListener {
             take = Math.min(take, n - 1); if (take <= 0) continue;   // never the last layer: the ground stays covered
             if (st.is(Blocks.SNOW_BLOCK) && d.energy() < 0.3f) continue;   // a person does not dent a block of packed snow, a vehicle does
             l.setBlock(p, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, n - take), 3);
+            SnowPhysics.wakeAround(l, x, z);
             // the snow it pushed aside piles up beside the track (half of it; the rest is packed into the track)
             int heap = take / 2 + (take > 1 ? 0 : (l.random.nextBoolean() ? 1 : 0));
             if (len > 1e-4 && heap > 0 && d.energy() >= 0.25f) {
