@@ -1,25 +1,89 @@
 {
   "values": [
-    "alterra:glacial_barrens",
-    "alterra:sapphire_tundra",
-    "alterra:aurora_steppe",
-    "alterra:frostwood",
-    "alterra:glowfrost_forest",
-    "alterra:frozen_fen",
-    "alterra:fir_snow_forest",
-    "alterra:frostpeak_heath",
-    "alterra:glacial_crags",
-    "alterra:frozen_shallows",
-    "alterra:pack_ice_shelf",
-    "alterra:frozen_deep",
-    "alterra:frost_caverns",
-    "alterra:frost_archipelago",
-    "minecraft:snowy_plains",
-    "minecraft:ice_spikes",
-    "minecraft:snowy_taiga",
-    "minecraft:frozen_peaks",
-    "minecraft:snowy_slopes",
-    "minecraft:frozen_ocean",
-    "minecraft:deep_frozen_ocean"
+    {
+      "id": "alterra:glacial_barrens",
+      "required": false
+    },
+    {
+      "id": "alterra:sapphire_tundra",
+      "required": false
+    },
+    {
+      "id": "alterra:aurora_steppe",
+      "required": false
+    },
+    {
+      "id": "alterra:frostwood",
+      "required": false
+    },
+    {
+      "id": "alterra:glowfrost_forest",
+      "required": false
+    },
+    {
+      "id": "alterra:frozen_fen",
+      "required": false
+    },
+    {
+      "id": "alterra:fir_snow_forest",
+      "required": false
+    },
+    {
+      "id": "alterra:frostpeak_heath",
+      "required": false
+    },
+    {
+      "id": "alterra:glacial_crags",
+      "required": false
+    },
+    {
+      "id": "alterra:frozen_shallows",
+      "required": false
+    },
+    {
+      "id": "alterra:pack_ice_shelf",
+      "required": false
+    },
+    {
+      "id": "alterra:frozen_deep",
+      "required": false
+    },
+    {
+      "id": "alterra:frost_caverns",
+      "required": false
+    },
+    {
+      "id": "alterra:frost_archipelago",
+      "required": false
+    },
+    {
+      "id": "minecraft:snowy_plains",
+      "required": false
+    },
+    {
+      "id": "minecraft:ice_spikes",
+      "required": false
+    },
+    {
+      "id": "minecraft:snowy_taiga",
+      "required": false
+    },
+    {
+      "id": "minecraft:frozen_peaks",
+      "required": false
+    },
+    {
+      "id": "minecraft:snowy_slopes",
+      "required": false
+    },
+    {
+      "id": "minecraft:frozen_ocean",
+      "required": false
+    },
+    {
+      "id": "minecraft:deep_frozen_ocean",
+      "required": false
+    },
+    "minecraft:grove"
   ]
 }

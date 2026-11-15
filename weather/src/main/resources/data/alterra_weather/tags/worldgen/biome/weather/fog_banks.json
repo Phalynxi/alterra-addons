@@ -1,14 +1,45 @@
 {
   "values": [
-    "alterra:mossy_glen",
-    "alterra:elderwood",
-    "alterra:sporeglade",
-    "alterra:frozen_fen",
-    "alterra:willow_wetland",
-    "alterra:misty_crags",
-    "alterra:cloud_forest",
-    "minecraft:swamp",
-    "minecraft:mangrove_swamp",
-    "minecraft:dark_forest"
+    {
+      "id": "alterra:mossy_glen",
+      "required": false
+    },
+    {
+      "id": "alterra:elderwood",
+      "required": false
+    },
+    {
+      "id": "alterra:sporeglade",
+      "required": false
+    },
+    {
+      "id": "alterra:frozen_fen",
+      "required": false
+    },
+    {
+      "id": "alterra:willow_wetland",
+      "required": false
+    },
+    {
+      "id": "alterra:misty_crags",
+      "required": false
+    },
+    {
+      "id": "alterra:cloud_forest",
+      "required": false
+    },
+    {
+      "id": "minecraft:swamp",
+      "required": false
+    },
+    {
+      "id": "minecraft:mangrove_swamp",
+      "required": false
+    },
+    {
+      "id": "minecraft:dark_forest",
+      "required": false
+    },
+    "minecraft:old_growth_pine_taiga"
   ]
 }

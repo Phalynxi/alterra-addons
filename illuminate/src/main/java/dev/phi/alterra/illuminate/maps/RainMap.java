@@ -1,6 +1,6 @@
 package dev.phi.alterra.illuminate.maps;
 
-import dev.phi.alterra.weather.storm.HeavyStorm;
+import dev.phi.aethryon.api.AethryonApi;
 
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -70,7 +70,7 @@ public final class RainMap {
             int wx = ox + x, wz = oz + z; int h; float keep = 0f;
             if (!level.hasChunk(wx >> 4, wz >> 4)) h = 448;   // not loaded: treat as roofed
             else {
-                h = dev.phi.alterra.weather.WeatherHooks.ground(level, wx, wz);
+                h = AethryonApi.ground(level, wx, wz);
                 int i = (wx & (SIZE - 1)) + (wz & (SIZE - 1)) * SIZE;
                 if (!tagged[i] || tagX[i] != wx || tagZ[i] != wz) { tagged[i] = true; tagX[i] = wx; tagZ[i] = wz; lastH[i] = h; retained[i] = 0f; water[i] = 0f; shown[i] = 0f; soak[i] = 0f; }
                 else {
@@ -128,8 +128,8 @@ public final class RainMap {
 
     private static void puddles(ClientLevel level, int ox, int oz, float dt, float dry) {
         if (dt <= 0f) return;
-        float rain = Math.max(level.getRainLevel(1f), HeavyStorm.level(level));
-        float heavy = HeavyStorm.level(level);
+        float rain = Math.max(level.getRainLevel(1f), AethryonApi.storm().heavy(level));
+        float heavy = AethryonApi.storm().heavy(level);
         float add = rain * (0.0040f + 0.0030f * heavy) * dt, infil = 0.0012f * dt, evap = 0.0004f * dry * dt;   // per second: rain fills a puddle in about half a minute once the ground is soaked, and it takes a couple of minutes to go   // blocks of water per update: ordinary rain barely out-runs what the ground drinks, a heavy storm does
         float soakUp = rain * dt / (FAST ? 6f : 60f), soakDown = dt / 900f * dry;   // the ground has to be soaked first (a minute or so of steady rain), and dries out again over a quarter of an hour
         for (int z = 0; z < SIZE; z++) for (int x = 0; x < SIZE; x++) {

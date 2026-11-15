@@ -1,13 +1,12 @@
 package dev.phi.alterra.illuminate.look;
 
+import dev.phi.aethryon.api.AethryonApi;
 import dev.phi.alterra.illuminate.Illuminate;
 import dev.phi.alterra.illuminate.IlluminateConfig;
 import dev.phi.alterra.illuminate.maps.FlowMap;
 import dev.phi.alterra.illuminate.maps.SceneCopy;
 import dev.phi.alterra.illuminate.maps.SeaState;
 import dev.phi.alterra.illuminate.maps.ShoreMap;
-import dev.phi.alterra.weather.AlterraWeather;
-import dev.phi.alterra.weather.water.Foam;
 
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,8 +39,8 @@ import java.util.List;
 @EventBusSubscriber(modid = Illuminate.ID, value = Dist.CLIENT)
 public final class WaterFx {
     private WaterFx() {}
-    private static final ResourceLocation CAUSTICS = ResourceLocation.fromNamespaceAndPath(AlterraWeather.ID, "textures/environment/caustics.png"),
-            FOAM = ResourceLocation.fromNamespaceAndPath(AlterraWeather.ID, "textures/environment/foam_strip.png"), GLOW = ResourceLocation.fromNamespaceAndPath(AlterraWeather.ID, "textures/environment/glow.png");
+    private static final ResourceLocation CAUSTICS = ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "textures/environment/caustics.png"),
+            FOAM = ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "textures/environment/foam_strip.png"), GLOW = ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "textures/environment/glow.png");
     private static final ResourceLocation WHITE = ResourceLocation.withDefaultNamespace("textures/misc/white.png");
     private record Spot(int x, int z, double y, float strength, int dx, int dz) {}   // dx, dz: for foam, the way to the land
     private record Foam(int x, int z, double y, double floor, int bits) {}   // a water cell next to the shore: which of its 8 neighbours are land (bit 0 west, 1 east, 2 north, 3 south, 4 NW, 5 NE, 6 SW, 7 SE)
@@ -135,7 +134,7 @@ public final class WaterFx {
         float t = (now + pt) / 20f, rain = level.getRainLevel(pt);
         float day = Math.max(0.12f, Math.max(0f, Mth.cos(level.getTimeOfDay(pt) * Mth.TWO_PI)) * (1f - 0.75f * rain));   // sun high: 1; at night a faint moonlight
         float strength = IlluminateConfig.get(IlluminateConfig.CAUSTIC_STRENGTH).floatValue();
-        var wind = dev.phi.alterra.api.AlterraApi.wind(level, cam.x, cam.z);
+        var wind = AethryonApi.wind().at(level, cam.x, cam.z);
         // the vertices are given relative to the camera, and the view (its turning) is put on the model-view matrix here, whatever was on it before
         var mv = RenderSystem.getModelViewStack();
         mv.pushMatrix(); mv.identity(); mv.mul(e.getModelViewMatrix()); RenderSystem.applyModelViewMatrix();

@@ -20,9 +20,15 @@ versionRange="[21.1,)"
 ordering="NONE"
 side="CLIENT"
 [[dependencies.alterra_illuminate]]
-modId="alterra_weather"
+modId="aethryon"
 type="required"
-versionRange="[1.0,)"
+versionRange="[0.1,)"
+ordering="AFTER"
+side="CLIENT"
+[[dependencies.alterra_illuminate]]
+modId="alterra"
+type="optional"
+versionRange="*"
 ordering="AFTER"
 side="CLIENT"
 [[dependencies.alterra_illuminate]]

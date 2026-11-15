@@ -1,13 +1,43 @@
 {
   "values": [
-    "alterra:scorched_dunes",
-    "alterra:salt_flats",
-    "alterra:saffron_dunes",
-    "alterra:red_dunes",
-    "alterra:cactus_garden",
-    "alterra:cinder_flats",
-    "alterra:oasis_dunes",
-    "minecraft:desert",
-    "#minecraft:is_badlands"
+    {
+      "id": "alterra:scorched_dunes",
+      "required": false
+    },
+    {
+      "id": "alterra:salt_flats",
+      "required": false
+    },
+    {
+      "id": "alterra:saffron_dunes",
+      "required": false
+    },
+    {
+      "id": "alterra:red_dunes",
+      "required": false
+    },
+    {
+      "id": "alterra:cactus_garden",
+      "required": false
+    },
+    {
+      "id": "alterra:cinder_flats",
+      "required": false
+    },
+    {
+      "id": "alterra:oasis_dunes",
+      "required": false
+    },
+    {
+      "id": "minecraft:desert",
+      "required": false
+    },
+    {
+      "id": "#minecraft:is_badlands",
+      "required": false
+    },
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands"
   ]
 }

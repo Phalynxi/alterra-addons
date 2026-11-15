@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.HeavyConfig;
@@ -11,7 +12,7 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import dev.phi.alterra.api.AlterraApi;
+import dev.phi.aethryon.api.AethryonApi;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,7 +40,7 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
 
     @Override
     public boolean renderClouds(ClientLevel level, int ticks, float pt, com.mojang.blaze3d.vertex.PoseStack ps, double camX, double camY, double camZ, org.joml.Matrix4f modelView, org.joml.Matrix4f proj) {
-        return WeatherHooks.ownClouds.getAsBoolean();   // ours are drawn instead, as a volume (PostFx)
+        return Look.ownClouds.getAsBoolean();   // ours are drawn instead, as a volume (PostFx)
     }
 
     @Override
@@ -49,7 +50,7 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
         if (rain <= 0f) return true;
         float heavy = HeavyStorm.level(level);
         lightTexture.turnOnLightLayer();
-        Vec3 wind = AlterraApi.wind(level, camX, camZ);
+        Vec3 wind = AethryonApi.wind().at(level, camX, camZ);
         float slant = (float) ((0.10 + 0.50 * wind.length()) * WeatherConfig.get(WeatherConfig.RAIN_SLANT));
         double sx = wind.length() > 1e-3 ? wind.x / wind.length() * slant : 0, sz = wind.length() > 1e-3 ? wind.z / wind.length() * slant : 0;   // sideways per block fallen
         int radius = (Minecraft.useFancyGraphics() ? 10 : 5) + (heavy > 0.4f ? 3 : 0);
@@ -138,11 +139,11 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
             double top = st.getFluidState().isEmpty() ? st.getCollisionShape(level, pos).max(net.minecraft.core.Direction.Axis.Y) : st.getFluidState().getHeight(level, pos);
             if (st.getFluidState().is(net.minecraft.tags.FluidTags.WATER) && WeatherConfig.get(WeatherConfig.RIPPLES)) {   // a drop on water: a ring, and now and then a small splash
                 double sy = pos.getY() + Math.max(0, top) + 0.02;
-                if (!WeatherHooks.shaderWater.getAsBoolean()) level.addParticle(AlterraWeather.RIPPLE.get(), x + rnd.nextDouble(), sy, z + rnd.nextDouble(), 0, 0, 0);   // the rings are drawn by the water shader when it is in use
+                if (!Look.shaderWater.getAsBoolean()) level.addParticle(AlterraWeather.RIPPLE.get(), x + rnd.nextDouble(), sy, z + rnd.nextDouble(), 0, 0, 0);   // the rings are drawn by the water shader when it is in use
                 if (rnd.nextInt(5) == 0) level.addParticle(ParticleTypes.SPLASH, x + rnd.nextDouble(), sy + 0.05, z + rnd.nextDouble(), 0, 0.02, 0);
             } else {   // a drop on the ground: a small crown of light droplets, and a ring where water already stands (a puddle)
                 double gx = x + rnd.nextDouble(), gz = z + rnd.nextDouble(), gy = pos.getY() + Math.max(0, top);
-                float pud = WeatherHooks.puddleAt.apply(x, z);
+                float pud = Look.puddleAt.apply(x, z);
                 if (pud > 0.03f) level.addParticle(AlterraWeather.RIPPLE.get(), gx, gy + 0.03, gz, 0, 0, 0);
                 int drops = 2 + (pud > 0.03f ? 1 : 0);
                 for (int k = 0; k < drops; k++) {

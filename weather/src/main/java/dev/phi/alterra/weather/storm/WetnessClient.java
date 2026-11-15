@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 
@@ -21,7 +22,7 @@ public final class WetnessClient {
     public static void tick(ClientTickEvent.Post e) {
         var mc = Minecraft.getInstance();
         if (mc.level == null || mc.getConnection() == null || mc.player == null || mc.player.tickCount % 20 != 0) return;
-        boolean want = WeatherHooks.shaderWater.getAsBoolean();
+        boolean want = Look.shaderWater.getAsBoolean();
         if (want == told) return;
         try {
             if (!mc.getConnection().hasChannel(WetSubscribe.TYPE)) return;   // the server does not have this mod: this game works the wetness out itself

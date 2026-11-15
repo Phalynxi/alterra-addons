@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.water;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 
@@ -75,7 +76,7 @@ public final class Ripples {
     @SubscribeEvent
     public static void tick(ClientTickEvent.Post e) {
         var mc = Minecraft.getInstance(); ClientLevel level = mc.level;
-        if (level == null || mc.player == null || mc.isPaused() || !WeatherHooks.shaderWater.getAsBoolean() || !WeatherHooks.shaderWater.getAsBoolean()) return;
+        if (level == null || mc.player == null || mc.isPaused() || !Look.shaderWater.getAsBoolean() || !Look.shaderWater.getAsBoolean()) return;
         Vec3 cam = mc.gameRenderer.getMainCamera().getPosition();
         for (Entity en : level.getEntitiesOfClass(Entity.class, AABB.ofSize(cam, 64, 48, 64), x -> x instanceof LivingEntity || x instanceof Boat || heavy(x))) {
             double[] st = last.computeIfAbsent(en.getId(), k -> new double[] {en.getX(), en.getZ(), 0, en.getY(), 0});   // x, z, was in water, y, ticks in the air

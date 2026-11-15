@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.disaster;
 
+import dev.phi.aethryon.api.Funnel;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.WeatherConfig;
@@ -38,10 +39,14 @@ public final class DisasterClient {
         }
     }
 
+    /** The nearest funnels (up to four), as the drawing mod reads them through Aethryon. */
+    private static volatile java.util.List<Funnel> funnels = java.util.List.of();
+    public static java.util.List<Funnel> funnels() { return funnels; }
+
     @SubscribeEvent
     public static void tick(ClientTickEvent.Post e) {
         var mc = Minecraft.getInstance(); var level = mc.level;
-        if (level == null || mc.player == null) { MAP.clear(); WeatherHooks.funnelCount = 0; return; }
+        if (level == null || mc.player == null) { MAP.clear(); funnels = java.util.List.of(); return; }
         long now = level.getGameTime();
         MAP.values().removeIf(f -> now - f.seen > 12);
         for (F f : MAP.values()) { f.x += (f.tx - f.x) * 0.4; f.y += (f.ty - f.y) * 0.25; f.z += (f.tz - f.z) * 0.4; }   // smooth between the server's updates
@@ -56,13 +61,12 @@ public final class DisasterClient {
                 if (d < di) { F t = near[i]; near[i] = f; f = t; d = di; }
             }
         }
-        float[] a = new float[32]; int n = 0;
+        var list = new java.util.ArrayList<Funnel>(4);
         for (F f : near) if (f != null) {
-            a[n * 8] = (float) f.x; a[n * 8 + 1] = (float) f.y; a[n * 8 + 2] = (float) f.z; a[n * 8 + 3] = f.radius;
-            a[n * 8 + 4] = f.top; a[n * 8 + 5] = f.strength; a[n * 8 + 6] = f.type; a[n * 8 + 7] = topRadius(f.type, f.radius);
-            n++;
+            var type = f.type == Disasters.TORNADO ? Funnel.Type.TORNADO : f.type == Disasters.DUST_DEVIL ? Funnel.Type.DUST_DEVIL : Funnel.Type.WHIRLPOOL;
+            list.add(new Funnel(type, f.x, f.y, f.z, f.radius, topRadius(f.type, f.radius), f.top, f.strength, Math.signum(f.top)));
         }
-        WeatherHooks.funnels = a; WeatherHooks.funnelCount = n;
+        funnels = list;
         if (mc.player.getVehicle() instanceof net.minecraft.world.entity.vehicle.Boat boat && !mc.isPaused()) {   // the boat you drive is yours to steer: the water turns it, here in your game
             for (F f : near) {
                 if (f == null || f.type != Disasters.VORTEX || Math.abs(boat.getY() - f.y) > 4) continue;

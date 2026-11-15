@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.snow;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.WeatherConfig;
@@ -55,7 +56,7 @@ public final class Footprints {
             float dyBefore = FELL.getOrDefault(id, 0f);
             FELL.put(id, (float) le.getDeltaMovement().y);
             if (!le.onGround()) continue;
-            float puddle = WeatherHooks.puddleAt.apply(Mth.floor(le.getX()), Mth.floor(le.getZ()));
+            float puddle = Look.puddleAt.apply(Mth.floor(le.getX()), Mth.floor(le.getZ()));
             boolean inPuddle = puddle > 0.2f;
             Ground g = inPuddle ? null : ground(level, le.getX(), le.getY(), le.getZ(), rain > 0.3f || puddle > 0.05f);
             if (dyBefore < -0.45f) {   // landed hard
@@ -80,7 +81,7 @@ public final class Footprints {
 
     /** A step or a landing in a puddle: rings spreading on it and drops thrown up, more the deeper it is. */
     private static void splash(ClientLevel level, LivingEntity le, float depth, int drops, float up) {
-        WeatherHooks.splashOnLand.accept(new double[] {le.getX(), le.getZ(), 1.0, 0.012});
+        Look.splashOnLand.accept(new double[] {le.getX(), le.getZ(), 1.0, 0.012});
         var r = level.random; double y = surface(level, le.getX(), le.getY(), le.getZ()) + 0.03;
         level.addParticle(AlterraWeather.RIPPLE.get(), le.getX() + (r.nextDouble() - 0.5) * 0.3, y, le.getZ() + (r.nextDouble() - 0.5) * 0.3, 0, 0, 0);
         for (int i = 0; i < drops; i++)

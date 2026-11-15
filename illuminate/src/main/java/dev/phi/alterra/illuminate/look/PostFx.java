@@ -1,11 +1,10 @@
 package dev.phi.alterra.illuminate.look;
 
+import dev.phi.aethryon.api.AethryonApi;
 import dev.phi.alterra.illuminate.Illuminate;
 import dev.phi.alterra.illuminate.IlluminateConfig;
 import dev.phi.alterra.illuminate.maps.GlUpload;
 import dev.phi.alterra.illuminate.maps.HeightMap;
-import dev.phi.alterra.weather.WeatherHooks;
-import dev.phi.alterra.weather.storm.CloudMap;
 
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -401,9 +400,9 @@ public final class PostFx {
             GL20C.glUniform4f(u(p, "u_SunScreen"), fssx, fssy, 0f, ffront && fssx > -0.3f && fssx < 1.3f && fssy > -0.3f && fssy < 1.3f && fsun ? 1f : 0f);
             GL20C.glUniform3f(u(p, "u_Horizon"), (float) Math.min(1, skyc.x * 0.8 + 0.16 * fday), (float) Math.min(1, skyc.y * 0.8 + 0.18 * fday), (float) Math.min(1, skyc.z * 0.8 + 0.20 * fday));
             GL20C.glUniform3f(u(p, "u_Zenith"), (float) skyc.x, (float) skyc.y, (float) skyc.z);
-            GL20C.glUniform4f(u(p, "u_Params"), fday, frain, funder ? 1f : 0f, WeatherHooks.clock());
+            GL20C.glUniform4f(u(p, "u_Params"), fday, frain, funder ? 1f : 0f, AethryonApi.clock().seconds());
             GL20C.glUniform1f(u(p, "u_Storm"), level.getThunderLevel(pt));
-            GL20C.glUniform1f(u(p, "u_CloudFade"), 1f - Math.min(1f, WeatherHooks.stormFog * 1.15f));
+            GL20C.glUniform1f(u(p, "u_CloudFade"), 1f - Math.min(1f, AethryonApi.storm().fog() * 1.15f));
             GL20C.glUniform4f(u(p, "u_On"), on(IlluminateConfig.GRADE), on(IlluminateConfig.GLOW), on(IlluminateConfig.SHAFTS), on(IlluminateConfig.HAZE));
             GL20C.glUniform2f(u(p, "u_On2"), on(IlluminateConfig.CLOUDS), on(IlluminateConfig.UNDERWATER_FOG));
             float[] wf = UnderwaterColour.update(pt);
@@ -415,8 +414,8 @@ public final class PostFx {
             boolean clouds = !Float.isNaN(ch) && mc.options.getCloudsType() != net.minecraft.client.CloudStatus.OFF;
             var cp = cam.getPosition();
             double ct = cloudClock(level, pt); long cgt = (long) Math.floor(ct); float cpt = (float) (ct - cgt);   // the clouds' own smooth clock (see cloudClock)
-            double cxc = (cp.x + CloudMap.drift(cgt, cpt)) / 24.0, czc = (cp.z + CloudMap.driftZ(cgt, cpt)) / 24.0 + 0.33;
-                GL20C.glUniform1f(u(p, "u_CloudEvo"), CloudMap.evolve(cgt, cpt));
+            double cxc = (cp.x + AethryonApi.clouds().driftX(cgt, cpt)) / 24.0, czc = (cp.z + AethryonApi.clouds().driftZ(cgt, cpt)) / 24.0 + 0.33;
+                GL20C.glUniform1f(u(p, "u_CloudEvo"), AethryonApi.clouds().evolve(cgt, cpt));
             GL20C.glUniform4f(u(p, "u_CloudInfo"), (float) cxc, (float) czc, (float) (ch + 0.33 - cp.y), clouds ? 1f : 0f);
             var cc = level.getCloudColor(pt); GL20C.glUniform3f(u(p, "u_CloudColor"), (float) cc.x, (float) cc.y, (float) cc.z);
             GL20C.glUniform1i(u(p, "u_Clouds"), 2);
@@ -431,7 +430,7 @@ public final class PostFx {
             float sunVis = 1f;
             if (sun && sy / len > 0.05f) {
                 double tUp = (250.0 + 20.0 - camp.y) / (sy / len);
-                float cov = dev.phi.alterra.weather.storm.CloudMap.cover(level, camp.x + sx / len * tUp, camp.z, pt);
+                float cov = AethryonApi.clouds().cover(level, camp.x + sx / len * tUp, camp.z, pt);
                 sunVis = 1f - Math.min(1f, cov * 1.15f);
             }
             final float fSunVis = sunVis;
@@ -441,7 +440,7 @@ public final class PostFx {
                 GL20C.glUniform4f(u(p, "u_HeightInfo"), (float) (camp.x - HeightMap.originX), (float) (camp.z - HeightMap.originZ), (float) camp.y, HeightMap.ready ? 1f : 0f);
                 GL20C.glUniform1f(u(p, "u_SunVis"), fSunVis);
                 GL20C.glUniform1f(u(p, "u_Quality"), quality);
-                float[] fn = dev.phi.alterra.weather.WeatherHooks.funnels; int fnc = Math.min(4, dev.phi.alterra.weather.WeatherHooks.funnelCount);
+                var fd = new FunnelData(); float[] fn = fd.a; int fnc = fd.n;
                 float[] fu = FUNNEL; java.util.Arrays.fill(fu, 0f);
                 for (int i = 0; i < fnc; i++) {
                     fu[i * 8] = (float) (fn[i * 8] - camp.x); fu[i * 8 + 1] = (float) (fn[i * 8 + 1] - camp.y); fu[i * 8 + 2] = (float) (fn[i * 8 + 2] - camp.z); fu[i * 8 + 3] = fn[i * 8 + 3];

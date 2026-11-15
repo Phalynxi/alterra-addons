@@ -1,5 +1,7 @@
 package dev.phi.alterra.illuminate.look;
 
+import dev.phi.aethryon.api.WaterEvents;
+import dev.phi.aethryon.api.AethryonApi;
 import dev.phi.alterra.illuminate.Illuminate;
 import dev.phi.alterra.illuminate.IlluminateConfig;
 import dev.phi.alterra.illuminate.maps.FlowMap;
@@ -9,18 +11,9 @@ import dev.phi.alterra.illuminate.maps.SceneCopy;
 import dev.phi.alterra.illuminate.maps.SeaState;
 import dev.phi.alterra.illuminate.maps.ShoreMap;
 import dev.phi.alterra.illuminate.maps.SnowMap;
-import dev.phi.alterra.weather.Drying;
-import dev.phi.alterra.weather.WeatherHooks;
-import dev.phi.alterra.weather.storm.HeavyStorm;
-import dev.phi.alterra.weather.storm.Wetness;
-import dev.phi.alterra.weather.water.Foam;
-import dev.phi.alterra.weather.water.Hulls;
-import dev.phi.alterra.weather.water.Ripples;
-import dev.phi.alterra.weather.water.SubLevels;
 
 
 import com.mojang.logging.LogUtils;
-import dev.phi.alterra.api.AlterraApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -592,7 +585,7 @@ public final class Foliage {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
         if (level == null || !IlluminateConfig.get(IlluminateConfig.SWAY)) return null;
         var pos = cam.getPosition();
-        var w = AlterraApi.wind(level, pos.x, pos.z);
+        var w = AethryonApi.wind().at(level, pos.x, pos.z);
         float time = clock();
         float amount = IlluminateConfig.get(IlluminateConfig.SWAY_AMOUNT).floatValue();
         // calm air still moves the leaves a little; wind moves them more
@@ -731,11 +724,11 @@ public final class Foliage {
                 if (on) { GlUpload.bind(GL13C.GL_TEXTURE0 + RainMap.UNIT, RainMap.texture()); GL20C.glUniform1i(loc[26], RainMap.UNIT); com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0); }
             }
             if (loc[23] >= 0 && loc[24] >= 0) {   // the hulls, for cutting the water out of them
-                int n = Hulls.deepSeas() ? 0 : SubLevels.snapshotHulls(hullBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());   // Create: Deep Seas hides the sea in its hulls itself and draws its own flooding
+                int n = AethryonApi.waterEvents().shipsHandledElsewhere() ? 0 : AethryonApi.waterEvents().hulls(hullBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());   // Create: Deep Seas hides the sea in its hulls itself and draws its own flooding
                 GL20C.glUniform4fv(loc[23], hullBuf); GL20C.glUniform4f(loc[24], n, IlluminateConfig.get(IlluminateConfig.REFLECTIONS) ? 1f : 0f, IlluminateConfig.get(IlluminateConfig.METALS) ? 1f : 0f, IlluminateConfig.get(IlluminateConfig.WET) ? 1f : 0f);   // y, z, w: reflections, shining metal, wet surfaces on
             }
             if (loc[21] >= 0 && loc[22] >= 0) {   // ships near the camera: the water keeps down around them
-                int n = Hulls.deepSeas() ? 0 : SubLevels.snapshot(shipBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());   // Create: Deep Seas keeps the sea out of its ships itself; lowering the water near them here would only leave gaps
+                int n = AethryonApi.waterEvents().shipsHandledElsewhere() ? 0 : AethryonApi.waterEvents().shipBoxes(shipBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());   // Create: Deep Seas keeps the sea out of its ships itself; lowering the water near them here would only leave gaps
                 GL20C.glUniform4fv(loc[21], shipBuf); GL20C.glUniform4f(loc[22], n, 0, 0, 0);
             }
             if (loc[19] >= 0 && loc[20] >= 0) {   // where the camera was when the copy of the scene was taken (for the metals)
@@ -744,7 +737,7 @@ public final class Foliage {
                 GL20C.glUniform4f(loc[20], (float) (cp.x - SceneCopy.camX), (float) (cp.y - SceneCopy.camY), (float) (cp.z - SceneCopy.camZ), SceneCopy.haveVp && SceneCopy.ready ? 1f : 0f);
             }
             if (loc[17] >= 0 && loc[18] >= 0) {   // the wakes and splashes
-                int n = Ripples.snapshot(ripBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+                int n = AethryonApi.waterEvents().ripples(ripBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
                 GL20C.glUniform4fv(loc[17], ripBuf); GL20C.glUniform4f(loc[18], n, 0, 0, 0);
             }
             if (loc[30] >= 0 && loc[31] >= 0) {   // water easing between levels
@@ -762,15 +755,15 @@ public final class Foliage {
                 if (son) { GlUpload.bind(GL13C.GL_TEXTURE0 + SnowMap.UNIT, SnowMap.texture()); GL20C.glUniform1i(loc[32], SnowMap.UNIT); com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0); }
             }
             if (loc[34] >= 0 && loc[35] >= 0) {   // whirlpools near the camera
-                var vc = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); float[] fn = WeatherHooks.funnels; int vn = 0;
-                for (int i = 0; i < Math.min(4, WeatherHooks.funnelCount); i++) {
+                var vc = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); var fd = new FunnelData(); float[] fn = fd.a; int vn = 0;
+                for (int i = 0; i < fd.n; i++) {
                     if (Math.round(fn[i * 8 + 6]) != 2) continue;
                     VORTEX[vn * 4] = (float) (fn[i * 8] - vc.x); VORTEX[vn * 4 + 1] = (float) (fn[i * 8 + 2] - vc.z); VORTEX[vn * 4 + 2] = fn[i * 8 + 3]; VORTEX[vn * 4 + 3] = fn[i * 8 + 5] * (fn[i * 8 + 4] < 0f ? -1f : 1f); vn++;
                 }
                 GL20C.glUniform4fv(loc[34], VORTEX); GL20C.glUniform4f(loc[35], vn, 0f, 0f, 0f);
             }
             if (loc[28] >= 0 && loc[29] >= 0) {   // the foam
-                int n = Foam.snapshot(foamBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+                int n = AethryonApi.waterEvents().foam(foamBuf, Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
                 GL20C.glUniform4fv(loc[28], foamBuf); GL20C.glUniform4f(loc[29], n, 0, 0, 0);
             }
             if (loc[16] >= 0) {   // how open the sea is around here
@@ -834,12 +827,12 @@ public final class Foliage {
         var mc = Minecraft.getInstance(); var level = mc.level; if (level == null) return 0f;
         float pt = mc.getTimer().getGameTimeDeltaPartialTick(false);
         var cp = mc.gameRenderer.getMainCamera().getPosition();
-        float storm = Math.max(HeavyStorm.level(level), Math.max(0.7f * level.getThunderLevel(pt), 0.35f * level.getRainLevel(pt)));
-        return Math.min(1f, storm + 0.25f * (float) Math.min(AlterraApi.wind(level, cp.x, cp.z).length(), 1.5));
+        float storm = Math.max(AethryonApi.storm().heavy(level), Math.max(0.7f * level.getThunderLevel(pt), 0.35f * level.getRainLevel(pt)));
+        return Math.min(1f, storm + 0.25f * (float) Math.min(AethryonApi.wind().at(level, cp.x, cp.z).length(), 1.5));
     }
 
     /** The weather the sea follows: the wind where the camera is (Alterra Weather's wind, which already follows rain and storms), rain, thunder and the heavy storms. The time is the same clock the foliage sway uses. */
-    private static final float[] foamBuf = new float[Foam.MAX * 4], ripBuf = new float[Ripples.MAX * 4], shipBuf = new float[SubLevels.MAX_BOXES * 8], hullBuf = new float[SubLevels.MAX_HULLS * 16];
+    private static final float[] foamBuf = new float[WaterEvents.FOAM_MAX * 4], ripBuf = new float[WaterEvents.RIPPLES_MAX * 4], shipBuf = new float[WaterEvents.SHIP_BOXES_MAX * 8], hullBuf = new float[WaterEvents.HULLS_MAX * 16];
     private static float surge, stormRef = -1f; private static long lastNano, refNano; private static double seaTime; private static boolean changing;
     /** Works out the weather surge and returns the shared clock. */
     private static float advance(float storm, float lift) {
@@ -856,12 +849,12 @@ public final class Foliage {
         return clock();
     }
     /** The one clock every animation runs on (waves, sway, boats riding the swell). */
-    static float clock() { return WeatherHooks.clock(); }   // one clock for every animation (see there)
+    static float clock() { return AethryonApi.clock().seconds(); }   // one clock for every animation (see there)
     private static void seaUniforms(int sea, int sea2) {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
         if (level == null) { GL20C.glUniform4f(sea, 0, 0, 0, 0); GL20C.glUniform4f(sea2, 0, 0, 0, 0); return; }
-        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), rain = level.getRainLevel(pt), thunder = level.getThunderLevel(pt), heavy = HeavyStorm.level(level);
-        var w = AlterraApi.wind(level, cam.getPosition().x, cam.getPosition().z);
+        float pt = mc.getTimer().getGameTimeDeltaPartialTick(false), rain = level.getRainLevel(pt), thunder = level.getThunderLevel(pt), heavy = AethryonApi.storm().heavy(level);
+        var w = AethryonApi.wind().at(level, cam.getPosition().x, cam.getPosition().z);
         float storm = Math.min(1f, Math.max(heavy, Math.max(0.7f * thunder, 0.35f * rain)));
         float time = advance(storm, Math.min(1f, storm + 0.25f * (float) Math.min(w.length(), 1.5)));
         GL20C.glUniform4f(sea, time, (float) w.x, (float) w.z, storm);
@@ -876,10 +869,10 @@ public final class Foliage {
         if (level == null) { GL20C.glUniform4f(loc, 0, 0, 0, 0); return; }
         float rain = level.getRainLevel(mc.getTimer().getGameTimeDeltaPartialTick(false));
         var pos = cam.getBlockPosition();
-        if (level.getGameTime() % 40 == 0 || dryNow == 0f) dryNow = Drying.factor(level, pos);
+        if (level.getGameTime() % 40 == 0 || dryNow == 0f) dryNow = AethryonApi.storm().drying(level, pos);
         if (level.getBiome(pos).value().getPrecipitationAt(pos) != net.minecraft.world.level.biome.Biome.Precipitation.RAIN) rain = 0f;   // it only wets the ground where it rains (not snow, not the desert)
-        boolean fromServer = Wetness.serverAt != 0 && now - Wetness.serverAt < 6_000_000_000L;   // the server's number if it has sent one lately, else this game's own estimate
-        if (fromServer) wet += (Wetness.serverWet - wet) * Math.min(1f, dt * 2f);
+        float serverWet = AethryonApi.storm().serverWet(); boolean fromServer = !Float.isNaN(serverWet);   // the server's number if it has sent one lately, else this game's own estimate
+        if (fromServer) wet += (serverWet - wet) * Math.min(1f, dt * 2f);
         else wet = Math.max(0f, Math.min(1f, wet + (rain > 0.05f ? rain * dt / 25f : -dt / 120f * dryNow)));
         GL20C.glUniform4f(loc, IlluminateConfig.get(IlluminateConfig.WATER_LOOK) ? wet : 0f, rain, 0f, 0f);
     }

@@ -27,7 +27,7 @@ ordering="NONE"
 side="BOTH"
 [[dependencies.alterra_weather]]
 modId="alterra"
-type="required"
+type="optional"
 versionRange="[1.0,)"
 ordering="AFTER"
 side="BOTH"

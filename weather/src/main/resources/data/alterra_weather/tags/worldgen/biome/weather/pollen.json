@@ -1,19 +1,64 @@
 {
   "values": [
-    "alterra:heather_moor",
-    "alterra:bluebell_wood",
-    "alterra:golden_steppe",
-    "alterra:poppy_plains",
-    "alterra:lavender_fields",
-    "alterra:sunflower_prairie",
-    "alterra:wildflower_meadow",
-    "alterra:marigold_plains",
-    "alterra:orchid_jungle",
-    "alterra:aspen_parkland",
-    "alterra:kelp_meadow",
-    "alterra:alpine_meadow",
-    "minecraft:flower_forest",
-    "minecraft:meadow",
-    "minecraft:sunflower_plains"
+    {
+      "id": "alterra:heather_moor",
+      "required": false
+    },
+    {
+      "id": "alterra:bluebell_wood",
+      "required": false
+    },
+    {
+      "id": "alterra:golden_steppe",
+      "required": false
+    },
+    {
+      "id": "alterra:poppy_plains",
+      "required": false
+    },
+    {
+      "id": "alterra:lavender_fields",
+      "required": false
+    },
+    {
+      "id": "alterra:sunflower_prairie",
+      "required": false
+    },
+    {
+      "id": "alterra:wildflower_meadow",
+      "required": false
+    },
+    {
+      "id": "alterra:marigold_plains",
+      "required": false
+    },
+    {
+      "id": "alterra:orchid_jungle",
+      "required": false
+    },
+    {
+      "id": "alterra:aspen_parkland",
+      "required": false
+    },
+    {
+      "id": "alterra:kelp_meadow",
+      "required": false
+    },
+    {
+      "id": "alterra:alpine_meadow",
+      "required": false
+    },
+    {
+      "id": "minecraft:flower_forest",
+      "required": false
+    },
+    {
+      "id": "minecraft:meadow",
+      "required": false
+    },
+    {
+      "id": "minecraft:sunflower_plains",
+      "required": false
+    }
   ]
 }

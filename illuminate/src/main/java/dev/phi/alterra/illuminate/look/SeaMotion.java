@@ -1,13 +1,12 @@
 package dev.phi.alterra.illuminate.look;
 
+import dev.phi.aethryon.api.AethryonApi;
 import dev.phi.alterra.illuminate.IlluminateConfig;
 import dev.phi.alterra.illuminate.maps.SeaState;
-import dev.phi.alterra.weather.WeatherHooks;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import dev.phi.alterra.api.AlterraApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.vehicle.Boat;
 
@@ -46,8 +45,8 @@ public final class SeaMotion {
         var mc = Minecraft.getInstance(); var level = mc.level;
         if (level == null || !boat.isInWater() || !IlluminateConfig.get(IlluminateConfig.WATER_WAVES) || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK)) return;
         double x = boat.getX(), z = boat.getZ();
-        var cp = mc.gameRenderer.getMainCamera().getPosition(); var w = AlterraApi.wind(level, cp.x, cp.z);   // the shader uses the wind at the camera
-        float t = WeatherHooks.clock(), amp = Foliage.swellAmp(SeaState.at(x, z));
+        var cp = mc.gameRenderer.getMainCamera().getPosition(); var w = AethryonApi.wind().at(level, cp.x, cp.z);   // the shader uses the wind at the camera
+        float t = AethryonApi.clock().seconds(), amp = Foliage.swellAmp(SeaState.at(x, z));
         float h = surface(x, z, t, w.x, w.z, amp);   // only how it is drawn: its real movement is never touched
         float sx = (surface(x + 0.8, z, t, w.x, w.z, amp) - surface(x - 0.8, z, t, w.x, w.z, amp)) / 1.6f, sz = (surface(x, z + 0.8, t, w.x, w.z, amp) - surface(x, z - 0.8, t, w.x, w.z, amp)) / 1.6f;
         double speed = Math.hypot(boat.getDeltaMovement().x, boat.getDeltaMovement().z);

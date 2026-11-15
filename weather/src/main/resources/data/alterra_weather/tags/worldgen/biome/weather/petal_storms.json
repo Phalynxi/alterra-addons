@@ -1,7 +1,16 @@
 {
   "values": [
-    "alterra:rimeblossom_grove",
-    "alterra:blossom_weald",
-    "minecraft:cherry_grove"
+    {
+      "id": "alterra:rimeblossom_grove",
+      "required": false
+    },
+    {
+      "id": "alterra:blossom_weald",
+      "required": false
+    },
+    {
+      "id": "minecraft:cherry_grove",
+      "required": false
+    }
   ]
 }

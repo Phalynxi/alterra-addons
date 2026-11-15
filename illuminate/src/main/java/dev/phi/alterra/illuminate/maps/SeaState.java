@@ -1,7 +1,6 @@
 package dev.phi.alterra.illuminate.maps;
 
-import dev.phi.alterra.weather.water.SeaOpen;
-import dev.phi.alterra.weather.water.SeaSurge;
+import dev.phi.aethryon.api.AethryonApi;
 
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -33,7 +32,7 @@ public final class SeaState {
         float[] v = new float[SIZE * SIZE]; boolean[] known = new boolean[SIZE * SIZE];
         var pos = new BlockPos.MutableBlockPos();
         for (int cz = 0; cz < SIZE; cz++) for (int cx = 0; cx < SIZE; cx++) {
-            float o = SeaOpen.at(level, ox + cx * CELL + CELL / 2, oz + cz * CELL + CELL / 2, pos);
+            float o = AethryonApi.sea().open(level, ox + cx * CELL + CELL / 2, oz + cz * CELL + CELL / 2, pos);
             if (o < 0f) continue;
             known[cx + cz * SIZE] = true; v[cx + cz * SIZE] = o;
         }
@@ -53,14 +52,14 @@ public final class SeaState {
 
     /** Puts the storm surge (how far the water grid has raised the sea, from the server) next to the openness, every tick while there is any. */
     public static void refreshSurge() {
-        if (!ready || (!SeaSurge.active() && !surged)) return;
+        if (!ready || (!AethryonApi.sea().surging() && !surged)) return;
         upload();
     }
 
     private static void upload() {
         boolean fresh = tex == 0, any = false;
         for (int cz = 0; cz < SIZE; cz++) for (int cx = 0; cx < SIZE; cx++) {
-            int i = cx + cz * SIZE; float h = SeaSurge.height(originX + cx * CELL + CELL / 2.0, originZ + cz * CELL + CELL / 2.0);
+            int i = cx + cz * SIZE; float h = AethryonApi.sea().surge(originX + cx * CELL + CELL / 2.0, originZ + cz * CELL + CELL / 2.0);
             rg[i * 2] = data[i]; rg[i * 2 + 1] = (byte) (128 + Math.max(-127, Math.min(127, Math.round(h * 100f)))); any |= h != 0f;
         }
         surged = any;

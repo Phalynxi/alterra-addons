@@ -1,11 +1,34 @@
 {
   "values": [
-    "alterra:ashen_moors",
-    "alterra:ember_woods",
-    "alterra:scorched_dunes",
-    "alterra:cinder_flats",
-    "alterra:dustwood",
-    "alterra:sunscar_cliffs",
-    "alterra:magma_hollows"
+    {
+      "id": "alterra:ashen_moors",
+      "required": false
+    },
+    {
+      "id": "alterra:ember_woods",
+      "required": false
+    },
+    {
+      "id": "alterra:scorched_dunes",
+      "required": false
+    },
+    {
+      "id": "alterra:cinder_flats",
+      "required": false
+    },
+    {
+      "id": "alterra:dustwood",
+      "required": false
+    },
+    {
+      "id": "alterra:sunscar_cliffs",
+      "required": false
+    },
+    {
+      "id": "alterra:magma_hollows",
+      "required": false
+    },
+    "minecraft:basalt_deltas",
+    "minecraft:soul_sand_valley"
   ]
 }

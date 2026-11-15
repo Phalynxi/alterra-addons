@@ -1,6 +1,6 @@
 package dev.phi.alterra.illuminate.maps;
 
-import dev.phi.alterra.weather.net.WaterSync;
+import dev.phi.aethryon.api.WaterAmounts;
 
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -26,8 +26,8 @@ public final class FlowMap {
     private static final Long2ObjectOpenHashMap<float[]> moves = new Long2ObjectOpenHashMap<>();   // column -> {offset when it started, start time}
     private static final Long2ObjectOpenHashMap<float[]> sim = new Long2ObjectOpenHashMap<>();     // block -> {amount before, amount now, when it arrived, settled (1)} from the server's simulation
 
-    /** Precise amounts from the server (WaterSync): the surface glides from the last amount to this one over a tick. */
-    public static synchronized void received(WaterSync w) {
+    /** Precise amounts from the server (WaterAmounts): the surface glides from the last amount to this one over a tick. */
+    public static synchronized void received(WaterAmounts w) {
         float t = now();
         for (int i = 0; i < w.pos().length; i++) {
             long k = w.pos()[i]; byte b = w.amount()[i];

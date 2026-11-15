@@ -1,0 +1,46 @@
+package dev.phi.alterra.weather;
+
+import dev.phi.aethryon.api.SeaProvider;
+import dev.phi.aethryon.api.StormProvider;
+import dev.phi.aethryon.api.WaterEvents;
+import dev.phi.aethryon.api.WindProvider;
+import dev.phi.aethryon.service.Services;
+import dev.phi.alterra.weather.storm.HeavyStorm;
+import dev.phi.alterra.weather.storm.Wetness;
+import dev.phi.alterra.weather.water.Foam;
+import dev.phi.alterra.weather.water.Hulls;
+import dev.phi.alterra.weather.water.Ripples;
+import dev.phi.alterra.weather.water.SeaOpen;
+import dev.phi.alterra.weather.water.SeaSurge;
+import dev.phi.alterra.weather.water.SubLevels;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+/** What this mod knows, offered to every other mod through Aethryon's services: the wind, the storms, the sea and what is happening on the water. */
+public final class WeatherProviders {
+    private WeatherProviders() {}
+
+    public static void register() {
+        Services.register(WindProvider.class, (level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.level(level)), 100, AlterraWeather.ID);
+        Services.register(dev.phi.aethryon.api.DisasterView.class, dev.phi.alterra.weather.disaster.DisasterClient::funnels, 100, AlterraWeather.ID);
+        Services.register(StormProvider.class, new StormProvider() {
+            public float heavy(Level level) { return HeavyStorm.level(level); }
+            public float fog() { return WeatherHooks.stormFog; }
+            public float drying(Level level, BlockPos pos) { return Drying.factor(level, pos); }
+            public float serverWet() { return Wetness.serverAt != 0 && System.nanoTime() - Wetness.serverAt < 6_000_000_000L ? Wetness.serverWet : Float.NaN; }
+        }, 100, AlterraWeather.ID);
+        Services.register(SeaProvider.class, new SeaProvider() {
+            public float open(Level level, int x, int z, BlockPos.MutableBlockPos scratch) { return SeaOpen.at(level, x, z, scratch); }
+            public boolean surging() { return SeaSurge.active(); }
+            public float surge(double x, double z) { return SeaSurge.height(x, z); }
+        }, 100, AlterraWeather.ID);
+        Services.register(WaterEvents.class, new WaterEvents() {
+            public int foam(float[] out, Vec3 camera) { return Foam.snapshot(out, camera); }
+            public int ripples(float[] out, Vec3 camera) { return Ripples.snapshot(out, camera); }
+            public int shipBoxes(float[] out, Vec3 camera) { return SubLevels.snapshot(out, camera); }
+            public int hulls(float[] out, Vec3 camera) { return SubLevels.snapshotHulls(out, camera); }
+            public boolean shipsHandledElsewhere() { return Hulls.deepSeas(); }
+        }, 100, AlterraWeather.ID);
+    }
+}

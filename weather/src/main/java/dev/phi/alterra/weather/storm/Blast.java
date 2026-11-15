@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.net.BlastSync;
@@ -38,7 +39,7 @@ public final class Blast {
     /** Called on the client with the explosion's position and radius. */
     public static void received(BlastSync b) {
         var level = Minecraft.getInstance().level;
-        if (level == null || !WeatherHooks.shaderWater.getAsBoolean()) return;
+        if (level == null || !Look.shaderWater.getAsBoolean()) return;
         // the water's top at this spot, looked for from above the blast down to below it
         var p = new BlockPos.MutableBlockPos((int) Math.floor(b.x()), (int) Math.floor(b.y() + b.radius() + 3), (int) Math.floor(b.z()));
         double top = Double.NaN;

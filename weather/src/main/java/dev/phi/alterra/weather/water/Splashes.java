@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.water;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 
@@ -31,7 +32,7 @@ public final class Splashes {
             double f = (i + 0.5) / jet, up = Math.min(0.38, (0.10 + 0.05 * s2) * (0.55 + 0.9 * f) * (0.9 + 0.2 * r.nextDouble()));
             level.addParticle(sp, x + (r.nextDouble() - 0.5) * 0.04, y + 0.05 + i * 0.05, z + (r.nextDouble() - 0.5) * 0.04, (r.nextDouble() - 0.5) * 0.02, up, (r.nextDouble() - 0.5) * 0.02);
         }
-        WeatherHooks.splashOnLand.accept(new double[] {x, z, 1.2 + sc * 1.1, 0.04 * sc});   // and the water that is thrown out lands on the shore
+        Look.splashOnLand.accept(new double[] {x, z, 1.2 + sc * 1.1, 0.04 * sc});   // and the water that is thrown out lands on the shore
         int loose = (int) Math.min(6, 1 + sc * 1.5);   // a few flung wide
         for (int i = 0; i < loose; i++) {
             double a = r.nextDouble() * Math.PI * 2, out = (0.03 + r.nextDouble() * 0.07) * (0.6 + 0.4 * s2), up = 0.10 + r.nextDouble() * 0.15;
@@ -44,7 +45,7 @@ public final class Splashes {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null || SubLevels.inside(x, z)) return;
         double sc = Math.max(0.15, Math.min(3.0, scale)); var r = level.random;
-        WeatherHooks.splashOnLand.accept(new double[] {x, z, 1.5 + sc, 0.025 * sc});
+        Look.splashOnLand.accept(new double[] {x, z, 1.5 + sc, 0.025 * sc});
         int drops = (int) Math.min(26, 4 + sc * 7);
         for (int i = 0; i < drops; i++) {
             double side = (r.nextBoolean() ? 1 : -1) * (0.05 + r.nextDouble() * 0.18) * (0.6 + 0.4 * sc), fwd = (0.06 + r.nextDouble() * 0.16) * (0.6 + 0.4 * sc);

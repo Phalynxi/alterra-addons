@@ -1,5 +1,6 @@
 package dev.phi.alterra.weather.water;
 
+import dev.phi.aethryon.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.Wind;
@@ -62,7 +63,7 @@ public final class ShoreCrash {
                     level.addParticle(AlterraWeather.SPRAY.get(), sx + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepZ()), h + 0.05, sz + (r.nextDouble() - 0.5) * 0.6 * Math.abs(d.getStepX()),
                             d.getStepX() * v + side * Math.abs(d.getStepZ()), up, d.getStepZ() * v + side * Math.abs(d.getStepX()));
                 }
-                WeatherHooks.splashOnLand.accept(new double[] {x + 0.5 + d.getStepX() * (1.6 + 1.4 * storm), z + 0.5 + d.getStepZ() * (1.6 + 1.4 * storm), 1.3, 0.012 + 0.03 * storm});
+                Look.splashOnLand.accept(new double[] {x + 0.5 + d.getStepX() * (1.6 + 1.4 * storm), z + 0.5 + d.getStepZ() * (1.6 + 1.4 * storm), 1.3, 0.012 + 0.03 * storm});
                 break;
             }
         }

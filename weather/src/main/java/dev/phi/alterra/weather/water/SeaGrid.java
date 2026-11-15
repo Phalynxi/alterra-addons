@@ -4,7 +4,7 @@ import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.net.SeaSync;
 import dev.phi.alterra.weather.storm.HeavyStorm;
 
-import dev.phi.alterra.api.AlterraApi;
+import dev.phi.aethryon.api.AethryonApi;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -109,7 +109,7 @@ public final class SeaGrid {
         float damp = 1f - DAMP * DT;
         for (Tile t : tiles.values()) {   // flow: pushed down the slope of the surface and along the wind; none into land
             Tile east = tiles.get(key(t.tx + 1, t.tz)), south = tiles.get(key(t.tx, t.tz + 1));
-            var w = AlterraApi.wind(level, (t.tx * T + T / 2.0) * CELL, (t.tz * T + T / 2.0) * CELL);
+            var w = AethryonApi.wind().at(level, (t.tx * T + T / 2.0) * CELL, (t.tz * T + T / 2.0) * CELL);
             float wx = (float) w.x * push, wz = (float) w.z * push;
             for (int j = 0; j < T; j++) for (int i = 0; i < T; i++) {
                 int k = i + j * T; float o = t.open[k];
