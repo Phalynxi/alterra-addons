@@ -224,7 +224,7 @@ public final class PostFx {
                         vec2 rel = dir.xz * tp - fa.xz; float rr = length(rel), R2 = fb.w * 1.25 + 1.0;
                         if (rr > R2) continue;
                         float edge = smoothstep(R2, R2 * 0.55, rr), core = smoothstep(R2 * 0.38, 0.0, rr);
-                        float ang = atan(rel.y, rel.x) + log(rr + 1.0) * 2.8 - ftime * 0.9;
+                        float wsp = fb.x < 0.0 ? -1.0 : 1.0; float ang = atan(rel.y, rel.x) * wsp + log(rr + 1.0) * 2.8 - ftime * 0.9;
                         float arms = smoothstep(0.35, 0.95, 0.5 + 0.5 * sin(ang * 3.0));
                         float foam = arms * edge * (1.0 - core * 0.8) * fb.y * (1.0 - smoothstep(60.0, 220.0, tp));
                         c = mix(c, c * vec3(0.30, 0.50, 0.66), core * 0.85 * fb.y * edge);   // the hole: deep, dark water

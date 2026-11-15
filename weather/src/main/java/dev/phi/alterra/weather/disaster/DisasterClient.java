@@ -63,6 +63,13 @@ public final class DisasterClient {
             n++;
         }
         WeatherHooks.funnels = a; WeatherHooks.funnelCount = n;
+        if (mc.player.getVehicle() instanceof net.minecraft.world.entity.vehicle.Boat boat && !mc.isPaused()) {   // the boat you drive is yours to steer: the water turns it, here in your game
+            for (F f : near) {
+                if (f == null || f.type != Disasters.VORTEX || Math.abs(boat.getY() - f.y) > 4) continue;
+                double dx = boat.getX() - f.x, dz = boat.getZ() - f.z, d = Math.sqrt(dx * dx + dz * dz);
+                if (d < f.radius * 1.7) boat.setYRot(boat.getYRot() + (float) (Math.signum(f.top) * Vortex.speed(d, f.radius, f.strength) * 70.0));
+            }
+        }
         if (mc.isPaused()) return;
         float q = mc.options.particles().get() == net.minecraft.client.ParticleStatus.ALL ? 1f : mc.options.particles().get() == net.minecraft.client.ParticleStatus.DECREASED ? 0.5f : 0.2f;
         q *= WeatherConfig.get(WeatherConfig.INTENSITY).floatValue();

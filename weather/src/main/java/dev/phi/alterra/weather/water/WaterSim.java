@@ -78,7 +78,7 @@ public final class WaterSim {
         return false;
     }
 
-    private static boolean takes(ServerLevel l, BlockPos p) { return l.isLoaded(p) && FiniteWater.holds(l.getBlockState(p)) && !l.getBlockState(p).is(WaterBlocks.DRAIN.get()); }
+    private static boolean takes(ServerLevel l, BlockPos p) { return l.isLoaded(p) && FiniteWater.holds(l.getBlockState(p)) && !l.getBlockState(p).is(WaterBlocks.DRAIN.get()) && !dev.phi.alterra.weather.disaster.Vortex.carved(p); }   // (not into a whirlpool's funnel)
 
     private static float amountOf(ServerLevel l, Sim m, long k, BlockPos p) { return m.amount.containsKey(k) ? m.amount.get(k) : held(l, p); }
 
@@ -176,6 +176,7 @@ public final class WaterSim {
                 float diff = h - hn;
                 if (amountOf(l, m, kn, n) >= 0.999f) diff = 0f;   // a full block takes nothing more (water moves along the surface, it is never forced in)
                 f[i] = diff <= 0.0005f ? 0f : Math.min(f[i] * DAMP + G * diff * 0.25f, diff * 0.5f);   // never against the slope, never more than evens it out (no overshoot, so no water pushed up into the air)
+                if (!endless) f[i] = Math.max(0f, f[i] + dev.phi.alterra.weather.disaster.Vortex.flowBias(p, i));   // a whirlpool carries the water round it
             }
             for (int i = 0; i < 4; i++) {   // limit each flow to the room left in the spot it goes to (unless real pressure pushes it in)
                 if (f[i] <= 0f) continue;

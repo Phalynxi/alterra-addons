@@ -119,18 +119,19 @@ public final class Disasters {
         if (!(ev.getLevel() instanceof ServerLevel l) || !l.dimensionType().hasSkyLight() || !available()) return;
         if (l.getGameTime() % 20 == 11) roll(l);
         var events = EVENTS.get(l.dimension());
-        if (events == null || events.isEmpty()) return;
+        if (events == null || events.isEmpty()) { Vortex.refresh(java.util.List.of()); return; }
         var it = events.iterator();
         while (it.hasNext()) {
             Event e = it.next();
-            if (++e.age > e.life || l.players().isEmpty()) { for (Debris d : e.debris) if (!d.fb.isRemoved()) d.fb.setDeltaMovement(d.fb.getDeltaMovement().add(0.2, 0.1, 0.2)); it.remove(); continue; }
+            if (++e.age > e.life || l.players().isEmpty()) { if (e.type == VORTEX) { Vortex.refresh(java.util.List.of()); Vortex.release(l, e); } for (Debris d : e.debris) if (!d.fb.isRemoved()) d.fb.setDeltaMovement(d.fb.getDeltaMovement().add(0.2, 0.1, 0.2)); it.remove(); continue; }
             float ramp = Math.min(1f, Math.min(e.age / 120f, (e.life - e.age) / 120f)); if (!e.fixed) e.strength = ramp;
             move(l, e);
             if (!l.hasChunkAt(BlockPos.containing(e.x, 64, e.z))) { it.remove(); continue; }
-            if (DisasterConfig.get(DisasterConfig.PULL_THINGS)) pull(l, e);
+            if (DisasterConfig.get(DisasterConfig.PULL_THINGS)) { if (e.type == VORTEX) Vortex.apply(l, e); else pull(l, e); }
             if (e.type == TORNADO && DisasterConfig.get(DisasterConfig.TORNADO_BLOCKS)) { lift(l, e); orbit(l, e); }
             if (l.getGameTime() % 24 == e.id % 24) l.playSound(null, BlockPos.containing(e.x, e.y + 6, e.z), AlterraWeather.WIND_DUST.get(), net.minecraft.sounds.SoundSource.WEATHER, 3f + e.radius * 0.3f, e.type == TORNADO ? 0.55f : 0.8f);
         }
+        Vortex.refresh(events);
         if (l.getGameTime() % 2 == 0) sync(l, events);
     }
 
@@ -232,7 +233,7 @@ public final class Disasters {
             for (Event e : events) {
                 if (v.size() >= 56) break;
                 if (Math.abs(pl.getX() - e.x) > 600 || Math.abs(pl.getZ() - e.z) > 600) continue;
-                v.add((float) e.id); v.add((float) e.type); v.add((float) e.x); v.add((float) e.y); v.add((float) e.z); v.add(e.radius); v.add(e.top); v.add(e.strength);
+                v.add((float) e.id); v.add((float) e.type); v.add((float) e.x); v.add((float) e.y); v.add((float) e.z); v.add(e.radius); v.add(e.type == VORTEX ? e.spin * 14f : e.top); v.add(e.strength);   // (a whirlpool has no height: the sign says which way it turns)
             }
             if (!v.isEmpty()) PacketDistributor.sendToPlayer(pl, new DisasterSync(v));
         }
