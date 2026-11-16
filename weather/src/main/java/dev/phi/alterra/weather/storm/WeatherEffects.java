@@ -437,7 +437,7 @@ public final class WeatherEffects {
     private static void do_fogColour(ViewportEvent.ComputeFogColor e) {
         float pt = (float) e.getPartialTick(), o = Mth.lerp(pt, outdoorsBefore, outdoors);
         var camPos = e.getCamera().getPosition(); float heavy = Minecraft.getInstance().level == null ? 0f : HeavyStorm.at(Minecraft.getInstance().level, camPos.x, camPos.z) * o;   // a heavy storm turns the sky dark
-        if (heavy > 0.01f) { float m = heavy * 0.7f; e.setRed(Mth.lerp(m, e.getRed(), 0.10f)); e.setGreen(Mth.lerp(m, e.getGreen(), 0.12f)); e.setBlue(Mth.lerp(m, e.getBlue(), 0.16f)); }
+        if (heavy > 0.01f) { float m = heavy * 0.6f; e.setRed(Mth.lerp(m, e.getRed(), 0.27f)); e.setGreen(Mth.lerp(m, e.getGreen(), 0.30f)); e.setBlue(Mth.lerp(m, e.getBlue(), 0.35f)); }   // a storm turns the horizon a dark grey, not black (a travelling cell has clear sky beyond it)
         for (Kind k : Kind.values()) {
             float a = Mth.lerp(pt, before[k.ordinal()], now[k.ordinal()]) * o;
             if (a < 0.01f) continue;
