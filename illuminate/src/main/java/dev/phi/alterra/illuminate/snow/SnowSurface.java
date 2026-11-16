@@ -53,7 +53,7 @@ public final class SnowSurface {
 
     private static final class Tile { VertexBuffer vb; long sig = Long.MIN_VALUE; boolean empty = true; int cols; }
     private static final Map<Long, Tile> TILES = new HashMap<>();
-    private static int cursor;
+    private static int cursor, passes;
 
     public static void registerShader(RegisterShadersEvent e) {
         try { e.registerShader(new ShaderInstance(e.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "prism_snow"), DefaultVertexFormat.BLOCK), s -> shader = s); }
@@ -221,10 +221,12 @@ public final class SnowSurface {
             return out;
         });
         int count = (2 * RADIUS + 1) * (2 * RADIUS + 1), built = 0, scanned = 0;
-        for (int n = 0; n < count && scanned < 14 && built < 3; n++) {
+        passes++;
+        for (int n = 0; n < count && scanned < 8 && built < 2; n++) {
             int idx = (cursor + n) % count, dx = idx % (2 * RADIUS + 1) - RADIUS, dz = idx / (2 * RADIUS + 1) - RADIUS;
             int tx = ctx + dx, tz = ctz + dz; long key = ((long) tx << 32) | (tz & 0xFFFFFFFFL);
             Tile t = TILES.computeIfAbsent(key, k -> new Tile());
+            if (t.sig != Long.MIN_VALUE && t.cols == 0 && SnowDents.version(tx, tz) == 0 && (passes + idx) % 4 != 0) continue;   // a tile with no snow is looked at a quarter as often
             scanned++;
             int dv = SnowDents.version(tx, tz); long sig = sample(lv, tx * T, tz * T) ^ (dv * 0x9E3779B97F4A7C15L);
             if (sig == t.sig) continue;
