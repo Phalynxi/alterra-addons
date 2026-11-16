@@ -22,6 +22,12 @@ public final class Illuminate {
         bus.addListener(dev.phi.alterra.illuminate.water.GridWater::registerShader);   // grid-simulated water's own shader
         bus.addListener(dev.phi.alterra.illuminate.snow.SnowSurface::registerShader);   // the snow surface's own shader
         dev.phi.prismlib.service.Services.register(dev.phi.prismlib.api.SnowSurfaceProvider.class, (lv, x, z) -> lv instanceof net.minecraft.client.multiplayer.ClientLevel cl ? dev.phi.alterra.illuminate.snow.SnowSurface.heightAt(cl, x, z) : Float.NaN, 100, ID);   // what sits on the snow asks where it is
+        dev.phi.prismlib.service.Services.register(dev.phi.prismlib.api.DisturbanceListener.class, (level, d) -> {   // a wheel on the snow, seen on this client: it presses a dent as well (the weather mod presses the layers on the server)
+            if (!level.isClientSide || d.kind() != dev.phi.prismlib.api.Disturbance.Kind.WHEEL || !(level instanceof net.minecraft.client.multiplayer.ClientLevel cl)) return;
+            float h = dev.phi.alterra.illuminate.snow.SnowSurface.heightAt(cl, d.x(), d.z());
+            if (Float.isNaN(h) || Math.abs(d.y() - h) > 1.5) return;
+            dev.phi.alterra.illuminate.snow.SnowDents.stamp(d.x(), d.z(), d.radius() * 0.7f + 0.12f, 0.07f + 0.2f * Math.min(1f, d.energy()));
+        }, 100, ID);
         Look.shaderWater = Foliage::shaderWater;
         Look.ownClouds = PostFx::drawsClouds;
         Look.waterAmounts = FlowMap::received;
