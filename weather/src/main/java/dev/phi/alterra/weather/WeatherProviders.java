@@ -24,6 +24,7 @@ public final class WeatherProviders {
 
     public static void register() {
         Services.register(WindProvider.class, (level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.at(level, x, z)), 100, AlterraWeather.ID);
+        if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) Services.register(dev.phi.prismlib.api.WaveField.class, dev.phi.alterra.weather.water.WaveFieldClient.INSTANCE, 100, AlterraWeather.ID);
         Services.register(dev.phi.prismlib.api.WaterSurfaces.class, dev.phi.alterra.weather.disaster.DisasterClient::surfaces, 100, AlterraWeather.ID);
         Services.register(dev.phi.prismlib.api.DisasterView.class, dev.phi.alterra.weather.disaster.DisasterClient::funnels, 100, AlterraWeather.ID);
         Services.register(StormProvider.class, new StormProvider() {

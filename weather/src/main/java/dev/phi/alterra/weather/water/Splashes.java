@@ -19,6 +19,7 @@ public final class Splashes {
     /** A splash at a place on the water surface: scale 0.15 (a plop) to 4.5 (a tree falling in). */
     public static void add(double x, double y, double z, double scale) {
         ClientLevel level = Minecraft.getInstance().level;
+        WaveFieldClient.splash(x, z, scale);   // the grid water takes the impact too
         if (level == null || SubLevels.inside(x, z)) return;
         double sc = Math.max(0.15, Math.min(4.5, scale)); var r = level.random;
         double s2 = Math.min(sc, 3.0); var sp = AlterraWeather.SPRAY.get();
