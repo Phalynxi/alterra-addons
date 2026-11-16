@@ -86,6 +86,7 @@ public final class RainMap {
             data[j + 1] = (short) Math.round(Math.max(0f, Math.min(1f, keep)) * 65535f);
             boolean intoWater = h < 448 && level.getFluidState(probe.set(wx, h - 1, wz)).is(net.minecraft.tags.FluidTags.WATER);
             sink[x + z * SIZE] = intoWater;
+            perm[x + z * SIZE] = h >= 448 ? 0f : permeability(level.getBlockState(probe.set(wx, h - 1, wz)));
             ground[x + z * SIZE] = h + relief(wx, wz) - (intoWater ? 0.6f : 0f) + (h >= 448 ? 1000f : 0f);
         }
         puddles(level, ox, oz, dt, dry);
@@ -126,6 +127,16 @@ public final class RainMap {
     private static final int[] DX = {1, -1, 0, 0}, DZ = {0, 0, 1, -1};
     private static final float[] d = new float[4];
 
+    private static final float[] perm = new float[SIZE * SIZE];   // how readily the ground under each column drinks rain: 0 (stone, clay) to 1 (sand, gravel)
+
+    private static float permeability(net.minecraft.world.level.block.state.BlockState st) {
+        if (st.is(net.minecraft.tags.BlockTags.SAND) || st.is(net.minecraft.world.level.block.Blocks.GRAVEL) || st.is(net.minecraft.tags.BlockTags.SNOW)) return 0.9f;
+        if (st.is(net.minecraft.world.level.block.Blocks.MUD) || st.is(net.minecraft.world.level.block.Blocks.CLAY) || st.is(net.minecraft.world.level.block.Blocks.PACKED_MUD) || st.is(net.minecraft.world.level.block.Blocks.DIRT_PATH)) return 0.12f;
+        if (st.is(net.minecraft.world.level.block.Blocks.FARMLAND)) return 0.4f;
+        if (st.is(net.minecraft.tags.BlockTags.DIRT)) return 0.5f;   // grass, dirt, podzol, moss: they drink, but not at once
+        return 0.06f;   // stone, bricks, planks, terracotta: it runs off and stands
+    }
+
     private static void puddles(ClientLevel level, int ox, int oz, float dt, float dry) {
         if (dt <= 0f) return;
         float rain = Math.max(level.getRainLevel(1f), PrismApi.storm().heavy(level));
@@ -137,7 +148,11 @@ public final class RainMap {
             if (ground[x + z * SIZE] > 900f) continue;
             soak[i] = Math.max(0f, Math.min(1f, soak[i] + (rain > 0.05f ? soakUp : -soakDown)));
             float sat = Math.max(0f, Math.min(1f, (soak[i] - 0.7f) / 0.3f));
-            water[i] = Math.max(0f, Math.min(MAX_WATER, water[i] + add * sat - infil * (water[i] > 0f ? 1f : 0f) * (1f - 0.8f * sat) - evap));   // a soaked ground hardly drinks any more
+            int c0 = x + z * SIZE; float low = 0f; int nn = 0;
+            for (int n = 0; n < 4; n++) { int nx = x + DX[n], nz = z + DZ[n]; if (nx < 0 || nz < 0 || nx >= SIZE || nz >= SIZE || ground[nx + nz * SIZE] > 900f) continue; low += ground[nx + nz * SIZE] - ground[c0]; nn++; }
+            float pool = nn == 0 ? 0.1f : Math.max(0.06f, Math.min(1f, 0.10f + 2.4f * (low / nn)));   // only a dip holds water: a flat or a rise hardly does
+            float drink = 1.15f - perm[c0];   // sand and gravel take it all; stone and clay let it stand
+            water[i] = Math.max(0f, Math.min(MAX_WATER, water[i] + add * sat * pool * drink - infil * (1f + 2.5f * perm[c0]) * (water[i] > 0f ? 1f : 0f) * (1f - 0.8f * sat) - evap));   // a soaked ground hardly drinks any more
         }
         // waves washing up the shore: low land next to water gets wet in pulses as the sea comes in (more in a storm), then it drains and dries like any puddle
         float storm = Math.max(level.getThunderLevel(1f), Math.max(heavy, rain * 0.5f)); long gtm = level.getGameTime();

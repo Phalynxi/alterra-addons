@@ -117,7 +117,7 @@ public final class Foliage {
             }
             String anchor = "vec3 position = _vert_position + translation;";
             if (!text.contains(anchor) || !text.contains("uniform int u_FogShape;")) throw new IllegalStateException("the shader looks different than expected (Sodium updated?)");
-            sodiumPatched = text.replace("uniform int u_FogShape;", "uniform int u_FogShape;\nout vec4 v_AlterraView;       // xyz: the vertex relative to the camera, w: 1 on water, 2 on ice, that get the reflection look\nout vec2 v_AlterraWaveP;      // where on the repeating ripple pattern\nout vec3 v_AlterraPos;        // the vertex relative to the camera\nout float v_AlterraSkyL;      // sky light at the vertex (0 to 1): how much it is out in the open\nout float v_AlterraLeaf;      // 1 on leaves\nout float v_AlterraSnow;     // 1 on snow\nout float v_AlterraTop;       // 1 on the top of water (its corners are at a partial height), less on a side face (its bottom is at a whole height)\nout vec3 v_AlterraSwirl;     // the slope a whirlpool gives the water here (into the core, and round it)\nuniform vec4 u_AlterraVortex[4];   // whirlpools near the camera: x, z relative to it, radius, strength with the sign of the spin\nuniform vec4 u_AlterraVortexN;   // how many\nout float v_AlterraSea;       // how open the sea is here (0 sheltered, 1 open)\nuniform sampler2D u_AlterraSeaMap;\nuniform sampler2D u_AlterraFlow;   // how far each water column's surface still is from its new height (easing after a level change)\nuniform vec4 u_AlterraFlowInfo;   // camera x, z relative to that map, 1 over its size, 1 when there is anything to ease\nuniform sampler2D u_AlterraSnowMap;   // the top of the snow in each column around the camera (eighths of a block, plus 512)\nuniform vec4 u_AlterraSnowInfo;   // camera x, z relative to that map, 1 over its size, 1 when there is snow to smooth\nuniform vec4 u_AlterraSeaInfo; // camera x, z relative to the sea map, 1 over its size (0: no map), how much the weather lifts the sea\nuniform vec4 u_AlterraShips[16]; // ships and physics objects near the camera: (centre x, z, half width, half depth) and (min y, max y), relative to it\nuniform vec4 u_AlterraShipsN;    // how many\nuniform vec4 u_AlterraSky;    // sun or moon direction, glint strength (w 0: the look is off)\nout vec3 v_AlterraShore;      // position on the shore map, 1 on water\nuniform vec4 u_AlterraShore;  // camera x, z relative to the shore map, its size, on or off\nuniform vec4 u_AlterraWave;   // time, wind x, wind z, on or off\nuniform vec4 u_AlterraWave2;  // how much for leaves, for plants\nuniform vec4 u_AlterraCam;    // where the camera is (x, z wrapped at 1024), y, swell height\nuniform sampler2D u_AlterraMask; // which textures sway: red all over (leaves), green at the top only (plants)")
+            sodiumPatched = text.replace("uniform int u_FogShape;", "uniform int u_FogShape;\nout vec4 v_AlterraView;       // xyz: the vertex relative to the camera, w: 1 on water, 2 on ice, that get the reflection look\nout vec2 v_AlterraWaveP;      // where on the repeating ripple pattern\nout vec3 v_AlterraPos;        // the vertex relative to the camera\nout float v_AlterraSkyL;      // sky light at the vertex (0 to 1): how much it is out in the open\nout float v_AlterraLeaf;      // 1 on leaves\nout float v_AlterraSnow;     // 1 on snow\nout float v_AlterraTop;       // 1 on the top of water (its corners are at a partial height), less on a side face (its bottom is at a whole height)\nout vec3 v_AlterraSwirl;     // the slope a whirlpool gives the water here (into the core, and round it)\nuniform vec4 u_AlterraVortex[4];   // whirlpools near the camera: x, z relative to it, radius, strength with the sign of the spin\nuniform vec4 u_AlterraVortexN;   // how many\nuniform sampler2D u_AlterraWhirl;   // the height of a whirlpool's grid water (blocks, relative to the rest surface)\nuniform vec4 u_AlterraWhirlInfo;   // camera x, z relative to the grid corner, 1 over its width, its size in cells (0: none)\nout float v_AlterraSea;       // how open the sea is here (0 sheltered, 1 open)\nuniform sampler2D u_AlterraSeaMap;\nuniform sampler2D u_AlterraFlow;   // how far each water column's surface still is from its new height (easing after a level change)\nuniform vec4 u_AlterraFlowInfo;   // camera x, z relative to that map, 1 over its size, 1 when there is anything to ease\nuniform sampler2D u_AlterraSnowMap;   // the top of the snow in each column around the camera (eighths of a block, plus 512)\nuniform vec4 u_AlterraSnowInfo;   // camera x, z relative to that map, 1 over its size, 1 when there is snow to smooth\nuniform vec4 u_AlterraSeaInfo; // camera x, z relative to the sea map, 1 over its size (0: no map), how much the weather lifts the sea\nuniform vec4 u_AlterraShips[16]; // ships and physics objects near the camera: (centre x, z, half width, half depth) and (min y, max y), relative to it\nuniform vec4 u_AlterraShipsN;    // how many\nuniform vec4 u_AlterraSky;    // sun or moon direction, glint strength (w 0: the look is off)\nout vec3 v_AlterraShore;      // position on the shore map, 1 on water\nuniform vec4 u_AlterraShore;  // camera x, z relative to the shore map, its size, on or off\nuniform vec4 u_AlterraWave;   // time, wind x, wind z, on or off\nuniform vec4 u_AlterraWave2;  // how much for leaves, for plants\nuniform vec4 u_AlterraCam;    // where the camera is (x, z wrapped at 1024), y, swell height\nuniform sampler2D u_AlterraMask; // which textures sway: red all over (leaves), green at the top only (plants)")
                     .replace("void main() {", FUNCTION + SWELL + "\nvoid main() {")
                     .replace(anchor, anchor + """
 
@@ -130,6 +130,7 @@ public final class Foliage {
                                     if (_vert_tex_diffuse_coord_bias.y < 0.0) _amount += _m.g * u_AlterraWave2.y * 0.14;
                                     if (_amount > 0.0) position.xz += alterraSway(_vert_position, u_AlterraWave, _amount);
                                     if (_m.b > 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 1.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
+                                    if (_m.b > 0.5 && u_AlterraFlowInfo.w > 1.5 && max(abs(position.x), abs(position.z)) < 29.0 && textureLod(u_AlterraFlow, (position.xz + u_AlterraFlowInfo.xy) * u_AlterraFlowInfo.z, 0.0).g < 0.01) v_AlterraView.w = 9.0;   // our own water surface draws here: the game\'s water is not drawn at all
                                     if (_m4.a > 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 2.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
                                     if (_m4.a > 0.15 && _m4.a < 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 3.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
                                     if (_m.b > 0.5 && u_AlterraShore.w > 0.0) v_AlterraShore = vec3(position.xz + u_AlterraShore.xy, 1.0);
@@ -175,6 +176,10 @@ public final class Foliage {
                                             v_AlterraWaveP = _vc + vec2(cos(_va) * _vp.x - sin(_va) * _vp.y, sin(_va) * _vp.x + cos(_va) * _vp.y);
                                         }
                                     }
+                                    if (_m.b > 0.5 && v_AlterraTop > 0.5 && u_AlterraWhirlInfo.w > 0.5) {   // a whirlpool: the water's own surface is lifted and lowered by the grid water
+                                        vec2 _wg = (position.xz + u_AlterraWhirlInfo.xy) * u_AlterraWhirlInfo.z;
+                                        if (_wg.x > 0.0 && _wg.y > 0.0 && _wg.x < 1.0 && _wg.y < 1.0) position.y += textureLod(u_AlterraWhirl, _wg, 0.0).r;
+                                    }
                                     v_AlterraPos = position; v_AlterraSkyL = _vert_tex_light_coord.y; v_AlterraLeaf = _m.r;
                                 }
                             """);
@@ -196,15 +201,18 @@ public final class Foliage {
                 p += vec2(5.0 * sin(dot(p, vec2(7.0, 3.0)) * k0 + 1.0 + t * 0.02) + 3.0 * sin(dot(p, vec2(-11.0, 9.0)) * k0 + 2.0 - t * 0.03),
                           5.0 * sin(dot(p, vec2(-5.0, 8.0)) * k0 + 0.5 - t * 0.02) + 3.0 * sin(dot(p, vec2(13.0, 6.0)) * k0 + 3.0 + t * 0.03));
                 float m1 = 0.55 + 0.45 * sin(dot(p, vec2(5.0, 11.0)) * k0 + t * 0.04), m2 = 0.55 + 0.45 * sin(dot(p, vec2(-9.0, 4.0)) * k0 + 2.0 - t * 0.035), m3 = 0.55 + 0.45 * sin(dot(p, vec2(8.0, -7.0)) * k0 + 4.0 + t * 0.03);
+                // the wind decides which waves rule: those that run with it are strong, those across or against it are weak, so the sea runs the way the wind blows and changes as the wind turns (calm: all equal)
+                vec2 wv = sea.yz; float wl = length(wv), wlock = smoothstep(0.03, 0.15, wl); vec2 wd = wv / max(wl, 0.03);
+                #define ALIGN(k) mix(1.0, 0.18 + 1.65 * pow(max(dot(normalize(k), wd), 0.0), 2.0), wlock)
                 vec2 g = vec2(0.0);
-                g += 0.50 * m1 * cos(dot(p, vec2( 41.0,  17.0)) * k0 + t * 0.569)       * vec2( 41.0,  17.0);
-                g += 0.35 * m2 * cos(dot(p, vec2(-29.0,  58.0)) * k0 + t * 0.692 + 1.7) * vec2(-29.0,  58.0);
-                g += 0.28 * m3 * cos(dot(p, vec2( 67.0, -33.0)) * k0 + t * 0.743 + 0.6) * vec2( 67.0, -33.0);
+                g += 0.50 * ALIGN(vec2( 41.0,  17.0)) * m1 * cos(dot(p, vec2( 41.0,  17.0)) * k0 + t * 0.569)       * vec2( 41.0,  17.0);
+                g += 0.35 * ALIGN(vec2(-29.0,  58.0)) * m2 * cos(dot(p, vec2(-29.0,  58.0)) * k0 + t * 0.692 + 1.7) * vec2(-29.0,  58.0);
+                g += 0.28 * ALIGN(vec2( 67.0, -33.0)) * m3 * cos(dot(p, vec2( 67.0, -33.0)) * k0 + t * 0.743 + 0.6) * vec2( 67.0, -33.0);
                 g *= 1.0 + 0.9 * open;   // the long waves (the first three) grow most in the open sea
-                g += (1.0 - 0.35 * open) * (0.18 * cos(dot(p, vec2(-91.0, -47.0)) * k0 + t * 0.867 + 2.9) * vec2(-91.0, -47.0)
-                    + 0.12 * cos(dot(p, vec2(131.0,  61.0)) * k0 + t * 1.030 + 4.1) * vec2(131.0,  61.0)
-                    + 0.08 * cos(dot(p, vec2(-157.0, 119.0)) * k0 + t * 1.204 + 5.3) * vec2(-157.0, 119.0)
-                    + 0.05 * cos(dot(p, vec2(223.0, -97.0)) * k0 + t * 1.338 + 3.3) * vec2(223.0, -97.0));
+                g += (1.0 - 0.35 * open) * (0.18 * ALIGN(vec2(-91.0, -47.0)) * cos(dot(p, vec2(-91.0, -47.0)) * k0 + t * 0.867 + 2.9) * vec2(-91.0, -47.0)
+                    + 0.12 * ALIGN(vec2(131.0,  61.0)) * cos(dot(p, vec2(131.0,  61.0)) * k0 + t * 1.030 + 4.1) * vec2(131.0,  61.0)
+                    + 0.08 * ALIGN(vec2(-157.0, 119.0)) * cos(dot(p, vec2(-157.0, 119.0)) * k0 + t * 1.204 + 5.3) * vec2(-157.0, 119.0)
+                    + 0.05 * ALIGN(vec2(223.0, -97.0)) * cos(dot(p, vec2(223.0, -97.0)) * k0 + t * 1.338 + 3.3) * vec2(223.0, -97.0));
                 float calm = 0.35 + 0.65 * smoothstep(-0.3, 0.7, sin(dot(p, vec2(9.0, 4.0)) * k0 + t * 0.05) * sin(dot(p, vec2(-5.0, 11.0)) * k0 + 1.3 - t * 0.03));
                 return g * k0 * calm * 0.8 * amp;
             }
@@ -352,16 +360,14 @@ public final class Foliage {
             }
             String a1 = "flat in uint v_Material;", a2 = "color *= v_Color; // Apply per-vertex color modulator";
             if (!text.contains(a1) || !text.contains(a2)) throw new IllegalStateException("the fragment shader looks different than expected (Sodium updated?)");
-            sodiumFragment = text.replace(a1, a1 + "\nin vec3 v_AlterraShore;   // xz: the block position on the shore map, z: 1 on water\nuniform sampler2D u_AlterraShoreMap;\nin vec4 v_AlterraView;\nin vec2 v_AlterraWaveP;\nuniform vec4 u_AlterraSky;      // sun or moon direction, glint strength\nuniform vec4 u_AlterraZenith;   // sky colour overhead, rain\nuniform vec4 u_AlterraHorizon;  // sky colour at the horizon\nuniform vec4 u_AlterraSea;      // time, wind x, wind z, storm (0 to 1)\nuniform vec4 u_AlterraSea2;     // rain, thunder, heavy storm, surge\nuniform vec4 u_AlterraHulls[16]; // ship hulls as oriented boxes (centre; axis x + half x; axis y + half y; axis z + half z), relative to the camera\nuniform vec4 u_AlterraHullsN;    // how many\nuniform vec4 u_AlterraFoam[40];\nuniform vec4 u_AlterraFoamN;\nuniform vec4 u_AlterraRip[48];  // rings: x, z relative to the camera, age in seconds, strength\nuniform vec4 u_AlterraRipN;     // how many\nuniform sampler2D u_AlterraScene;  // colour of everything drawn before the water\nuniform sampler2D u_AlterraDepth;  // and its depth\nuniform vec4 u_AlterraScreen;      // its size, and whether it is there\nuniform mat4 u_ProjectionMatrix;\nuniform mat4 u_ModelViewMatrix;\nuniform mat4 u_AlterraPrevVP;   // the view-projection matrix of the frame before (for metals, which look in the previous frame's copy)\nuniform vec4 u_AlterraPrev;     // camera now minus camera then, and 1 when there is a previous frame\nin vec3 v_AlterraPos;\nin float v_AlterraSkyL;\nin float v_AlterraLeaf;\nin float v_AlterraTop;\nin float v_AlterraSnow;\nuniform vec4 u_AlterraSnowInfo;\nuniform vec4 u_AlterraVortex[4];\nuniform vec4 u_AlterraVortexN;\nuniform sampler2D u_AlterraWaveGrid;\nuniform vec4 u_AlterraWaveGridInfo;\nin vec3 v_AlterraSwirl;\nuniform sampler2D u_AlterraMask;\nuniform vec4 u_AlterraWet;      // how wet things are (0 to 1, rises in rain and dries slowly), the rain\nuniform sampler2D u_AlterraRainMap;  // per block column: the height of the first thing that stops rain (leaves do not)\nuniform vec4 u_AlterraRainInfo;      // camera x, z relative to the map's corner, camera y, 1 when there is a map\nin float v_AlterraSea;\nuniform vec4 u_AlterraCam;     // camera position wrapped at 1024 (x, z)\nuniform vec4 u_AlterraUnder;   // x: 1 when the camera is under water, y: the water surface above it, relative to the camera\n")
+            sodiumFragment = text.replace(a1, a1 + "\nin vec3 v_AlterraShore;   // xz: the block position on the shore map, z: 1 on water\nuniform sampler2D u_AlterraShoreMap;\nin vec4 v_AlterraView;\nin vec2 v_AlterraWaveP;\nuniform vec4 u_AlterraSky;      // sun or moon direction, glint strength\nuniform vec4 u_AlterraZenith;   // sky colour overhead, rain\nuniform vec4 u_AlterraHorizon;  // sky colour at the horizon\nuniform vec4 u_AlterraSea;      // time, wind x, wind z, storm (0 to 1)\nuniform vec4 u_AlterraSea2;     // rain, thunder, heavy storm, surge\nuniform vec4 u_AlterraHulls[16]; // ship hulls as oriented boxes (centre; axis x + half x; axis y + half y; axis z + half z), relative to the camera\nuniform vec4 u_AlterraHullsN;    // how many\nuniform vec4 u_AlterraFoam[40];\nuniform vec4 u_AlterraFoamN;\nuniform vec4 u_AlterraRip[48];  // rings: x, z relative to the camera, age in seconds, strength\nuniform vec4 u_AlterraRipN;     // how many\nuniform sampler2D u_AlterraScene;  // colour of everything drawn before the water\nuniform sampler2D u_AlterraDepth;  // and its depth\nuniform vec4 u_AlterraScreen;      // its size, and whether it is there\nuniform mat4 u_ProjectionMatrix;\nuniform mat4 u_ModelViewMatrix;\nuniform mat4 u_AlterraPrevVP;   // the view-projection matrix of the frame before (for metals, which look in the previous frame's copy)\nuniform vec4 u_AlterraPrev;     // camera now minus camera then, and 1 when there is a previous frame\nin vec3 v_AlterraPos;\nin float v_AlterraSkyL;\nin float v_AlterraLeaf;\nin float v_AlterraTop;\nin float v_AlterraSnow;\nuniform vec4 u_AlterraSnowInfo;\nuniform vec4 u_AlterraVortex[4];\nuniform vec4 u_AlterraVortexN;\nuniform sampler2D u_AlterraWaveGrid;\nuniform vec4 u_AlterraWaveGridInfo;\nuniform sampler2D u_AlterraWhirl;\nuniform vec4 u_AlterraWhirlInfo;\nin vec3 v_AlterraSwirl;\nuniform sampler2D u_AlterraMask;\nuniform vec4 u_AlterraWet;      // how wet things are (0 to 1, rises in rain and dries slowly), the rain\nuniform sampler2D u_AlterraRainMap;  // per block column: the height of the first thing that stops rain (leaves do not)\nuniform vec4 u_AlterraRainInfo;      // camera x, z relative to the map's corner, camera y, 1 when there is a map\nin float v_AlterraSea;\nuniform vec4 u_AlterraCam;     // camera position wrapped at 1024 (x, z)\nuniform vec4 u_AlterraUnder;   // x: 1 when the camera is under water, y: the water surface above it, relative to the camera\n")
                     .replace("void main() {", WATER_LOOK_SLOPE + "\nvoid main() {")
                     .replace(a2, a2 + """
 
                             float _alterraLeafPx = texture(u_AlterraMask, v_TexCoord).r;   // leaf or not, per pixel (the vertex value fades across a face where a corner samples outside the leaf texture: half the leaf got puddles)
                             float _snowPx = step(abs(texture(u_AlterraMask, v_TexCoord).a - 0.0902), 0.012);   // snow, decided per pixel from the mask (a vertex at the edge of a sprite blends with the sprite next to it in the atlas and flagged half a grass block as snow)
-                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && u_AlterraVortexN.x > 0.5) {   // water of its own (a whirlpool) is drawn in these discs instead
-                                for (int _gi = 0; _gi < 4; _gi++) { if (_gi >= int(u_AlterraVortexN.x)) break; vec4 _gt = u_AlterraVortex[_gi]; if (length(v_AlterraPos.xz - _gt.xy) < _gt.z) discard; }
-                            }
                             if (_snowPx > 0.5 && u_AlterraSnowInfo.w > 1.5 && abs(v_AlterraPos.x) < 48.0 && abs(v_AlterraPos.z) < 48.0) discard;   // near the camera the snow is drawn by its own surface
+                            if (v_AlterraView.w > 8.5) discard;
                             if (_snowPx > 0.5 && v_AlterraView.w < 0.5 && u_AlterraUnder.x < 0.5) {   // snow's own look: matte, a fine grain, tiny glints, never glossy and never blue
                                 vec2 _sp = v_AlterraPos.xz + u_AlterraCam.xz;
                                 float _g1 = fract(sin(dot(floor(_sp * 16.0), vec2(12.9898, 78.233))) * 43758.5453), _g2 = fract(sin(dot(floor(_sp * 40.0), vec2(39.3468, 11.135))) * 24634.6345);
@@ -401,7 +407,7 @@ public final class Foliage {
                                 }
                                 if (_alterraLeafPx > 0.5) { _expo = smoothstep(0.55, 0.9, v_AlterraSkyL); _ret = 0.0; }   // leaves out under the sky are wet all over, every face (rain runs through a canopy)
                                 if (_alterraLeafPx < 0.5 && _fn.y < -0.5) { _expo = 0.0; _ret = 0.0; }   // nothing wets the underside of a log or a block (rain falls from above)
-                                float _wt = max(u_AlterraWet.x * _expo, _ret);
+                                float _wt = max(max(u_AlterraWet.x * _expo, _ret), smoothstep(0.02, 0.07, _wl) * float(_hasW));   // standing water is wet wherever it has run to, under trees too (the shade only stops rain, not a puddle spreading)
                                 _wt *= 1.0 - _snowPx;   // snow does not get wet (it neither darkens nor mirrors)
                                 if (_wt > 0.01) {
                                     float _flat = smoothstep(0.85, 0.98, _fn.y) * (_alterraLeafPx > 0.5 ? 0.0 : 1.0) * (1.0 - _snowPx), _lm = dot(color.rgb, vec3(0.299, 0.587, 0.114));   // puddles and sheen only on ground that faces up, never on leaves (they are wet all over, but do not mirror)
@@ -417,7 +423,7 @@ public final class Foliage {
                                     float _pn = 0.5 + 0.25 * cos(dot(_pw, vec2(211.0, 97.0)) * _k + 1.0) + 0.25 * cos(dot(_pw, vec2(-139.0, 181.0)) * _k + 2.0) + 0.12 * cos(dot(_pw, vec2(397.0, -251.0)) * _k + 0.3);
                                     float _pud = _hasW ? smoothstep(0.02, 0.07, _wl + (_pn - 0.5) * 0.03) * _flat : smoothstep(0.62 - 0.30 * _wt, 0.78 - 0.30 * _wt, _pn) * _flat * smoothstep(0.35, 0.9, _wt) * _wt * (1.0 - step(0.5, u_AlterraRainInfo.w));   // where the rain water has really gathered (or, without the map, low spots by a pattern)
                                     if (_pud > 0.02) {
-                                        vec2 _pg = alterraRain(_pw, u_AlterraSea.x, u_AlterraWet.y) * 0.6;
+                                        vec2 _pg = alterraRain(_pw, u_AlterraSea.x, u_AlterraWet.y) * 0.6 * smoothstep(0.06, 0.14, _wl);   // raindrop rings only on water that has really gathered: a thin film that has not filled up stays still
                                         vec3 _pnn = normalize(vec3(-_pg.x, 1.0, -_pg.y)), _pv = normalize(v_AlterraPos), _pr = reflect(_pv, _pnn);
                                         float _pf = mix(0.25, 1.0, pow(1.0 - clamp(dot(-_pv, _pnn), 0.0, 1.0), 3.0));
                                         vec3 _env = mix(u_AlterraHorizon.rgb, u_AlterraZenith.rgb, clamp(_pr.y * 1.5, 0.0, 1.0));
@@ -439,8 +445,8 @@ public final class Foliage {
                                 if (_dp > 0.0) {
                                     vec3 _fnrm = normalize(cross(dFdx(v_AlterraPos), dFdy(v_AlterraPos)));
                                     float _face = 0.35 + 0.65 * abs(_fnrm.y);
-                                    float _cf = alterraCaustic(v_AlterraPos.xz + u_AlterraCam.xz, u_AlterraSea.x) * exp(-_dp * 0.10) * smoothstep(0.0, 0.5, _dp);
-                                    color.rgb *= 1.0 + _cf * 0.11 * _face * u_AlterraScreen.w * (0.15 + 0.85 * u_AlterraSky.w) * vec3(0.8, 1.0, 1.05);   // soft, like real light under water (a pattern, not a glare)
+                                    float _cf = alterraCaustic(v_AlterraPos.xz + u_AlterraCam.xz, u_AlterraSea.x) * exp(-_dp * 0.05) * smoothstep(0.0, 0.5, _dp) * _face * u_AlterraScreen.w * (0.15 + 0.85 * u_AlterraSky.w);   // the same soft light as on the bottom seen from above the water
+                                    color.rgb *= 1.0 + _cf * 0.16 * vec3(0.8, 1.0, 1.08);   // a faint moving light on the bottom, never a bright blotch (dark stone stays dark)   // a soft teal light, exactly as seen from above (not white, never blowing out)
                                 }
                             }
                             // the water surface seen from below: past about 49 degrees from straight up it is a mirror (of the bottom, bent by the ripples), inside that a bright window to the sky
@@ -451,8 +457,7 @@ public final class Foliage {
                                 float _c = clamp(dot(_v, -_n), 0.0, 1.0);
                                 float _s = sqrt(1.0 - _c * _c) * 1.333;
                                 vec3 _deep = mix(v_Color.rgb, vec3(0.30, 0.75, 0.80), 0.6) * vec3(0.30, 0.55, 0.60) * (0.35 + 0.65 * u_AlterraSky.w);   // clear water lit from above: the biome tint turned turquoise (the plain tint is a strong blue, which made it navy), darker only at night
-                                float _lp = alterraCaustic(v_AlterraWaveP * 0.5 + _n.xz * 3.0, u_AlterraSea.x);   // beyond the window you see the water itself, lit by soft drifting light, not a picture of the sea floor
-                                vec3 _mirror = _deep * (0.55 + 0.9 * _lp) * (0.3 + 0.7 * u_AlterraSky.w) + _deep * 0.25;
+                                vec3 _mirror = _deep * 0.95 * (0.3 + 0.7 * u_AlterraSky.w) + _deep * 0.25;   // a calm mirror: no bright moving pattern
                                 vec3 _tr = refract(_v, _n, 1.333);
                                 vec3 _window = (mix(u_AlterraHorizon.rgb, u_AlterraZenith.rgb, clamp(_tr.y * 1.5, 0.0, 1.0)) * 1.25 + 0.08) * vec3(0.78, 0.95, 1.0) + vec3(1.0, 0.96, 0.85) * pow(max(dot(_tr, u_AlterraSky.xyz), 0.0), 120.0) * 2.5 * u_AlterraSky.w;
                                 float _edge = smoothstep(0.93, 1.0, _s);   // Snell's window: the sky squeezed into a circle about 97 degrees across, a crisp edge, and a mirror beyond it
@@ -460,18 +465,27 @@ public final class Foliage {
                                 color.a = 1.0;
                             }
                             // the water look: ripple normals worked out from the position (no picture), the sky and the sun or moon mirrored by a Schlick fresnel, and a glint
-                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && v_AlterraView.y < 0.0 && v_AlterraTop > 0.97) {   // the top of the water only: a side face (where water steps down at a shore) keeps vanilla's look (the water maths assume a surface facing up, and turned side faces black)
+                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && ((v_AlterraView.y < 0.0 && v_AlterraTop > 0.97) || (v_AlterraTop < 0.97 && u_AlterraUnder.x < 0.5))) {   // every face of the water, the sides and bottom too, through the same look (a side face has the face's own normal as its base): a side face (where water steps down at a shore) keeps vanilla's look (the water maths assume a surface facing up, and turned side faces black)
                                 vec2 _g = alterraSlope(v_AlterraWaveP * 2.5, u_AlterraSea, u_AlterraSea2, v_AlterraSea) * 0.32;   // ripples at a smaller scale: many small waves, not a few big streaks (the slope of f(2.5x) is 2.5 times steeper, hence the factor)
                                 _g += v_AlterraSwirl.xy;   // the slope of a whirlpool
                                 float _dist = length(v_AlterraView.xyz);
                                 if (u_AlterraRipN.x > 0.5 && _dist < 40.0) _g += alterraWakes(v_AlterraView.xz) * 0.5 * (1.0 - smoothstep(18.0, 40.0, _dist));   // wakes and splashes
+                                if (u_AlterraWhirlInfo.w > 0.5 && _dist < 90.0) {   // a whirlpool: the slope of its grid water
+                                    vec2 _wq = (v_AlterraView.xz + u_AlterraWhirlInfo.xy) * u_AlterraWhirlInfo.z;
+                                    if (_wq.x > 0.01 && _wq.y > 0.01 && _wq.x < 0.99 && _wq.y < 0.99) {
+                                        float _wt = 1.0 / u_AlterraWhirlInfo.w, _wc = 1.0 / (u_AlterraWhirlInfo.z * u_AlterraWhirlInfo.w);
+                                        _g += vec2(texture(u_AlterraWhirl, _wq + vec2(_wt, 0.0)).r - texture(u_AlterraWhirl, _wq - vec2(_wt, 0.0)).r, texture(u_AlterraWhirl, _wq + vec2(0.0, _wt)).r - texture(u_AlterraWhirl, _wq - vec2(0.0, _wt)).r) / (2.0 * _wc);
+                                    }
+                                }
                                 if (u_AlterraWaveGridInfo.w > 0.5 && _dist < 40.0) {   // the grid water: ripples of rain, swimmers, boats and splashes, bouncing off the shore
                                     vec2 _gp = (v_AlterraView.xz + u_AlterraWaveGridInfo.xy) * u_AlterraWaveGridInfo.z;
                                     if (_gp.x > 0.02 && _gp.y > 0.02 && _gp.x < 0.98 && _gp.y < 0.98) _g += texture(u_AlterraWaveGrid, _gp).rg * 2.2 * (1.0 - smoothstep(20.0, 40.0, _dist));
                                 }
                                 if (u_AlterraSea2.x > 0.02 && _dist < 28.0) _g += alterraRain(v_AlterraWaveP, u_AlterraSea.x, u_AlterraSea2.x) * (1.0 - smoothstep(10.0, 28.0, _dist));   // raindrop rings
 
-                                vec3 _n = normalize(vec3(-_g.x, 1.0, -_g.y));
+                                vec3 _fnw = vec3(0.0, 1.0, 0.0);
+                                if (v_AlterraTop < 0.97) { _fnw = normalize(cross(dFdx(v_AlterraView.xyz), dFdy(v_AlterraView.xyz))); if (dot(_fnw, v_AlterraView.xyz) > 0.0) _fnw = -_fnw; }
+                                vec3 _n = normalize(_fnw + vec3(-_g.x, 0.0, -_g.y));
                                 vec3 _v = normalize(v_AlterraView.xyz);
                                 float _nv = clamp(dot(-_v, _n), 0.0, 1.0);
                                 float _fr = 0.06 + 0.94 * pow(1.0 - _nv, 4.0);   // a little more than real water's 2% looking straight down, so the world is still seen in it from above
@@ -521,7 +535,7 @@ public final class Foliage {
                                     _alpha = 1.0;
                                 }
                                 vec3 _refl = _sky; float _hit = 0.0;
-                                if (_scene && _fr > 0.03 && _dist < 48.0 && u_AlterraHullsN.y > 0.5) {   // far off a reflection is a few pixels: the sky there is enough   // the world in the mirror: found with a ray along a calmer normal (the full ripple normal scatters it into repeated, smeared copies of whatever stands there)
+                                if (_scene && _fr > 0.03 && _dist < 48.0 && u_AlterraHullsN.y > 0.5 && v_AlterraTop > 0.97) {   // (tops only: on the sides of a waterfall the trace cost a fortune and shows little)   // far off a reflection is a few pixels: the sky there is enough   // the world in the mirror: found with a ray along a calmer normal (the full ripple normal scatters it into repeated, smeared copies of whatever stands there)
                                     vec3 _rs = reflect(_v, normalize(mix(_n, vec3(0.0, 1.0, 0.0), 0.6)));
                                     _rs.y = max(_rs.y, 0.02);
                                     vec4 _t = _fr > 0.15 ? alterraTrace(v_AlterraView.xyz, _rs, 14, 1.22) : alterraTrace(v_AlterraView.xyz, _rs, 8, 1.35);
@@ -670,7 +684,8 @@ public final class Foliage {
             try {   // water pictures (blue): the surface gets swells
                 var atlas = mc.getModelManager().getAtlas(net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS);
                 for (String n : new String[] {"water_still", "water_flow"}) { var wsp = atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/" + n)); LOG.info("Alterra Illuminate: water sprite {} at u {}..{} v {}..{} ({})", n, wsp.getU0(), wsp.getU1(), wsp.getV0(), wsp.getV1(), wsp.contents().name()); paint(data, wsp, 2); }
-                paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/snow")), 3, (byte) 23);   // snow (a small alpha, between nothing and the metals' 80): the tops of its layers are smoothed
+                paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/snow")), 3, (byte) 23);
+                paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/powder_snow")), 3, (byte) 23);   // powder snow is drawn by the snow surface too   // snow (a small alpha, between nothing and the metals' 80): the tops of its layers are smoothed
                 for (String n : new String[] {"ice", "frosted_ice_0", "frosted_ice_1", "frosted_ice_2", "frosted_ice_3", "packed_ice", "blue_ice"}) paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/" + n)), 3);   // ice (alpha): a smooth, glossy surface
             } catch (Throwable ignored) { }
             try {   // metal blocks (alpha 80, less than ice's 255): storage blocks and cut copper, so iron, gold, copper, diamond, netherite and emerald blocks, and brass, zinc, steel and the like from other mods, reflect
@@ -727,7 +742,7 @@ public final class Foliage {
     public static void upload(int program) {
         if (program < 0) return;
         try {
-            int[] loc = LOCATIONS.computeIfAbsent(program, p -> new int[] {GL20C.glGetUniformLocation(p, "u_AlterraWave"), GL20C.glGetUniformLocation(p, "u_AlterraWave2"), GL20C.glGetUniformLocation(p, "u_AlterraMask"), GL20C.glGetUniformLocation(p, "u_AlterraCam"), GL20C.glGetUniformLocation(p, "u_AlterraShore"), GL20C.glGetUniformLocation(p, "u_AlterraShoreMap"), GL20C.glGetUniformLocation(p, "u_AlterraSky"), GL20C.glGetUniformLocation(p, "u_AlterraZenith"), GL20C.glGetUniformLocation(p, "u_AlterraHorizon"), GL20C.glGetUniformLocation(p, "u_AlterraScene"), GL20C.glGetUniformLocation(p, "u_AlterraDepth"), GL20C.glGetUniformLocation(p, "u_AlterraScreen"), GL20C.glGetUniformLocation(p, "u_AlterraUnder"), GL20C.glGetUniformLocation(p, "u_AlterraSea"), GL20C.glGetUniformLocation(p, "u_AlterraSea2"), GL20C.glGetUniformLocation(p, "u_AlterraSeaMap"), GL20C.glGetUniformLocation(p, "u_AlterraSeaInfo"), GL20C.glGetUniformLocation(p, "u_AlterraRip"), GL20C.glGetUniformLocation(p, "u_AlterraRipN"), GL20C.glGetUniformLocation(p, "u_AlterraPrevVP"), GL20C.glGetUniformLocation(p, "u_AlterraPrev"), GL20C.glGetUniformLocation(p, "u_AlterraShips"), GL20C.glGetUniformLocation(p, "u_AlterraShipsN"), GL20C.glGetUniformLocation(p, "u_AlterraHulls"), GL20C.glGetUniformLocation(p, "u_AlterraHullsN"), GL20C.glGetUniformLocation(p, "u_AlterraWet"), GL20C.glGetUniformLocation(p, "u_AlterraRainMap"), GL20C.glGetUniformLocation(p, "u_AlterraRainInfo"), GL20C.glGetUniformLocation(p, "u_AlterraFoam"), GL20C.glGetUniformLocation(p, "u_AlterraFoamN"), GL20C.glGetUniformLocation(p, "u_AlterraFlow"), GL20C.glGetUniformLocation(p, "u_AlterraFlowInfo"), GL20C.glGetUniformLocation(p, "u_AlterraSnowMap"), GL20C.glGetUniformLocation(p, "u_AlterraSnowInfo"), GL20C.glGetUniformLocation(p, "u_AlterraVortex"), GL20C.glGetUniformLocation(p, "u_AlterraVortexN"), GL20C.glGetUniformLocation(p, "u_AlterraWaveGrid"), GL20C.glGetUniformLocation(p, "u_AlterraWaveGridInfo")});   // (indices 34 and 35, 36 and 37)
+            int[] loc = LOCATIONS.computeIfAbsent(program, p -> new int[] {GL20C.glGetUniformLocation(p, "u_AlterraWave"), GL20C.glGetUniformLocation(p, "u_AlterraWave2"), GL20C.glGetUniformLocation(p, "u_AlterraMask"), GL20C.glGetUniformLocation(p, "u_AlterraCam"), GL20C.glGetUniformLocation(p, "u_AlterraShore"), GL20C.glGetUniformLocation(p, "u_AlterraShoreMap"), GL20C.glGetUniformLocation(p, "u_AlterraSky"), GL20C.glGetUniformLocation(p, "u_AlterraZenith"), GL20C.glGetUniformLocation(p, "u_AlterraHorizon"), GL20C.glGetUniformLocation(p, "u_AlterraScene"), GL20C.glGetUniformLocation(p, "u_AlterraDepth"), GL20C.glGetUniformLocation(p, "u_AlterraScreen"), GL20C.glGetUniformLocation(p, "u_AlterraUnder"), GL20C.glGetUniformLocation(p, "u_AlterraSea"), GL20C.glGetUniformLocation(p, "u_AlterraSea2"), GL20C.glGetUniformLocation(p, "u_AlterraSeaMap"), GL20C.glGetUniformLocation(p, "u_AlterraSeaInfo"), GL20C.glGetUniformLocation(p, "u_AlterraRip"), GL20C.glGetUniformLocation(p, "u_AlterraRipN"), GL20C.glGetUniformLocation(p, "u_AlterraPrevVP"), GL20C.glGetUniformLocation(p, "u_AlterraPrev"), GL20C.glGetUniformLocation(p, "u_AlterraShips"), GL20C.glGetUniformLocation(p, "u_AlterraShipsN"), GL20C.glGetUniformLocation(p, "u_AlterraHulls"), GL20C.glGetUniformLocation(p, "u_AlterraHullsN"), GL20C.glGetUniformLocation(p, "u_AlterraWet"), GL20C.glGetUniformLocation(p, "u_AlterraRainMap"), GL20C.glGetUniformLocation(p, "u_AlterraRainInfo"), GL20C.glGetUniformLocation(p, "u_AlterraFoam"), GL20C.glGetUniformLocation(p, "u_AlterraFoamN"), GL20C.glGetUniformLocation(p, "u_AlterraFlow"), GL20C.glGetUniformLocation(p, "u_AlterraFlowInfo"), GL20C.glGetUniformLocation(p, "u_AlterraSnowMap"), GL20C.glGetUniformLocation(p, "u_AlterraSnowInfo"), GL20C.glGetUniformLocation(p, "u_AlterraVortex"), GL20C.glGetUniformLocation(p, "u_AlterraVortexN"), GL20C.glGetUniformLocation(p, "u_AlterraWaveGrid"), GL20C.glGetUniformLocation(p, "u_AlterraWaveGridInfo"), GL20C.glGetUniformLocation(p, "u_AlterraWhirl"), GL20C.glGetUniformLocation(p, "u_AlterraWhirlInfo")});   // (indices 34 and 35, 36 and 37)
             if (loc[0] < 0) return;
             if (SceneCopy.pending) { SceneCopy.pending = false; SceneCopy.capture(); }
             if (loc[4] >= 0) {   // the shore foam: where the shore map is, and whether it is on
@@ -767,7 +782,7 @@ public final class Foliage {
             if (loc[30] >= 0 && loc[31] >= 0) {   // water easing between levels
                 var cp = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
                 boolean on = FlowMap.live && FlowMap.texture() != 0 && IlluminateConfig.get(IlluminateConfig.SMOOTH_WATER);
-                GL20C.glUniform4f(loc[31], (float) (cp.x - FlowMap.originX), (float) (cp.z - FlowMap.originZ), 1f / FlowMap.SIZE, on ? 1f : 0f);
+                GL20C.glUniform4f(loc[31], (float) (cp.x - FlowMap.originX), (float) (cp.z - FlowMap.originZ), 1f / FlowMap.SIZE, on ? (dev.phi.alterra.illuminate.water.OwnWater.drawing() ? 2f : 1f) : 0f);
                 if (on) { GlUpload.bind(GL13C.GL_TEXTURE0 + FlowMap.UNIT, FlowMap.texture()); GL20C.glUniform1i(loc[30], FlowMap.UNIT); com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0); }
             }
             if (loc[32] >= 0 && loc[33] >= 0) {   // the snow surface
@@ -785,8 +800,15 @@ public final class Foliage {
                 GL20C.glUniform4f(loc[37], wi[0], wi[1], wi[2], dev.phi.alterra.illuminate.maps.WaveMap.live ? 1f : 0f);
                 if (dev.phi.alterra.illuminate.maps.WaveMap.live) { dev.phi.alterra.illuminate.maps.WaveMap.bind(); GL20C.glUniform1i(loc[36], dev.phi.alterra.illuminate.maps.WaveMap.UNIT); }
             }
+            if (loc[38] >= 0 && loc[39] >= 0) {   // a whirlpool's grid water
+                var whc = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+                dev.phi.alterra.illuminate.maps.WhirlMap.upload(whc.x, whc.z);
+                float[] wh = dev.phi.alterra.illuminate.maps.WhirlMap.INFO;
+                GL20C.glUniform4f(loc[39], wh[0], wh[1], wh[2], wh[3]);
+                if (wh[3] > 0.5) { dev.phi.alterra.illuminate.maps.WhirlMap.bind(); GL20C.glUniform1i(loc[38], dev.phi.alterra.illuminate.maps.WhirlMap.UNIT); }
+            }
             if (loc[34] >= 0 && loc[35] >= 0) {   // whirlpools near the camera
-                var vc = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); int vn = dev.phi.alterra.illuminate.water.GridWater.discs(VORTEX, vc);   // the discs the grid-simulated water stands in for: no water blocks are drawn in them
+                var vc = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); int vn = 0; java.util.Arrays.fill(VORTEX, 0f);   // (the old whirlpool dip is off: whirlpools are grid water, see WhirlMap)
                 GL20C.glUniform4fv(loc[34], VORTEX); GL20C.glUniform4f(loc[35], vn, 0f, 0f, 0f);
             }
             if (loc[28] >= 0 && loc[29] >= 0) {   // the foam
@@ -825,7 +847,7 @@ public final class Foliage {
                 GlUpload.bind(GL13C.GL_TEXTURE0 + MASK_UNIT, tex);
                 GL20C.glUniform1i(loc[2], MASK_UNIT); com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
             }
-        } catch (Throwable t) { LOCATIONS.put(program, java.util.stream.IntStream.generate(() -> -1).limit(40).toArray()); LOG.warn("Alterra Illuminate: the block shader settings failed, the look is off for this shader program", t); }
+        } catch (Throwable t) { LOCATIONS.put(program, java.util.stream.IntStream.generate(() -> -1).limit(48).toArray()); LOG.warn("Alterra Illuminate: the block shader settings failed, the look is off for this shader program", t); }
     }
 
     /** The sky the water mirrors: the sun's or moon's direction and how strongly it glints, the colour overhead and at the horizon. Off (w = 0) when the look is switched off or the player is under water. */

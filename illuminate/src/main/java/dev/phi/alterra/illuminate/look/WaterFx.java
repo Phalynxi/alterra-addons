@@ -145,7 +145,7 @@ public final class WaterFx {
             if (before) {
                 RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE);   // adds light
                 // (the old pale light on the bottom of shallow water is gone: the water shader now colours the water by its depth)
-                if (!floor.isEmpty() && !SceneCopy.ready) layers(CAUSTICS, floor, cam, t, 0.30f * day * strength, wind);   // the old flat caustics, only when the water shader cannot do them
+                // (the old flat caustics texture is gone: caustics come only from the water shader, the same soft light above and below the water)
                 if (!lava.isEmpty()) halos(lava, cam, t, strength);
             } else {
                 RenderSystem.defaultBlendFunc();

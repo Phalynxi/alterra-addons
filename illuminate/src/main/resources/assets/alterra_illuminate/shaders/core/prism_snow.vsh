@@ -14,6 +14,7 @@ out float vertexDistance;
 out vec4 vertexColor;
 out vec2 texCoord0;
 out vec3 worldNormal;
+out vec3 viewV;
 
 void main() {
     vec4 view = ModelViewMat * vec4(Position, 1.0);
@@ -22,4 +23,5 @@ void main() {
     vertexColor = Color * texelFetch(Sampler2, UV2 / 16, 0);
     texCoord0 = UV0;
     worldNormal = Normal;
+    viewV = view.xyz;
 }

@@ -1,19 +1,18 @@
 {
   "vertex": "alterra_illuminate:prism_water",
   "fragment": "alterra_illuminate:prism_water",
-  "blend": { "func": "add", "srcrgb": "srcalpha", "dstrgb": "1-srcalpha" },
-  "samplers": [ { "name": "Sampler2" } ],
+  "samplers": [ { "name": "Heights" }, { "name": "SceneDepth" }, { "name": "Whirl" } ],
   "uniforms": [
     { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
     { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
-    { "name": "ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
-    { "name": "FogStart", "type": "float", "count": 1, "values": [ 0.0 ] },
-    { "name": "FogEnd", "type": "float", "count": 1, "values": [ 1.0 ] },
-    { "name": "FogColor", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
-    { "name": "SunDir", "type": "float", "count": 3, "values": [ 0.0, 1.0, 0.0 ] },
-    { "name": "Zenith", "type": "float", "count": 3, "values": [ 0.4, 0.6, 1.0 ] },
-    { "name": "Horizon", "type": "float", "count": 3, "values": [ 0.7, 0.8, 1.0 ] },
-    { "name": "WaterColor", "type": "float", "count": 3, "values": [ 0.1, 0.45, 0.6 ] },
-    { "name": "Depth", "type": "float", "count": 1, "values": [ 4.0 ] }
+    { "name": "Grid", "type": "float", "count": 4, "values": [ 0.0, 0.0, 64.0, 0.0 ] },
+    { "name": "WhirlInfo", "type": "float", "count": 4, "values": [ 0.0, 0.0, 1.0, 0.0 ] },
+    { "name": "Cam", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
+    { "name": "SunW", "type": "float", "count": 4, "values": [ 0.0, 1.0, 0.0, 1.0 ] },
+    { "name": "SkyH", "type": "float", "count": 3, "values": [ 0.7, 0.8, 1.0 ] },
+    { "name": "SkyZ", "type": "float", "count": 3, "values": [ 0.3, 0.5, 0.9 ] },
+    { "name": "Tint", "type": "float", "count": 3, "values": [ 0.25, 0.45, 0.85 ] },
+    { "name": "Wave", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
+    { "name": "Screen", "type": "float", "count": 4, "values": [ 1.0, 1.0, 0.05, 1000.0 ] }
   ]
 }

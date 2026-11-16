@@ -13,15 +13,33 @@ in float vertexDistance;
 in vec4 vertexColor;
 in vec2 texCoord0;
 in vec3 worldNormal;
+in vec3 viewV;
 
 out vec4 fragColor;
 
+float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p) {
+    vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(h21(i), h21(i + vec2(1.0, 0.0)), f.x), mix(h21(i + vec2(0.0, 1.0)), h21(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
 void main() {
-    vec4 tex = texture(Sampler0, texCoord0);
-    vec3 n = normalize(worldNormal);
-    float lit = max(dot(n, SunDir), 0.0) * smoothstep(-0.05, 0.25, SunDir.y);   // the sun's side is brighter, and only while the sun is up
-    float shade = 0.70 + 0.22 * lit - 0.18 * (1.0 - n.y);                       // slopes away from the sun, and steep ones, are darker: the relief reads
-    vec3 cool = mix(vec3(0.90, 0.95, 1.0), vec3(1.0), clamp(shade * 1.1, 0.0, 1.0));   // only the shade is cool
-    vec4 color = vec4(tex.rgb * vertexColor.rgb * shade * cool, 1.0) * ColorModulator;
-    fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
+    vec2 wp = texCoord0 * 4.0;   // the world position (x, z) in blocks
+    // wind-drifted undulation: very gentle swells a few blocks across, so a flat field is never a flat plane
+    float s = 0.32, n0 = vnoise(wp * s), nx = vnoise((wp + vec2(0.4, 0.0)) * s), nz = vnoise((wp + vec2(0.0, 0.4)) * s);
+    float fine = 0.5 * vnoise(wp * 1.3), fx = 0.5 * vnoise((wp + vec2(0.3, 0.0)) * 1.3), fz = 0.5 * vnoise((wp + vec2(0.0, 0.3)) * 1.3);
+    vec3 n = normalize(mix(worldNormal, vec3(0.0, 1.0, 0.0), 0.25) + vec3((n0 - nx) * 0.95 + (fine - fx) * 0.40, 0.0, (n0 - nz) * 0.95 + (fine - fz) * 0.40));
+    // (snow is a soft, matte blanket: facets are blended towards up above, so slopes do not flash light and dark)
+    float lit = max(dot(n, SunDir), 0.0) * smoothstep(-0.05, 0.25, SunDir.y);
+    float skyUp = 0.5 + 0.5 * n.y;
+    // snow takes its colour from the light: warm white in the sun, blue in the shade (it is lit by the sky), never grey
+    vec3 ambient = mix(vec3(0.72, 0.80, 0.95), vec3(0.89, 0.94, 1.0), skyUp);
+    vec3 irradiance = ambient * (0.50 + 0.14 * max(worldNormal.y, 0.0)) + vec3(1.0, 0.965, 0.89) * lit * 0.40;   // walls and edges shade a little apart from the tops, so terraces read from afar
+    float grain = texture(Sampler0, wp * 0.18).r;   // a soft, broad grain
+    vec3 albedo = vec3(0.985, 0.99, 1.0) * (0.95 + 0.10 * grain);
+    // glitter: tiny crystals that catch the sun, flickering as you move
+    float h = h21(floor(wp * 30.0)), flick = fract(h * 41.0 + dot(normalize(viewV), vec3(3.1, 2.3, 1.7)) * 4.0);
+    float sparkle = step(0.9955, h) * smoothstep(0.5, 1.0, flick) * (0.25 + 0.75 * lit);
+    vec3 col = albedo * irradiance * vertexColor.rgb + vec3(1.0, 0.99, 0.95) * sparkle * 0.85 * max(vertexColor.g, 0.2);
+    fragColor = linear_fog(vec4(col, 1.0) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
 }
