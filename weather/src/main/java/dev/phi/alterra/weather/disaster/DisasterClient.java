@@ -44,7 +44,7 @@ public final class DisasterClient {
     public static java.util.List<Funnel> funnels() { return funnels; }
 
     /** The grid water of every whirlpool this client sees: it runs its own copy of the server's simulation and keeps drawing it until the water has settled after the whirlpool is gone. */
-    private static final class Sim { WhirlpoolSim sim; boolean seen; float spin; }
+    private static final class Sim { WhirlpoolSim sim; boolean seen; float spin; int gone; }
     private static final Map<Integer, Sim> SIMS = new HashMap<>();
     private static volatile java.util.List<dev.phi.prismlib.api.WaterSurface> surfaces = java.util.List.of();
     public static java.util.List<dev.phi.prismlib.api.WaterSurface> surfaces() { return surfaces; }
@@ -54,15 +54,15 @@ public final class DisasterClient {
         for (F f : MAP.values()) {
             if (f.type != Disasters.VORTEX) continue;
             Sim s = SIMS.computeIfAbsent(f.id, k -> new Sim());
-            if (s.sim == null) s.sim = new WhirlpoolSim(level, f.tx, f.ty, f.tz, f.radius, f.strength, f.top < 0 ? -1f : 1f);
-            s.seen = true; s.spin = f.top < 0 ? -1f : 1f;
+            if (s.sim == null) { s.sim = new WhirlpoolSim(level, f.tx, f.ty, f.tz, f.radius, f.strength, f.top < 0 ? -1f : 1f); org.slf4j.LoggerFactory.getLogger("Alterra Weather").info("[disaster] this client simulates whirlpool {} (radius {}, strength {})", f.id, f.radius, f.strength); }
+            s.seen = true; s.gone = 0; s.spin = f.top < 0 ? -1f : 1f; s.sim.grid.drag = 0.12f;
             if (!Minecraft.getInstance().isPaused()) s.sim.tick(f.strength, s.spin);
         }
         var out = new java.util.ArrayList<dev.phi.prismlib.api.WaterSurface>();
         for (var it = SIMS.values().iterator(); it.hasNext(); ) {
             Sim s = it.next();
-            if (!s.seen && !Minecraft.getInstance().isPaused()) s.sim.tick(0f, s.spin);   // the whirlpool is gone: the water settles
-            if (!s.seen && s.sim.quiet()) { it.remove(); continue; }
+            if (!s.seen && !Minecraft.getInstance().isPaused()) { s.gone++; s.sim.grid.drag = 2.5f; s.sim.tick(0f, s.spin); }   // the whirlpool is gone: the water settles, quickly
+            if (!s.seen && (s.sim.quiet() || s.gone > 140)) { org.slf4j.LoggerFactory.getLogger("Alterra Weather").info("[disaster] this client stops simulating a whirlpool (gone {} ticks)", s.gone); it.remove(); continue; }   // never longer than seven seconds
             out.add(new dev.phi.prismlib.api.WaterSurface(s.sim.grid, s.sim.y - 0.11, s.sim.radius * 1.35f));
         }
         surfaces = out;

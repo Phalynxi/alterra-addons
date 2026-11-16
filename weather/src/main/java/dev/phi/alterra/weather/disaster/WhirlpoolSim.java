@@ -34,7 +34,10 @@ public final class WhirlpoolSim {
     }
 
     /** One tick (a twentieth of a second). strength 0 lets the water settle. */
-    public void tick(float strength, float spin) { this.strength = strength; this.spin = spin; age += 0.05f; grid.step(0.05f); }
+    public void tick(float strength, float spin) {
+        this.strength = strength; this.spin = spin; age += 0.05f; grid.step(0.03f);   // the water moves at a calm pace (a bit slower than real time)
+        for (int i = 0; i < grid.eta.length; i++) if (grid.eta[i] > 0f) grid.eta[i] = 0f;   // the water only follows the vortex down: no mound round the rim
+    }
 
     /** Has the water settled after the whirlpool is over (nothing more to draw)? */
     public boolean quiet() { float m = 0f; for (float e : grid.eta) m = Math.max(m, Math.abs(e)); return strength <= 0.001f && m < 0.04f; }

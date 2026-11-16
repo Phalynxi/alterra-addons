@@ -78,7 +78,12 @@ public final class Vortex {
         e.sim.tick(e.strength, e.spin);
         var grid = e.sim.grid; float[] fl = new float[2];
         double reach = e.radius * 1.7, depth = depth(e.radius, e.strength);
-        AABB box = new AABB(e.x - reach, e.y - depth - 3, e.z - reach, e.x + reach, e.y + 3, e.z + reach);
+        if (e.floor == Integer.MIN_VALUE || l.getGameTime() % 100 == 0) {   // the bottom under the centre: the core reaches down to it
+            var bp = new net.minecraft.core.BlockPos.MutableBlockPos(net.minecraft.util.Mth.floor(e.x), net.minecraft.util.Mth.floor(e.y) - 1, net.minecraft.util.Mth.floor(e.z));
+            int n = 0; while (n < 80 && l.getFluidState(bp).is(net.minecraft.tags.FluidTags.WATER)) { bp.move(0, -1, 0); n++; }
+            e.floor = bp.getY() + 1;
+        }
+        AABB box = new AABB(e.x - reach, Math.min(e.y - depth - 3, e.floor), e.z - reach, e.x + reach, e.y + 3, e.z + reach);
         for (Entity en : l.getEntities((Entity) null, box, x -> !x.isSpectator() && !x.isPassenger() && !(x instanceof Player p && p.getAbilities().flying) && (x.isInWater() || x instanceof Boat || x instanceof ItemEntity))) {
             double dx = en.getX() - e.x, dz = en.getZ() - e.z, d = Math.sqrt(dx * dx + dz * dz);
             if (d < 0.05 || d > reach) continue;
@@ -88,6 +93,15 @@ public final class Vortex {
                 double surface = e.y - 0.46 + eta;
                 Vec3 step = new Vec3(wantX * 0.7, (surface - b.getY()) * 0.3, wantZ * 0.7);
                 b.move(net.minecraft.world.entity.MoverType.SELF, step); b.setYRot(b.getYRot() + (float) (e.spin * Math.min(0.3, speed) * 70.0));
+                continue;
+            }
+            double below = e.y - en.getY();
+            if (below > 1.5 && !(en instanceof Boat)) {   // under the surface: the core reaches to the bottom, narrowing; what is in the water round it is drawn in, swung round and pulled down
+                double r0 = Math.max(1.2, e.radius * 0.42), core = r0 / (1.0 + below / (r0 * 0.9)) + 0.18, pull = 0.07 * e.strength * Math.max(0.0, 1.0 - d / (e.radius * 1.4));
+                double tx = -dz / d * e.spin, tz = dx / d * e.spin, swirl = 0.16 * e.strength * Math.min(1.0, (core + 1.0) / (d + 0.5));
+                Vec3 m0 = en.getDeltaMovement();
+                double down = d < core * 2.5 ? 0.07 * e.strength : 0.025 * e.strength * Math.max(0.0, 1.0 - d / e.radius);
+                en.setDeltaMovement(m0.x * 0.8 + (-dx / d * pull + tx * swirl) * 0.2 * 5.0 * 0.2, m0.y - down, m0.z * 0.8 + (-dz / d * pull + tz * swirl) * 0.2 * 5.0 * 0.2); en.hurtMarked = true;
                 continue;
             }
             Vec3 m = en.getDeltaMovement(); double k = en instanceof Boat ? 0.14 : 0.2;   // a driven boat is steered by the player's own game, which gets the push in the motion packet

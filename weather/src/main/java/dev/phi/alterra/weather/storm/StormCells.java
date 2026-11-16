@@ -36,7 +36,8 @@ public final class StormCells {
         if (FIXED != null && Math.hypot(x - FIXED.x(), z - FIXED.z()) < range + FIXED.radius()) out.add(FIXED);
         long e0 = Math.floorDiv(time, EPOCH);
         int ix = (int) Math.floor(x / LATTICE), iz = (int) Math.floor(z / LATTICE);
-        for (long e = e0 - 1; e <= e0; e++) for (int i = ix - 2; i <= ix + 2; i++) for (int j = iz - 2; j <= iz + 2; j++) {
+        int nr = (int) Math.ceil((range + 2500.0) / LATTICE);   // how many lattice squares away a cell born there can still reach (a cell travels about 1500 blocks and is up to 900 wide)
+        for (long e = e0 - 1; e <= e0; e++) for (int i = ix - nr; i <= ix + nr; i++) for (int j = iz - nr; j <= iz + nr; j++) {
             if (rnd(i, j, e, 0) > 0.95) continue;   // this square has no cell this epoch
             long born = e * EPOCH + (long) (rnd(i, j, e, 1) * EPOCH), life = 12_000L + (long) (rnd(i, j, e, 2) * 14_000L), age = time - born;
             if (age < 0 || age > life) continue;

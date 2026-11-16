@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import java.util.ArrayList;
 
 /**
- * Lightning in storm cells you are not under: a flash on the horizon, and the thunder reaching you later (sound travels about 17 blocks a tick), deeper and quieter the further away.
+ * Lightning in storm cells you are not under: the thunder reaching you later (no flash: it lit the whole sky and the water white) (sound travels about 17 blocks a tick), deeper and quieter the further away.
  * Only for cells whose heart is more than half a radius away (under one, the real lightning of {@link HeavyStormServer} does it). It is the same cells the server uses, so a flash
  * comes from where the dark wall of cloud really is, and you can count the seconds to know how far.
  */
@@ -43,7 +43,6 @@ public final class DistantStorm {
             if (d < c.radius() * 0.5 || c.level() < 0.35f || d > 4500) continue;
             if (level.random.nextFloat() > 0.14f * c.level()) continue;   // about one flash in seven seconds per strong cell
             double fx = dx + (level.random.nextDouble() - 0.5) * c.radius(), fz = dz + (level.random.nextDouble() - 0.5) * c.radius(), fd = Math.max(200.0, Math.hypot(fx, fz));
-            if (fd < 2500 && level.random.nextFloat() < 0.6f) level.setSkyFlashTime(2);   // a flash in the sky, only if it is not too far
             long delay = (long) (fd / 17.0);
             float far = (float) Math.min(1.0, fd / 4500.0);
             PENDING.add(new Rumble(now + delay, fx, fz, 3.5f * (1f - 0.8f * far), 0.55f + 0.25f * (1f - far) + level.random.nextFloat() * 0.1f));

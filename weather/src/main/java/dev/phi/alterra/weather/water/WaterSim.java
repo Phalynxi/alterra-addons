@@ -36,7 +36,7 @@ import java.util.Map;
 @EventBusSubscriber(modid = AlterraWeather.ID)
 public final class WaterSim {
     private WaterSim() {}
-    private static final float G = 0.35f, DAMP = 0.94f, FALL = 0.5f, QUIET = 0.0015f, MIN = 0.004f;
+    private static final float G = 0.6f, DAMP = 0.94f, FALL = 1.0f, QUIET = 0.0015f, MIN = 0.004f;
     private static final int BUDGET = 24000, QUIET_TICKS = 30, SYNC_RADIUS = 56;
     private static final Direction[] SIDES = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 
@@ -151,6 +151,12 @@ public final class WaterSim {
         Long2FloatOpenHashMap heads = new Long2FloatOpenHashMap();
         var p = new BlockPos.MutableBlockPos(); var n = new BlockPos.MutableBlockPos();
         for (long k : keys) { p.set(k); heads.put(k, head(l, m, p, m.amount.get(k))); }
+        it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap riverTop = new it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap();
+        java.util.function.LongPredicate river = key -> {   // is this spot river water (in a channel, under the river's surface)? A river at its level is in balance with itself: it does not move within itself
+            int x = BlockPos.getX(key), y = BlockPos.getY(key), z = BlockPos.getZ(key); long col = ((long) x << 32) ^ (z & 0xffffffffL);
+            float s = riverTop.containsKey(col) ? riverTop.get(col) : dev.phi.alterra.weather.compat.AlterraRivers.surface(l, x, z);
+            riverTop.put(col, s); return !Float.isNaN(s) && y < s;
+        };
         for (long k : keys) {
             p.set(k);
             boolean endless = FiniteWater.endless(l, p);
@@ -158,8 +164,9 @@ public final class WaterSim {
             if (a <= 0f && !endless) continue;
             float out = 0f;
             // down first: water falls into whatever room there is below
+            boolean inRiver = river.test(k);
             n.set(p.getX(), p.getY() - 1, p.getZ()); long kd = n.asLong(); float down = 0f;
-            if (takes(l, n)) {
+            if (takes(l, n) && !(inRiver && river.test(kd))) {
                 boolean sea = FiniteWater.endless(l, n);
                 float below = sea ? 1f : amountOf(l, m, kd, n);
                 down = sea ? (endless ? 0f : Math.min(a, 0.05f)) : Math.max(0f, Math.min(a, Math.min(1f - below - incoming.get(kd), FALL)));   // onto the sea it soaks in slowly
@@ -172,6 +179,7 @@ public final class WaterSim {
                 if (l.getBlockState(n).is(WaterBlocks.DRAIN.get())) { f[i] = endless ? 0f : 0.12f; continue; }
                 if (!takes(l, n)) { f[i] = 0f; continue; }
                 long kn = n.asLong();
+                if (inRiver && river.test(kn)) { f[i] = 0f; continue; }   // river to river: in balance, nothing moves (only water leaving the river, through a bank that was opened, does)
                 float hn = heads.containsKey(kn) ? heads.get(kn) : n.getY() + amountOf(l, m, kn, n);
                 float diff = h - hn;
                 if (amountOf(l, m, kn, n) >= 0.999f) diff = 0f;   // a full block takes nothing more (water moves along the surface, it is never forced in)
@@ -202,6 +210,17 @@ public final class WaterSim {
         // apply: amounts change, anything over full is pushed up into the spot above (pressure), new spots join, and calm ones go quiet
         LongOpenHashSet wakeNext = new LongOpenHashSet();
         Long2FloatOpenHashMap up = new Long2FloatOpenHashMap();   // what is pushed up out of spots that came out over full (applied after, not while reading the changes)
+        // Alterra's rivers are fed from upstream: water in a river channel below the river's surface comes back at a limited rate (take some out and it refills over about a second),
+        // water above it flows away like any other. Finite, but a river keeps running.
+        for (long k : keys) {
+            int x = BlockPos.getX(k), y = BlockPos.getY(k), z = BlockPos.getZ(k); long col = ((long) x << 32) ^ (z & 0xffffffffL);
+            float s = riverTop.containsKey(col) ? riverTop.get(col) : dev.phi.alterra.weather.compat.AlterraRivers.surface(l, x, z);
+            riverTop.put(col, s);
+            if (Float.isNaN(s)) continue;
+            float target = Math.max(0f, Math.min(1f, s - y)); if (target <= 0f) continue;
+            float now = m.amount.get(k) + delta.get(k);
+            if (now < target) delta.addTo(k, Math.min(0.06f, target - now));
+        }
         for (var en : delta.long2FloatEntrySet()) {
             long k = en.getLongKey(); p.set(k);
             float before = amountOf(l, m, k, p), after = before + en.getFloatValue();

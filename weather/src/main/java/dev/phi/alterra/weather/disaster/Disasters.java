@@ -52,7 +52,7 @@ public final class Disasters {
     public static final BlockPos SPIN_MARK = new BlockPos(0, -999, 0);   // a falling block's start position is synced to the client: this one marks "tumbling debris"
 
     public static final class Event {
-        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed, natural; WhirlpoolSim sim; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
+        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed, natural; WhirlpoolSim sim; int floor = Integer.MIN_VALUE; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
     }
     private static final Map<net.minecraft.resources.ResourceKey<Level>, List<Event>> EVENTS = new HashMap<>();
     private static int nextId = 1;
@@ -101,10 +101,9 @@ public final class Disasters {
             float heavy = HeavyStorm.at(l, x, z);   // the world-wide storm or a cell over that spot
             BlockPos ground = new BlockPos((int) x, l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) x, (int) z) - 1, (int) z);
             var st = l.getBlockState(ground);
-            if (DisasterConfig.get(DisasterConfig.TORNADOES) && heavy > 0.55f && count(l, TORNADO) < 2 && st.getFluidState().isEmpty()
-                    && l.random.nextFloat() < 0.0012f * heavy * rate) start(l, TORNADO, x, z).natural = true;
-            else if (DisasterConfig.get(DisasterConfig.DUST_DEVILS) && !l.isRaining() && l.isDay() && st.is(BlockTags.SAND) && count(l, DUST_DEVIL) < 3
-                    && l.random.nextFloat() < 0.004f * rate) start(l, DUST_DEVIL, x, z);
+            if (DisasterConfig.get(DisasterConfig.TORNADOES) && heavy > 0.7f && count(l, TORNADO) < 1 && st.getFluidState().isEmpty()
+                    && l.random.nextFloat() < 0.00025f * heavy * heavy * rate) start(l, TORNADO, x, z).natural = true;   // rare: one at a time, and only under a really strong storm
+            // (dust devils no longer start by themselves)
             else if (DisasterConfig.get(DisasterConfig.VORTEXES) && count(l, VORTEX) < 1 && l.random.nextFloat() < 0.0015f * rate) {
                 var b = l.getBiome(ground);
                 BlockPos sea = new BlockPos((int) x, l.getSeaLevel() - 1, (int) z);
@@ -129,7 +128,7 @@ public final class Disasters {
             if (!l.hasChunkAt(BlockPos.containing(e.x, 64, e.z))) { it.remove(); continue; }
             if (DisasterConfig.get(DisasterConfig.PULL_THINGS)) { if (e.type == VORTEX) Vortex.apply(l, e); else pull(l, e); }
             if (e.type == TORNADO && DisasterConfig.get(DisasterConfig.TORNADO_BLOCKS)) { lift(l, e); orbit(l, e); }
-            if (l.getGameTime() % 24 == e.id % 24) l.playSound(null, BlockPos.containing(e.x, e.y + 6, e.z), AlterraWeather.WIND_DUST.get(), net.minecraft.sounds.SoundSource.WEATHER, 3f + e.radius * 0.3f, e.type == TORNADO ? 0.55f : 0.8f);
+            if (e.type != VORTEX && l.getGameTime() % 24 == e.id % 24) l.playSound(null, BlockPos.containing(e.x, e.y + 6, e.z), AlterraWeather.WIND_DUST.get(), net.minecraft.sounds.SoundSource.WEATHER, 3f + e.radius * 0.3f, e.type == TORNADO ? 0.55f : 0.8f);
         }
         Vortex.refresh(events);
         if (l.getGameTime() % 2 == 0) sync(l, events);
@@ -263,7 +262,7 @@ public final class Disasters {
         String what = StringArgumentType.getString(c, "what").toLowerCase(java.util.Locale.ROOT);
         var src = c.getSource(); ServerLevel l = src.getLevel();
         if (!available()) { src.sendFailure(Component.literal("Disasters need Alterra Illuminate (it draws them).")); return 0; }
-        if (what.equals("clear")) { list(l).clear(); Hail.forcedUntil = 0; src.sendSuccess(() -> Component.literal("Disasters cleared."), true); return 1; }
+        if (what.equals("clear")) { for (Event ev : list(l)) { for (Debris d : ev.debris) if (!d.fb.isRemoved()) d.fb.setDeltaMovement(d.fb.getDeltaMovement().add(0.2, 0.1, 0.2)); if (ev.type == VORTEX) Vortex.release(l, ev); } list(l).clear(); Hail.forcedUntil = 0; src.sendSuccess(() -> Component.literal("Disasters cleared."), true); return 1; }
         if (what.equals("hail")) { Hail.forcedUntil = l.getGameTime() + 1200; src.sendSuccess(() -> Component.literal("Hail for a minute."), true); return 1; }
         for (int t = 0; t < NAMES.length; t++) if (NAMES[t].equals(what)) {
             Vec3 look = src.getEntity() != null ? src.getEntity().getLookAngle() : new Vec3(0, 0, 1);

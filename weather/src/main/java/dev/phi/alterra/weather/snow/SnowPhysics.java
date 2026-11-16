@@ -106,7 +106,7 @@ public final class SnowPhysics {
             if (!l.hasChunkAt(new BlockPos(nx, top, nz))) continue;
             int ntop = l.getHeight(Heightmap.Types.MOTION_BLOCKING, nx, nz), diff = here - units(l, nx, nz, ntop);
             BlockPos ns = snowAt(l, nx, nz, ntop); int step = srcGround - (ns != null ? ns.getY() * 8 : ntop * 8);   // how far the ground itself drops to that neighbour
-            boolean flat = Math.abs(step) <= 2, slump = step > 2 && step <= 8 && depth >= 6;   // level ground: drifts even out; one step down: only deep snow slumps off the edge; anything steeper holds (until an avalanche)
+            boolean flat = false, slump = step > 2 && step <= 8 && depth >= 8;   // snow is not a liquid: it never levels itself out on flat ground, and only a full block of it slumps off a one-step edge (disturbed snow, steep heaps and avalanches are the other ways it moves)   // level ground: drifts even out; one step down: only deep snow slumps off the edge; anything steeper holds (until an avalanche)
             if ((flat || slump) && diff > REPOSE && diff <= LEDGE && diff > best) { best = diff; bx = nx; bz = nz; btop = ntop; }
         }
         if (best == 0) return false;   // at rest: it sleeps
