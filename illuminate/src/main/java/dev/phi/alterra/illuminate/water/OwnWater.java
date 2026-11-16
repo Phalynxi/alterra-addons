@@ -47,10 +47,16 @@ public final class OwnWater {
     }
 
     private static void makeGrid() {
-        int n = FlowMap.SIZE * 2;   // points: two per block
+        int n = FlowMap.SIZE * 2;   // in half blocks
+        int inner0 = n / 4, inner1 = n - n / 4;   // the middle half (64 blocks across): two points per block; outside: one point every two blocks
         BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
         for (int z = 0; z < n; z++) for (int x = 0; x < n; x++) {
-            bb.addVertex(x, 0f, z + 1); bb.addVertex(x + 1, 0f, z + 1); bb.addVertex(x + 1, 0f, z); bb.addVertex(x, 0f, z);
+            boolean in = x >= inner0 && x < inner1 && z >= inner0 && z < inner1;
+            if (in) { bb.addVertex(x, 0f, z + 1); bb.addVertex(x + 1, 0f, z + 1); bb.addVertex(x + 1, 0f, z); bb.addVertex(x, 0f, z); continue; }
+            if ((x & 3) != 0 || (z & 3) != 0) continue;   // coarse cells start every 4 half blocks
+            int x2 = x + 4, z2 = z + 4;
+            // (a coarse cell that touches the fine middle is cut to it, so the two meet on a shared edge)
+            bb.addVertex(x, 0f, z2); bb.addVertex(x2, 0f, z2); bb.addVertex(x2, 0f, z); bb.addVertex(x, 0f, z);
         }
         grid = new VertexBuffer(VertexBuffer.Usage.STATIC); grid.bind(); grid.upload(bb.buildOrThrow()); VertexBuffer.unbind();
     }

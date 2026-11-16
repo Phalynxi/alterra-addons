@@ -20,7 +20,7 @@ import java.nio.FloatBuffer;
  */
 public final class FlowMap {
     private FlowMap() {}
-    public static final int SIZE = 64, UNIT = 9;
+    public static final int SIZE = 128, UNIT = 9;
     private static final float TIME = 0.35f;
     private static int tex; public static volatile int originX, originZ; public static volatile boolean live;
     private static final Long2ObjectOpenHashMap<float[]> moves = new Long2ObjectOpenHashMap<>();   // column -> {offset when it started, start time}
@@ -54,6 +54,7 @@ public final class FlowMap {
 
     /** A block changed on the client: if water rose or fell there, start easing its surface from where it was. */
     public static synchronized void changed(BlockPos p, BlockState before, BlockState after) {
+        dirty.add((((long) p.getX()) << 32) ^ (p.getZ() & 0xffffffffL));
         if (sim.containsKey(p.asLong())) return;   // the simulation's precise heights already cover it
         boolean wb = before.getFluidState().is(net.minecraft.tags.FluidTags.WATER), wa = after.getFluidState().is(net.minecraft.tags.FluidTags.WATER);
         if (!wb && !wa) return;
@@ -72,6 +73,8 @@ public final class FlowMap {
     private static final long[] shownKey = new long[SIZE * SIZE];      // which world column a slot holds (the map is anchored to the world, wrapped)
     private static final float[] tgt = new float[SIZE * SIZE], blk = new float[SIZE * SIZE];   // this frame: the target height and what the blocks themselves draw (NaN: no water)
     private static float lastT = -1f;
+    private static final long[] colKey = new long[SIZE * SIZE]; private static final int[] colY = new int[SIZE * SIZE]; private static final float[] colOwn = new float[SIZE * SIZE];
+    private static int scanRow; private static final it.unimi.dsi.fastutil.longs.LongOpenHashSet dirty = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
     /** For the own water surface: per column the drawn surface height (relative to surfaceBaseY) and 1 where there is water, 0 where not. */
     private static final FloatBuffer hbuf = org.lwjgl.BufferUtils.createFloatBuffer(SIZE * SIZE * 2);
     private static int htex; public static volatile double surfaceBaseY;
@@ -91,14 +94,23 @@ public final class FlowMap {
         float t = now(), dt = lastT < 0f ? 0f : Math.min(0.1f, t - lastT); lastT = t;
         int ox = (int) Math.floor(camX) - SIZE / 2, oz = (int) Math.floor(camZ) - SIZE / 2;
         var bp = new BlockPos.MutableBlockPos();
+        // the columns are kept per world position (wrapped): a column new to the map is read at once, the rest a quarter of the rows each frame (and at once where a block changed)
+        scanRow = (scanRow + 1) & 3;
         for (int z = 0; z < SIZE; z++) for (int x = 0; x < SIZE; x++) {
-            int wx = ox + x, wz = oz + z, i = x + z * SIZE;
-            int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx, wz) - 1;
-            bp.set(wx, y, wz); FluidState fs = level.getFluidState(bp);
-            if (!fs.is(net.minecraft.tags.FluidTags.WATER)) { tgt[i] = Float.NaN; blk[i] = Float.NaN; continue; }
-            float own = fs.getOwnHeight(), h = y + own;
-            float[] s = sim.get(bp.asLong());
-            if (s != null && s[3] < 0.5f) h = y + shown(s, t) * 8f / 9f;   // the simulation's exact amount
+            int wx = ox + x, wz = oz + z, i = x + z * SIZE, slot = Math.floorMod(wx, SIZE) + Math.floorMod(wz, SIZE) * SIZE;
+            long key = (((long) wx) << 32) ^ (wz & 0xffffffffL);
+            boolean fresh = colKey[slot] != key || dirty.remove(key);
+            if (fresh || (z & 3) == scanRow) {
+                colKey[slot] = key;
+                int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx, wz) - 1;
+                bp.set(wx, y, wz); FluidState fs = level.getFluidState(bp);
+                if (!fs.is(net.minecraft.tags.FluidTags.WATER)) { colY[slot] = Integer.MIN_VALUE; }
+                else { colY[slot] = y; colOwn[slot] = fs.getOwnHeight(); }
+            }
+            int y = colY[slot];
+            if (y == Integer.MIN_VALUE) { tgt[i] = Float.NaN; blk[i] = Float.NaN; continue; }
+            float own = colOwn[slot], h = y + own;
+            if (!sim.isEmpty()) { float[] s = sim.get(BlockPos.asLong(wx, y, wz)); if (s != null && s[3] < 0.5f) h = y + shown(s, t) * 8f / 9f; }   // the simulation's exact amount
             blk[i] = y + own; tgt[i] = h;
         }
         // smooth over neighbouring water of about the same level (a pool and the river falling into it stay apart): steps of flowing water become a slope

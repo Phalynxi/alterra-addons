@@ -23,8 +23,9 @@ void main() {
     // a smooth (Catmull-Rom) height through the water columns around; dry columns take the height of the water beside them, so the surface does not dive at the shore
     float rows[4]; float wsum = 0.0, hsum = 0.0;
     vec2 c11 = cell(i0 + ivec2(1, 1)), c12 = cell(i0 + ivec2(1, 2)), c21 = cell(i0 + ivec2(2, 1)), c22 = cell(i0 + ivec2(2, 2));
-    for (int k = 0; k < 4; k++) { vec2 q = cell(i0 + ivec2(1 + (k & 1), 1 + (k >> 1))); hsum += q.r * q.g; wsum += q.g; }
-    float fill = wsum > 0.0 ? hsum / wsum : 0.0;
+    for (int k = 0; k < 16; k++) { vec2 q = cell(i0 + ivec2(k & 3, k >> 2)); float wk = ((k & 3) == 1 || (k & 3) == 2) && ((k >> 2) == 1 || (k >> 2) == 2) ? 4.0 : 1.0; hsum += q.r * q.g * wk; wsum += q.g * wk; }
+    bool none = wsum <= 0.0;   // no water anywhere near this point: it is dropped out of sight (it would otherwise stand at camera height and stretch a sheet up from the water)
+    float fill = none ? 0.0 : hsum / wsum;
     // only water at about the same level takes part (a pool beside a river far below must not be bridged by the curve: that made spikes)
     vec2 own = cell(ivec2(floor(g)));
     float ref = own.g > 0.5 ? own.r : fill;
@@ -37,6 +38,7 @@ void main() {
     float h = clamp(cr(rows[0], rows[1], rows[2], rows[3], t.y), lo, hi);   // no overshoot above or below the water around
     wet = mix(mix(c11.g, c21.g, t.x), mix(c12.g, c22.g, t.x), t.y);
     vec3 p = vec3(Grid.x + g.x, h + Cam.w, Grid.y + g.y);
+    if (none) { p.y = Cam.w - 300.0; wet = 0.0; }
     if (WhirlInfo.w > 0.5) { vec2 wg = (p.xz + WhirlInfo.xy) * WhirlInfo.z; if (wg.x > 0.0 && wg.y > 0.0 && wg.x < 1.0 && wg.y < 1.0) p.y += textureLod(Whirl, wg, 0.0).r; }   // a whirlpool pulls the surface down
     rel = p; wpos = p.xz + Cam.xz;
     gl_Position = ProjMat * ModelViewMat * vec4(p, 1.0);
