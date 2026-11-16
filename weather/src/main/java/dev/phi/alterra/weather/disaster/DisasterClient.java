@@ -1,6 +1,6 @@
 package dev.phi.alterra.weather.disaster;
 
-import dev.phi.aethryon.api.Funnel;
+import dev.phi.prismlib.api.Funnel;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.WeatherConfig;
@@ -39,7 +39,7 @@ public final class DisasterClient {
         }
     }
 
-    /** The nearest funnels (up to four), as the drawing mod reads them through Aethryon. */
+    /** The nearest funnels (up to four), as the drawing mod reads them through Prism Lib. */
     private static volatile java.util.List<Funnel> funnels = java.util.List.of();
     public static java.util.List<Funnel> funnels() { return funnels; }
 

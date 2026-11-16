@@ -1,10 +1,10 @@
 package dev.phi.alterra.weather;
 
-import dev.phi.aethryon.api.SeaProvider;
-import dev.phi.aethryon.api.StormProvider;
-import dev.phi.aethryon.api.WaterEvents;
-import dev.phi.aethryon.api.WindProvider;
-import dev.phi.aethryon.service.Services;
+import dev.phi.prismlib.api.SeaProvider;
+import dev.phi.prismlib.api.StormProvider;
+import dev.phi.prismlib.api.WaterEvents;
+import dev.phi.prismlib.api.WindProvider;
+import dev.phi.prismlib.service.Services;
 import dev.phi.alterra.weather.storm.HeavyStorm;
 import dev.phi.alterra.weather.storm.StormCells;
 import dev.phi.alterra.weather.storm.Wetness;
@@ -18,19 +18,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-/** What this mod knows, offered to every other mod through Aethryon's services: the wind, the storms, the sea and what is happening on the water. */
+/** What this mod knows, offered to every other mod through Prism Lib's services: the wind, the storms, the sea and what is happening on the water. */
 public final class WeatherProviders {
     private WeatherProviders() {}
 
     public static void register() {
         Services.register(WindProvider.class, (level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.at(level, x, z)), 100, AlterraWeather.ID);
-        Services.register(dev.phi.aethryon.api.DisasterView.class, dev.phi.alterra.weather.disaster.DisasterClient::funnels, 100, AlterraWeather.ID);
+        Services.register(dev.phi.prismlib.api.DisasterView.class, dev.phi.alterra.weather.disaster.DisasterClient::funnels, 100, AlterraWeather.ID);
         Services.register(StormProvider.class, new StormProvider() {
             public float heavy(Level level) { var c = net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); return level.isClientSide ? HeavyStorm.at(level, c.x, c.z) : HeavyStorm.level(level); }   // on the client: over the camera
-            public java.util.List<dev.phi.aethryon.api.StormCell> cells(Level level, double x, double z, double range) {
+            public java.util.List<dev.phi.prismlib.api.StormCell> cells(Level level, double x, double z, double range) {
                 var list = new java.util.ArrayList<StormCells.Cell>(); StormCells.near(level.getGameTime(), x, z, range, list);
-                var out = new java.util.ArrayList<dev.phi.aethryon.api.StormCell>(list.size());
-                for (var c : list) out.add(new dev.phi.aethryon.api.StormCell(c.x(), c.z(), c.radius(), c.level(), c.vx(), c.vz()));
+                var out = new java.util.ArrayList<dev.phi.prismlib.api.StormCell>(list.size());
+                for (var c : list) out.add(new dev.phi.prismlib.api.StormCell(c.x(), c.z(), c.radius(), c.level(), c.vx(), c.vz()));
                 return out;
             }
             public float fog() { return WeatherHooks.stormFog; }

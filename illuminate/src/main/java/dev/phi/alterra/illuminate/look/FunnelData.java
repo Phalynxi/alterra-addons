@@ -1,7 +1,7 @@
 package dev.phi.alterra.illuminate.look;
 
-import dev.phi.aethryon.api.AethryonApi;
-import dev.phi.aethryon.api.Funnel;
+import dev.phi.prismlib.api.PrismApi;
+import dev.phi.prismlib.api.Funnel;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
 final class FunnelData {
     final float[] a = new float[32]; final int n;
     FunnelData() {
-        List<Funnel> list = AethryonApi.funnels(); n = Math.min(4, list.size());
+        List<Funnel> list = PrismApi.funnels(); n = Math.min(4, list.size());
         for (int i = 0; i < n; i++) {
             Funnel f = list.get(i);
             a[i * 8] = (float) f.x(); a[i * 8 + 1] = (float) f.y(); a[i * 8 + 2] = (float) f.z(); a[i * 8 + 3] = f.radius();

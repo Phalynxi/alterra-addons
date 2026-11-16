@@ -1,7 +1,7 @@
 package dev.phi.alterra.illuminate.look;
 
-import dev.phi.aethryon.api.AethryonApi;
-import dev.phi.aethryon.api.StormCell;
+import dev.phi.prismlib.api.PrismApi;
+import dev.phi.prismlib.api.StormCell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
@@ -14,13 +14,13 @@ final class Sky {
     /** The rain over the camera: vanilla's level, or the downpour under a storm cell. */
     static float rain(ClientLevel level) {
         var c = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        return AethryonApi.rainAt(level, c.x, c.z);
+        return PrismApi.rainAt(level, c.x, c.z);
     }
     /** The (up to) four nearest storm cells as the shader takes them: x and z relative to the camera, radius, level; drifted on by the partial tick. */
     static final float[] CELLS = new float[16];
     static int cells(ClientLevel level, float pt) {
         var c = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        List<StormCell> list = new java.util.ArrayList<>(AethryonApi.storm().cells(level, c.x, c.z, 3000));
+        List<StormCell> list = new java.util.ArrayList<>(PrismApi.storm().cells(level, c.x, c.z, 3000));
         list.sort(Comparator.comparingDouble(s -> Math.hypot(s.x() - c.x, s.z() - c.z) - s.radius()));
         java.util.Arrays.fill(CELLS, 0f); int n = Math.min(4, list.size());
         for (int i = 0; i < n; i++) {

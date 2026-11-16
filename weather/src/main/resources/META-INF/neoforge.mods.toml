@@ -32,7 +32,7 @@ versionRange="[1.0,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.alterra_weather]]
-modId="aethryon"
+modId="prismlib"
 type="required"
 versionRange="[0.1,)"
 ordering="AFTER"

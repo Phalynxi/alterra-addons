@@ -3,10 +3,10 @@ version = '1.0.3'
 base { archivesName = 'alterra_weather' }
 tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named alterra_weather.jar; the version lives in neoforge.mods.toml
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-repositories { mavenLocal() }   // Aethryon is published here by its own repo (./gradlew publishToMavenLocal); JitPack later
+repositories { mavenLocal() }   // Prism Lib is published here by its own repo (./gradlew publishToMavenLocal); JitPack later
 dependencies {
     compileOnly project(':api')
-    compileOnly 'dev.phi:aethryon:0.1.0'
+    compileOnly 'dev.phi:prismlib:0.1.0'
 }
 neoForge {
     version = neo_version

@@ -20,9 +20,9 @@ public final class WeatherHooks {
     public static volatile float stormFog = 0f;
     /** The first air above the ground at a column, leaves not counted. Works on the client too: the client keeps only the MOTION_BLOCKING and WORLD_SURFACE
      *  height maps (MOTION_BLOCKING_NO_LEAVES there gives the bottom of the world, which put every storm particle 24 blocks underground). */
-    public static int ground(net.minecraft.world.level.Level l, int x, int z) { return dev.phi.aethryon.api.AethryonApi.ground(l, x, z); }
+    public static int ground(net.minecraft.world.level.Level l, int x, int z) { return dev.phi.prismlib.api.PrismApi.ground(l, x, z); }
     /** Set on the client: takes what the server says about the disasters. */
     public static volatile Consumer<DisasterSync> disasters = d -> {};
     /** Seconds since the game started: smooth, never wraps (a wrap made every wave, caustic and light pattern jump at once). */
-    public static float clock() { return dev.phi.aethryon.api.AethryonApi.clock().seconds(); }
+    public static float clock() { return dev.phi.prismlib.api.PrismApi.clock().seconds(); }
 }

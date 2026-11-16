@@ -67,7 +67,7 @@ public final class AlterraWeather {
     private static Supplier<SoundEvent> sound(String name) { return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ID, name))); }
 
     public AlterraWeather(IEventBus bus, ModContainer container) {
-        dev.phi.aethryon.service.Services.register(dev.phi.aethryon.api.DisturbanceListener.class, new dev.phi.alterra.weather.snow.SnowDisturbance(), 100, ID);   // snow answers every disturbance, from whatever mod
+        dev.phi.prismlib.service.Services.register(dev.phi.prismlib.api.DisturbanceListener.class, new dev.phi.alterra.weather.snow.SnowDisturbance(), 100, ID);   // snow answers every disturbance, from whatever mod
         PARTICLES.register(bus); SOUNDS.register(bus); WaterBlocks.register(bus);
         bus.addListener((net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent e) -> e.registrar("1").optional()
                 .playToClient(ForcedStorm.TYPE, ForcedStorm.CODEC, (payload, ctx) -> ctx.enqueueWork(() -> ForcedStorm.apply(payload)))
@@ -75,12 +75,14 @@ public final class AlterraWeather {
                 .playToClient(WetSync.TYPE, WetSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> Wetness.received(p.wet())))
                 .playToClient(BlastSync.TYPE, BlastSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> Blast.received(p)))
                 .playToClient(SeaSync.TYPE, SeaSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> SeaSurge.received(p)))
-                .playToClient(WaterSync.TYPE, WaterSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> dev.phi.aethryon.api.Look.waterAmounts.accept(new dev.phi.aethryon.api.WaterAmounts(p.pos(), p.amount()))))
+                .playToClient(WaterSync.TYPE, WaterSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> dev.phi.prismlib.api.Look.waterAmounts.accept(new dev.phi.prismlib.api.WaterAmounts(p.pos(), p.amount()))))
                 .playToClient(DisasterSync.TYPE, DisasterSync.CODEC, (p, ctx) -> ctx.enqueueWork(() -> WeatherHooks.disasters.accept(p))));
         WeatherProviders.register();
         container.registerConfig(ModConfig.Type.CLIENT, WeatherConfig.SPEC);
         container.registerConfig(ModConfig.Type.COMMON, HeavyConfig.SPEC);
         container.registerConfig(ModConfig.Type.COMMON, DisasterConfig.SPEC, "alterra_weather-disasters.toml");
+        dev.phi.alterra.weather.compat.LibrarySettings.register();   // the options, as pages of Prism Lib's settings screen
+        if (FMLEnvironment.dist == Dist.CLIENT) dev.phi.prismlib.settings.SettingsClient.install(container, ID, "Alterra Weather");
         if (ModList.get().isLoaded("alterra")) dev.phi.alterra.weather.compat.AlterraLink.register();   // the wind for Alterra addons, and the settings pages
         if (FMLEnvironment.dist == Dist.CLIENT) WeatherClient.init(bus);
     }

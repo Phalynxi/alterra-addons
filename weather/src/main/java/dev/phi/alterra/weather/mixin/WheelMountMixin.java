@@ -1,7 +1,7 @@
 package dev.phi.alterra.weather.mixin;
 
-import dev.phi.aethryon.api.AethryonApi;
-import dev.phi.aethryon.api.Disturbance;
+import dev.phi.prismlib.api.PrismApi;
+import dev.phi.prismlib.api.Disturbance;
 import dev.phi.alterra.weather.compat.SableLink;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,6 +33,6 @@ public abstract class WheelMountMixin {
         int gy = level.getHeight(Heightmap.Types.MOTION_BLOCKING, (int) Math.floor(hub.x), (int) Math.floor(hub.z));
         if (hub.y - gy > 2.6 || hub.y < gy - 1.0) return;   // in the air (or under the ground): not touching
         float energy = (float) Math.min(1.0, 0.45 + speed * 1.2);
-        AethryonApi.disturb(level, new Disturbance(Disturbance.Kind.WHEEL, hub.x, gy, hub.z, 0.7f, energy, vx / speed, 0, vz / speed));
+        PrismApi.disturb(level, new Disturbance(Disturbance.Kind.WHEEL, hub.x, gy, hub.z, 0.7f, energy, vx / speed, 0, vz / speed));
     }
 }

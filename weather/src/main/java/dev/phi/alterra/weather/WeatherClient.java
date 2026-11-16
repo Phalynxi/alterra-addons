@@ -23,7 +23,7 @@ public final class WeatherClient {
     public static void init(IEventBus bus) {
         WeatherHooks.disasters = DisasterClient::received;
         bus.addListener((net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent e) -> e.register(net.minecraft.resources.ResourceLocation.withDefaultNamespace("overworld"), new StormRain()));   // wind-blown rain
-        bus.addListener((RegisterParticleProvidersEvent e) -> {   // the game only stitches our sprites; the particles themselves are Aethryon's
+        bus.addListener((RegisterParticleProvidersEvent e) -> {   // the game only stitches our sprites; the particles themselves are Prism Lib's
             for (var type : java.util.List.of(AlterraWeather.RIPPLE, AlterraWeather.CLUMP, AlterraWeather.SPRAY, AlterraWeather.FOAM, AlterraWeather.DUST, AlterraWeather.PUFF, AlterraWeather.DRIFT, AlterraWeather.PRINT, AlterraWeather.DROP, AlterraWeather.HAIL, AlterraWeather.MOTE)) {
                 if (type.get() instanceof net.minecraft.core.particles.SimpleParticleType st) e.registerSpriteSet(st, sp -> { WeatherParticles.spritesOf(st, sp); return (t, l, x, y, z, dx, dy, dz) -> { WeatherParticles.add(l, t, x, y, z, dx, dy, dz); return null; }; });
                 else if (type.get() instanceof net.minecraft.core.particles.ParticleType<?> pt) e.registerSpriteSet((net.minecraft.core.particles.ParticleType) pt, sp -> { WeatherParticles.spritesOf(pt, sp); return (o, l, x, y, z, dx, dy, dz) -> { WeatherParticles.add(l, o, x, y, z, dx, dy, dz); return null; }; });

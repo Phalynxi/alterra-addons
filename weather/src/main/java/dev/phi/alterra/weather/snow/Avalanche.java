@@ -125,13 +125,15 @@ public final class Avalanche {
     public static void tick(LevelTickEvent.Post e) {
         if (e.getLevel() instanceof ServerLevel sl) landed(sl);
         if (e.getLevel() instanceof ServerLevel w && HeavyConfig.get(HeavyConfig.AVALANCHES) && w.getGameTime() % 10 == 5) weight(w);
-        if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.AVALANCHES) || !l.isRaining() || l.getGameTime() % 40 != 7) return;
-        float storm = Math.max(l.getThunderLevel(1f), HeavyStorm.level(l));
+        if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.AVALANCHES) || l.getGameTime() % 40 != 7) return;
         for (ServerPlayer pl : l.players()) {
-            if (l.random.nextFloat() > 0.04f + 0.25f * storm) continue;   // heavy snowfall: now and then; a blizzard: often
+            float cell = HeavyStorm.at(l, pl.getX(), pl.getZ()), snowing = l.isRaining() ? 1f : 0f;
+            float fall = Math.max(snowing * Math.max(l.getThunderLevel(1f), HeavyStorm.level(l)), cell);   // a storm over the player: a world-wide one, or a travelling cell (it snows under it on cold slopes even in clear weather)
+            if (snowing == 0f && cell < 0.2f) continue;
+            if (l.random.nextFloat() > 0.04f + 0.25f * fall) continue;   // heavy snowfall: now and then; a blizzard: often
             int x = pl.getBlockX() + l.random.nextInt(97) - 48, z = pl.getBlockZ() + l.random.nextInt(97) - 48;
             BlockPos top = new BlockPos(x, l.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
-            if (!l.getBiome(top).value().coldEnoughToSnow(top) || !l.isRainingAt(top.above())) continue;
+            if (!l.getBiome(top).value().coldEnoughToSnow(top) || !(l.isRainingAt(top.above()) || HeavyStorm.rainAt(l, x, z) > 0.2f)) continue;
             release(l, top, 3 + l.random.nextInt(4));
         }
     }

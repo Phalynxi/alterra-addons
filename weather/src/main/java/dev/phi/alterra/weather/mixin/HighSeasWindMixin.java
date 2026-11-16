@@ -1,6 +1,6 @@
 package dev.phi.alterra.weather.mixin;
 
-import dev.phi.aethryon.api.AethryonApi;
+import dev.phi.prismlib.api.PrismApi;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class HighSeasWindMixin {
     @Inject(method = "regionalWind", at = @At("HEAD"), cancellable = true, remap = false, require = 0)
     private static void alterra$ourWind(Level level, double x, double z, CallbackInfoReturnable<Vec3> cir) {
-        Vec3 w = AethryonApi.wind().at(level, x, z);
+        Vec3 w = PrismApi.wind().at(level, x, z);
         cir.setReturnValue(new Vec3(w.x * 6.0, 0.0, w.z * 6.0));
     }
 

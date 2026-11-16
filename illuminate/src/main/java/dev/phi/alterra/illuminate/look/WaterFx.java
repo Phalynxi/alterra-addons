@@ -1,6 +1,6 @@
 package dev.phi.alterra.illuminate.look;
 
-import dev.phi.aethryon.api.AethryonApi;
+import dev.phi.prismlib.api.PrismApi;
 import dev.phi.alterra.illuminate.Illuminate;
 import dev.phi.alterra.illuminate.IlluminateConfig;
 import dev.phi.alterra.illuminate.maps.FlowMap;
@@ -134,7 +134,7 @@ public final class WaterFx {
         float t = (now + pt) / 20f, rain = level.getRainLevel(pt);
         float day = Math.max(0.12f, Math.max(0f, Mth.cos(level.getTimeOfDay(pt) * Mth.TWO_PI)) * (1f - 0.75f * rain));   // sun high: 1; at night a faint moonlight
         float strength = IlluminateConfig.get(IlluminateConfig.CAUSTIC_STRENGTH).floatValue();
-        var wind = AethryonApi.wind().at(level, cam.x, cam.z);
+        var wind = PrismApi.wind().at(level, cam.x, cam.z);
         // the vertices are given relative to the camera, and the view (its turning) is put on the model-view matrix here, whatever was on it before
         var mv = RenderSystem.getModelViewStack();
         mv.pushMatrix(); mv.identity(); mv.mul(e.getModelViewMatrix()); RenderSystem.applyModelViewMatrix();

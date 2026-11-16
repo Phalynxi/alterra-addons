@@ -59,7 +59,7 @@ public final class SnowPhysics {
                 if (Math.abs(walked - was) < 0.55f) continue;
                 STEPPED.put(le, walked);
                 float mass = Math.min(1f, le.getBbWidth() * le.getBbHeight() * 0.18f);   // a person 0.3, a cow 0.6, a horse about 0.7
-                dev.phi.aethryon.api.AethryonApi.disturb(l, new dev.phi.aethryon.api.Disturbance(dev.phi.aethryon.api.Disturbance.Kind.STEP, le.getX(), le.getY(), le.getZ(), Math.max(0.3f, le.getBbWidth() * 0.5f), mass, le.getDeltaMovement().x, 0, le.getDeltaMovement().z));
+                dev.phi.prismlib.api.PrismApi.disturb(l, new dev.phi.prismlib.api.Disturbance(dev.phi.prismlib.api.Disturbance.Kind.STEP, le.getX(), le.getY(), le.getZ(), Math.max(0.3f, le.getBbWidth() * 0.5f), mass, le.getDeltaMovement().x, 0, le.getDeltaMovement().z));
             }
         }
         if (STEPPED.size() > 600) STEPPED.clear();

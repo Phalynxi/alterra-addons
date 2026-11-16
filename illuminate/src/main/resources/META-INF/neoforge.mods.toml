@@ -20,7 +20,7 @@ versionRange="[21.1,)"
 ordering="NONE"
 side="CLIENT"
 [[dependencies.alterra_illuminate]]
-modId="aethryon"
+modId="prismlib"
 type="required"
 versionRange="[0.1,)"
 ordering="AFTER"

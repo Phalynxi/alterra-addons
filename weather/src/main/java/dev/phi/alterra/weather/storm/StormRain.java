@@ -1,6 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
-import dev.phi.aethryon.api.Look;
+import dev.phi.prismlib.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.HeavyConfig;
@@ -12,7 +12,7 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import dev.phi.aethryon.api.AethryonApi;
+import dev.phi.prismlib.api.PrismApi;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -50,7 +50,7 @@ public final class StormRain extends DimensionSpecialEffects.OverworldEffects {
         if (rain <= 0f) return true;
         float heavy = HeavyStorm.at(level, camX, camZ);
         lightTexture.turnOnLightLayer();
-        Vec3 wind = AethryonApi.wind().at(level, camX, camZ);
+        Vec3 wind = PrismApi.wind().at(level, camX, camZ);
         float slant = (float) ((0.10 + 0.50 * wind.length()) * WeatherConfig.get(WeatherConfig.RAIN_SLANT));
         double sx = wind.length() > 1e-3 ? wind.x / wind.length() * slant : 0, sz = wind.length() > 1e-3 ? wind.z / wind.length() * slant : 0;   // sideways per block fallen
         int radius = (Minecraft.useFancyGraphics() ? 10 : 5) + (heavy > 0.4f ? 3 : 0);

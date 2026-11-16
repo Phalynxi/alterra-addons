@@ -3,8 +3,8 @@ package dev.phi.alterra.weather.disaster;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import dev.phi.aethryon.api.AethryonApi;
-import dev.phi.aethryon.api.Disturbance;
+import dev.phi.prismlib.api.PrismApi;
+import dev.phi.prismlib.api.Disturbance;
 import dev.phi.alterra.weather.AlterraWeather;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -32,7 +32,7 @@ public final class DisturbCommand {
     private static int send(net.minecraft.commands.CommandSourceStack src, String kind, float radius, float energy, double dx, double dz) {
         Disturbance.Kind k;
         try { k = Disturbance.Kind.valueOf(kind.toUpperCase(Locale.ROOT)); } catch (IllegalArgumentException ex) { src.sendFailure(Component.literal("Kinds: step, wheel, wash, hull, blast, splash")); return 0; }
-        var p = src.getPosition(); AethryonApi.disturb(src.getLevel(), new Disturbance(k, p.x, p.y, p.z, radius, energy, dx, 0, dz));
+        var p = src.getPosition(); PrismApi.disturb(src.getLevel(), new Disturbance(k, p.x, p.y, p.z, radius, energy, dx, 0, dz));
         return 1;
     }
 }

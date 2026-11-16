@@ -1,8 +1,8 @@
 package dev.phi.alterra.weather.snow;
 
 import dev.phi.alterra.weather.config.HeavyConfig;
-import dev.phi.aethryon.api.Disturbance;
-import dev.phi.aethryon.api.DisturbanceListener;
+import dev.phi.prismlib.api.Disturbance;
+import dev.phi.prismlib.api.DisturbanceListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 /**
- * How snow answers a disturbance (see Aethryon's Disturbance): whatever sends one, from a foot to a rotor, works the same on the snow.
+ * How snow answers a disturbance (see Prism Lib's Disturbance): whatever sends one, from a foot to a rotor, works the same on the snow.
  * A step or a wheel presses the layers down (more with weight) and the snow it pushes aside is heaped up at the edges of the track, as in real snow; the wash of a rotor
  * lifts layers and carries them downwind; a blast shakes loose snow off steep slopes (Avalanche). Mass is kept: what is taken from one column is put somewhere else.
  */

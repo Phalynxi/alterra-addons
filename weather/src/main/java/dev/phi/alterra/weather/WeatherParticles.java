@@ -1,9 +1,9 @@
 package dev.phi.alterra.weather;
 
-import dev.phi.aethryon.particle.Particle;
-import dev.phi.aethryon.particle.ParticleKind;
-import dev.phi.aethryon.particle.ParticleKind.Shape;
-import dev.phi.aethryon.particle.Particles;
+import dev.phi.prismlib.particle.Particle;
+import dev.phi.prismlib.particle.ParticleKind;
+import dev.phi.prismlib.particle.ParticleKind.Shape;
+import dev.phi.prismlib.particle.Particles;
 import dev.phi.alterra.weather.water.Ripples;
 import dev.phi.alterra.weather.water.Splashes;
 import dev.phi.alterra.weather.water.SubLevels;
@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 /**
- * The weather's particles on Aethryon's own engine: the kinds (how each looks and behaves) and {@link #add}, which takes what the old {@code level.addParticle} calls passed
+ * The weather's particles on Prism Lib's own engine: the kinds (how each looks and behaves) and {@link #add}, which takes what the old {@code level.addParticle} calls passed
  * (our particle types, a few vanilla ones that we draw ourselves) and makes the particle. Anything it does not know goes to the game's own engine (other mods' types).
  */
 public final class WeatherParticles {

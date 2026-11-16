@@ -1,7 +1,7 @@
 package dev.phi.alterra.weather.mixin;
 
-import dev.phi.aethryon.api.AethryonApi;
-import dev.phi.aethryon.api.Disturbance;
+import dev.phi.prismlib.api.PrismApi;
+import dev.phi.prismlib.api.Disturbance;
 import dev.phi.alterra.weather.compat.SableLink;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,7 +39,7 @@ public abstract class PropellerBearingMixin {
             Vec3 p = from.add(ax * s, ay * s, az * s); BlockPos bp = BlockPos.containing(p);
             if (!level.isLoaded(bp) || level.getBlockState(bp).isAir()) continue;
             float near = 1f - s / 17f;   // the closer to the ground, the harder
-            AethryonApi.disturb(level, new Disturbance(Disturbance.Kind.WASH, p.x, bp.getY() + 1, p.z, 2.5f + energy * 3f * near, energy * near, 0, 0, 0));
+            PrismApi.disturb(level, new Disturbance(Disturbance.Kind.WASH, p.x, bp.getY() + 1, p.z, 2.5f + energy * 3f * near, energy * near, 0, 0, 0));
             return;
         }
     }

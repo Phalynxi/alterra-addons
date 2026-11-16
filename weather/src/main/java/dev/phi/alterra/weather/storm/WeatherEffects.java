@@ -1,6 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
-import dev.phi.aethryon.api.AethryonApi;
+import dev.phi.prismlib.api.PrismApi;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 import dev.phi.alterra.weather.config.WeatherConfig;
@@ -225,7 +225,7 @@ public final class WeatherEffects {
     private static void shoreFoam(net.minecraft.client.multiplayer.ClientLevel level, net.minecraft.client.player.LocalPlayer p) {
         if (true || mc().options.particles().get() == ParticleStatus.MINIMAL) return;
         var r = level.random; var pos = new BlockPos.MutableBlockPos(); var n = new BlockPos.MutableBlockPos();
-        float windy = (float) AethryonApi.wind().at(level, p.getX(), p.getZ()).length();
+        float windy = (float) PrismApi.wind().at(level, p.getX(), p.getZ()).length();
         int spawned = 0, max = windy > 0.6f ? 3 : 2;
         for (int i = 0; i < 10 && spawned < max; i++) {
             int x = Mth.floor(p.getX() + (r.nextDouble() - 0.5) * 56), z = Mth.floor(p.getZ() + (r.nextDouble() - 0.5) * 56);

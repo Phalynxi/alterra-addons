@@ -1,6 +1,6 @@
 package dev.phi.alterra.weather.storm;
 
-import dev.phi.aethryon.api.Look;
+import dev.phi.prismlib.api.Look;
 import dev.phi.alterra.weather.AlterraWeather;
 import dev.phi.alterra.weather.WeatherHooks;
 

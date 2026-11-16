@@ -21,7 +21,7 @@ public final class StormCells {
     private static Cell fixed() {
         String s = System.getenv("ALTERRA_CELL"); if (s == null || s.isBlank()) return null;
         try { String[] p = s.split(","); return new Cell(Double.parseDouble(p[0]), Double.parseDouble(p[1]), Float.parseFloat(p[2]), Float.parseFloat(p[3]), 0, 0); }
-        catch (RuntimeException e) { dev.phi.aethryon.Aethryon.LOG.error("ALTERRA_CELL must be x,z,radius,level; ignored", e); return null; }
+        catch (RuntimeException e) { dev.phi.prismlib.PrismLib.LOG.error("ALTERRA_CELL must be x,z,radius,level; ignored", e); return null; }
     }
 
     private static double rnd(int i, int j, long e, int salt) {

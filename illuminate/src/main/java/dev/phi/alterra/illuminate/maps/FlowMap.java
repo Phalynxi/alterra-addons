@@ -1,6 +1,6 @@
 package dev.phi.alterra.illuminate.maps;
 
-import dev.phi.aethryon.api.WaterAmounts;
+import dev.phi.prismlib.api.WaterAmounts;
 
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
