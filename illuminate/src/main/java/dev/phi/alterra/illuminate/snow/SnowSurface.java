@@ -121,16 +121,27 @@ public final class SnowSurface {
     }
 
     // ------------------------------------------------------------------ the mesh
-    /** Height of a corner of column c at (a, b) in 0..1: the average of the four columns around it that are within a block of this one (walls and cliffs do not pull it), kept above the ground. */
+    /**
+     * Height of a corner of column (i, j) at (a, b) in 0..1. The corner is a point shared by four columns, so every one of them must get the same answer or cracks open between them: the
+     * columns are sorted into clusters (each within a block of the highest left in it: a cliff or a wall splits them) and every column takes the average of its own cluster, kept above
+     * the ground of all the columns in it. A column on its own side of a wall gets its own height, and the wall is closed by a skirt.
+     */
     private static float corner(int i, int j, int a, int b) {
-        int c = i + j * N, base = S[c], sum = 0, n = 0;
-        for (int dj = b - 1; dj <= b; dj++) for (int di = a - 1; di <= a; di++) {
-            int q = (i + di) + (j + dj) * N;
-            if (!L[q] || Math.abs(S[q] - base) > 8) continue;
-            sum += S[q]; n++;
+        int[] q = new int[4]; int n = 0;
+        for (int dj = b - 1; dj <= b; dj++) for (int di = a - 1; di <= a; di++) { int c = (i + di) + (j + dj) * N; if (L[c]) q[n++] = c; }
+        int mine = i + j * N, lo = 0, hi = Integer.MAX_VALUE, sum = 0, cnt = 0;
+        boolean[] used = new boolean[4];
+        while (true) {   // the highest column not yet placed starts a cluster; the ones within a block below it join it
+            int top = -1; for (int k = 0; k < n; k++) if (!used[k] && (top < 0 || S[q[k]] > S[q[top]])) top = k;
+            if (top < 0) break;
+            int ts = 0, tc = 0, tlo = 0, thi = Integer.MAX_VALUE; boolean has = false;
+            for (int k = 0; k < n; k++) if (!used[k] && S[q[top]] - S[q[k]] <= 8) {
+                used[k] = true; ts += S[q[k]]; tc++; tlo = Math.max(tlo, K[q[k]] == 1 ? G[q[k]] + 1 : G[q[k]]); thi = Math.min(thi, S[q[k]] + 8); if (q[k] == mine) has = true;
+            }
+            if (has) { sum = ts; cnt = tc; lo = tlo; hi = thi; }
         }
-        float h = n == 0 ? base : (float) sum / n;
-        return Mth.clamp(h, K[c] == 1 ? G[c] + 1 : G[c], S[c] + 8) / 8f;
+        float h = cnt == 0 ? S[mine] : (float) sum / cnt;
+        return Math.max(lo, Math.min(Math.max(hi, lo), h)) / 8f;
     }
     /** The light at a corner: the average of the block and sky light above the (snowy) columns around it, so light changes smoothly across the sheet. */
     private static int cornerLight(int i, int j, int a, int b) {
