@@ -146,7 +146,7 @@ public final class SnowSurface {
         out[0] = (e + w) / 16f; out[1] = (s + n) / 16f;   // blocks of rise per block, east and south
     }
 
-    private static MeshData build(ClientLevel lv, int x0, int z0) {
+    private static MeshData build(ClientLevel lv, int x0, int z0, boolean fine) {
         BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
         float[] sl = new float[2]; float[] nx = new float[4], nz = new float[4], hh = new float[4];
         boolean any = false;
@@ -168,7 +168,10 @@ public final class SnowSurface {
             }
             // top: (x0,z1) (x1,z1) (x1,z0) (x0,z0) is the order that faces up
             int[] order = {3, 2, 1, 0};
-            for (int o : order) vertex(bb, wx + ca[o], hh[o], wz + cb[o], nx[o], nz[o], cornerLight(i, j, ca[o], cb[o]));
+            if (fine) {   // where something has stepped: four by four small quads to the block, the dents added to the surface
+                int[] na = {0, 1, 1, 0}, nb = {1, 1, 0, 0};
+                for (int sb = 0; sb < 4; sb++) for (int sa = 0; sa < 4; sa++) for (int k = 0; k < 4; k++) fineVertex(bb, wx, wz, (sa + na[k]) / 4f, (sb + nb[k]) / 4f, hh, nx, nz, i, j);
+            } else for (int o : order) vertex(bb, wx + ca[o], hh[o], wz + cb[o], nx[o], nz[o], cornerLight(i, j, ca[o], cb[o]));
             // skirts where the neighbour has no snow and lies lower: the edge down to its ground
             for (int side = 0; side < 4; side++) {
                 int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
@@ -185,6 +188,16 @@ public final class SnowSurface {
             }
         }
         return any ? bb.build() : null;   // (a builder that is not built is simply dropped)
+    }
+    /** A vertex of a fine quad inside column (wx, wz) at fractions (fa, fb) of it: the smoothed surface plus the dent, its slope from both, darker where it is pressed. */
+    private static void fineVertex(BufferBuilder bb, int wx, int wz, float fa, float fb, float[] hh, float[] nx, float[] nz, int i, int j) {
+        float h = Mth.lerp(fb, Mth.lerp(fa, hh[0], hh[1]), Mth.lerp(fa, hh[3], hh[2]));
+        float bx = Mth.lerp(fb, Mth.lerp(fa, nx[0], nx[1]), Mth.lerp(fa, nx[3], nx[2])), bz = Mth.lerp(fb, Mth.lerp(fa, nz[0], nz[1]), Mth.lerp(fa, nz[3], nz[2]));
+        float by = (float) Math.sqrt(Math.max(1e-3, 1.0 - bx * bx - bz * bz)), sx = -bx / by, sz = -bz / by;
+        double X = wx + fa, Z = wz + fb; float dent = SnowDents.at(X, Z);
+        sx += (SnowDents.at(X + 0.125, Z) - SnowDents.at(X - 0.125, Z)) / 0.25f; sz += (SnowDents.at(X, Z + 0.125) - SnowDents.at(X, Z - 0.125)) / 0.25f;
+        float len = (float) Math.sqrt(sx * sx + 1f + sz * sz); int c = Math.round(255f * Mth.clamp(1f + dent * 3.0f, 0.60f, 1f)), cb = Math.min(255, Math.round(c * 1.03f + 5f));   // pressed snow is darker and bluer
+        bb.addVertex((float) (X - tileX), h + dent, (float) (Z - tileZ)).setColor(c, c, cb, 255).setUv((float) (X / 4.0), (float) (Z / 4.0)).setLight(cornerLight(i, j, fa >= 0.5f ? 1 : 0, fb >= 0.5f ? 1 : 0)).setNormal(-sx / len, 1f / len, -sz / len);
     }
     private static void vertex(BufferBuilder bb, double x, float y, double z, float nx, float nz, int light) { vertex(bb, x, y, z, nx, nz, light, -1f); }
     /** ny < 0: an upward-facing top whose normal is computed from the horizontal parts; otherwise the given normal y (0 for a skirt). */
@@ -213,11 +226,11 @@ public final class SnowSurface {
             int tx = ctx + dx, tz = ctz + dz; long key = ((long) tx << 32) | (tz & 0xFFFFFFFFL);
             Tile t = TILES.computeIfAbsent(key, k -> new Tile());
             scanned++;
-            long sig = sample(lv, tx * T, tz * T);
+            int dv = SnowDents.version(tx, tz); long sig = sample(lv, tx * T, tz * T) ^ (dv * 0x9E3779B97F4A7C15L);
             if (sig == t.sig) continue;
             t.sig = sig; built++; t.cols = 0; for (int jj = PAD; jj < PAD + T; jj++) for (int ii = PAD; ii < PAD + T; ii++) if (K[ii + jj * N] != 0) t.cols++;
             tileX = tx * T; tileZ = tz * T;
-            MeshData md = build(lv, tx * T, tz * T);
+            MeshData md = build(lv, tx * T, tz * T, dv != 0);
             if (md == null) { t.empty = true; if (t.vb != null) { t.vb.close(); t.vb = null; } continue; }
             if (t.vb == null) t.vb = new VertexBuffer(VertexBuffer.Usage.STATIC);
             t.vb.bind(); t.vb.upload(md); VertexBuffer.unbind(); t.empty = false;
