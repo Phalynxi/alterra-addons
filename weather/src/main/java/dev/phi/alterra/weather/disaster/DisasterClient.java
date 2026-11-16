@@ -43,10 +43,35 @@ public final class DisasterClient {
     private static volatile java.util.List<Funnel> funnels = java.util.List.of();
     public static java.util.List<Funnel> funnels() { return funnels; }
 
+    /** The grid water of every whirlpool this client sees: it runs its own copy of the server's simulation and keeps drawing it until the water has settled after the whirlpool is gone. */
+    private static final class Sim { WhirlpoolSim sim; boolean seen; float spin; }
+    private static final Map<Integer, Sim> SIMS = new HashMap<>();
+    private static volatile java.util.List<dev.phi.prismlib.api.WaterSurface> surfaces = java.util.List.of();
+    public static java.util.List<dev.phi.prismlib.api.WaterSurface> surfaces() { return surfaces; }
+
+    private static void tickSims(net.minecraft.client.multiplayer.ClientLevel level) {
+        for (Sim s : SIMS.values()) s.seen = false;
+        for (F f : MAP.values()) {
+            if (f.type != Disasters.VORTEX) continue;
+            Sim s = SIMS.computeIfAbsent(f.id, k -> new Sim());
+            if (s.sim == null) s.sim = new WhirlpoolSim(level, f.tx, f.ty, f.tz, f.radius, f.strength, f.top < 0 ? -1f : 1f);
+            s.seen = true; s.spin = f.top < 0 ? -1f : 1f;
+            if (!Minecraft.getInstance().isPaused()) s.sim.tick(f.strength, s.spin);
+        }
+        var out = new java.util.ArrayList<dev.phi.prismlib.api.WaterSurface>();
+        for (var it = SIMS.values().iterator(); it.hasNext(); ) {
+            Sim s = it.next();
+            if (!s.seen && !Minecraft.getInstance().isPaused()) s.sim.tick(0f, s.spin);   // the whirlpool is gone: the water settles
+            if (!s.seen && s.sim.quiet()) { it.remove(); continue; }
+            out.add(new dev.phi.prismlib.api.WaterSurface(s.sim.grid, s.sim.y - 0.11, s.sim.radius * 1.35f));
+        }
+        surfaces = out;
+    }
+
     @SubscribeEvent
     public static void tick(ClientTickEvent.Post e) {
         var mc = Minecraft.getInstance(); var level = mc.level;
-        if (level == null || mc.player == null) { MAP.clear(); funnels = java.util.List.of(); return; }
+        if (level == null || mc.player == null) { MAP.clear(); SIMS.clear(); funnels = java.util.List.of(); surfaces = java.util.List.of(); return; }
         long now = level.getGameTime();
         MAP.values().removeIf(f -> now - f.seen > 12);
         for (F f : MAP.values()) { f.x += (f.tx - f.x) * 0.4; f.y += (f.ty - f.y) * 0.25; f.z += (f.tz - f.z) * 0.4; }   // smooth between the server's updates
@@ -67,6 +92,7 @@ public final class DisasterClient {
             list.add(new Funnel(type, f.x, f.y, f.z, f.radius, topRadius(f.type, f.radius), f.top, f.strength, Math.signum(f.top)));
         }
         funnels = list;
+        tickSims(level);
         if (mc.player.getVehicle() instanceof net.minecraft.world.entity.vehicle.Boat boat && !mc.isPaused()) {   // the boat you drive is yours to steer: the water turns it, here in your game
             for (F f : near) {
                 if (f == null || f.type != Disasters.VORTEX || Math.abs(boat.getY() - f.y) > 4) continue;

@@ -174,6 +174,7 @@ public final class Flood {
             }
             p.set(ox + low % n, g[low], oz + low / n);
             if (level.getBiome(p).value().getPrecipitationAt(p) != Biome.Precipitation.RAIN || !level.canSeeSky(p)) continue;
+            if (level.getBlockState(p.below()).is(net.minecraft.tags.BlockTags.SNOW)) continue;   // rain does not pool on snow
             long key = p.asLong();
             int gained = Math.round(cells.size() * 3 * storm * 10);   // the rain on the hollow and on the slopes that run into it, in thousandths of a block
             int have = d.stored.get(key) + gained;

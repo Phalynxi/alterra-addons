@@ -18,6 +18,7 @@ public final class AlterraSettings {
                 AlterraApi.Option.bool("Caustics", "Rippling light on the bottom of shallow water and under water.", IlluminateConfig.CAUSTICS),
                 AlterraApi.Option.number("Caustic strength", "How bright the caustics and the lava glow are.", IlluminateConfig.CAUSTIC_STRENGTH, 0.1, 2.0, 0.1, "x"),
                 AlterraApi.Option.bool("Waves", "The surface rises and falls in slow swells; boats ride them.", IlluminateConfig.WATER_WAVES),
+                AlterraApi.Option.bool("Custom snow", "Snow is drawn as its own smooth, grainy surface instead of the blocks' layers.", IlluminateConfig.CUSTOM_SNOW),
                 AlterraApi.Option.bool("Smooth snow", "Snow lies in smooth drifts and slopes instead of steps of an eighth of a block.", IlluminateConfig.SMOOTH_SNOW),
                 AlterraApi.Option.bool("Smooth water", "Filling and draining water moves smoothly instead of a step at a time.", IlluminateConfig.SMOOTH_WATER),
                 AlterraApi.Option.bool("Shore foam", "A band of foam along the water's edge.", IlluminateConfig.FOAM),

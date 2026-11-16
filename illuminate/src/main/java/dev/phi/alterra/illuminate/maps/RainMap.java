@@ -30,7 +30,7 @@ public final class RainMap {
     private static final boolean[] sink = new boolean[SIZE * SIZE];   // columns topped by real water: puddle water that runs there joins it
     private static final boolean[] tagged = new boolean[SIZE * SIZE];
 
-    private static final float MAX_WATER = 0.12f;   // a puddle is a film, not a pond
+    private static final float MAX_WATER = 0.30f;   // deep enough to read as a puddle (the shader shows 0.4 of it), still not a pond
     private static final boolean FAST = Boolean.getBoolean("alterra.fast");   // photo tour: no minute of soaking
     private static final float[] shown = new float[SIZE * SIZE], soak = new float[SIZE * SIZE];
     public static int texture() { return tex; }
@@ -130,8 +130,8 @@ public final class RainMap {
         if (dt <= 0f) return;
         float rain = Math.max(level.getRainLevel(1f), PrismApi.storm().heavy(level));
         float heavy = PrismApi.storm().heavy(level);
-        float add = rain * (0.0040f + 0.0030f * heavy) * dt, infil = 0.0012f * dt, evap = 0.0004f * dry * dt;   // per second: rain fills a puddle in about half a minute once the ground is soaked, and it takes a couple of minutes to go   // blocks of water per update: ordinary rain barely out-runs what the ground drinks, a heavy storm does
-        float soakUp = rain * dt / (FAST ? 6f : 60f), soakDown = dt / 900f * dry;   // the ground has to be soaked first (a minute or so of steady rain), and dries out again over a quarter of an hour
+        float add = rain * (0.0065f + 0.0040f * heavy) * dt, infil = 0.0012f * dt, evap = 0.0004f * dry * dt;   // per second: rain fills a puddle in about half a minute once the ground is soaked, and it takes a couple of minutes to go   // blocks of water per update: ordinary rain barely out-runs what the ground drinks, a heavy storm does
+        float soakUp = rain * dt / (FAST ? 6f : 25f), soakDown = dt / 900f * dry;   // the ground has to be soaked first (a minute or so of steady rain), and dries out again over a quarter of an hour
         for (int z = 0; z < SIZE; z++) for (int x = 0; x < SIZE; x++) {
             int i = ((ox + x) & (SIZE - 1)) + ((oz + z) & (SIZE - 1)) * SIZE;
             if (ground[x + z * SIZE] > 900f) continue;

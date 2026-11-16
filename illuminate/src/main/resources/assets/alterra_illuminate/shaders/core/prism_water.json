@@ -1,0 +1,18 @@
+{
+  "vertex": "alterra_illuminate:prism_water",
+  "fragment": "alterra_illuminate:prism_water",
+  "blend": { "func": "add", "srcrgb": "srcalpha", "dstrgb": "1-srcalpha" },
+  "samplers": [ { "name": "Sampler2" } ],
+  "uniforms": [
+    { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+    { "name": "ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
+    { "name": "FogStart", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "FogEnd", "type": "float", "count": 1, "values": [ 1.0 ] },
+    { "name": "FogColor", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
+    { "name": "SunDir", "type": "float", "count": 3, "values": [ 0.0, 1.0, 0.0 ] },
+    { "name": "Zenith", "type": "float", "count": 3, "values": [ 0.4, 0.6, 1.0 ] },
+    { "name": "Horizon", "type": "float", "count": 3, "values": [ 0.7, 0.8, 1.0 ] },
+    { "name": "WaterColor", "type": "float", "count": 3, "values": [ 0.1, 0.45, 0.6 ] }
+  ]
+}

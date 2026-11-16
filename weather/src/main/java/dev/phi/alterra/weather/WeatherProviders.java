@@ -24,6 +24,7 @@ public final class WeatherProviders {
 
     public static void register() {
         Services.register(WindProvider.class, (level, x, z) -> Wind.at(level.getGameTime(), x, z, level.getRainLevel(1f), level.getThunderLevel(1f), HeavyStorm.at(level, x, z)), 100, AlterraWeather.ID);
+        Services.register(dev.phi.prismlib.api.WaterSurfaces.class, dev.phi.alterra.weather.disaster.DisasterClient::surfaces, 100, AlterraWeather.ID);
         Services.register(dev.phi.prismlib.api.DisasterView.class, dev.phi.alterra.weather.disaster.DisasterClient::funnels, 100, AlterraWeather.ID);
         Services.register(StormProvider.class, new StormProvider() {
             public float heavy(Level level) { var c = net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(); return level.isClientSide ? HeavyStorm.at(level, c.x, c.z) : HeavyStorm.level(level); }   // on the client: over the camera

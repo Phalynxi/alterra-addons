@@ -102,6 +102,7 @@ public final class Footprints {
 
     /** The height of the surface under a thing: a snow layer's own height, or the top of the block below. */
     private static double surface(ClientLevel level, double x, double y, double z) {
+        float sh = dev.phi.prismlib.api.PrismApi.snowHeight(level, x, z); if (!Float.isNaN(sh) && Math.abs(sh - y) < 1.5) return sh;   // snow is drawn as a surface of its own: sit on that
         BlockPos feet = BlockPos.containing(x, y + 0.01, z); BlockState st = level.getBlockState(feet);
         if (st.is(Blocks.SNOW)) return feet.getY() + st.getShape(level, feet).max(net.minecraft.core.Direction.Axis.Y);
         BlockPos below = feet.below();

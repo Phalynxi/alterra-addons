@@ -18,8 +18,8 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 /**
  * Snow as a loose pile with sleeping columns. Anything that changes the snow in a column (a track, the wind, an avalanche, a layer that moved) wakes that column and its four neighbours.
  * Every second tick a budget of awake columns near the players is relaxed: a layer moves to the lowest neighbour when the surface drops by more than the angle of repose
- * (4 eighths of a block per block, about 27 degrees: packed enough to hold the walls of a track). A column that cannot move goes back to sleep; one that moved wakes its neighbours,
- * so a heap collapses outwards like a flow and then rests. Nothing is scanned that has not changed (a few random columns are woken now and then to find old unsettled snow).
+ * (8 eighths of a block per block, 45 degrees: snow is not a liquid, it holds the walls of a track and only a steep heap slumps). A column that cannot move goes back to sleep; one that moved wakes its neighbours,
+ * so a heap collapses outwards like a flow and then rests. Nothing is scanned that has not changed.
  * Piles level out, drifts smooth, and snow is left lying
  * where it was heaped; a steep slope holds more than it should, which is what {@link Avalanche} lets go of.
  * It only happens on about level ground (drifts even out) and where deep snow hangs over a one-block step (it slumps off); snow on steeper ground holds, as it does in life,
@@ -29,7 +29,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 public final class SnowPhysics {
     private SnowPhysics() {}
     private static final Direction[] SIDES = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-    private static final int REPOSE = 4, LEDGE = 12, BUDGET = 96;   // eighths: slides above REPOSE, but not off a drop of more than a block and a half (that is a cliff, not a slope)
+    private static final int REPOSE = 8, LEDGE = 16, BUDGET = 24;   // eighths: slides above REPOSE, but not off a drop of more than a block and a half (that is a cliff, not a slope)
 
     /** What the top of a column is: the position of its topmost snow (a layer or a block), or null where there is none. */
     static BlockPos snowAt(ServerLevel l, int x, int z, int top) {
@@ -69,11 +69,7 @@ public final class SnowPhysics {
     public static void tick(LevelTickEvent.Post e) {
         if (e.getLevel() instanceof ServerLevel t && HeavyConfig.get(HeavyConfig.SNOW_TRACKS) && t.getGameTime() % 2 == 0) tracks(t);
         if (!(e.getLevel() instanceof ServerLevel l) || !HeavyConfig.get(HeavyConfig.SNOW_SETTLES)) return;
-        if (l.getGameTime() % 10 == 3) for (ServerPlayer pl : l.players()) for (int i = 0; i < 24; i++) {   // now and then: wake a few random columns to find old unsettled snow
-            int x = pl.getBlockX() + l.random.nextInt(81) - 40, z = pl.getBlockZ() + l.random.nextInt(81) - 40;
-            if (l.hasChunkAt(new BlockPos(x, pl.getBlockY(), z))) wake(l, x, z);
-        }
-        if (l.getGameTime() % 2 != 0) return;
+        if (l.getGameTime() % 5 != 0) return;   // a slump is slow and rare, never a visible flow
         var awake = AWAKE.get(l); if (awake == null || awake.isEmpty()) return;
         for (int n = 0; n < BUDGET && !awake.isEmpty(); n++) {
             long k = awake.removeFirstLong(); int x = (int) k, z = (int) (k >> 32);

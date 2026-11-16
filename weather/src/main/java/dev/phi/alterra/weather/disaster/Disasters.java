@@ -52,7 +52,7 @@ public final class Disasters {
     public static final BlockPos SPIN_MARK = new BlockPos(0, -999, 0);   // a falling block's start position is synced to the client: this one marks "tumbling debris"
 
     public static final class Event {
-        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed, natural; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
+        int id, type, age, life; double x, y, z, vx, vz; float radius, top, heading, strength, spin = 1f; boolean still, fixed, natural; WhirlpoolSim sim; final List<Debris> debris = new ArrayList<>();   // still: stays where it started (for testing)
     }
     private static final Map<net.minecraft.resources.ResourceKey<Level>, List<Event>> EVENTS = new HashMap<>();
     private static int nextId = 1;
@@ -123,7 +123,7 @@ public final class Disasters {
         var it = events.iterator();
         while (it.hasNext()) {
             Event e = it.next();
-            if (++e.age > e.life || l.players().isEmpty()) { if (e.type == VORTEX) { Vortex.refresh(java.util.List.of()); Vortex.release(l, e); } for (Debris d : e.debris) if (!d.fb.isRemoved()) d.fb.setDeltaMovement(d.fb.getDeltaMovement().add(0.2, 0.1, 0.2)); it.remove(); continue; }
+            if (++e.age > e.life || l.players().isEmpty()) { if (e.type == VORTEX) { Vortex.release(l, e); } for (Debris d : e.debris) if (!d.fb.isRemoved()) d.fb.setDeltaMovement(d.fb.getDeltaMovement().add(0.2, 0.1, 0.2)); it.remove(); continue; }
             float ramp = Math.min(1f, Math.min(e.age / 120f, (e.life - e.age) / 120f)); if (!e.fixed) e.strength = ramp;
             move(l, e);
             if (!l.hasChunkAt(BlockPos.containing(e.x, 64, e.z))) { it.remove(); continue; }
