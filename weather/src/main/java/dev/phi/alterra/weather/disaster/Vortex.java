@@ -83,7 +83,7 @@ public final class Vortex {
             double dx = en.getX() - e.x, dz = en.getZ() - e.z, d = Math.sqrt(dx * dx + dz * dz);
             if (d < 0.05 || d > reach) continue;
             grid.flow(en.getX(), en.getZ(), fl);
-            double wantX = fl[0] / 20.0, wantZ = fl[1] / 20.0, eta = grid.height(en.getX(), en.getZ()), speed = Math.sqrt(wantX * wantX + wantZ * wantZ);   // the water's own flow here, blocks per tick, and how far its surface has fallen
+            double drawIn = 0.05 * e.strength * Math.max(0.0, 1.0 - d / (e.radius * 1.5)), wantX = fl[0] / 20.0 - dx / d * drawIn, wantZ = fl[1] / 20.0 - dz / d * drawIn, eta = grid.height(en.getX(), en.getZ()), speed = Math.sqrt(fl[0] * fl[0] + fl[1] * fl[1]) / 20.0;   // the water's own flow here, blocks per tick, and how far its surface has fallen
             if (en instanceof Boat b && b.getControllingPassenger() == null) {   // an empty boat has its own movement set to nothing every tick by the game: the water carries it, so it is moved here, held at the surface
                 double surface = e.y - 0.46 + eta;
                 Vec3 step = new Vec3(wantX * 0.7, (surface - b.getY()) * 0.3, wantZ * 0.7);
