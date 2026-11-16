@@ -13,6 +13,7 @@
     { "name": "SunDir", "type": "float", "count": 3, "values": [ 0.0, 1.0, 0.0 ] },
     { "name": "Zenith", "type": "float", "count": 3, "values": [ 0.4, 0.6, 1.0 ] },
     { "name": "Horizon", "type": "float", "count": 3, "values": [ 0.7, 0.8, 1.0 ] },
-    { "name": "WaterColor", "type": "float", "count": 3, "values": [ 0.1, 0.45, 0.6 ] }
+    { "name": "WaterColor", "type": "float", "count": 3, "values": [ 0.1, 0.45, 0.6 ] },
+    { "name": "Depth", "type": "float", "count": 1, "values": [ 4.0 ] }
   ]
 }

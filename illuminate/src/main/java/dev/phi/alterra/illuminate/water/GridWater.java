@@ -72,7 +72,7 @@ public final class GridWater {
         RenderSystem.enableDepthTest(); RenderSystem.depthMask(false); RenderSystem.enableBlend(); RenderSystem.defaultBlendFunc(); RenderSystem.disableCull();
         var stack = RenderSystem.getModelViewStack(); stack.pushMatrix(); stack.set(new Matrix4f(e.getModelViewMatrix())); RenderSystem.applyModelViewMatrix();
         RenderSystem.setShader(() -> shader);
-        for (WaterSurface s : list) draw(s, cam, level);
+        for (WaterSurface s : list) { var du = shader.getUniform("Depth"); if (du != null) du.set(s.grid().depth); draw(s, cam, level); }
         stack.popMatrix(); RenderSystem.applyModelViewMatrix();
         RenderSystem.enableCull(); RenderSystem.depthMask(true); RenderSystem.disableBlend();
         mc.gameRenderer.lightTexture().turnOffLightLayer();

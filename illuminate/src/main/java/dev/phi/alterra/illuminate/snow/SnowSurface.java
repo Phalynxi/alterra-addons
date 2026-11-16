@@ -172,7 +172,8 @@ public final class SnowSurface {
             // skirts where the neighbour has no snow and lies lower: the edge down to its ground
             for (int side = 0; side < 4; side++) {
                 int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
-                if (!L[q] || K[q] != 0) continue;
+                if (!L[q]) continue;
+                if (K[q] != 0 && (Math.abs(S[q] - S[c]) <= 8 || S[q] >= S[c])) continue;   // a snow neighbour about as high joins smoothly, a higher one closes the gap with its own skirt; a much lower one (a roof's next step, a ledge) needs the wall
                 int[] e = side == 0 ? new int[] {3, 0} : side == 1 ? new int[] {1, 2} : side == 2 ? new int[] {0, 1} : new int[] {2, 3};   // the two corners on that edge
                 if (S[q] / 8f >= Math.max(hh[e[0]], hh[e[1]])) continue;   // the neighbour is as high: no step to close
                 float bottom = Math.max(S[q], G[c]) / 8f, ox = side == 0 ? -1 : side == 1 ? 1 : 0, oz = side == 2 ? -1 : side == 3 ? 1 : 0;
