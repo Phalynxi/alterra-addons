@@ -34,12 +34,12 @@ public final class PostFx {
     private static final float[] M16 = new float[16], M9 = new float[9], FUNNEL = new float[32];   // matrix scratch for the uniforms, render thread only
     private PostFx() {}
     private static final Logger LOG = com.mojang.logging.LogUtils.getLogger();
-    private static int program = -1, cloudProgram = -1, vao, color, depth, w, h, cloudFbo, cloudTex, cw, ch2; private static boolean failed;
+    private static int program = -1, vao, color, depth, w, h; private static boolean failed;
     private static final java.util.Map<Integer, java.util.Map<String, Integer>> LOCS = new java.util.HashMap<>();
     private static double smoothT = Double.NaN; private static long smoothAt;
     /** The time the clouds move by, in game ticks: runs with real time and is pulled gently towards the game's own time. The game's time is set again by the server every so often, and when the game lags that is a jump of several ticks:
      *  the whole sky stepped. This one never jumps (a big difference, a time change or a pause, is followed at once). */
-    private static double cloudClock(net.minecraft.client.multiplayer.ClientLevel level, float pt) {
+    public static double cloudClock(net.minecraft.client.multiplayer.ClientLevel level, float pt) {
         double target = level.getGameTime() % 1_000_000L + pt; long now = System.nanoTime();
         if (Double.isNaN(smoothT) || Math.abs(target - smoothT) > 300) smoothT = target;
         else if (!Minecraft.getInstance().isPaused()) {
@@ -53,7 +53,7 @@ public final class PostFx {
     private static int u(int prog, String name) { return LOCS.computeIfAbsent(prog, k -> new java.util.HashMap<>()).computeIfAbsent(name, n -> GL20C.glGetUniformLocation(prog, n)); }
     private static int uColor, uDepth, uInvProj, uInvView, uSun, uSunScreen, uHorizon, uZenith, uParams, uClouds, uCloudInfo, uCloudColor, uWaterFog, uCamPos, uStorm, uOn, uOn2;
     /** Vanilla's flat clouds are left out while ours are drawn. */
-    public static boolean drawsClouds() { return !failed && IlluminateConfig.get(IlluminateConfig.SCENE_LOOK) && IlluminateConfig.get(IlluminateConfig.CLOUDS); }
+    public static boolean drawsClouds() { return dev.phi.alterra.illuminate.clouds.SkyClouds.active(); }
 
     private static final String VERT = """
             #version 150
@@ -71,6 +71,8 @@ public final class PostFx {
             uniform vec3 u_Horizon, u_Zenith;
             uniform vec4 u_Params;     // daylight, rain, underwater, time (seconds)
             uniform sampler2D u_Clouds;   // vanilla's cloud map: a cell of 12 by 12 blocks per pixel
+            uniform float u_CloudStyle;   // 0 vanilla+ (rounded blocks), 1 volumetric
+            uniform sampler2D u_CloudGrid;   // the large-scale clouds: cover, head height, underside, character (see CloudGrid)
             uniform vec4 u_CloudInfo;    // the camera in cloud cells (x, z), the cloud bottom relative to the camera, 1 when there are clouds
             uniform vec3 u_CloudColor;
             uniform sampler2D u_CloudTex;
@@ -131,20 +133,97 @@ public final class PostFx {
                 if (u_CloudInfo.w < 0.5 || u_Sun.y < 0.05) return 1.0;
                 vec3 at = p + u_Sun.xyz * ((u_CloudInfo.z + 20.0 - p.y) / u_Sun.y);
                 vec3 q = vec3(u_CloudInfo.x * 24.0 + at.x, 0.0, u_CloudInfo.y * 24.0 + at.z);
-                float cov = smoothstep(0.47, 0.62, fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cellCover(at.xz));
+                float cov = smoothstep(0.47, 0.62, texture(u_CloudGrid, q.xz * (1.0 / 6144.0)).r + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cellCover(at.xz));
                 return 1.0 - 0.55 * cov;
             }
-            float cloud(vec3 p, float y0) {   // p: relative to the camera. Natural cumulus: where they are comes from layered noise (no grid), more of them when it rains
+            float stormTall() { float m = 0.0; for (int i = 0; i < 4; i++) { if (float(i) >= u_CellsN) break; m = max(m, u_Cells[i].w); } return m * 300.0; }   // how far above the cloud layer a storm's tower can reach
+            // a storm cell's own cloud: a tall dark tower over its heart that widens into an anvil at the top (p relative to the camera, h above the layer's base)
+            float stormTower(vec3 p, float h, float detail) {
+                float best = 0.0;
+                for (int i = 0; i < 4; i++) {
+                    if (float(i) >= u_CellsN) break;
+                    vec4 c = u_Cells[i]; if (c.w < 0.12) continue;
+                    float ht = 70.0 + 300.0 * c.w, rc = c.z * (0.16 + 0.10 * c.w);
+                    float u = clamp(h / ht, 0.0, 1.0);
+                    float wide = rc * (0.50 + 0.55 * smoothstep(0.0, 0.7, u) + 1.6 * smoothstep(0.72, 0.93, u) * (1.0 - smoothstep(0.93, 1.0, u)));   // a column that swells, then the anvil spreads out under the top
+                    float d = length(p.xz - c.xy);
+                    float prof = smoothstep(wide, wide * 0.55, d) * smoothstep(0.0, 14.0, h) * (1.0 - smoothstep(0.90, 1.0, u));
+                    best = max(best, max(0.0, prof - (1.0 - detail) * (0.65 - 0.35 * prof)) * 1.9);
+                }
+                return best;
+            }
+            // Vanilla+: the game's blocky clouds, rounded and properly shaped. The cloud grid's 24-block cells that hold cloud are rounded blocks as tall as their cloud is thick (steps of 3 blocks).
+            // A ray walks the cells exactly (no steps through the air, so blocks are solid at any distance) and where it meets one it finds the rounded block's surface and lights it by its normal.
+            float sdRoundBox(vec3 p, vec3 h, float r) { vec3 d = abs(p) - h; return length(max(d, 0.0)) + min(max(d.x, max(d.y, d.z)), 0.0) - r; }
+            float cellFill(vec2 cc, vec2 org, float rain) { return smoothstep(0.47, 0.62, texture(u_CloudGrid, cc * (1.0 / 6144.0)).r + 0.16 * rain + 0.22 * u_Storm + 0.55 * cellCover(cc - org)); }
+            vec4 vanillaClouds(vec3 dir, float y0, float t0, float tMax, float day, float rain, float toSun) {
+                vec2 org = u_CloudInfo.xy * 24.0;   // the camera in cloud space (x, z)
+                vec2 stepv = vec2(dir.x >= 0.0 ? 1.0 : -1.0, dir.z >= 0.0 ? 1.0 : -1.0);
+                vec2 inv = vec2(abs(dir.x) > 1e-5 ? 1.0 / dir.x : 1e5, abs(dir.z) > 1e-5 ? 1.0 / dir.z : 1e5);
+                vec2 p2 = org + dir.xz * t0;
+                vec2 cell = floor(p2 / 24.0);
+                vec2 tDelta = abs(24.0 * inv);
+                vec2 nextB = (cell + max(stepv, 0.0)) * 24.0;
+                vec2 tNext = (nextB - org) * inv;
+                vec3 sunCol = u_CloudColor * (0.92 + 0.10 * day), shade = mix(u_CloudColor * 0.62, vec3(dot(u_Horizon, vec3(0.3, 0.5, 0.2))) * vec3(0.9, 0.94, 1.0), 0.35);
+                float storm0 = clamp(rain * 0.8 + u_Storm, 0.0, 1.0);
+                float T = 1.0, t = t0; vec3 col = vec3(0.0);
+                for (int i = 0; i < 72; i++) {
+                    if (t > tMax) break;
+                    float tExit = min(min(tNext.x, tNext.y), tMax);
+                    vec2 cc = (cell + 0.5) * 24.0, rel = cc - org;
+                    float cover = texture(u_CloudGrid, cc * (1.0 / 6144.0)).r + 0.16 * rain + 0.22 * u_Storm + 0.55 * cellCover(rel);
+                    float c = smoothstep(0.47, 0.62, cover);
+                    if (c > 0.02) {
+                        float hgt = floor((8.0 + 24.0 * c) / 3.0) * 3.0;
+                        // a cell next to another cell of cloud runs on into it (and is not rounded there): clouds are masses of joined blocks, rounded only on their outside
+                        float eN = cellFill(cc + vec2(-24.0, 0.0), org, rain) > 0.02 ? 7.0 : 0.0, eP = cellFill(cc + vec2(24.0, 0.0), org, rain) > 0.02 ? 7.0 : 0.0;
+                        float fN = cellFill(cc + vec2(0.0, -24.0), org, rain) > 0.02 ? 7.0 : 0.0, fP = cellFill(cc + vec2(0.0, 24.0), org, rain) > 0.02 ? 7.0 : 0.0;
+                        vec3 ctr = vec3(rel.x + (eP - eN) * 0.5, y0 + hgt * 0.5, rel.y + (fP - fN) * 0.5), hf = vec3(12.0 + (eP + eN) * 0.5, hgt * 0.5, 12.0 + (fP + fN) * 0.5);
+                        float tt = max(t - 6.0, 0.0); bool hit = false;
+                        for (int k = 0; k < 10; k++) {   // along the ray to the surface of the rounded block (sphere tracing)
+                            float d = sdRoundBox(dir * tt - ctr, hf - 5.0, -5.0) ;
+                            d = sdRoundBox(dir * tt - ctr, hf - 5.0, 0.0) - 5.0;
+                            if (d < 0.25) { hit = true; break; }
+                            tt += max(d, 0.4);
+                            if (tt > tExit + 14.0) break;
+                        }
+                        if (hit) {
+                            vec3 p = dir * tt - ctr; vec2 e = vec2(0.6, 0.0);
+                            vec3 n = normalize(vec3(sdRoundBox(p + e.xyy, hf - 5.0, 0.0) - sdRoundBox(p - e.xyy, hf - 5.0, 0.0), sdRoundBox(p + e.yxy, hf - 5.0, 0.0) - sdRoundBox(p - e.yxy, hf - 5.0, 0.0), sdRoundBox(p + e.yyx, hf - 5.0, 0.0) - sdRoundBox(p - e.yyx, hf - 5.0, 0.0)));
+                            float up = 0.5 + 0.5 * n.y, sunF = max(dot(n, u_Sun.xyz), 0.0);
+                            float storm = clamp(storm0 + cellCover(rel) * 0.9, 0.0, 1.0);
+                            vec3 shadeS = shade * mix(1.0, 0.50, storm), sunS = sunCol * mix(1.0, 0.74, storm);
+                            vec3 lit = mix(shadeS, sunS, smoothstep(0.25, 0.95, 0.65 * up + 0.35 * sunF)) + vec3(1.0, 0.95, 0.86) * pow(toSun, 8.0) * u_Sun.w * 0.2 * up;
+                            float a = 0.88;
+                            col += lit * a * T; T *= 1.0 - a;
+                            if (T < 0.05) break;
+                        }
+                    }
+                    if (tNext.x < tNext.y) { cell.x += stepv.x; t = tNext.x; tNext.x += tDelta.x; } else { cell.y += stepv.y; t = tNext.y; tNext.y += tDelta.y; }
+                }
+                float far = 1.0 - smoothstep(1100.0, 1600.0, t0);
+                vec3 hz = u_Horizon * (0.55 + 0.45 * day);
+                float haze = smoothstep(500.0, 1500.0, t0) * 0.5;
+                return vec4(mix(col, hz * (1.0 - T), haze) * far, (1.0 - T) * far);
+            }
+            float cloud(vec3 p, float y0) {   // p: relative to the camera. Natural cumulus: where they are comes from the cloud grid (layered noise, no pattern), more of them when it rains; each region has its own character (low and flat to tall), and storm cells have towers. Fine detail only where it can be seen
                 vec3 q = vec3(u_CloudInfo.x * 24.0 + p.x, p.y - y0, u_CloudInfo.y * 24.0 + p.z);   // drifts with the wind
-                float cover = fbm2(q.xz * 0.0065) + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cellCover(p.xz);   // as CloudMap.cover: rain brings more cloud, thunder nearly closes the sky
+                vec4 g = texture(u_CloudGrid, q.xz * (1.0 / 6144.0));
+                float cc = cellCover(p.xz);
+                float cover = g.r + 0.16 * u_Params.y + 0.22 * u_Storm + 0.55 * cc;   // as CloudMap.cover: rain brings more cloud, thunder nearly closes the sky
                 float cov = smoothstep(0.47, 0.62, cover);
-                if (cov < 0.01) return 0.0;
                 float h = q.y;
-                float top = 6.0 + 84.0 * cov * cov * (0.55 + 0.45 * fbm2(q.xz * 0.02 + 5.0));   // tall domes in the middle of each cloud: about as tall as it is wide
-                float base = 1.0 + 9.0 * n3(vec3(q.xz * 0.025, 9.1)) * (1.0 - 0.5 * cov);   // a ragged underside, not a flat ceiling
+                float near = 1.0 - smoothstep(500.0, 1500.0, length(p.xz));   // the cauliflower billows are worked out only for what is near: further away the clouds are smooth shapes
+                float detail = mix(0.62, n3(q * 0.05) * 0.62 + n3(q * 0.14 + 7.0) * 0.38, near);
+                float tower = stormTower(p, h, detail);
+                if (cov < 0.01) return tower;
+                float tallness = mix(0.55, 1.45, g.a);
+                float top = 6.0 + 84.0 * tallness * cov * cov * (0.55 + 0.45 * g.g);   // tall domes in the middle of each cloud: about as tall as it is wide
+                float base = 1.0 + 9.0 * g.b * (1.0 - 0.5 * cov);   // a ragged underside, not a flat ceiling
                 float shape = smoothstep(base, base + 7.0, h) * smoothstep(top, top - 0.5 * top, h);   // flat base, rounded heads
-                float detail = n3(q * 0.05) * 0.62 + n3(q * 0.14 + 7.0) * 0.38;   // cauliflower billows, eroded at the edges
-                return max(0.0, shape * cov - (1.0 - detail) * (0.55 - 0.25 * cov)) * 1.8;
+                float cumulus = max(0.0, shape * cov - (1.0 - detail) * (0.55 - 0.25 * cov)) * 1.8;
+                return max(cumulus, tower);
             }
             vec3 aces(vec3 x) { return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0); }
             void main() {
@@ -152,6 +231,12 @@ public final class PostFx {
                 float d = texture(u_Depth, uv).r; bool sky = d >= 0.99999;
                 vec4 vp = u_InvProj * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0); vp /= vp.w;
                 vec3 dir = normalize(u_InvView * vp.xyz); float dist = length(vp.xyz);
+                #ifdef CLOUD_PASS
+                {   // the cloud pass draws into the sky map, not the screen: this texel's direction (azimuth round, elevation from just below the horizon to straight up, packed towards the horizon where the clouds are small)
+                    float az = (uv.x * 2.0 - 1.0) * 3.14159265, el = mix(-0.10, 1.5707963, pow(uv.y, 1.7));
+                    dir = vec3(sin(az) * cos(el), sin(el), cos(az) * cos(el)); dist = 1e9; sky = true;
+                }
+                #endif
                 float day = u_Params.x, rain = u_Params.y;
                 float toSun = max(dot(dir, u_Sun.xyz), 0.0);
                 #ifdef CLOUD_PASS
@@ -160,31 +245,40 @@ public final class PostFx {
                 // broken into puffs by noise, each point lit by how much cloud lies between it and the sun (dark cores, sunlit tops, a bright rim towards the sun)
                 bool insideC = u_CloudInfo.z < 0.0 && u_CloudInfo.z + 92.0 > 0.0;   // the camera is in the cloud layer
                 if (u_CloudInfo.w > 0.5 && u_On2.x > 0.5 && (abs(dir.y) > 0.0005 || insideC) && u_Params.z < 0.5) {
-                    float y0 = u_CloudInfo.z, y1 = y0 + 92.0;
+                    float y0 = u_CloudInfo.z, y1 = y0 + (u_CloudStyle < 0.5 ? 34.0 : 92.0 + stormTall());
                     float ta = abs(dir.y) > 0.0005 ? y0 / dir.y : -1e9, tb = abs(dir.y) > 0.0005 ? y1 / dir.y : 1e9, t0 = max(min(ta, tb), 0.0), t1 = max(ta, tb);
-                    float tEnd = insideC ? min(t1, sky ? 1e9 : dist) : t1;   // from outside the layer: clouds everywhere, as if open sky (the full-size pass shows them only where the sky really is); from inside, they stop at what stands in front (no clouds painted over leaves)   // clouds everywhere, as if open sky: the full-size pass shows them only where the sky really is (else holes in leaves had no cloud: pale sky through every gap)
-                    if (tEnd > t0 && t0 < 2600.0) {
-                        float steps = 8.0 + 4.0 * u_Quality, len = min(tEnd - t0, 220.0), stepL = len / steps, a = 0.0, sunDen = -1.0; vec3 col = vec3(0.0);
+                    float tEnd = insideC ? min(t1, sky ? 1e9 : dist) : t1;   // from outside the layer: clouds everywhere, as if open sky (the full-size pass shows them only where the sky really is); from inside, they stop at what stands in
+                    float tMax = min(tEnd, t0 + (u_CloudStyle < 0.5 ? 1700.0 : 6000.0));
+                    if (u_CloudStyle < 0.5) { if (tMax > t0) cloudOut = vanillaClouds(dir, y0, t0, tMax, day, rain, toSun); }
+                    else if (tMax > t0 && t0 < 3100.0) {
                         float jit = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));   // a small, even offset per pixel (interleaved gradient noise): no stair-step slices, and the soft blend hides it
-                        vec3 sunCol = u_CloudColor * (0.9 + 0.12 * day), shade = mix(u_CloudColor * 0.62, vec3(dot(u_Horizon, vec3(0.3, 0.5, 0.2))) * vec3(0.9, 0.94, 1.0), 0.35);   // toned in their own pass: soft whites, light grey shaded sides with a faint cool tint (the plain horizon colour made them lavender)
-                        float storm = clamp(rain * 0.8 + u_Storm, 0.0, 1.0);   // rain clouds go dark grey underneath, thunderheads darker still
-                        shade *= mix(1.0, 0.62, storm); sunCol *= mix(1.0, 0.82, storm);
-                        for (int i = 0; i < 16; i++) {
-                            if (float(i) >= steps) break;
-                            float su = (float(i) + jit) / steps, sl = len * 1.6 * pow(su, 0.6) / steps;   // steps grow with distance: fine detail close up
-                            vec3 p = dir * (t0 + len * pow(su, 1.6));
+                        vec3 sunCol = u_CloudColor * (0.9 + 0.12 * day), shade = mix(u_CloudColor * 0.62, vec3(dot(u_Horizon, vec3(0.3, 0.5, 0.2))) * vec3(0.9, 0.94, 1.0), 0.35);   // toned in their own pass: soft whites, light grey shaded undersides
+                        float storm0 = clamp(rain * 0.8 + u_Storm, 0.0, 1.0);   // rain clouds go dark grey underneath, thunderheads darker still
+                        int maxSteps = 40 + int(8.0 * u_Quality);
+                        float T = 1.0, sunDen = -1.0, t = t0 + jit * max(3.0, t0 * 0.08); vec3 col = vec3(0.0);
+                        for (int i = 0; i < 80; i++) {
+                            if (i >= maxSteps || t > tMax) break;
+                            float dtS = clamp(t * 0.10 + 3.0, 4.0, 300.0);   // vanilla+: a few even steps through the thin layer; volumetric: steps that grow with distance (about the same on screen)   // steps grow with distance (about the same on screen), so a cloud is as dense near as far: the density is integrated over the real length of each step
+                            vec3 p = dir * t;
                             float dn = cloud(p, y0);
-                            if (dn < 0.01) continue;
-                            if ((i & 1) == 0 || sunDen < 0.0) sunDen = cloud(p + u_Sun.xyz * 12.0, y0) * 1.8;   // cloud between this point and the sun (every other step: it changes slowly)
-                            float hf = smoothstep(0.0, 1.0, clamp((p.y - y0) / 34.0, 0.0, 1.0));
-                            float light = smoothstep(0.18, 0.78, 0.7 * hf + 0.3 * exp(-sunDen * 0.8));   // painted: mostly by height (a light grey flat base, white heads) with a little sun shading, pressed into two soft tones
-                            vec3 lit = mix(shade, sunCol, light) + vec3(1.0, 0.95, 0.86) * pow(toSun, 8.0) * u_Sun.w * 0.25 * light;
-                            float k = (1.0 - a) * (1.0 - exp(-dn * sl * 0.6));   // dense: a clean outline instead of see-through streaks
-                            col += lit * k; a += k;
-                            if (a > 0.97) break;
+                            if (dn > 0.01) {
+                                if ((i & 1) == 0 || sunDen < 0.0) sunDen = cloud(p + u_Sun.xyz * 12.0, y0) * 1.8;   // cloud between this point and the sun (every other step: it changes slowly)
+                                float hf = smoothstep(0.0, 1.0, clamp((p.y - y0) / 34.0, 0.0, 1.0));
+                                float light = smoothstep(0.18, 0.78, 0.7 * hf + 0.3 * exp(-sunDen * 0.8));   // painted: mostly by height (a light grey flat base, white heads) with a little sun shading, pressed into two soft tones
+                                float sc = cellCover(p.xz), storm = clamp(storm0 + sc * 0.9, 0.0, 1.0);   // under a storm cell the cloud is dark
+                                vec3 shadeS = shade * mix(1.0, 0.50, storm), sunS = sunCol * mix(1.0, 0.74, storm);
+                                vec3 lit = mix(shadeS, sunS, light) + vec3(1.0, 0.95, 0.86) * pow(toSun, 8.0) * u_Sun.w * 0.25 * light;
+                                float a = 1.0 - exp(-dn * 0.034 * dtS);
+                                col += lit * a * T; T *= 1.0 - a;
+                                if (T < 0.03) break;
+                            }
+                            t += dtS;
                         }
-                        float far = 1.0 - smoothstep(1400.0, 2600.0, t0);
-                        cloudOut = vec4(col / max(a, 0.001) * a * far, a * far);
+                        float far = 1.0 - smoothstep(2300.0, 3000.0, t0);   // clouds beyond the grid thin out into the haze
+                        float alpha = (1.0 - T) * far;
+                        vec3 hz = u_Horizon * (0.55 + 0.45 * day);
+                        float haze = smoothstep(900.0, 2800.0, t0) * 0.55;   // and take on the colour of the air
+                        cloudOut = vec4(mix(col, hz * (1.0 - T), haze) * far, alpha);
                     }
                 }
                 frag = cloudOut; return;
@@ -204,22 +298,6 @@ public final class PostFx {
                     c = mix(c, hz, a * 0.2);
                 }
                 #ifndef CLOUD_PASS
-                float cloudFrom = 1e9;   // how far away the clouds begin along this ray (looking up from below, or down or sideways from inside or above the layer)
-                if (abs(dir.y) > 0.0005) { float ca = u_CloudInfo.z / dir.y, cb = (u_CloudInfo.z + 92.0) / dir.y; cloudFrom = max(min(ca, cb), 0.0); }
-                else if (u_CloudInfo.z < 0.0 && u_CloudInfo.z + 92.0 > 0.0) cloudFrom = 0.0;
-                { vec2 px = 1.0 / vec2(textureSize(u_CloudTex, 0)); vec4 cl = (texture(u_CloudTex, uv) * 4.0 + (texture(u_CloudTex, uv + vec2(px.x, 0.0)) + texture(u_CloudTex, uv - vec2(px.x, 0.0)) + texture(u_CloudTex, uv + vec2(0.0, px.y)) + texture(u_CloudTex, uv - vec2(0.0, px.y))) * 2.0
-                            + texture(u_CloudTex, uv + px) + texture(u_CloudTex, uv - px) + texture(u_CloudTex, uv + vec2(px.x, -px.y)) + texture(u_CloudTex, uv + vec2(-px.x, px.y))) / 16.0;   // a 3x3 tent: the per-pixel offsets of the half-size pass blend away (no grain)
-                  if (sky || dist > cloudFrom) c = c * (1.0 - cl.a * u_CloudFade) + cl.rgb * u_CloudFade;   // the clouds, drawn at half size in their own pass and blended in softly, only where nothing nearer stands in front (no halo on leaves)
-                }
-                #endif
-                #ifndef CLOUD_PASS
-                if (u_CloudInfo.w > 0.5 && u_On2.x > 0.5 && u_Params.z < 0.5 && u_CloudInfo.z < 0.0 && u_CloudInfo.z + 92.0 > 0.0) {   // inside a cloud: it closes in with distance (denser cloud, thicker fog), grey-white and darker in rain
-                    float reach = min(dist, 160.0);
-                    float dens = 0.5 * (cloud(vec3(0.0), u_CloudInfo.z) + cloud(dir * reach * 0.5, u_CloudInfo.z));
-                    float inFog = clamp(1.0 - exp(-dens * reach * 0.05), 0.0, 0.96);
-                    vec3 fogCol = mix(u_CloudColor * 0.84, vec3(0.42), clamp(rain * 0.8 + u_Storm, 0.0, 1.0) * 0.6) * (0.5 + 0.5 * day);
-                    c = mix(c, fogCol, inFog);
-                }
                 #endif
                 #ifndef CLOUD_PASS
                 // disasters, drawn after the clouds so nothing hides them: a tornado or dust devil is a column that flares out upwards (a few fixed samples along the ray: steady, no shimmer),
@@ -227,6 +305,7 @@ public final class PostFx {
                 for (int fi = 0; fi < 4; fi++) {
                     if (float(fi) >= u_FunnelN) break;
                     vec4 fa = u_Funnel[fi * 2], fb = u_Funnel[fi * 2 + 1];
+                    float farFunnel = length(fa.xz); if (farFunnel > 700.0) continue;   // a funnel is not drawn far away: it fades out from 400 blocks and is gone by 700
                     float ftime = u_Params.w;
                     if (fb.z > 1.5) {
                         if (dir.y > -0.002 || fa.y > 0.0) continue;   // seen from below the surface or from level with it: nothing
@@ -267,7 +346,7 @@ public final class PostFx {
                         float ns = 0.5 + 0.5 * sin(ang * 3.0 + h * 0.21) * sin(ang * 5.0 - h * 0.13 + ftime * 0.7);
                         float skirt = exp(-h / (fb.z < 1.5 ? 5.0 : 3.0)) * smoothstep(fr * 2.4, fr * 0.7, fd);
                         float body = smoothstep(fr, fr * 0.45, fd) * (0.5 + 0.5 * ns) * (1.0 - smoothstep(0.9, 1.0, hn));
-                        float dens = (body * 2.6 + skirt * 1.0) * fb.y;
+                        float dens = (body * 2.6 + skirt * 1.0) * fb.y * (1.0 - smoothstep(190.0, 250.0, fp.y + u_CamPos.y)) * (1.0 - smoothstep(400.0, 700.0, farFunnel));   // a funnel ends in the cloud base (the clouds are drawn before this)
                         if (dens < 0.01) continue;
                         float fk2 = (1.0 - fal) * (1.0 - exp(-dens * fstep * 0.30));
                         float side = clamp(0.5 + 0.5 * dot(normalize(vec3(rel.x, 0.4, rel.y)), u_Sun.xyz), 0.0, 1.0);
@@ -340,22 +419,7 @@ public final class PostFx {
     }
     private static void init() {
         program = link(FRAG);
-        cloudProgram = link(FRAG.replace("#version 150", "#version 150\n#define CLOUD_PASS"));
         vao = GL30C.glGenVertexArrays();
-    }
-
-    private static void cloudTarget(int nw, int nh) {   // half the screen in each direction: a quarter of the work, and the blend softens it
-        int tw = Math.max(1, nw / 2), th = Math.max(1, nh / 2);
-        if (tw == cw && th == ch2 && cloudTex != 0) return;
-        if (cloudTex == 0) { cloudTex = GL11C.glGenTextures(); cloudFbo = GL30C.glGenFramebuffers(); }
-        cw = tw; ch2 = th;
-        GlStateManager._bindTexture(cloudTex);
-        GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL11C.GL_RGBA8, cw, ch2, 0, GL11C.GL_RGBA, GL11C.GL_UNSIGNED_BYTE, (ByteBuffer) null);
-        GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
-        GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL13C.GL_CLAMP_TO_EDGE); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL13C.GL_CLAMP_TO_EDGE);
-        GL30C.glBindFramebuffer(GL30C.GL_FRAMEBUFFER, cloudFbo);
-        GL30C.glFramebufferTexture2D(GL30C.GL_FRAMEBUFFER, GL30C.GL_COLOR_ATTACHMENT0, GL11C.GL_TEXTURE_2D, cloudTex, 0);
-        GlStateManager._bindTexture(0);
     }
 
     private static void textures(int nw, int nh) {
@@ -431,6 +495,9 @@ public final class PostFx {
                 GL20C.glUniform1f(u(p, "u_CloudEvo"), PrismApi.clouds().evolve(cgt, cpt));
             GL20C.glUniform4f(u(p, "u_CloudInfo"), (float) cxc, (float) czc, (float) (ch + 0.33 - cp.y), clouds ? 1f : 0f);
             var cc = level.getCloudColor(pt); GL20C.glUniform3f(u(p, "u_CloudColor"), (float) cc.x, (float) cc.y, (float) cc.z);
+            dev.phi.alterra.illuminate.maps.CloudGrid.update(cxc * 24.0, czc * 24.0, PrismApi.clouds().evolve(cgt, cpt));   // (the same cloud-space position and evolution the shader uses)
+            dev.phi.alterra.illuminate.maps.CloudGrid.bind(); GL20C.glUniform1i(u(p, "u_CloudGrid"), dev.phi.alterra.illuminate.maps.CloudGrid.UNIT);
+            GL20C.glUniform1f(u(p, "u_CloudStyle"), IlluminateConfig.get(IlluminateConfig.CLOUD_STYLE) >= 1 ? 1f : 0f);
             GL20C.glUniform1i(u(p, "u_Clouds"), 2);
             int cloudTex = mc.getTextureManager().getTexture(net.minecraft.resources.ResourceLocation.withDefaultNamespace("textures/environment/clouds.png")).getId();
             GlUpload.bind(GL13C.GL_TEXTURE2, cloudTex);
@@ -463,23 +530,9 @@ public final class PostFx {
                 GL20C.glUniform1f(u(p, "u_Shadows"), IlluminateConfig.get(IlluminateConfig.SHADOWS) ? 1f : 0f);
             };
             GlUpload.bind(GL13C.GL_TEXTURE4, HeightMap.texture()); GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
-            // 1. the clouds, into their own half-size picture
-            boolean cloudsOn = IlluminateConfig.get(IlluminateConfig.CLOUDS) || IlluminateConfig.get(IlluminateConfig.SHADOWS);   // the half-size pass draws the clouds and the shafts under trees
-            cloudTarget(w, h);
-            GL30C.glBindFramebuffer(GL30C.GL_FRAMEBUFFER, cloudFbo);
-            GlStateManager._viewport(0, 0, cw, ch2);
-            GL11C.glClearColor(0f, 0f, 0f, 0f); GL11C.glClear(GL11C.GL_COLOR_BUFFER_BIT);
-            GlUpload.bind(GL13C.GL_TEXTURE1, depth);
-            GlUpload.bind(GL13C.GL_TEXTURE0, color);
-            if (cloudsOn) {
-                GlStateManager._glUseProgram(cloudProgram); setAll.accept(cloudProgram); extra.accept(cloudProgram);
-                GL30C.glBindVertexArray(vao); GL11C.glDrawArrays(GL11C.GL_TRIANGLES, 0, 3); GL30C.glBindVertexArray(0);
-            }
-            // 2. everything else, with the clouds blended in
+            // everything else (the clouds are geometry now: clouds/SkyClouds)
             rt.bindWrite(true);
             GlStateManager._glUseProgram(program); setAll.accept(program); extra.accept(program);
-            GL20C.glUniform1i(u(program, "u_CloudTex"), 3);
-            GlUpload.bind(GL13C.GL_TEXTURE3, cloudTex);
             GlUpload.bind(GL13C.GL_TEXTURE1, depth);
             GlUpload.bind(GL13C.GL_TEXTURE0, color);
             GL30C.glBindVertexArray(vao);

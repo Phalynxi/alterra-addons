@@ -20,7 +20,7 @@ final class Sky {
     static final float[] CELLS = new float[16];
     static int cells(ClientLevel level, float pt) {
         var c = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        List<StormCell> list = new java.util.ArrayList<>(PrismApi.storm().cells(level, c.x, c.z, 3000));
+        List<StormCell> list = new java.util.ArrayList<>(PrismApi.storm().cells(level, c.x, c.z, 6500));
         list.sort(Comparator.comparingDouble(s -> Math.hypot(s.x() - c.x, s.z() - c.z) - s.radius()));
         java.util.Arrays.fill(CELLS, 0f); int n = Math.min(4, list.size());
         for (int i = 0; i < n; i++) {

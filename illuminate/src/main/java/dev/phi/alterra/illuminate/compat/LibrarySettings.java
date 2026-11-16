@@ -31,6 +31,7 @@ public final class LibrarySettings {
                 Settings.Option.bool("Glow", "A soft glow around very bright things.", IlluminateConfig.GLOW),
                 Settings.Option.bool("Light shafts", "Light shafts from the sun through gaps in trees and terrain.", IlluminateConfig.SHAFTS),
                 Settings.Option.bool("Haze", "Haze in the far distance, warm towards the sun.", IlluminateConfig.HAZE),
+                Settings.Option.integer("Cloud style", "0 Vanilla+: the blocky clouds, rounded and properly shaped (light). 1 Volumetric: every cloud a real volume with storm towers (heavy).", IlluminateConfig.CLOUD_STYLE, 0, 1, "style "),
                 Settings.Option.bool("Clouds", "Real clouds instead of vanilla's flat ones, and their shadows (the heaviest part).", IlluminateConfig.CLOUDS),
                 Settings.Option.bool("Sun shadows", "Soft shadows of trees and overhangs from the sun, and light shafts through leaves.", IlluminateConfig.SHADOWS),
                 Settings.Option.bool("Underwater fog", "Under water the water's colour closes in with distance, with light rippling over everything.", IlluminateConfig.UNDERWATER_FOG)));
