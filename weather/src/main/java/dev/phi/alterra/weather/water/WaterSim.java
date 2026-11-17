@@ -145,6 +145,19 @@ public final class WaterSim {
         return new float[] {c, n};
     }
 
+    /** The velocity field sampled at the spot k moved by (dx, dz) (less than a block): bilinear over the four spots around; a spot without water counts as this one. lim, if given, gets the min and max of x and z over those four. */
+    private static float[] carried(it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<float[]> f, long k, float dx, float dz, float[] lim) {
+        int x = BlockPos.getX(k), y = BlockPos.getY(k), z = BlockPos.getZ(k), sx = dx >= 0 ? 1 : -1, sz = dz >= 0 ? 1 : -1;
+        float wx = Math.min(1f, Math.abs(dx)), wz = Math.min(1f, Math.abs(dz));
+        float[] c00 = f.getOrDefault(k, ZERO2), c10 = f.getOrDefault(BlockPos.asLong(x + sx, y, z), c00), c01 = f.getOrDefault(BlockPos.asLong(x, y, z + sz), c00), c11 = f.getOrDefault(BlockPos.asLong(x + sx, y, z + sz), c00);
+        if (lim != null) {
+            lim[0] = Math.min(Math.min(c00[0], c10[0]), Math.min(c01[0], c11[0])); lim[1] = Math.max(Math.max(c00[0], c10[0]), Math.max(c01[0], c11[0]));
+            lim[2] = Math.min(Math.min(c00[1], c10[1]), Math.min(c01[1], c11[1])); lim[3] = Math.max(Math.max(c00[1], c10[1]), Math.max(c01[1], c11[1]));
+        }
+        float ax = c00[0] + (c10[0] - c00[0]) * wx, az = c00[1] + (c10[1] - c00[1]) * wx, bx = c01[0] + (c11[0] - c01[0]) * wx, bz = c01[1] + (c11[1] - c01[1]) * wx;
+        return new float[] {ax + (bx - ax) * wz, az + (bz - az) * wz};
+    }
+
     private static void step(ServerLevel l, Sim m) {
         if (DEBUG && l.getGameTime() % 40 == 0) {
             double tot = 0; float lo = 9f; int low = 0;
@@ -167,6 +180,17 @@ public final class WaterSim {
         for (long k : keys) { p.set(k); heads.put(k, head(l, m, p, m.amount.get(k))); }
         it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<float[]> vel0 = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>();   // the velocities as they were at the start of the step (everything reads these)
         for (var en : m.flow.entrySet()) vel0.put((long) en.getKey(), new float[] {en.getValue()[0], en.getValue()[1]});
+        // the velocity carried by the flow: MacCormack (traced back, traced forward again, and the error put right, limited so it never overshoots): sharp, so a swirl keeps turning instead of smearing out
+        it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<float[]> adv1 = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>(), adv = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>();
+        float[] lim = new float[4];
+        for (long k : keys) { float[] v = vel0.getOrDefault(k, ZERO2); adv1.put(k, carried(vel0, k, -v[0], -v[1], null)); }
+        for (long k : keys) {
+            float[] v = vel0.getOrDefault(k, ZERO2), a1 = adv1.get(k);
+            float[] back = carried(adv1, k, v[0], v[1], null);
+            carried(vel0, k, -v[0], -v[1], lim);
+            float cx = a1[0] + 0.5f * (v[0] - back[0]), cz = a1[1] + 0.5f * (v[1] - back[1]);
+            adv.put(k, new float[] {Math.max(lim[0], Math.min(lim[1], cx)), Math.max(lim[2], Math.min(lim[3], cz))});
+        }
         it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap riverTop = new it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap();
         java.util.function.LongPredicate river = key -> {   // is this spot river water (in a channel, under the river's surface)? A river at its level is in balance with itself: it does not move within itself
             int x = BlockPos.getX(key), y = BlockPos.getY(key), z = BlockPos.getZ(key); long col = ((long) x << 32) ^ (z & 0xffffffffL);
@@ -205,11 +229,7 @@ public final class WaterSim {
             float gx = (hs[1] - hs[3]) * 0.5f, gz = (hs[2] - hs[0]) * 0.5f;
             float[] v0 = vel0.getOrDefault(k, ZERO2);
             float vx = v0[0], vz = v0[1];
-            // carried by the flow (upwind): the velocity here is what the water arriving from upstream brought
-            float vxW = nv[3] != null ? nv[3][0] : 0f, vxE = nv[1] != null ? nv[1][0] : 0f, vxN = nv[0] != null ? nv[0][0] : 0f, vxS = nv[2] != null ? nv[2][0] : 0f;
-            float vzW = nv[3] != null ? nv[3][1] : 0f, vzE = nv[1] != null ? nv[1][1] : 0f, vzN = nv[0] != null ? nv[0][1] : 0f, vzS = nv[2] != null ? nv[2][1] : 0f;
-            float dvxdx = vx > 0 ? vx - vxW : vxE - vx, dvxdz = vz > 0 ? vx - vxN : vxS - vx, dvzdx = vx > 0 ? vz - vzW : vzE - vz, dvzdz = vz > 0 ? vz - vzN : vzS - vz;
-            float nvx = vx - (vx * dvxdx + vz * dvxdz), nvz = vz - (vx * dvzdx + vz * dvzdz);
+            float[] ad = adv.getOrDefault(k, v0); float nvx = ad[0], nvz = ad[1];   // carried by the flow (see above)
             nvx -= ACCEL * gx; nvz -= ACCEL * gz;   // down the slope of the surface
             if (!endless) { nvx += dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 1) - dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 3); nvz += dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 2) - dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 0); }   // a whirlpool's current
             float fr = a < 0.25f ? 0.86f : FRICTION; nvx *= fr; nvz *= fr;   // friction (more in a thin film over the ground)
