@@ -276,7 +276,7 @@ public final class SnowSurface {
         CUR[0] = hc(i, j, 0, 0); CUR[1] = hc(i, j, 1, 0); CUR[2] = hc(i, j, 0, 1); CUR[3] = hc(i, j, 1, 1);
         float depth = (S[c] - G[c]) / 8f;
         double dcx = wx + 0.5 - camLodX, dcz = wz + 0.5 - camLodZ; boolean far = dcx * dcx + dcz * dcz > 32.0 * 32.0;   // far off a round edge is a pixel or two: plain blocks there
-        float r = far ? 0f : 0.16f;   // the same roundness for every column: neighbours with different depths would end their rounds differently and leave slits between their walls
+        float r = far ? 0f : Mth.clamp(depth * 0.9f, 0.05f, 0.16f);   // as round as the snow is thick: a thin layer rounded deeper than it is thick would dip below the block under it (the backing walls cover any slit between neighbours with different rounds)
         boolean e0 = exposed(i, j, c, 0), e1 = exposed(i, j, c, 1), e2 = exposed(i, j, c, 2), e3 = exposed(i, j, c, 3);
         float x0 = wx + (e0 ? r : 0f), x1 = wx + 1 - (e1 ? r : 0f), z0 = wz + (e2 ? r : 0f), z1 = wz + 1 - (e3 ? r : 0f);
         boolean ramps = Math.max(Math.max(CUR[0], CUR[1]), Math.max(CUR[2], CUR[3])) - Math.min(Math.min(CUR[0], CUR[1]), Math.min(CUR[2], CUR[3])) > 0.01f;   // a sloping top is drawn in more pieces
