@@ -38,7 +38,7 @@ public final class OwnWater {
     /** Is our surface drawing the water around the camera now (then the game's own water is not drawn there)? */
     public static boolean drawing() { var mc = Minecraft.getInstance(); return ON && shader != null && FlowMap.live && mc.level != null; }
     private static boolean warned; private static long logAt;
-    private static ShaderInstance shader, fallShader; private static VertexBuffer grid; private static int depthTex, depthFbo, dw, dh;
+    private static ShaderInstance shader, fallShader; private static VertexBuffer grid; private static int depthTex, depthFbo, colorTex, dw, dh;
 
     public static void registerShader(RegisterShadersEvent e) {
         try { e.registerShader(new ShaderInstance(e.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "prism_water"), DefaultVertexFormat.POSITION), s -> shader = s);
@@ -64,20 +64,24 @@ public final class OwnWater {
     /** The scene's depth (without the water) into a texture of our own, to tell how deep the water is. */
     private static void copyDepth(com.mojang.blaze3d.pipeline.RenderTarget main) {
         if (depthTex == 0 || dw != main.width || dh != main.height) {
-            if (depthTex == 0) { depthTex = GL11C.glGenTextures(); depthFbo = GL30C.glGenFramebuffers(); }
+            if (depthTex == 0) { depthTex = GL11C.glGenTextures(); colorTex = GL11C.glGenTextures(); depthFbo = GL30C.glGenFramebuffers(); }
             dw = main.width; dh = main.height;
             GlStateManager._bindTexture(depthTex);
             GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL11C.GL_DEPTH_COMPONENT, dw, dh, 0, GL11C.GL_DEPTH_COMPONENT, GL11C.GL_FLOAT, (java.nio.FloatBuffer) null);   // the same (unsized) format as the game's own depth: a depth copy only works between matching formats
             GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_NEAREST); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_NEAREST);
+            GlStateManager._bindTexture(colorTex);
+            GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL11C.GL_RGBA8, dw, dh, 0, GL11C.GL_RGBA, GL11C.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+            GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
+            GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL13C.GL_CLAMP_TO_EDGE); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL13C.GL_CLAMP_TO_EDGE);
             GlStateManager._bindTexture(0);
             GL30C.glBindFramebuffer(GL30C.GL_FRAMEBUFFER, depthFbo);
             GL30C.glFramebufferTexture2D(GL30C.GL_FRAMEBUFFER, GL30C.GL_DEPTH_ATTACHMENT, GL11C.GL_TEXTURE_2D, depthTex, 0);
-            GL11C.glDrawBuffer(GL11C.GL_NONE); GL11C.glReadBuffer(GL11C.GL_NONE);
+            GL30C.glFramebufferTexture2D(GL30C.GL_FRAMEBUFFER, GL30C.GL_COLOR_ATTACHMENT0, GL11C.GL_TEXTURE_2D, colorTex, 0);
         }
         GL30C.glBindFramebuffer(GL30C.GL_READ_FRAMEBUFFER, main.frameBufferId);
         GL30C.glBindFramebuffer(GL30C.GL_DRAW_FRAMEBUFFER, depthFbo);
         while (GL11C.glGetError() != GL11C.GL_NO_ERROR) {}
-        GL30C.glBlitFramebuffer(0, 0, dw, dh, 0, 0, dw, dh, GL11C.GL_DEPTH_BUFFER_BIT, GL11C.GL_NEAREST);
+        GL30C.glBlitFramebuffer(0, 0, dw, dh, 0, 0, dw, dh, GL11C.GL_DEPTH_BUFFER_BIT | GL11C.GL_COLOR_BUFFER_BIT, GL11C.GL_NEAREST);
         int err = GL11C.glGetError();
         if (err != GL11C.GL_NO_ERROR && !warned) { warned = true; org.slf4j.LoggerFactory.getLogger("Illuminate").warn("Illuminate: copying the scene depth for the water failed (GL error {}): the water cannot tell how deep it is", err); }
         main.bindWrite(false);
@@ -104,7 +108,7 @@ public final class OwnWater {
         set4("Wave", PrismApi.clock().seconds(), (float) w.x, (float) w.z, Math.min(1f, (float) w.length()));
         set4("Screen", main.width, main.height, 0.05f, mc.gameRenderer.getDepthFar());
         { var uu = shader.getUniform("Under"); if (uu != null) uu.set(mc.gameRenderer.getMainCamera().getFluidInCamera() == net.minecraft.world.level.material.FogType.WATER ? 1f : 0f); }
-        shader.setSampler("Heights", FlowMap.heightTexture()); shader.setSampler("SceneDepth", depthTex);
+        shader.setSampler("Heights", FlowMap.heightTexture()); shader.setSampler("SceneDepth", depthTex); shader.setSampler("SceneColor", colorTex);
         float[] wh = dev.phi.alterra.illuminate.maps.WhirlMap.INFO;
         set4("WhirlInfo", wh[0], wh[1], wh[2], wh[3] > 0.5f && dev.phi.alterra.illuminate.maps.WhirlMap.texture() != 0 ? 1f : 0f);
         shader.setSampler("Whirl", dev.phi.alterra.illuminate.maps.WhirlMap.texture() != 0 ? dev.phi.alterra.illuminate.maps.WhirlMap.texture() : FlowMap.heightTexture());
@@ -124,7 +128,9 @@ public final class OwnWater {
             int o = k * 6; float bx = f[o], bz = f[o + 1], top = f[o + 4], bot = f[o + 5];
             if (top - bot < 0.3f) continue;
             float[][] sides = {{bx + IN, bz + IN, bx + 1 - IN, bz + IN}, {bx + 1 - IN, bz + IN, bx + 1 - IN, bz + 1 - IN}, {bx + 1 - IN, bz + 1 - IN, bx + IN, bz + 1 - IN}, {bx + IN, bz + 1 - IN, bx + IN, bz + IN}};
+            int msk = (int) f[o + 2];
             for (int s = 0; s < 4; s++) {
+                if ((msk & (1 << s)) == 0) continue;   // a side that faces another falling column is inside the sheet: not drawn
                 float[] sd = sides[s]; float u0 = (s % 2 == 0 ? sd[0] : sd[1]), u1 = (s % 2 == 0 ? sd[2] : sd[3]);
                 bb.addVertex((float) (sd[0] - cam.x), (float) (top - cam.y), (float) (sd[1] - cam.z)).setUv(u0, 0f).setColor(255, 255, 255, 230);
                 bb.addVertex((float) (sd[2] - cam.x), (float) (top - cam.y), (float) (sd[3] - cam.z)).setUv(u1, 0f).setColor(255, 255, 255, 230);

@@ -105,7 +105,7 @@ public final class SnowSurface {
         for (int y = Math.min(lv.getMaxBuildHeight() - 1, top + 3); y >= floor; y--) {   // (a little above: powder snow does not stop motion, so the height map goes under it) down from the first air above everything: through air, leaves and plants (snow lies under trees too) to the first thing that is not
             var st = lv.getBlockState(p.set(x, y, z));
             if (st.is(Blocks.SNOW)) { S[c] = y * 8 + st.getValue(SnowLayerBlock.LAYERS); G[c] = stackBottom(lv, p, x, z, y, floor) * 8; K[c] = 1; return; }
-            if (st.is(Blocks.SNOW_BLOCK) || st.is(Blocks.POWDER_SNOW)) { S[c] = (y + 1) * 8; G[c] = stackBottom(lv, p, x, z, y, floor) * 8; K[c] = 1; return; }
+            if (st.is(Blocks.SNOW_BLOCK) || st.is(Blocks.POWDER_SNOW)) { S[c] = (y + 1) * 8; G[c] = stackBottom(lv, p, x, z, y, floor) * 8; K[c] = 3; return; }
             if (st.hasProperty(BlockStateProperties.SNOWY) && st.getValue(BlockStateProperties.SNOWY)) { G[c] = S[c] = (y + 1) * 8; K[c] = 2; return; }   // snowy grass: its top is drawn with the snow texture
             if (!st.getFluidState().isEmpty()) { G[c] = S[c] = (y + 1) * 8; return; }
             if (st.isAir() || st.is(net.minecraft.tags.BlockTags.LEAVES) || !st.blocksMotion()) continue;
@@ -113,7 +113,7 @@ public final class SnowSurface {
             for (int y2 = y - 1; y2 >= Math.max(floor, y - 48); y2--) {
                 var s2 = lv.getBlockState(p.set(x, y2, z));
                 if (s2.is(Blocks.SNOW)) { S[c] = y2 * 8 + s2.getValue(SnowLayerBlock.LAYERS); G[c] = stackBottom(lv, p, x, z, y2, floor) * 8; K[c] = 1; return; }
-                if (s2.is(Blocks.SNOW_BLOCK) || s2.is(Blocks.POWDER_SNOW)) { S[c] = (y2 + 1) * 8; G[c] = stackBottom(lv, p, x, z, y2, floor) * 8; K[c] = 1; return; }
+                if (s2.is(Blocks.SNOW_BLOCK) || s2.is(Blocks.POWDER_SNOW)) { S[c] = (y2 + 1) * 8; G[c] = stackBottom(lv, p, x, z, y2, floor) * 8; K[c] = 3; return; }
                 if (s2.hasProperty(BlockStateProperties.SNOWY) && s2.getValue(BlockStateProperties.SNOWY)) { G[c] = S[c] = (y2 + 1) * 8; K[c] = 2; return; }
                 if (s2.isAir() || s2.is(net.minecraft.tags.BlockTags.LEAVES) || !s2.blocksMotion()) continue;
                 break;
@@ -208,7 +208,7 @@ public final class SnowSurface {
         var bp = new BlockPos.MutableBlockPos();
         for (int j = PAD; j < PAD + T; j++) for (int i = PAD; i < PAD + T; i++) {
             int c = i + j * N; if (!L[c]) continue;
-            int wx = x0 + i - PAD, wz = z0 + j - PAD, from = (K[c] == 1 ? G[c] / 8 : S[c] / 8) - 1, light = cornerLight(i, j, 0, 0);
+            int wx = x0 + i - PAD, wz = z0 + j - PAD, from = (K[c] == 2 ? S[c] / 8 : G[c] / 8) - 1, light = cornerLight(i, j, 0, 0);
             for (int y = from; y > from - 24; y--) {
                 var st = lv.getBlockState(bp.set(wx, y, wz));
                 if (!(st.is(Blocks.SNOW_BLOCK) || st.is(Blocks.POWDER_SNOW))) continue;
@@ -339,25 +339,6 @@ public final class SnowSurface {
                 float m0 = topW(i, j, wx, wz, px0, pz0), m1 = topW(i, j, wx, wz, px1, pz1);
                 float n0 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px0, pz0) : S[q] / 8f, n1 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px1, pz1) : S[q] / 8f;
                 if (m0 > n0 + 0.002f || m1 > n1 + 0.002f) { vertex(bb, px0, m0, pz0, ox, oz, light, 0f); vertex(bb, px1, m1, pz1, ox, oz, light, 0f); vertex(bb, px1, Math.min(m1, n1), pz1, ox, oz, light, 0f); vertex(bb, px0, Math.min(m0, n0), pz0, ox, oz, light, 0f); }
-            }
-        }
-        // where a wall rises beside it (snow or ground standing well above this top), the snow piles into the crease: a concave quarter round up against the wall
-        if (r > 0f) for (int side = 0; side < 4; side++) {
-            int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
-            if (!L[q]) continue;
-            float edgeTop = topW(i, j, wx, wz, wx + 0.5 + di * 0.5, wz + 0.5 + dj * 0.5), hn = S[q] / 8f;
-            if (rampUp(c, q) || hn - edgeTop < 0.6f) continue;
-            float f = Math.min(0.35f, (hn - edgeTop) * 0.5f);
-            float ox = -di, oz = -dj;   // pointing away from the wall, into this column
-            double ex0 = side == 0 ? wx : side == 1 ? wx + 1 : x0, ex1 = side == 0 ? wx : side == 1 ? wx + 1 : x1, ez0 = side == 2 ? wz : side == 3 ? wz + 1 : z0, ez1 = side == 2 ? wz : side == 3 ? wz + 1 : z1;
-            for (int s = 0; s < ARC; s++) for (int k = 0; k < 4; k++) {
-                int ss = s + (k >= 2 ? 1 : 0); boolean end = k == 1 || k == 2;
-                float th = ss / (float) ARC * Mth.HALF_PI;
-                float dOut = f - f * Mth.cos(th), h = f - f * Mth.sin(th);   // from up the wall (th 0: at the wall, f high) down to the top (th 90: f out, on the top)
-                double px = (end ? ex1 : ex0) + ox * dOut, pz = (end ? ez1 : ez0) + oz * dOut;
-                float base = topW(i, j, wx, wz, px, pz);
-                float nx = ox * Mth.sin(th), nz = oz * Mth.sin(th), ny = Mth.cos(th);
-                vertex(bb, px, base + h, pz, nx * 0.7f, nz * 0.7f, light, Math.max(0.3f, ny));
             }
         }
         // corners where two rolling sides meet: a quarter dome, and its wall

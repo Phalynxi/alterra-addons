@@ -8,7 +8,6 @@ public final class IlluminateConfig {
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.BooleanValue WATER_LOOK, REFLECTIONS, CAUSTICS, WATER_WAVES, SMOOTH_WATER, SMOOTH_SNOW, CUSTOM_SNOW, FOAM, WET, METALS, LAVA_GLOW, SWAY, SWAY_PLANTS,
             SCENE_LOOK, GRADE, GLOW, SHAFTS, HAZE, CLOUDS, UNDERWATER_FOG, SHADOWS;
-    public static final ModConfigSpec.IntValue CLOUD_STYLE;
     public static final ModConfigSpec.DoubleValue CAUSTIC_STRENGTH, SWAY_AMOUNT, QUALITY;
     static {
         var b = new ModConfigSpec.Builder();
@@ -19,7 +18,6 @@ public final class IlluminateConfig {
         CAUSTICS = b.comment("Rippling light on the bottom of shallow water and on things under water.").define("caustics", true);
         CAUSTIC_STRENGTH = b.comment("How bright the caustics and the lava glow are.").defineInRange("causticStrength", 1.0, 0.1, 2.0);
         WATER_WAVES = b.comment("The surface rises and falls in slow swells; boats ride them.").define("waves", true);
-        CLOUD_STYLE = b.comment("How the clouds are drawn: 0 Vanilla+ (the blocky clouds of the game, rounded and properly shaped; light on the graphics card), 1 Volumetric (every cloud a real volume, with storm towers; heavy).").defineInRange("cloudStyle", 0, 0, 1);
         CUSTOM_SNOW = b.comment("Snow is drawn as its own surface (a smooth, grainy sheet that follows the snow around the camera) instead of the blocks' layers. Off: the vanilla layers, smoothed if Smooth snow is on.").define("customSnow", true);
         SMOOTH_SNOW = b.comment("Snow lies in smooth drifts and slopes (the corners of its layers follow the snow around them) instead of steps of an eighth of a block.").define("smoothSnow", true);
         SMOOTH_WATER = b.comment("Water rising and falling (filling, draining) moves smoothly instead of a step at a time.").define("smoothWater", true);
@@ -38,7 +36,7 @@ public final class IlluminateConfig {
         SHAFTS = b.comment("Light shafts from the sun through gaps in trees and terrain.").define("lightShafts", true);
         HAZE = b.comment("Haze in the far distance, warm towards the sun.").define("haze", true);
         SHADOWS = b.comment("Soft sun shadows of trees and overhangs (from the height of everything around), and light shafts through gaps in leaves.").define("sunShadows", false);
-        CLOUDS = b.comment("Real clouds (instead of vanilla's flat ones): the same for everyone, dark when it rains. The heaviest part of the look.").define("clouds", true);
+        CLOUDS = b.comment("Real clouds (instead of vanilla's flat ones): the same for everyone, dark when it rains. The heaviest part of the look: off by default.").define("clouds", false);
         UNDERWATER_FOG = b.comment("Under water the water's own colour closes in with distance, and light ripples over everything.").define("underwaterFog", true);
         b.pop();
         SPEC = b.build();

@@ -497,7 +497,7 @@ public final class PostFx {
             var cc = level.getCloudColor(pt); GL20C.glUniform3f(u(p, "u_CloudColor"), (float) cc.x, (float) cc.y, (float) cc.z);
             dev.phi.alterra.illuminate.maps.CloudGrid.update(cxc * 24.0, czc * 24.0, PrismApi.clouds().evolve(cgt, cpt));   // (the same cloud-space position and evolution the shader uses)
             dev.phi.alterra.illuminate.maps.CloudGrid.bind(); GL20C.glUniform1i(u(p, "u_CloudGrid"), dev.phi.alterra.illuminate.maps.CloudGrid.UNIT);
-            GL20C.glUniform1f(u(p, "u_CloudStyle"), IlluminateConfig.get(IlluminateConfig.CLOUD_STYLE) >= 1 ? 1f : 0f);
+            GL20C.glUniform1f(u(p, "u_CloudStyle"), 1f);
             GL20C.glUniform1i(u(p, "u_Clouds"), 2);
             int cloudTex = mc.getTextureManager().getTexture(net.minecraft.resources.ResourceLocation.withDefaultNamespace("textures/environment/clouds.png")).getId();
             GlUpload.bind(GL13C.GL_TEXTURE2, cloudTex);

@@ -33,10 +33,10 @@ void main() {
     vec3 side = pc / max(length(pc), 1e-4), toCam = -normalize(c);
     vec3 n = normalize(side * min(r, 1.0) + toCam * sqrt(max(0.0, 1.0 - r * r)));   // the surface facing this pixel
     n = normalize(n * vec3(1.0, 1.0 / s, 1.0));
-    float lod = 1.0 - smoothstep(600.0, 2500.0, dist);
-    vec3 np = side * 2.2 + info.z * 37.0;   // cauliflower lumps on the rim, in the puff's own frame (they do not turn with the view)
+    float lod = 1.0 - smoothstep(300.0, 1000.0, dist);
+    vec3 np = (pc / radii.x) * 2.6 + info.z * 37.0;   // cauliflower lumps on the rim, in the puff's own frame (they do not turn with the view)
     float rough = 0.5;
-    if (dist < 6000.0) rough = vn3(np) * 0.6 + 0.2;            // one layer of lumps out to the middle distance, none far away (a few pixels there)
+    if (dist < 2500.0) rough = vn3(np) * 0.6 + 0.2;            // one layer of lumps out to the middle distance, none far away (a few pixels there)
     if (lod > 0.0) rough += (vn3(np * 2.3 + 11.0) - 0.5) * 0.4 * lod;   // the fine second layer only close by
     float body = smoothstep(1.0, 0.30, r + (rough - 0.5) * 0.55);
     float lit = clamp(dot(n, SunW) * 0.5 + 0.5, 0.0, 1.0);

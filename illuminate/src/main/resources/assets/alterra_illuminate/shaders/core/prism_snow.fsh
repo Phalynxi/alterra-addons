@@ -34,7 +34,7 @@ void main() {
     float skyUp = 0.5 + 0.5 * n.y;
     // snow takes its colour from the light: warm white in the sun, blue in the shade (it is lit by the sky), never grey
     vec3 ambient = mix(vec3(0.72, 0.80, 0.95), vec3(0.89, 0.94, 1.0), skyUp);
-    vec3 irradiance = ambient * (0.50 + 0.14 * max(worldNormal.y, 0.0)) + vec3(1.0, 0.965, 0.89) * lit * 0.40;   // walls and edges shade a little apart from the tops, so terraces read from afar
+    vec3 irradiance = ambient * (0.56 + 0.08 * max(worldNormal.y, 0.0)) + vec3(1.0, 0.965, 0.89) * lit * 0.26;   // tops are a soft white (never blown out), slopes and walls a step darker, not a harsh contrast   // walls and edges shade a little apart from the tops, so terraces read from afar
     float grain = texture(Sampler0, wp * 0.18).r;   // a soft, broad grain
     vec3 albedo = vec3(0.985, 0.99, 1.0) * (0.95 + 0.10 * grain);
     // glitter: tiny crystals that catch the sun, flickering as you move

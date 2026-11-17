@@ -1,5 +1,6 @@
 #version 150
 
+uniform sampler2D SceneColor;   // the scene behind the water (the bed, what stands in it)
 uniform sampler2D SceneDepth;   // the scene's depth without the water: how deep the water is here
 uniform vec4 SunW;      // xyz: the sun or moon, w: how bright
 uniform vec3 SkyH;      // the sky at the horizon
@@ -34,7 +35,7 @@ float fn(vec2 p) { vec2 i = floor(p), q = fract(p); q = q * q * (3.0 - 2.0 * q);
 float lin(float d) { float n = Screen.z, f = Screen.w; return 2.0 * n * f / (f + n - (2.0 * d - 1.0) * (f - n)); }
 
 void main() {
-    if (wet < 0.02) discard;
+    if (wet < 0.5) discard;   // the edge is the water cell's own edge (as the game's was): nothing over the dry blocks beside it
     vec2 g = slope(wpos);
     vec3 n = normalize(vec3(-g.x, 1.0, -g.y) + normalize(cross(dFdx(rel), dFdy(rel))) * 0.0);
     vec3 nGeo = normalize(cross(dFdx(rel), dFdy(rel))); if (nGeo.y < 0.0) nGeo = -nGeo;
@@ -45,23 +46,19 @@ void main() {
     vec3 sky = mix(SkyH, SkyZ, pow(clamp(r.y * 1.3, 0.0, 1.0), 0.6)) * vec3(0.85, 0.94, 1.0);
     float sd = max(dot(r, SunW.xyz), 0.0);
     vec3 glint = vec3(1.0, 0.95, 0.85) * (pow(sd, 700.0) * 3.0 + pow(sd, 70.0) * 0.3) * SunW.w;
-    // how deep: from the scene's depth behind the surface
+    // how deep: from the scene's depth behind the surface, and the real scene seen through it (bent a little by the ripples), losing red first as water does
     vec2 uv = gl_FragCoord.xy / Screen.xy;
-    float behind = lin(texture(SceneDepth, uv).r), here = lin(gl_FragCoord.z), thick = max(0.0, behind - here);
+    vec2 ruv = clamp(uv + g * 0.05, 0.002, 0.998);
+    if (texture(SceneDepth, uv).r >= 0.99999 && Under < 0.5) discard;   // nothing at all behind the water (the ground there is not loaded or drawn yet): no water floating in the void
+    float behind = lin(texture(SceneDepth, ruv).r), here = lin(gl_FragCoord.z);
+    if (behind < here - 0.05) { ruv = uv; behind = lin(texture(SceneDepth, uv).r); }   // (not through something that stands in front of the water)
+    float thick = max(0.0, behind - here);
+    vec3 under = texture(SceneColor, ruv).rgb;
+    vec3 absorb = exp(-thick * vec3(0.46, 0.13, 0.07) * (0.7 + 0.5 * (1.0 - SunW.w)));
+    vec3 scatter = mix(Tint * vec3(0.55, 1.05, 1.10), Tint * vec3(0.28, 0.62, 1.0), 1.0 - exp(-thick * 0.10)) * (0.30 + 0.70 * SunW.w);
+    vec3 body = under * absorb + scatter * (vec3(1.0) - absorb) * 0.9;
     float shallow = 1.0 - exp(-thick * 0.16);
-    vec3 body = mix(mix(Tint, vec3(0.35, 0.80, 0.78), 0.55) * 1.05, Tint * vec3(0.34, 0.58, 0.86), shallow) * (0.55 + 0.45 * SunW.w);   // clear turquoise over the shallows, blue in the deep
     vec3 col = mix(body, sky, clamp(fr * 1.15, 0.0, 1.0)) + glint;
-    if (Under > 0.5 && v.y > 0.0) {   // seen from under the water: a bright window to the sky straight up (inside about 49 degrees), a mirror of the deep water outside it
-        vec3 nd = -n;
-        float c = clamp(dot(-v, nd), 0.0, 1.0), sn = sqrt(1.0 - c * c) * 1.333;
-        float win = 1.0 - smoothstep(0.93, 1.0, sn);
-        vec3 tr = refract(v, nd, 1.333);
-        vec3 skyIn = mix(SkyH, SkyZ, clamp(tr.y * 1.5, 0.0, 1.0)) * 1.2 + vec3(1.0, 0.95, 0.85) * pow(max(dot(tr, SunW.xyz), 0.0), 80.0) * 2.0 * SunW.w;
-        vec3 deep = Tint * vec3(0.30, 0.55, 0.62) * (0.35 + 0.65 * SunW.w);
-        col = mix(deep, skyIn, win);
-        fragColor = vec4(col, 0.95 * smoothstep(0.02, 0.35, wet));
-        return;
-    }
     if (foamAmt > 0.01) {   // white water where a fall lands: churning, breaking up into drifting patches as it spreads
         float t2 = Wave.x;
         float pat = fn(wpos * 1.7 + vec2(t2 * 0.6, -t2 * 0.4)) * 0.55 + fn(wpos * 4.1 - vec2(t2 * 1.1, t2 * 0.7)) * 0.45;
@@ -69,7 +66,7 @@ void main() {
         col = mix(col, vec3(0.93, 0.97, 1.0) * (0.55 + 0.45 * SunW.w), clamp(w, 0.0, 0.95));
         fr = max(fr, w * 0.6);
     }
-    float edge = smoothstep(0.02, 0.35, wet) * smoothstep(0.0, 0.6, thick + 0.1);   // a soft shore, no hard block edge
-    float alpha = clamp(mix(0.30, 0.86, shallow) * edge + fr * 0.4 * edge, 0.0, 1.0);   // the bed shows through shallow water
+    float edge = smoothstep(0.5, 0.58, wet);
+    float alpha = edge;   // the scene behind is already in the colour: opaque, except where the water thins out at the shore
     fragColor = vec4(col, alpha);
 }

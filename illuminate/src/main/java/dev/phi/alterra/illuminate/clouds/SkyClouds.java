@@ -44,38 +44,42 @@ import java.util.List;
 @EventBusSubscriber(modid = Illuminate.ID, value = Dist.CLIENT)
 public final class SkyClouds {
     private SkyClouds() {}
-    private static ShaderInstance puffShader, blockShader;
+    private static ShaderInstance puffShader;
     private static final float BASE = 250f;   // the clouds' bottom: Alterra's land reaches far higher than vanilla's clouds
 
     public static void registerShaders(RegisterShadersEvent e) {
         try {
             e.registerShader(new ShaderInstance(e.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "prism_cloud_puff"), DefaultVertexFormat.BLOCK), s -> puffShader = s);
-            e.registerShader(new ShaderInstance(e.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "prism_cloud_block"), DefaultVertexFormat.BLOCK), s -> blockShader = s);
         } catch (IOException ex) { throw new IllegalStateException("Illuminate: the cloud shaders could not be loaded", ex); }
     }
 
     /** Are our clouds drawn (then the game's own are left out)? */
     public static boolean active() {
         var mc = Minecraft.getInstance(); var lv = mc.level;
-        return puffShader != null && blockShader != null && lv != null && IlluminateConfig.get(IlluminateConfig.CLOUDS) && !Float.isNaN(lv.effects().getCloudHeight())
+        return puffShader != null && lv != null && IlluminateConfig.get(IlluminateConfig.CLOUDS) && !Float.isNaN(lv.effects().getCloudHeight())
                 && mc.options.getCloudsType() != net.minecraft.client.CloudStatus.OFF;
     }
 
     // ------------------------------------------------------------------ the meshes
     /** Distance bands, near to far: cell size, from, to (blocks). Each band is its own mesh, drawn far to near (so the soft blending is in the right order), rebuilt on its own schedule:
      *  the near bands often, the far ones hardly ever (they only slide with the view, which is all the eye can tell at that distance). One band is rebuilt per frame at most. */
-    private static final double[][] BANDS = {{96, 0, 6500}, {640, 5000, 26000}};   // two lattices only: a cloud keeps its shape all the way out to 5 km, and the one change of lattice is far away, faded
-    private static final double[] MOVE = {200, 800};
-    private static final long[] AGE = {40000, 120000};
+    private static final double[][] BANDS = {{112, 0, 2800}, {384, 1800, 9500}, {1280, 6500, 26000}};   // two lattices only: a cloud keeps its shape all the way out to 5 km, and the one change of lattice is far away, faded
+    private static final double[] MOVE = {200, 600, 1600};
+    private static final long[] AGE = {40000, 90000, 150000};
     private static final int NB = BANDS.length;
-    private static final VertexBuffer[] bandVb = new VertexBuffer[NB + 1], towerVb = new VertexBuffer[NB];   // [NB] is the cirrus
+    private static final int SECT = 16;   // wedges of sky a band is split into: only those in view are drawn
+    /** A band's puffs, split into wedges of the sky round the band's centre (and one part for everything near that, drawn always). */
+    private static final class Mesh { final VertexBuffer[] parts = new VertexBuffer[SECT + 1]; void close() { for (var p : parts) if (p != null) p.close(); } }
+    private static void close(Mesh m) { if (m != null) m.close(); }
+    private static final Mesh[] bandVb = new Mesh[NB + 1]; private static final VertexBuffer[] towerVb = new VertexBuffer[NB];   // [NB] is the cirrus
+    private static float camAz, halfAz; private static boolean allSectors;   // which way the camera looks (azimuth as atan2(x, z)) and how wide it sees, this frame
     private static final double[] bandX = new double[NB + 1], bandZ = new double[NB + 1]; private static final long[] bandAt = new long[NB + 1]; private static final boolean[] bandBuilt = new boolean[NB + 1];
     private static VertexBuffer cumulusVb;   // vanilla+ blocks
     /** A rebuilt mesh does not replace the old one at once: both are drawn for a moment, the old fading out as the new fades in, so nothing jumps. */
-    private static final VertexBuffer[] prevVb = new VertexBuffer[NB + 1], prevTower = new VertexBuffer[NB];
+    private static final Mesh[] prevVb = new Mesh[NB + 1]; private static final VertexBuffer[] prevTower = new VertexBuffer[NB];
     private static final double[] prevX = new double[NB + 1], prevZ = new double[NB + 1]; private static final long[] fadeStart = new long[NB + 1];
     private static double prevTowerX, prevTowerZ; private static long towerFade;
-    private static final float XFADE_MS = 6000f;
+    private static final float XFADE_MS = 1f;   // (an instant swap: the cells are stable, a rebuild changes almost nothing, and fading drew every band twice)
     private static float fadeT(long start, long now) { return start == 0 ? 1f : Mth.clamp((now - start) / XFADE_MS, 0f, 1f); }
     private static void swapBand(int i, long now) { close(prevVb[i]); prevVb[i] = bandVb[i]; prevX[i] = bandX[i]; prevZ[i] = bandZ[i]; bandVb[i] = null; fadeStart[i] = prevVb[i] != null ? now : 0; }
     private static void swapTowers(long now) { boolean any = false; for (int i = 0; i < NB; i++) { close(prevTower[i]); prevTower[i] = towerVb[i]; towerVb[i] = null; any |= prevTower[i] != null; } prevTowerX = towerX; prevTowerZ = towerZ; towerFade = any ? now : 0; }
@@ -126,7 +130,7 @@ public final class SkyClouds {
         double ct = PostFx.cloudClock(lv, pt); long cgt = (long) Math.floor(ct); float cpt = (float) (ct - cgt);
         double driftX = PrismApi.clouds().driftX(cgt, cpt), driftZ = PrismApi.clouds().driftZ(cgt, cpt) + 7.92, evo = PrismApi.clouds().evolve(cgt, cpt);
         double qx = cam.x + driftX, qz = cam.z + driftZ;   // the camera in the clouds' own, drifting space
-        int style = IlluminateConfig.get(IlluminateConfig.CLOUD_STYLE) >= 1 ? 1 : 0;
+        int style = 1;
         float rain = Math.min(1f, PrismApi.rainAt(lv, cam.x, cam.z)), thunder = lv.getThunderLevel(pt);
         float storm0 = Mth.clamp(rain * 0.6f + thunder * 0.5f, 0f, 1f);
         long now = System.currentTimeMillis();
@@ -139,11 +143,7 @@ public final class SkyClouds {
         if (style != builtStyle) clear();
         else if (changed) for (int i = 0; i <= NB; i++) bandAt[i] = 0;   // the weather changed: every band is due, rebuilt one a frame and faded in
         if (changed) { builtStyle = style; builtRain = rain; builtThunder = thunder; }
-        if (style == 0) {
-            if (cumulusVb == null || Math.hypot(qx - buildQx, qz - buildQz) > 160.0 || now - builtAt > 12_000) {
-                close(cumulusVb); cumulusVb = null; buildBlocks(qx, qz, (float) evo, rain, thunder, storm0, cells, driftX, driftZ); builtAt = now; buildQx = qx; buildQz = qz;
-            }
-        } else {
+        {
             // rebuild at most one band per frame (the most overdue), all of them the first time
             // the bands are laid out round a centre that only moves in steps of 200 blocks, so the layout of the clouds stays put while you walk (it is rebuilt, faded in slowly, when the centre steps)
             double sx = Math.round(qx / 200.0) * 200.0, sz = Math.round(qz / 200.0) * 200.0;
@@ -159,7 +159,7 @@ public final class SkyClouds {
             for (int i = 0; i <= NB; i++) {   // finished jobs: their puffs into a mesh (the slow part, the noise and the puffs, ran on a worker thread)
                 var j = jobs[i]; if (j == null || !j.isDone()) continue;
                 jobs[i] = null;
-                try { var res = j.join(); if (i == 0) { nearPuffs = List.copyOf(res.puffs); nearX = res.x; nearZ = res.z; } swapBand(i, now); bandVb[i] = upload(res.puffs); bandAt[i] = now; bandX[i] = res.x; bandZ[i] = res.z; bandBuilt[i] = true; }
+                try { var res = j.join(); if (Boolean.getBoolean("alterra.photos")) org.slf4j.LoggerFactory.getLogger("Illuminate").info("[hunt] cloud band {}: {} puffs", i, res.puffs.size()); if (i == 0) { nearPuffs = List.copyOf(res.puffs); nearX = res.x; nearZ = res.z; } swapBand(i, now); bandVb[i] = upload(res.puffs); bandAt[i] = now; bandX[i] = res.x; bandZ[i] = res.z; bandBuilt[i] = true; }
                 catch (Exception ex) { org.slf4j.LoggerFactory.getLogger("Illuminate").warn("Illuminate: a cloud band could not be built", ex); bandAt[i] = now; bandBuilt[i] = true; }
             }
         }
@@ -173,8 +173,8 @@ public final class SkyClouds {
         float far = mc.gameRenderer.getDepthFar(), rmax = Math.max(64f, far * 0.92f);   // from the renderer, not the matrix: view bobbing is folded into the projection matrix and would swing it
         Vector3f sunV = base.transformDirection(new Vector3f(sun)).normalize();
         RenderSystem.enableDepthTest(); RenderSystem.disableCull(); RenderSystem.enableBlend(); RenderSystem.defaultBlendFunc();
-        ShaderInstance sh = style == 1 ? puffShader : blockShader;
-        RenderSystem.depthMask(style == 0);   // puffs are soft: they do not write depth; blocks do
+        ShaderInstance sh = puffShader;
+        RenderSystem.depthMask(false);   // puffs are soft: they do not write depth
         var ru = sh.getUniform("RMax"); if (ru != null) ru.set(rmax);
         uniform3(sh, "SunW", sun.x, sun.y, sun.z);
         uniform3(sh, "CloudColor", (float) cc.x, (float) cc.y, (float) cc.z); uniform3(sh, "Horizon", hz[0], hz[1], hz[2]);
@@ -184,15 +184,20 @@ public final class SkyClouds {
             RenderSystem.enableBlend(); RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);   // premultiplied, straight into the scene at full size
             RenderSystem.enableDepthTest(); RenderSystem.depthMask(false);
             float want = cloudAt(qx, cam.y, qz); inCloud += (want - inCloud) * 0.15f;
+            {   // what the camera can see: its heading, and how wide it sees (more when it looks steeply up or down)
+                float pitch = (float) Math.toRadians(e.getCamera().getXRot()), tanX = 1f / Math.max(0.2f, e.getProjectionMatrix().m00());
+                camAz = (float) -Math.toRadians(e.getCamera().getYRot());
+                allSectors = Math.abs(pitch) > 1.05f;
+                halfAz = (float) Math.min(Math.PI, Math.atan((tanX + 0.45f) / Math.max(0.2f, Math.cos(pitch))));
+            }
             for (int i = NB; i >= 0; i--) {   // cirrus first (the farthest), then the bands far to near (storms are the same clouds, gathered and darkened)
                 if (i > 0 && inCloud > 0.6f) continue;   // inside a thick cloud nothing farther can be seen: not drawn (they come back as you leave it)
                 float tb = fadeT(fadeStart[i], now);
-                if (prevVb[i] != null) { if (tb < 1f) draw(prevVb[i], prevX[i] - qx, prevZ[i] - qz, base, cam.y, proj, sh, fade * (1f - tb)); else { close(prevVb[i]); prevVb[i] = null; } }
-                draw(bandVb[i], bandX[i] - qx, bandZ[i] - qz, base, cam.y, proj, sh, fade * tb);
+                if (prevVb[i] != null) { if (tb < 1f) drawMesh(prevVb[i], prevX[i] - qx, prevZ[i] - qz, base, cam.y, proj, sh, fade * (1f - tb)); else { close(prevVb[i]); prevVb[i] = null; } }
+                drawMesh(bandVb[i], bandX[i] - qx, bandZ[i] - qz, base, cam.y, proj, sh, fade * tb);
             }
             VertexBuffer.unbind();
-            RenderSystem.defaultBlendFunc();
-        } else draw(cumulusVb, buildQx - qx, buildQz - qz, base, cam.y, proj, sh, fade);
+        }
         VertexBuffer.unbind();
         if (style == 1 && inCloud > 0.01f) {   // inside a cloud: everything goes soft and pale, more the deeper in
             float g = (float) Math.min(1.0, cc.x * (0.75 + 0.25 * day));
@@ -220,6 +225,7 @@ public final class SkyClouds {
     }
 
     // ------------------------------------------------------------------ the half-size cloud picture (soft clouds lose nothing at half size; the GPU shades a quarter of the pixels)
+    private static final float SCALE = 0.66f;
     private static int fbo, colTex, depTex, fw, fh;
     private static void target(int w, int h) {
         if (fbo != 0 && fw == w && fh == h) return;
@@ -289,11 +295,11 @@ public final class SkyClouds {
                 float r0 = (float) (cell * (0.50 + 0.35 * c));
                 float thick, ratio, y0, spread; int n;
                 switch (type) {
-                    case STRATO -> { thick = (14f + 34f * c) * taller; ratio = 0.72f; y0 = BASE - 4f; spread = 0.95f; n = 5; }
-                    case ALTO -> { thick = (8f + 14f * c) * taller; ratio = 0.62f; y0 = BASE + 170f; spread = 0.55f; n = 8; }
-                    default -> { thick = (16f + 96f * tall * c * c) * taller; ratio = 0.78f; y0 = BASE + 4f; spread = 1f; n = 6; }
+                    case STRATO -> { thick = (14f + 34f * c) * taller; ratio = 0.72f; y0 = BASE - 4f; spread = 0.95f; n = 3; }
+                    case ALTO -> { thick = (8f + 14f * c) * taller; ratio = 0.62f; y0 = BASE + 170f; spread = 0.55f; n = 4; }
+                    default -> { thick = (16f + 96f * tall * c * c) * taller; ratio = 0.78f; y0 = BASE + 4f; spread = 1f; n = 4; }
                 }
-                if (band >= 1) n = Math.max(3, n * 3 / 5);   // far: fewer puffs per cell
+                if (band >= 1) n = Math.max(2, n * 3 / 5);   // far: fewer puffs per cell
                 if (stormHere > 0.5f && type == ALTO) y0 = BASE + 30f;   // under a storm the mid-level deck sinks into the cloud
                 // Every cell always has the same puffs at the same places (from its own seed); more cover makes more of them appear and grow, less makes them shrink away.
                 // So a cloud changes shape gradually as the weather evolves, and a rebuild only moves things a little.
@@ -314,7 +320,7 @@ public final class SkyClouds {
                     p.y = y0 + u * thick * (0.55f + 0.45f * rh);
                     p.sx = r0 * spread * (float) Math.pow(w, 0.6) * (type == CUMULUS ? 0.62f + 0.55f * u * (1.6f - u) : 0.95f - 0.2f * u * u) * (0.8f + 0.4f * rs); p.sy = p.sx * (u < 0.25f ? ratio * 0.45f : ratio);
                     p.y = Math.max(p.y, y0 + p.sy * 0.85f);   // every puff rests on the cloud base: a flat bottom, nothing hangs below it
-                    p.shade = type == CUMULUS ? 0.48f + 0.52f * u : 0.60f + 0.32f * u; p.dark = stormHere * (1f - 0.35f * u); p.seed = rseed; p.alpha = (type == ALTO ? 0.8f : 0.92f) * Math.min(1f, w * 2f) * (1f - smooth((float) (band == 0 ? outer - 1500.0 : outer * 0.82), (float) outer, (float) d)) * (band == 0 ? 1f : smooth((float) inner, (float) (inner + 1500.0), (float) d));
+                    p.shade = type == CUMULUS ? 0.48f + 0.52f * u : 0.60f + 0.32f * u; p.dark = stormHere * (1f - 0.35f * u); p.seed = rseed; p.alpha = (type == ALTO ? 0.8f : 0.92f) * Math.min(1f, w * 2f) * (1f - smooth((float) (band < NB - 1 ? outer - 1000.0 : outer * 0.82), (float) outer, (float) d)) * (band == 0 ? 1f : smooth((float) inner, (float) (inner + (band == 1 ? 900.0 : 1500.0)), (float) d));
                     p.d2 = (double) p.x * p.x + (double) p.z * p.z + (p.y - buildCamY) * (p.y - buildCamY);
                     puffs.add(p);
                 }
@@ -344,69 +350,35 @@ public final class SkyClouds {
     }
 
     /** The puffs into a mesh, the farthest first (they are blended over each other). Coordinates are relative to the build's camera; y is absolute. */
-    private static VertexBuffer upload(List<Puff> puffs) {
+    private static Mesh upload(List<Puff> puffs) {
         if (puffs.isEmpty()) return null;
         puffs.sort(Comparator.comparingDouble((Puff p) -> -p.d2));
-        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
-        for (Puff p : puffs) for (int k = 0; k < 4; k++)
-            bb.addVertex(p.x, p.y, p.z).setColor(255, 255, 255, Math.round(p.alpha * 255f)).setUv(p.sx, p.sy).setLight(0).setNormal(p.shade * 2f - 1f, p.dark * 2f - 1f, p.seed * 2f - 1f);
-        MeshData md = bb.build(); if (md == null) return null;
-        var vb = new VertexBuffer(VertexBuffer.Usage.STATIC); vb.bind(); vb.upload(md); VertexBuffer.unbind(); return vb;
-    }
-
-    // ------------------------------------------------------------------ vanilla+: rounded blocks
-    private static final float[] U = {-1f, -0.80f, 0f, 0.80f, 1f};
-
-    private static void buildBlocks(double qx, double qz, float evo, float rain, float thunder, float storm0, List<StormCell> cells, double driftX, double driftZ) {
-        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
-        boolean any = false;
-        for (int ring = 0; ring < 3; ring++) {
-            double cell = ring == 0 ? 36.0 : ring == 1 ? 108.0 : 324.0, inner = ring == 0 ? 0.0 : ring == 1 ? 1100.0 : 3500.0, outer = ring == 0 ? 1100.0 : ring == 1 ? 3500.0 : 14000.0;
-            int ix0 = (int) Math.floor((qx - outer) / cell), ix1 = (int) Math.floor((qx + outer) / cell), iz0 = (int) Math.floor((qz - outer) / cell), iz1 = (int) Math.floor((qz + outer) / cell);
-            int w = ix1 - ix0 + 3, h = iz1 - iz0 + 3; float[] hg = new float[w * h], st = new float[w * h];
-            for (int cz = iz0 - 1; cz <= iz1 + 1; cz++) for (int cx = ix0 - 1; cx <= ix1 + 1; cx++) {
-                double mx = (cx + 0.5) * cell, mz = (cz + 0.5) * cell;
-                float c = coverAt(mx, mz, evo, rain, thunder, cells, driftX, driftZ), g = 0f;
-                if (c >= 0.05f) g = (float) (Math.floor((10f + 28f * c) / 3f) * 3f) * (float) (cell > 100 ? 1.6 : 1.0) * (cell > 300 ? 1.5f : 1f);
-                hg[(cx - ix0 + 1) + (cz - iz0 + 1) * w] = g; st[(cx - ix0 + 1) + (cz - iz0 + 1) * w] = Mth.clamp(storm0 + influence(cells, mx - driftX, mz - driftZ) * 0.9f, 0f, 1f);
+        Mesh mesh = new Mesh();
+        for (int s = 0; s <= SECT; s++) {
+            final int sec = s;
+            BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK); boolean any = false;
+            for (Puff p : puffs) {
+                int ps = Math.hypot(p.x, p.z) < 1200.0 ? SECT : Math.min(SECT - 1, (int) ((Math.atan2(p.x, p.z) + Math.PI) / (2 * Math.PI) * SECT));
+                if (ps != sec) continue; any = true;
+                for (int k = 0; k < 4; k++) bb.addVertex(p.x, p.y, p.z).setColor(255, 255, 255, Math.round(p.alpha * 255f)).setUv(p.sx, p.sy).setLight(0).setNormal(p.shade * 2f - 1f, p.dark * 2f - 1f, p.seed * 2f - 1f);
             }
-            for (int cz = iz0; cz <= iz1; cz++) for (int cx = ix0; cx <= ix1; cx++) {
-                double mx = (cx + 0.5) * cell, mz = (cz + 0.5) * cell, d = Math.max(Math.abs(mx - qx), Math.abs(mz - qz));
-                if (d > outer || d < inner) continue;
-                int i = (cx - ix0 + 1) + (cz - iz0 + 1) * w; float hgt = hg[i]; if (hgt <= 0f) continue;
-                float rr = (float) (cell * 0.14);
-                // a block next to another block of cloud runs on into it (and is not rounded where they meet)
-                float eN = hg[i - 1] > 0f ? rr * 1.5f : 0f, eP = hg[i + 1] > 0f ? rr * 1.5f : 0f, fN = hg[i - w] > 0f ? rr * 1.5f : 0f, fP = hg[i + w] > 0f ? rr * 1.5f : 0f;
-                float hx = (float) cell * 0.5f + (eN + eP) * 0.5f, hz = (float) cell * 0.5f + (fN + fP) * 0.5f, hy = hgt * 0.5f;
-                float ox = (float) (mx - qx) + (eP - eN) * 0.5f, oz = (float) (mz - qz) + (fP - fN) * 0.5f, oy = BASE + hy;
-                roundedBox(bb, ox, oy, oz, hx, hy, hz, Math.min(rr, hy * 0.9f), st[i]);
-                any = true;
-            }
+            if (!any) continue;
+            MeshData md = bb.build(); if (md == null) continue;
+            var vb = new VertexBuffer(VertexBuffer.Usage.STATIC); vb.bind(); vb.upload(md); VertexBuffer.unbind(); mesh.parts[sec] = vb;
         }
-        if (!any) return;
-        MeshData md = bb.build(); if (md == null) return;
-        cumulusVb = new VertexBuffer(VertexBuffer.Usage.STATIC); cumulusVb.bind(); cumulusVb.upload(md); VertexBuffer.unbind();
+        return mesh;
     }
-
-    /** A box with rounded edges and corners: each face is a grid squeezed on to the rounded box's surface, with its normals. */
-    private static void roundedBox(BufferBuilder bb, float cx, float cy, float cz, float hx, float hy, float hz, float r, float dark) {
-        float ix = hx - r, iy = hy - r, iz = hz - r;
-        for (int face = 0; face < 6; face++) {
-            int ax = face >> 1; float sg = (face & 1) == 0 ? 1f : -1f;
-            for (int a = 0; a < 4; a++) for (int b = 0; b < 4; b++) {
-                for (int k = 0; k < 4; k++) {
-                    int ua = a + (k == 1 || k == 2 ? 1 : 0), ub = b + (k >= 2 ? 1 : 0);
-                    float[] v = new float[3]; int a1 = (ax + 1) % 3, a2 = (ax + 2) % 3;
-                    v[ax] = sg; v[a1] = U[ua]; v[a2] = U[ub];
-                    float px = v[0] * hx, py = v[1] * hy, pz = v[2] * hz;
-                    float qx = Mth.clamp(px, -ix, ix), qy = Mth.clamp(py, -iy, iy), qz = Mth.clamp(pz, -iz, iz);
-                    float dx = px - qx, dy = py - qy, dz = pz - qz, len = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-                    float nx = len > 1e-4f ? dx / len : (ax == 0 ? sg : 0f), ny = len > 1e-4f ? dy / len : (ax == 1 ? sg : 0f), nz = len > 1e-4f ? dz / len : (ax == 2 ? sg : 0f);
-                    float ex = qx + nx * r, ey = qy + ny * r, ez = qz + nz * r;
-                    float high = Mth.clamp(0.5f + ey / (2f * hy), 0f, 1f);
-                    bb.addVertex(cx + ex, cy + ey, cz + ez).setColor((int) (high * 255f), 255, 255, Math.round(dark * 255f)).setUv(0f, 0f).setLight(0).setNormal(nx, ny, nz);
-                }
+    /** Draws a band: the part near the centre always, the wedges only where the camera can see them. */
+    private static void drawMesh(Mesh m, double dx, double dz, Matrix4f base, double camY, Matrix4f proj, ShaderInstance sh, float alpha) {
+        if (m == null) return;
+        draw(m.parts[SECT], dx, dz, base, camY, proj, sh, alpha);
+        for (int s = 0; s < SECT; s++) {
+            if (m.parts[s] == null) continue;
+            if (!allSectors) {
+                double c = (s + 0.5) / SECT * 2 * Math.PI - Math.PI, d = Math.abs(((c - camAz + 3 * Math.PI) % (2 * Math.PI)) - Math.PI);
+                if (d > halfAz + Math.PI / SECT + 0.1) continue;
             }
+            draw(m.parts[s], dx, dz, base, camY, proj, sh, alpha);
         }
     }
 }
