@@ -211,6 +211,7 @@ public final class SnowSurface {
     private static boolean exposed(int i, int j, int c, int side) {
         int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
         if (!L[q]) return false;
+        if (K[q] == 1 && K[c] == 1 && S[c] - S[q] <= 8) return false;   // snow within a block below: it ramps up to meet this one (no round, no wall)
         return K[q] == 0 ? S[q] < S[c] : S[q] < S[c] - TOL;
     }
     /** Does the column next to (i, j) at offset (di, dj) roll over on the same side? */
@@ -219,7 +220,7 @@ public final class SnowSurface {
     /** Where the wall on this side stops: the neighbour's snow top or its ground (never below this column's own ground). */
     private static float wallBottom(int i, int j, int c, int side) {
         int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
-        return Math.max(S[q], G[c]) / 8f;
+        return Math.max(S[q], G[c] - 12) / 8f;   // the snow drapes over the edge of the step below it (up to a block and a half), it does not stop where its own snow ends
     }
 
     /**
@@ -227,66 +228,134 @@ public final class SnowSurface {
      * quarter round rolling over into a wall that drops to the neighbour (corners where two such sides meet get a quarter dome). No sheet is stretched between
      * columns, so nothing tears: steps read as soft, rounded terraces.
      */
+    /** Snow one block higher next door (or less, but more than a joined step): this column's top ramps up to meet it at the shared edge (no wall between them). */
+    private static boolean rampUp(int c, int q) { return L[q] && K[q] == 1 && K[c] == 1 && S[q] - S[c] > TOL && S[q] - S[c] <= 8; }
+    private static final float RAMP = 0.5f;   // how far into the lower column the ramp reaches
+    /** The height of column (i, j)'s top at (fx, fz) inside it (0..1 each way): its own snow, raised towards higher snow next door by the ramps. */
+    private static float topAt(int i, int j, double fx, double fz) {
+        int c = i + j * N; float H = S[c] / 8f, up = 0f;
+        for (int side = 0; side < 4; side++) {
+            int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
+            if (!rampUp(c, q)) continue;
+            double d = side == 0 ? fx : side == 1 ? 1 - fx : side == 2 ? fz : 1 - fz;
+            float u = (float) Mth.clamp(1.0 - d / RAMP, 0.0, 1.0); u = u * u * (3f - 2f * u);
+            up = Math.max(up, u * (S[q] - S[c]) / 8f);
+        }
+        return H + up;
+    }
+    private static float topW(int i, int j, int wx, int wz, double x, double z) { return topAt(i, j, x - wx, z - wz); }
+
+    /**
+     * One column of snow as a rounded block. Its top is one height function (flat, rising in a ramp towards snow up to a block higher next door), so a hillside of
+     * one-block steps reads as a smooth slope; where the snow beside it is lower by more than a block (or there is no snow) the edge rolls over in a quarter round
+     * and drops as a wall (a quarter dome where two such edges meet). Everything (top, rounds, walls) takes its height from the same function, and along every
+     * joined edge the higher side closes any difference with a face, so nothing between columns can stay open.
+     */
     private static void roundedColumn(BufferBuilder bb, int wx, int wz, int i, int j, int c, int light) {
-        float H = S[c] / 8f, depth = (S[c] - G[c]) / 8f;
-        double dcx = wx + 0.5 - camLodX, dcz = wz + 0.5 - camLodZ; boolean far = dcx * dcx + dcz * dcz > 40.0 * 40.0;   // far off a round edge is a pixel or two: plain blocks there (the same look, a fraction of the triangles)
+        float depth = (S[c] - G[c]) / 8f;
+        double dcx = wx + 0.5 - camLodX, dcz = wz + 0.5 - camLodZ; boolean far = dcx * dcx + dcz * dcz > 32.0 * 32.0;   // far off a round edge is a pixel or two: plain blocks there
         float r = far ? 0f : Math.max(0.04f, Math.min(0.32f, depth * 0.85f));
         boolean e0 = exposed(i, j, c, 0), e1 = exposed(i, j, c, 1), e2 = exposed(i, j, c, 2), e3 = exposed(i, j, c, 3);
         float x0 = wx + (e0 ? r : 0f), x1 = wx + 1 - (e1 ? r : 0f), z0 = wz + (e2 ? r : 0f), z1 = wz + 1 - (e3 ? r : 0f);
-        // the top
-        vertex(bb, x0, H, z1, 0f, 0f, light); vertex(bb, x1, H, z1, 0f, 0f, light); vertex(bb, x1, H, z0, 0f, 0f, light); vertex(bb, x0, H, z0, 0f, 0f, light);
-        // the rounded edges and the walls
+        boolean ramps = false; for (int s = 0; s < 4; s++) { int q = (i + (s == 0 ? -1 : s == 1 ? 1 : 0)) + (j + (s == 2 ? -1 : s == 3 ? 1 : 0)) * N; if (rampUp(c, q)) ramps = true; }
+        // the top: one quad when flat, a 4 by 4 grid where it ramps
+        int G4 = ramps ? 3 : 1;
+        for (int b = 0; b < G4; b++) for (int a = 0; a < G4; a++) {
+            double[][] pts = {{a, b + 1}, {a + 1, b + 1}, {a + 1, b}, {a, b}};
+            for (double[] pq : pts) {
+                double x = x0 + (x1 - x0) * pq[0] / G4, z = z0 + (z1 - z0) * pq[1] / G4;
+                float h = topW(i, j, wx, wz, x, z);
+                float sx = (topW(i, j, wx, wz, x + 0.05, z) - topW(i, j, wx, wz, x - 0.05, z)) / 0.1f, sz = (topW(i, j, wx, wz, x, z + 0.05) - topW(i, j, wx, wz, x, z - 0.05)) / 0.1f;
+                float len = (float) Math.sqrt(sx * sx + 1f + sz * sz);
+                vertex(bb, x, h, z, -sx / len, -sz / len, light);
+            }
+        }
+        // the rounded edges and the walls (their top follows the top's height along the edge)
         for (int side = 0; side < 4; side++) {
             boolean ex = side == 0 ? e0 : side == 1 ? e1 : side == 2 ? e2 : e3; if (!ex) continue;
             float ox = side == 0 ? -1 : side == 1 ? 1 : 0, oz = side == 2 ? -1 : side == 3 ? 1 : 0;
             float bottom = wallBottom(i, j, c, side);
-            // along this edge from a to b (the inset ends where the sides across it roll over too)
-            double ax, az, bx, bz, cx, cz;   // c: where the edge's quarter round is centred, across the edge
-            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = z0; bz = z1; cx = ex0; cz = 0; }
-            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = x0; bx = x1; cz = ez0; cx = 0; }
-            // the edge rolls over in a quarter round, but towards an end where the neighbour across carries on flat (it does not roll over on this side) it turns square, to meet it cleanly
+            double ax, az, bx, bz;
+            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = z0; bz = z1; }
+            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = x0; bx = x1; }
             boolean sqA = side < 2 ? (!e2 && !exposedNb(i, j, side, 0, -1)) : (!e0 && !exposedNb(i, j, side, -1, 0));
             boolean sqB = side < 2 ? (!e3 && !exposedNb(i, j, side, 0, 1)) : (!e1 && !exposedNb(i, j, side, 1, 0));
-            if (r <= 0f) { float wtop = H; if (wtop > bottom) { double px0 = ax, pz0 = az, px1 = bx, pz1 = bz; vertex(bb, px0, wtop, pz0, ox, oz, light, 0f); vertex(bb, px1, wtop, pz1, ox, oz, light, 0f); vertex(bb, px1, bottom, pz1, ox, oz, light, 0f); vertex(bb, px0, bottom, pz0, ox, oz, light, 0f); } continue; }
-            final int LEN = (sqA || sqB) ? 4 : 1;   // a straight edge needs one piece along its length; only one that turns square towards an end needs more
+            final int LEN = (sqA || sqB || ramps) ? 3 : 1;
+            if (r <= 0f) {
+                for (int L2 = 0; L2 < LEN; L2++) {
+                    double u0 = L2 / (double) LEN, u1 = (L2 + 1) / (double) LEN;
+                    double px0 = Mth.lerp(u0, ax, bx), pz0 = Mth.lerp(u0, az, bz), px1 = Mth.lerp(u1, ax, bx), pz1 = Mth.lerp(u1, az, bz);
+                    float t0 = topW(i, j, wx, wz, px0, pz0), t1 = topW(i, j, wx, wz, px1, pz1);
+                    if (t0 > bottom || t1 > bottom) { vertex(bb, px0, t0, pz0, ox, oz, light, 0f); vertex(bb, px1, t1, pz1, ox, oz, light, 0f); vertex(bb, px1, bottom, pz1, ox, oz, light, 0f); vertex(bb, px0, bottom, pz0, ox, oz, light, 0f); }
+                }
+                continue;
+            }
             for (int L2 = 0; L2 < LEN; L2++) for (int s = 0; s < ARC; s++) {
                 for (int k = 0; k < 4; k++) {
                     int ll = L2 + ((k == 1 || k == 2) ? 1 : 0), ss = s + (k >= 2 ? 1 : 0);
                     float u = ll / (float) LEN, sq = Math.max(sqA ? Math.max(0f, 1f - u * 2.5f) : 0f, sqB ? Math.max(0f, 1f - (1f - u) * 2.5f) : 0f);
                     float th = ss / (float) ARC * Mth.HALF_PI, sp = ss / (float) ARC;
-                    float oR = r * Mth.sin(th), hR = H - r + r * Mth.cos(th);                                // round
-                    float oS = sp < 0.5f ? r * sp * 2f : r, hS = sp < 0.5f ? H : H - r * (sp * 2f - 1f);    // square
+                    double lx = Mth.lerp(u, (float) ax, (float) bx), lz = Mth.lerp(u, (float) az, (float) bz);
+                    float H = topW(i, j, wx, wz, lx, lz);
+                    float oR = r * Mth.sin(th), hR = H - r + r * Mth.cos(th);
+                    float oS = sp < 0.5f ? r * sp * 2f : r, hS = sp < 0.5f ? H : H - r * (sp * 2f - 1f);
                     float o = Mth.lerp(sq, oR, oS), h = Mth.lerp(sq, hR, hS);
                     float ny = Mth.lerp(sq, Mth.cos(th), sp < 0.5f ? 1f : 0f), nh = Mth.lerp(sq, Mth.sin(th), sp < 0.5f ? 0f : 1f);
-                    double px = Mth.lerp(u, (float) ax, (float) bx) + ox * o, pz = Mth.lerp(u, (float) az, (float) bz) + oz * o;
-                    vertex(bb, px, h, pz, ox * nh, oz * nh, light, Math.max(0f, ny));
+                    vertex(bb, lx + ox * o, h, lz + oz * o, ox * nh, oz * nh, light, Math.max(0f, ny));
                 }
             }
-            float wt = H - r;
-            if (wt > bottom) {   // the wall below the round
-                double px0 = ax + ox * r, pz0 = az + oz * r, px1 = bx + ox * r, pz1 = bz + oz * r;
-                vertex(bb, px0, wt, pz0, ox, oz, light, 0f); vertex(bb, px1, wt, pz1, ox, oz, light, 0f); vertex(bb, px1, bottom, pz1, ox, oz, light, 0f); vertex(bb, px0, bottom, pz0, ox, oz, light, 0f);
+            for (int L2 = 0; L2 < LEN; L2++) {   // the wall below the round
+                double u0 = L2 / (double) LEN, u1 = (L2 + 1) / (double) LEN;
+                double px0 = Mth.lerp(u0, ax, bx), pz0 = Mth.lerp(u0, az, bz), px1 = Mth.lerp(u1, ax, bx), pz1 = Mth.lerp(u1, az, bz);
+                float t0 = topW(i, j, wx, wz, px0, pz0) - r, t1 = topW(i, j, wx, wz, px1, pz1) - r;
+                if (t0 > bottom || t1 > bottom) { vertex(bb, px0 + ox * r, t0, pz0 + oz * r, ox, oz, light, 0f); vertex(bb, px1 + ox * r, t1, pz1 + oz * r, ox, oz, light, 0f); vertex(bb, px1 + ox * r, bottom, pz1 + oz * r, ox, oz, light, 0f); vertex(bb, px0 + ox * r, bottom, pz0 + oz * r, ox, oz, light, 0f); }
             }
         }
-        // a joined side whose neighbour stands a little lower (less than the rolling step): a plain square step face closes the slit between the two tops
+        // joined sides: wherever this top stands above the neighbour's along the shared edge, a face closes the difference (the neighbour does the same the other way round)
         for (int side = 0; side < 4; side++) {
             boolean ex = side == 0 ? e0 : side == 1 ? e1 : side == 2 ? e2 : e3; if (ex) continue;
-            int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
-            if (!L[q] || K[q] == 0 || S[q] >= S[c]) continue;
-            float lowTop = S[q] / 8f, ox = side == 0 ? -1 : side == 1 ? 1 : 0, oz = side == 2 ? -1 : side == 3 ? 1 : 0;
+            int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
+            if (!L[q] || K[q] == 0) continue;
+            float ox = di, oz = dj;
+            double ea0x = side == 0 ? wx : side == 1 ? wx + 1 : x0, ea1x = side == 0 ? wx : side == 1 ? wx + 1 : x1, ea0z = side == 2 ? wz : side == 3 ? wz + 1 : z0, ea1z = side == 2 ? wz : side == 3 ? wz + 1 : z1;
+            for (int L2 = 0; L2 < 4; L2++) {
+                double u0 = L2 / 4.0, u1 = (L2 + 1) / 4.0;
+                double px0 = Mth.lerp(u0, ea0x, ea1x), pz0 = Mth.lerp(u0, ea0z, ea1z), px1 = Mth.lerp(u1, ea0x, ea1x), pz1 = Mth.lerp(u1, ea0z, ea1z);
+                float m0 = topW(i, j, wx, wz, px0, pz0), m1 = topW(i, j, wx, wz, px1, pz1);
+                float n0 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px0, pz0) : S[q] / 8f, n1 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px1, pz1) : S[q] / 8f;
+                if (m0 > n0 + 0.002f || m1 > n1 + 0.002f) { vertex(bb, px0, m0, pz0, ox, oz, light, 0f); vertex(bb, px1, m1, pz1, ox, oz, light, 0f); vertex(bb, px1, Math.min(m1, n1), pz1, ox, oz, light, 0f); vertex(bb, px0, Math.min(m0, n0), pz0, ox, oz, light, 0f); }
+            }
+        }
+        // where a wall rises beside it (snow or ground standing well above this top), the snow piles into the crease: a concave quarter round up against the wall
+        if (r > 0f) for (int side = 0; side < 4; side++) {
+            int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
+            if (!L[q]) continue;
+            float edgeTop = topW(i, j, wx, wz, wx + 0.5 + di * 0.5, wz + 0.5 + dj * 0.5), hn = S[q] / 8f;
+            if (rampUp(c, q) || hn - edgeTop < 0.6f) continue;
+            float f = Math.min(0.35f, (hn - edgeTop) * 0.5f);
+            float ox = -di, oz = -dj;   // pointing away from the wall, into this column
             double ex0 = side == 0 ? wx : side == 1 ? wx + 1 : x0, ex1 = side == 0 ? wx : side == 1 ? wx + 1 : x1, ez0 = side == 2 ? wz : side == 3 ? wz + 1 : z0, ez1 = side == 2 ? wz : side == 3 ? wz + 1 : z1;
-            vertex(bb, ex0, H, ez0, ox, oz, light, 0f); vertex(bb, ex1, H, ez1, ox, oz, light, 0f); vertex(bb, ex1, lowTop, ez1, ox, oz, light, 0f); vertex(bb, ex0, lowTop, ez0, ox, oz, light, 0f);
+            for (int s = 0; s < ARC; s++) for (int k = 0; k < 4; k++) {
+                int ss = s + (k >= 2 ? 1 : 0); boolean end = k == 1 || k == 2;
+                float th = ss / (float) ARC * Mth.HALF_PI;
+                float dOut = f - f * Mth.cos(th), h = f - f * Mth.sin(th);   // from up the wall (th 0: at the wall, f high) down to the top (th 90: f out, on the top)
+                double px = (end ? ex1 : ex0) + ox * dOut, pz = (end ? ez1 : ez0) + oz * dOut;
+                float base = topW(i, j, wx, wz, px, pz);
+                float nx = ox * Mth.sin(th), nz = oz * Mth.sin(th), ny = Mth.cos(th);
+                vertex(bb, px, base + h, pz, nx * 0.7f, nz * 0.7f, light, Math.max(0.3f, ny));
+            }
         }
         // corners where two rolling sides meet: a quarter dome, and its wall
         boolean[][] pairs = {{e0, e2}, {e1, e2}, {e1, e3}, {e0, e3}};
         for (int k = 0; k < 4; k++) {
-            if (!pairs[k][0] || !pairs[k][1]) continue;
+            if (!pairs[k][0] || !pairs[k][1] || r <= 0f) continue;
             float sx = (k == 0 || k == 3) ? -1 : 1, sz = (k == 0 || k == 1) ? -1 : 1;
             double ccx = sx < 0 ? wx + r : wx + 1 - r, ccz = sz < 0 ? wz + r : wz + 1 - r;
+            float H = topW(i, j, wx, wz, ccx, ccz);
             for (int a = 0; a < ARC; a++) for (int b = 0; b < ARC; b++) {
                 double p0 = a / (double) ARC * Math.PI / 2, p1 = (a + 1) / (double) ARC * Math.PI / 2, q0 = b / (double) ARC * Math.PI / 2, q1 = (b + 1) / (double) ARC * Math.PI / 2;
                 double[][] pq = {{p0, q0}, {p1, q0}, {p1, q1}, {p0, q1}};
-                for (double[] v : pq) {   // p: down from the top, q: round from the x side to the z side
+                for (double[] v : pq) {
                     float nx = (float) (Math.sin(v[0]) * Math.cos(v[1]) * sx), nz = (float) (Math.sin(v[0]) * Math.sin(v[1]) * sz), ny = (float) Math.cos(v[0]);
                     vertex(bb, ccx + nx * r, (float) (H - r + ny * r), ccz + nz * r, nx, nz, light, ny);
                 }

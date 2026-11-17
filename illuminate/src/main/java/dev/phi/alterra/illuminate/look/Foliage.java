@@ -130,7 +130,7 @@ public final class Foliage {
                                     if (_vert_tex_diffuse_coord_bias.y < 0.0) _amount += _m.g * u_AlterraWave2.y * 0.14;
                                     if (_amount > 0.0) position.xz += alterraSway(_vert_position, u_AlterraWave, _amount);
                                     if (_m.b > 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 1.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
-                                    if (_m.b > 0.5 && u_AlterraFlowInfo.w > 1.5 && max(abs(position.x), abs(position.z)) < 61.0 && textureLod(u_AlterraFlow, (position.xz + u_AlterraFlowInfo.xy) * u_AlterraFlowInfo.z, 0.0).g < 0.01) v_AlterraView.w = 9.0;   // our own water surface draws here: the game\'s water is not drawn at all
+                                    if (_m.b > 0.5 && u_AlterraFlowInfo.w > 1.5 && max(abs(position.x), abs(position.z)) < 61.0) v_AlterraView.w = 9.0;   // our own water surface draws here: the game\'s water is not drawn at all
                                     if (_m4.a > 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 2.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
                                     if (_m4.a > 0.15 && _m4.a < 0.5 && u_AlterraSky.w > 0.0) { v_AlterraView = vec4(position, 3.0); v_AlterraWaveP = position.xz + u_AlterraCam.xz; }
                                     if (_m.b > 0.5 && u_AlterraShore.w > 0.0) v_AlterraShore = vec3(position.xz + u_AlterraShore.xy, 1.0);

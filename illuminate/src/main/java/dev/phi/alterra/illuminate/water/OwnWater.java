@@ -29,12 +29,12 @@ import java.io.IOException;
  * Our own water surface: a fixed grid around the camera (two points per block) that the GPU lifts to the smooth height of the water (FlowMap's height map, read with
  * a Catmull-Rom curve, so slopes curve instead of stepping), with a soft shore where the water ends. The CPU only keeps the height map; nothing is rebuilt per frame.
  * The look: the real slope of the surface with ripples that follow the wind, the sky mirrored by Fresnel, the sun's glint, and the colour by how deep the water is.
- * Step 1 of the own water (the falls as curved sheets and hiding the game's own water come next); off unless OWN_WATER is set (-Dalterra.ownwater=true) while it is built.
+ * The game's own water is not drawn where this surface is (falls stay with the game's falling water plus our own fall sheets). On by default; -Dalterra.ownwater=false turns it off.
  */
 @EventBusSubscriber(modid = Illuminate.ID, value = Dist.CLIENT)
 public final class OwnWater {
     private OwnWater() {}
-    public static final boolean ON = Boolean.getBoolean("alterra.ownwater");
+    public static final boolean ON = !"false".equals(System.getProperty("alterra.ownwater"));   // on (switch off with -Dalterra.ownwater=false)
     /** Is our surface drawing the water around the camera now (then the game's own water is not drawn there)? */
     public static boolean drawing() { var mc = Minecraft.getInstance(); return ON && shader != null && FlowMap.live && mc.level != null && mc.gameRenderer.getMainCamera().getFluidInCamera() != net.minecraft.world.level.material.FogType.WATER; }
     private static boolean warned; private static long logAt;
@@ -115,21 +115,21 @@ public final class OwnWater {
         RenderSystem.enableCull(); RenderSystem.disableBlend();
     }
 
-    /** The falls: a sheet from each lip, leaving it on a ballistic curve (out as it drops), streaked, with foam at the foot. Built each frame (a few dozen quads at most). */
+    /** The falls: every column of falling water as our own fall, from where it leaves to where it lands: four soft sides (slightly inside the block, so a run of them reads as one sheet of water), streaked as it pours. */
     private static void drawFalls(net.minecraft.world.phys.Vec3 cam, float day, int tint) {
         float[] f = FlowMap.falls; int n = Math.min(FlowMap.fallCount, f.length / 6); if (n == 0 || fallShader == null) return;
         var bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        final int SEG = 8;
+        final float IN = 0.06f;
         for (int k = 0; k < n; k++) {
-            int o = k * 6; float bx = f[o], bz = f[o + 1], dx = f[o + 2], dz = f[o + 3], top = f[o + 4], bot = f[o + 5], drop = top - bot;
-            // the lip: the edge of block (bx, bz) on the side the water leaves; across it, from one corner to the other
-            float cx = bx + 0.5f + dx * 0.5f, cz = bz + 0.5f + dz * 0.5f, ax = dz != 0 ? 1f : 0f, az = dx != 0 ? 1f : 0f;
-            float reach = Math.min(1.6f, 0.35f + (float) Math.sqrt(drop) * 0.35f);   // how far out it is thrown by the time it lands
-            for (int sgi = 0; sgi < SEG; sgi++) for (int q = 0; q < 4; q++) {
-                int ss = sgi + (q >= 2 ? 1 : 0); float side = (q == 1 || q == 2) ? 0.5f : -0.5f, v = ss / (float) SEG;
-                float out = reach * (float) Math.sqrt(v) * 0.9f + 0.05f, y = top - drop * v * v * 0.35f - drop * v * 0.65f;   // out fast at first, then mostly straight down
-                double px = cx + dx * out + ax * side - cam.x, pz = cz + dz * out + az * side - cam.z;
-                bb.addVertex((float) px, (float) (y - cam.y), (float) pz).setUv((ax != 0 ? bx : bz) + side + 0.5f, v).setColor(255, 255, 255, 230);
+            int o = k * 6; float bx = f[o], bz = f[o + 1], top = f[o + 4], bot = f[o + 5];
+            if (top - bot < 0.3f) continue;
+            float[][] sides = {{bx + IN, bz + IN, bx + 1 - IN, bz + IN}, {bx + 1 - IN, bz + IN, bx + 1 - IN, bz + 1 - IN}, {bx + 1 - IN, bz + 1 - IN, bx + IN, bz + 1 - IN}, {bx + IN, bz + 1 - IN, bx + IN, bz + IN}};
+            for (int s = 0; s < 4; s++) {
+                float[] sd = sides[s]; float u0 = (s % 2 == 0 ? sd[0] : sd[1]), u1 = (s % 2 == 0 ? sd[2] : sd[3]);
+                bb.addVertex((float) (sd[0] - cam.x), (float) (top - cam.y), (float) (sd[1] - cam.z)).setUv(u0, 0f).setColor(255, 255, 255, 230);
+                bb.addVertex((float) (sd[2] - cam.x), (float) (top - cam.y), (float) (sd[3] - cam.z)).setUv(u1, 0f).setColor(255, 255, 255, 230);
+                bb.addVertex((float) (sd[2] - cam.x), (float) (bot - cam.y), (float) (sd[3] - cam.z)).setUv(u1, top - bot).setColor(255, 255, 255, 230);
+                bb.addVertex((float) (sd[0] - cam.x), (float) (bot - cam.y), (float) (sd[1] - cam.z)).setUv(u0, top - bot).setColor(255, 255, 255, 230);
             }
         }
         var mesh = bb.build(); if (mesh == null) return;

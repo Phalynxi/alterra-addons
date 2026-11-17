@@ -36,6 +36,7 @@ import java.util.Map;
 @EventBusSubscriber(modid = AlterraWeather.ID)
 public final class WaterSim {
     private WaterSim() {}
+    private static final float ACCEL = 0.22f, FRICTION = 0.996f, VMAX = 0.45f; private static final float[] ZERO2 = {0f, 0f};
     private static final float G = 0.6f, DAMP = 0.94f, FALL = 1.0f, QUIET = 0.0015f, MIN = 0.004f;
     private static final int BUDGET = 24000, QUIET_TICKS = 30, SYNC_RADIUS = 56;
     private static final Direction[] SIDES = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
@@ -131,6 +132,19 @@ public final class WaterSim {
     private static final boolean DEBUG = System.getProperty("alterra.waterdebug") != null;
     private static float lostDown, lostSea, lostDrain, upPushed;
 
+    /** How much the moving water in a box turns (the sum of the curl of its velocities; positive: anticlockwise seen from above), and how many spots move. For tests. */
+    public static float[] circulation(ServerLevel l, int x0, int z0, int x1, int z1) {
+        Sim m = sim(l); float c = 0f; int n = 0;
+        for (var en : m.flow.entrySet()) {
+            long k = en.getKey(); int x = BlockPos.getX(k), y = BlockPos.getY(k), z = BlockPos.getZ(k);
+            if (x < x0 || x > x1 || z < z0 || z > z1) continue;
+            float[] fe = m.flow.get(BlockPos.asLong(x + 1, y, z)), fw = m.flow.get(BlockPos.asLong(x - 1, y, z)), fs = m.flow.get(BlockPos.asLong(x, y, z + 1)), fn = m.flow.get(BlockPos.asLong(x, y, z - 1));
+            if (fe == null || fw == null || fs == null || fn == null) continue;
+            c += (fe[1] - fw[1]) * 0.5f - (fs[0] - fn[0]) * 0.5f; n++;
+        }
+        return new float[] {c, n};
+    }
+
     private static void step(ServerLevel l, Sim m) {
         if (DEBUG && l.getGameTime() % 40 == 0) {
             double tot = 0; float lo = 9f; int low = 0;
@@ -151,6 +165,8 @@ public final class WaterSim {
         Long2FloatOpenHashMap heads = new Long2FloatOpenHashMap();
         var p = new BlockPos.MutableBlockPos(); var n = new BlockPos.MutableBlockPos();
         for (long k : keys) { p.set(k); heads.put(k, head(l, m, p, m.amount.get(k))); }
+        it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<float[]> vel0 = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>();   // the velocities as they were at the start of the step (everything reads these)
+        for (var en : m.flow.entrySet()) vel0.put((long) en.getKey(), new float[] {en.getValue()[0], en.getValue()[1]});
         it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap riverTop = new it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap();
         java.util.function.LongPredicate river = key -> {   // is this spot river water (in a channel, under the river's surface)? A river at its level is in balance with itself: it does not move within itself
             int x = BlockPos.getX(key), y = BlockPos.getY(key), z = BlockPos.getZ(key); long col = ((long) x << 32) ^ (z & 0xffffffffL);
@@ -171,22 +187,43 @@ public final class WaterSim {
                 float below = sea ? 1f : amountOf(l, m, kd, n);
                 down = sea ? (endless ? 0f : Math.min(a, 0.05f)) : Math.max(0f, Math.min(a, Math.min(1f - below - incoming.get(kd), FALL)));   // onto the sea it soaks in slowly
             } else if (l.getBlockState(n).is(WaterBlocks.DRAIN.get()) && !endless) down = Math.min(a, 0.25f);   // a drain under it
-            // sideways: a flow that keeps its momentum and grows with the difference in surface height
-            float[] f = m.flow.computeIfAbsent(k, x -> new float[4]);
+            // sideways: shallow-water flow. Every spot has a velocity (vx, vz) that the slope of the surface speeds up, that is carried along by the moving water itself
+            // (so water keeps going the way it was going, curves round when it meets a wall, and keeps turning: eddies and whirlpools form by themselves), and that
+            // friction slows; the water then moves with its velocity. A turning body of water dips in the middle on its own (the slope balances the turn).
+            float[] v = m.flow.computeIfAbsent(k, x -> new float[4]);
             float h = heads.get(k);
+            float[] hs = new float[4]; boolean[] open = new boolean[4]; float[][] nv = new float[4][];
             for (int i = 0; i < 4; i++) {
-                n.set(p).move(SIDES[i]);
-                if (l.getBlockState(n).is(WaterBlocks.DRAIN.get())) { f[i] = endless ? 0f : 0.12f; continue; }
-                if (!takes(l, n)) { f[i] = 0f; continue; }
-                long kn = n.asLong();
-                if (inRiver && river.test(kn)) { f[i] = 0f; continue; }   // river to river: in balance, nothing moves (only water leaving the river, through a bank that was opened, does)
-                float hn = heads.containsKey(kn) ? heads.get(kn) : n.getY() + amountOf(l, m, kn, n);
-                float diff = h - hn;
-                if (amountOf(l, m, kn, n) >= 0.999f) diff = 0f;   // a full block takes nothing more (water moves along the surface, it is never forced in)
-                f[i] = diff <= 0.0005f ? 0f : Math.min(f[i] * DAMP + G * diff * 0.25f, diff * 0.5f);   // never against the slope, never more than evens it out (no overshoot, so no water pushed up into the air)
-                if (!endless) f[i] = Math.max(0f, f[i] + dev.phi.alterra.weather.disaster.Vortex.flowBias(p, i));   // a whirlpool carries the water round it
+                n.set(p).move(SIDES[i]); long kn = n.asLong();
+                boolean drain = l.getBlockState(n).is(WaterBlocks.DRAIN.get());
+                open[i] = drain || (takes(l, n) && !(inRiver && river.test(kn)));
+                hs[i] = !open[i] ? h : drain ? n.getY() : (heads.containsKey(kn) ? heads.get(kn) : n.getY() + amountOf(l, m, kn, n));
+                if (!drain && open[i] && amountOf(l, m, kn, n) >= 0.999f && hs[i] > h) hs[i] = Math.max(h, hs[i]);
+                nv[i] = vel0.get(kn);
             }
-            for (int i = 0; i < 4; i++) {   // limit each flow to the room left in the spot it goes to (unless real pressure pushes it in)
+            // SIDES: 0 north (-z), 1 east (+x), 2 south (+z), 3 west (-x)
+            float gx = (hs[1] - hs[3]) * 0.5f, gz = (hs[2] - hs[0]) * 0.5f;
+            float[] v0 = vel0.getOrDefault(k, ZERO2);
+            float vx = v0[0], vz = v0[1];
+            // carried by the flow (upwind): the velocity here is what the water arriving from upstream brought
+            float vxW = nv[3] != null ? nv[3][0] : 0f, vxE = nv[1] != null ? nv[1][0] : 0f, vxN = nv[0] != null ? nv[0][0] : 0f, vxS = nv[2] != null ? nv[2][0] : 0f;
+            float vzW = nv[3] != null ? nv[3][1] : 0f, vzE = nv[1] != null ? nv[1][1] : 0f, vzN = nv[0] != null ? nv[0][1] : 0f, vzS = nv[2] != null ? nv[2][1] : 0f;
+            float dvxdx = vx > 0 ? vx - vxW : vxE - vx, dvxdz = vz > 0 ? vx - vxN : vxS - vx, dvzdx = vx > 0 ? vz - vzW : vzE - vz, dvzdz = vz > 0 ? vz - vzN : vzS - vz;
+            float nvx = vx - (vx * dvxdx + vz * dvxdz), nvz = vz - (vx * dvzdx + vz * dvzdz);
+            nvx -= ACCEL * gx; nvz -= ACCEL * gz;   // down the slope of the surface
+            if (!endless) { nvx += dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 1) - dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 3); nvz += dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 2) - dev.phi.alterra.weather.disaster.Vortex.flowBias(p, 0); }   // a whirlpool's current
+            float fr = a < 0.25f ? 0.86f : FRICTION; nvx *= fr; nvz *= fr;   // friction (more in a thin film over the ground)
+            if (!open[1] && nvx > 0) nvx = 0; if (!open[3] && nvx < 0) nvx = 0; if (!open[2] && nvz > 0) nvz = 0; if (!open[0] && nvz < 0) nvz = 0;   // a wall stops what runs into it
+            float sp = (float) Math.sqrt(nvx * nvx + nvz * nvz); if (sp > VMAX) { nvx *= VMAX / sp; nvz *= VMAX / sp; }
+            v[0] = nvx; v[1] = nvz;
+            // what leaves through each side: the water here moving that way (never more than there is, nor more than the next spot has room for)
+            float[] f = new float[4];
+            f[1] = Math.max(0f, nvx) * a; f[3] = Math.max(0f, -nvx) * a; f[2] = Math.max(0f, nvz) * a; f[0] = Math.max(0f, -nvz) * a;
+            for (int i = 0; i < 4; i++) {   // and spreading under its own weight onto lower open ground (a puddle runs out even from rest)
+                if (!open[i]) { f[i] = 0f; continue; }
+                float diff = h - hs[i]; if (diff > 0.02f) f[i] = Math.max(f[i], Math.min(diff * 0.25f, a * 0.5f) * 0.5f);
+            }
+            for (int i = 0; i < 4; i++) {   // limit each flow to the room left in the spot it goes to
                 if (f[i] <= 0f) continue;
                 n.set(p).move(SIDES[i]);
                 if (l.getBlockState(n).is(WaterBlocks.DRAIN.get()) || FiniteWater.endless(l, n)) continue;
@@ -198,7 +235,7 @@ public final class WaterSim {
             float scale = sideTotal > avail && sideTotal > 0f ? avail / sideTotal : 1f;
             for (int i = 0; i < 4; i++) f[i] *= scale;
             // what it gives
-            if (down > 0f) { if (!FiniteWater.endless(l, n.set(p.getX(), p.getY() - 1, p.getZ())) && !l.getBlockState(n).is(WaterBlocks.DRAIN.get())) { delta.addTo(kd, down); incoming.addTo(kd, down); } else if (DEBUG) { if (l.getBlockState(n).is(WaterBlocks.DRAIN.get())) lostDrain += down; else lostSea += down; } out += down; }
+            if (down > 0f) { if (!FiniteWater.endless(l, n.set(p.getX(), p.getY() - 1, p.getZ())) && !l.getBlockState(n).is(WaterBlocks.DRAIN.get())) { delta.addTo(kd, down); incoming.addTo(kd, down); float[] vb = m.flow.computeIfAbsent(kd, x -> new float[4]); float ab = Math.max(0.05f, amountOf(l, m, kd, n)), wsum = ab + down; vb[0] = (vb[0] * ab + v[0] * down) / wsum; vb[1] = (vb[1] * ab + v[1] * down) / wsum; } else if (DEBUG) { if (l.getBlockState(n).is(WaterBlocks.DRAIN.get())) lostDrain += down; else lostSea += down; } out += down; }
             for (int i = 0; i < 4; i++) {
                 if (f[i] <= 0f) continue;
                 n.set(p).move(SIDES[i]);
@@ -251,7 +288,8 @@ public final class WaterSim {
                 if (parts > 0 || st.is(Blocks.WATER)) FiniteWater.write(l, p, parts, falling);
             }
             if (Math.abs(a - m.sent.getOrDefault(k, -1f)) > 0.002f) m.changed.add(k);
-            if (m.calm.get(k) >= QUIET_TICKS || a < MIN) sleep.add(k);
+            float[] vv = m.flow.get(k); boolean moving = vv != null && vv[0] * vv[0] + vv[1] * vv[1] > 0.0004f;   // water still on the move stays awake (a steady swirl keeps its amounts but must keep its velocity)
+            if ((m.calm.get(k) >= QUIET_TICKS && !moving) || a < MIN) sleep.add(k);
         }
         for (long k : sleep) {
             p.set(k); float a = m.amount.get(k);

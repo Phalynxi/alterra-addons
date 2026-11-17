@@ -32,7 +32,7 @@ void main() {
     float lo = 1e9, hi = -1e9;
     for (int y = 0; y < 4; y++) {
         float v[4];
-        for (int x = 0; x < 4; x++) { vec2 q = cell(i0 + ivec2(x, y)); float hv = q.g > 0.5 ? q.r : fill; if (abs(hv - ref) > 1.5) hv = ref; v[x] = hv; if (x >= 1 && x <= 2 && y >= 1 && y <= 2) { lo = min(lo, hv); hi = max(hi, hv); } }
+        for (int x = 0; x < 4; x++) { vec2 q = cell(i0 + ivec2(x, y)); float hv = q.g > 0.5 ? q.r : fill; if (abs(hv - ref) > 3.2) hv = ref; v[x] = hv; if (x >= 1 && x <= 2 && y >= 1 && y <= 2) { lo = min(lo, hv); hi = max(hi, hv); } }
         rows[y] = cr(v[0], v[1], v[2], v[3], t.x);
     }
     float h = clamp(cr(rows[0], rows[1], rows[2], rows[3], t.y), lo, hi);   // no overshoot above or below the water around

@@ -74,7 +74,7 @@ public final class FlowMap {
     private static final float[] tgt = new float[SIZE * SIZE], blk = new float[SIZE * SIZE];   // this frame: the target height and what the blocks themselves draw (NaN: no water)
     private static float lastT = -1f;
     private static final long[] colKey = new long[SIZE * SIZE]; private static final int[] colY = new int[SIZE * SIZE]; private static final float[] colOwn = new float[SIZE * SIZE];
-    private static int scanRow; private static final it.unimi.dsi.fastutil.longs.LongOpenHashSet dirty = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
+    private static int scanRow; private static final boolean[] colFall = new boolean[SIZE * SIZE], fallCol = new boolean[SIZE * SIZE]; private static final float[] colFallTop = new float[SIZE * SIZE], colFallBot = new float[SIZE * SIZE]; private static final it.unimi.dsi.fastutil.longs.LongOpenHashSet dirty = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
     /** For the own water surface: per column the drawn surface height (relative to surfaceBaseY) and 1 where there is water, 0 where not. */
     private static final FloatBuffer hbuf = org.lwjgl.BufferUtils.createFloatBuffer(SIZE * SIZE * 2);
     private static int htex; public static volatile double surfaceBaseY;
@@ -104,10 +104,18 @@ public final class FlowMap {
                 colKey[slot] = key;
                 int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx, wz) - 1;
                 bp.set(wx, y, wz); FluidState fs = level.getFluidState(bp);
+                colFall[slot] = false;
                 if (!fs.is(net.minecraft.tags.FluidTags.WATER)) { colY[slot] = Integer.MIN_VALUE; }
+                else if (!fs.isSource() && fs.getValue(net.minecraft.world.level.material.FlowingFluid.FALLING)) {   // falling water is not a surface: it is drawn as a fall, from its top down to where it lands
+                    colY[slot] = Integer.MIN_VALUE; colFall[slot] = true; colFallTop[slot] = y + 1;
+                    var q = new BlockPos.MutableBlockPos(wx, y - 1, wz); int n = 0;
+                    while (n < 96 && level.getFluidState(q).is(net.minecraft.tags.FluidTags.WATER) && !level.getFluidState(q).isSource() && level.getFluidState(q).getValue(net.minecraft.world.level.material.FlowingFluid.FALLING)) { q.move(0, -1, 0); n++; }
+                    colFallBot[slot] = q.getY() + 1 + (level.getFluidState(q).is(net.minecraft.tags.FluidTags.WATER) ? 0.85f : 0f);
+                }
                 else { colY[slot] = y; colOwn[slot] = fs.getOwnHeight(); }
             }
             int y = colY[slot];
+            fallCol[i] = colFall[slot];
             if (y == Integer.MIN_VALUE) { tgt[i] = Float.NaN; blk[i] = Float.NaN; continue; }
             float own = colOwn[slot], h = y + own;
             if (!sim.isEmpty()) { float[] s = sim.get(BlockPos.asLong(wx, y, wz)); if (s != null && s[3] < 0.5f) h = y + shown(s, t) * 8f / 9f; }   // the simulation's exact amount
@@ -119,26 +127,15 @@ public final class FlowMap {
         double baseY = Math.floor(net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().y);
         boolean any = false; float ease = Math.min(1f, dt * 14f); int fc = 0;
         for (int z = 0; z < SIZE; z++) for (int x = 0; x < SIZE; x++) {
-            int i = x + z * SIZE; float h0 = tgt[i]; if (Float.isNaN(h0)) continue;
+            int i = x + z * SIZE; if (fallCol[i]) { int sl = Math.floorMod(ox + x, SIZE) + Math.floorMod(oz + z, SIZE) * SIZE; if (fc < 256) { int o = fc * 6; fallBuf[o] = ox + x; fallBuf[o + 1] = oz + z; fallBuf[o + 2] = 0; fallBuf[o + 3] = 0; fallBuf[o + 4] = colFallTop[sl]; fallBuf[o + 5] = colFallBot[sl]; fc++; } any = true; continue; }
+            float h0 = tgt[i]; if (Float.isNaN(h0)) continue;
             float sum = h0 * 2f, w = 2f;
             for (int dz = -1; dz <= 1; dz++) for (int dx = -1; dx <= 1; dx++) {
                 if (dx == 0 && dz == 0) continue; int xx = x + dx, zz = z + dz; if (xx < 0 || zz < 0 || xx >= SIZE || zz >= SIZE) continue;
-                float hn = tgt[xx + zz * SIZE]; if (Float.isNaN(hn) || Math.abs(hn - h0) > 1.2f) continue;
+                float hn = tgt[xx + zz * SIZE]; if (Float.isNaN(hn) || Math.abs(hn - h0) > 3.2f) continue;   // steps of a cascade (up to three blocks) are smoothed into one slope
                 float k = (dx == 0 || dz == 0) ? 1f : 0.6f; sum += hn * k; w += k;
             }
             float want = sum / w;
-            boolean fall = false;   // a big drop next to it: a fall (the game's falling water draws it until our own falls exist; our surface leaves it out)
-            for (int d = 0; d < 4 && !fall; d++) { int xx = x + (d == 0 ? 1 : d == 1 ? -1 : 0), zz = z + (d == 2 ? 1 : d == 3 ? -1 : 0); if (xx < 0 || zz < 0 || xx >= SIZE || zz >= SIZE) continue; float hn = tgt[xx + zz * SIZE]; if (!Float.isNaN(hn) && Math.abs(hn - h0) > 1.5f) fall = true; }
-            if (fall) {
-                buf.put(i * 2 + 1, 1f); any = true;
-                for (int d = 0; d < 4 && fc < 256; d++) {   // each edge where this column stands well above its neighbour: a fall leaves here
-                    int ddx = d == 0 ? 1 : d == 1 ? -1 : 0, ddz = d == 2 ? 1 : d == 3 ? -1 : 0, xx = x + ddx, zz = z + ddz;
-                    if (xx < 0 || zz < 0 || xx >= SIZE || zz >= SIZE) continue;
-                    float hn = tgt[xx + zz * SIZE]; if (Float.isNaN(hn)) { hn = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, ox + xx, oz + zz); }
-                    if (h0 - hn > 1.5f) { int o = fc * 6; fallBuf[o] = ox + x; fallBuf[o + 1] = oz + z; fallBuf[o + 2] = ddx; fallBuf[o + 3] = ddz; fallBuf[o + 4] = h0; fallBuf[o + 5] = hn; fc++; }
-                }
-                continue;
-            }
             int wx = ox + x, wz = oz + z, slot = Math.floorMod(wx, SIZE) + Math.floorMod(wz, SIZE) * SIZE; long key = (((long) wx) << 32) ^ (wz & 0xffffffffL);
             if (shownKey[slot] != key || Float.isNaN(shownH[slot])) { shownKey[slot] = key; shownH[slot] = Math.min(want, (float) Math.floor(h0) + 0.02f); }   // new water rises from its floor
             shownH[slot] += (want - shownH[slot]) * ease;
