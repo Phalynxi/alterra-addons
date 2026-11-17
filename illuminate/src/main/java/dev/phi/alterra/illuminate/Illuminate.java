@@ -19,6 +19,7 @@ public final class Illuminate {
 
     public Illuminate(IEventBus bus, ModContainer container) {
         container.registerConfig(ModConfig.Type.CLIENT, IlluminateConfig.SPEC);
+        dev.phi.alterra.illuminate.compat.VortexEngineGuard.apply();   // Create: Deep Seas' own lighting engine would draw over ours
         bus.addListener(dev.phi.alterra.illuminate.clouds.SkyClouds::registerShaders);   // the cloud shaders
         bus.addListener(dev.phi.alterra.illuminate.look.WhirlCore::registerShader);   // the whirlpool core
         bus.addListener(dev.phi.alterra.illuminate.snow.SnowSurface::registerShader);   // the snow surface's own shader
