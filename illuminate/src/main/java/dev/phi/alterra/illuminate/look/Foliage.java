@@ -446,7 +446,7 @@ public final class Foliage {
                                     vec3 _fnrm = normalize(cross(dFdx(v_AlterraPos), dFdy(v_AlterraPos)));
                                     float _face = 0.35 + 0.65 * abs(_fnrm.y);
                                     float _cf = alterraCaustic(v_AlterraPos.xz + u_AlterraCam.xz, u_AlterraSea.x) * exp(-_dp * 0.05) * smoothstep(0.0, 0.5, _dp) * _face * u_AlterraScreen.w * (0.15 + 0.85 * u_AlterraSky.w);   // the same soft light as on the bottom seen from above the water
-                                    color.rgb *= 1.0 + min(_cf, 1.0) * 0.055 * vec3(0.8, 1.0, 1.08);   // a faint moving light on the bottom, never a bright blotch (dark stone stays dark)   // a soft teal light, exactly as seen from above (not white, never blowing out)
+                                    color.rgb *= 1.0 + min(_cf, 1.0) * 0.0 * vec3(0.8, 1.0, 1.08);   // (the scene pass draws the underwater caustics and shafts, finer)   // a faint moving light on the bottom, never a bright blotch (dark stone stays dark)   // a soft teal light, exactly as seen from above (not white, never blowing out)
                                 }
                             }
                             // the water surface seen from below: past about 49 degrees from straight up it is a mirror (of the bottom, bent by the ripples), inside that a bright window to the sky
@@ -933,12 +933,15 @@ public final class Foliage {
     }
 
     /** Whether the camera is under water, and where the surface above it is (relative to the camera): the shader then draws the surface as a mirror and window and lights the ground with caustics. */
+    /** How far the water surface is above the camera when it is under water (0 otherwise): the scene pass draws the sun shafts from it. */
+    public static volatile float surfaceAbove;
     private static void underUniform(int loc) {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
-        if (level == null || cam.getFluidInCamera() != net.minecraft.world.level.material.FogType.WATER || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK)) { GL20C.glUniform4f(loc, 0f, 0f, 0f, 0f); return; }
+        if (level == null || cam.getFluidInCamera() != net.minecraft.world.level.material.FogType.WATER || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK)) { GL20C.glUniform4f(loc, 0f, 0f, 0f, 0f); surfaceAbove = 0f; return; }
         var p = new net.minecraft.core.BlockPos.MutableBlockPos(cam.getBlockPosition().getX(), cam.getBlockPosition().getY(), cam.getBlockPosition().getZ());
         for (int i = 0; i < 80 && level.getFluidState(p.above()).is(net.minecraft.tags.FluidTags.WATER); i++) p.move(0, 1, 0);
         float surface = (float) (p.getY() + level.getFluidState(p).getHeight(level, p));
+        surfaceAbove = Math.max(0.2f, surface - (float) cam.getPosition().y);
         GL20C.glUniform4f(loc, 1f, surface - (float) cam.getPosition().y, 0f, 0f);
     }
 

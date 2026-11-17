@@ -86,6 +86,9 @@ public final class SkyClouds {
     private static double buildQx, buildQz, towerX, towerZ; private static long builtAt, towerAt; private static float builtRain = -1f, builtThunder = -1f; private static int builtStyle = -1, towerSig;
     private static final double CIRRUS_CELL = 900.0;
     private record Job(List<Puff> puffs, double x, double z) {}
+    /** How deep inside a cloud the camera is (0 to 1, blended slowly): the scene pass draws the mist from it. */
+    private static final boolean FORCE_IN = Boolean.getBoolean("alterra.forceInCloud");   // (a test switch: pretend to be deep inside a cloud)
+    public static float inside() { return FORCE_IN ? 1f : inCloud; }
     private static volatile List<Puff> nearPuffs = List.of(); private static double nearX, nearZ; private static float inCloud;   // the nearest band's puffs (to tell when the camera is inside a cloud)
     /** How deep in cloud the camera is (0 clear, 1 thick): from the nearest band's puffs, each an ellipsoid. */
     private static float cloudAt(double qx, double camY, double qz) {
@@ -183,7 +186,7 @@ public final class SkyClouds {
         if (style == 1) {
             RenderSystem.enableBlend(); RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);   // premultiplied, straight into the scene at full size
             RenderSystem.enableDepthTest(); RenderSystem.depthMask(false);
-            float want = cloudAt(qx, cam.y, qz); inCloud += (want - inCloud) * 0.15f;
+            float want = cloudAt(qx, cam.y, qz); inCloud += (want - inCloud) * 0.035f;   // a slow blend: you drift into a cloud, it never switches on
             {   // what the camera can see: its heading, and how wide it sees (more when it looks steeply up or down)
                 float pitch = (float) Math.toRadians(e.getCamera().getXRot()), tanX = 1f / Math.max(0.2f, e.getProjectionMatrix().m00());
                 camAz = (float) -Math.toRadians(e.getCamera().getYRot());
@@ -199,7 +202,7 @@ public final class SkyClouds {
             VertexBuffer.unbind();
         }
         VertexBuffer.unbind();
-        if (style == 1 && inCloud > 0.01f) {   // inside a cloud: everything goes soft and pale, more the deeper in
+        if (style == 1 && inCloud > 0.01f && !IlluminateConfig.get(IlluminateConfig.SCENE_LOOK)) {   // inside a cloud (without the scene pass, which draws the mist itself): everything goes soft and pale, more the deeper in
             float g = (float) Math.min(1.0, cc.x * (0.75 + 0.25 * day)) * (1f - 0.68f * storm0);   // inside a storm cloud it is dark grey, not white
             RenderSystem.disableDepthTest(); RenderSystem.setShader(net.minecraft.client.renderer.GameRenderer::getPositionColorShader);
             var bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
