@@ -450,7 +450,7 @@ public final class Foliage {
                                 }
                             }
                             // the water surface seen from below: past about 49 degrees from straight up it is a mirror (of the bottom, bent by the ripples), inside that a bright window to the sky
-                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && (v_AlterraView.y > 0.0 || v_AlterraTop < 0.97) && u_AlterraUnder.x > 0.5) {
+                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && (v_AlterraView.y > 0.0 || (v_AlterraTop < 0.97 && u_AlterraUnder.y - v_AlterraView.y < 1.3)) && u_AlterraUnder.x > 0.5) {   // (a side of the water only counts as the water's edge within a block of the surface: deeper in flowing water those faces keep their own look, translucent, and no longer show as opaque blue sheets on the blocks)
                                 vec2 _g = alterraSlope(v_AlterraWaveP * 2.5, u_AlterraSea, u_AlterraSea2, v_AlterraSea) * 0.16;
                                 vec3 _n = normalize(vec3(_g.x, -1.0, _g.y));
                                 if (v_AlterraTop < 0.97) {   // a side of the water seen from inside it (where the water ends at a step or a shore): the same window and mirror, about the face's own normal turned to the viewer
@@ -501,6 +501,9 @@ public final class Foliage {
                                 _sky += vec3(1.0, 0.82, 0.55) * pow(_sd, 6.0) * 0.18 * u_AlterraSky.w;
                                 _sky = max(_sky, vec3(0.035, 0.055, 0.095));   // at night the mirror still shows a faint moonlit sky   // the glow of the sky around the sun, in the mirror too
                                 float _gl = pow(_sd, 700.0) * 3.0 + pow(_sd, 70.0) * 0.30 + pow(_sd, 14.0) * 0.05;   // sun or moon: sharp sparkles, a wider shimmer and a faint broad path
+                                float _twl = exp(-pow((u_AlterraSky.y - 0.03) / 0.22, 2.0)) * smoothstep(0.0, 0.3, u_AlterraSky.w);   // sunrise or sunset
+                                _gl += (pow(_sd, 4.0) * 0.30 + pow(_sd, 26.0) * 0.55) * _twl;   // a wide glowing path of the sun across the water
+                                _sky = mix(_sky, _sky * vec3(1.25, 0.80, 0.62) + vec3(0.16, 0.06, 0.02), _twl * (0.30 + 0.70 * pow(_sd, 2.0)));   // the sky in the water turns warm
                                 vec3 _hue = v_Color.rgb;
                                 bool _scene = u_AlterraScreen.z > 0.5;
                                 float _lightvFoam = clamp(max(max(_hue.r, _hue.g), _hue.b) * 1.1, 0.2, 1.0);

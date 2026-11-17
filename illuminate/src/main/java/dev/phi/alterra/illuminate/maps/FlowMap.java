@@ -145,14 +145,14 @@ public final class FlowMap {
         for (var lst : ceilByChunk.values()) for (int j = 0; j < lst.size(); j++) {   // the strip of air under a ceiling is closed
             long k = lst.getLong(j); int x = (int) (k >> 32) - ox, z = (int) k - oz;
             if (x < 0 || z < 0 || x >= SIZE || z >= SIZE) continue;
-            if (buf.get(x + z * SIZE) == 0f) { buf.put(x + z * SIZE, 1f / 9f); any = true; }
+            if (buf.get(x + z * SIZE) == 0f) { buf.put(x + z * SIZE, 0.107f); any = true; }   // a hair under the ceiling, not exactly at it (the same height fights the ceiling's face)
         }
         for (var lst : ceilByChunk.values()) for (int j = 0; j < lst.size(); j++) {   // and a little way past its edge: the heights are smoothed across the corners between columns, so at the edge of the ceiling a corner would get only half the lift and leave a hairline of air
             long k = lst.getLong(j); int x = (int) (k >> 32) - ox, z = (int) k - oz;
             for (int d = 0; d < 4; d++) {
                 int xx = x + (d == 0 ? 1 : d == 1 ? -1 : 0), zz = z + (d == 2 ? 1 : d == 3 ? -1 : 0);
                 if (xx < 0 || zz < 0 || xx >= SIZE || zz >= SIZE) continue;
-                if (buf.get(xx + zz * SIZE) == 0f) buf.put(xx + zz * SIZE, 0.085f);
+                if (buf.get(xx + zz * SIZE) == 0f) buf.put(xx + zz * SIZE, 0.07f);
             }
         }
         buf.rewind();

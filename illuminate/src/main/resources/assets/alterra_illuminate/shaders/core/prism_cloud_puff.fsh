@@ -45,6 +45,9 @@ void main() {
     vec3 under = vec3(0.55, 0.62, 0.74) * (0.55 + 0.45 * day);
     vec3 sunny = CloudColor * (0.95 + 0.1 * day);
     vec3 col = mix(under, sunny, smoothstep(0.12, 0.95, lit * 0.6 + shade * 0.5));
+    float tw = exp(-pow((SunW.y - 0.03) / 0.17, 2.0)) * smoothstep(0.12, 0.30, day);   // sunrise or sunset: 1 with the sun on the horizon
+    vec3 twCol = mix(vec3(0.78, 0.40, 0.55), vec3(1.0, 0.46, 0.20), lit);   // lit sides orange, the shaded parts pink to violet
+    col = mix(col, twCol * (0.70 + 0.35 * lit), tw * (0.30 + 0.70 * lit) * 0.85);
     col *= 1.0 - 0.62 * info.y;   // a storm cloud is dark
     float far = smoothstep(500.0, 9000.0, dist);   // aerial perspective: far clouds take on the haze
     col = mix(col, Horizon * (0.6 + 0.4 * day), far * 0.9);
