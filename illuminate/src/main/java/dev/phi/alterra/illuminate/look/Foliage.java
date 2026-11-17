@@ -884,7 +884,7 @@ public final class Foliage {
         GL20C.glUniform4f(sky, sx / len, sy / len, 0f, strength + 0.0001f);
         var sc = level.getSkyColor(cam.getPosition(), pt); float day = Math.max(0.1f, Math.min(1f, sun ? sy / len * 1.4f + 0.3f : 0.1f));
         GL20C.glUniform4f(zenith, (float) sc.x, (float) sc.y, (float) sc.z, rain);
-        float[] hzc = SkyGlow.horizon(level, sc, day, pt), gl = SkyGlow.glow(level, pt); GL20C.glUniform4f(horizon, hzc[0], hzc[1], hzc[2], (sun ? 1f : -1f) * Math.max(0.0001f, gl[3] * 0.9f));   // w: the sunset glow's strength, negative when the direction in u_AlterraSky is the moon's
+        float[] hzc = SkyGlow.horizon(level, sc, day, pt), gl = SkyGlow.glow(level, pt); GL20C.glUniform4f(horizon, hzc[0], hzc[1], hzc[2], (sun ? 1f : -1f) * Math.max(0.0001f, gl[3] * 0.9f * IlluminateConfig.get(IlluminateConfig.SUNSET_STRENGTH).floatValue()));   // w: the sunset glow's strength, negative when the direction in u_AlterraSky is the moon's
     }
 
     /** Whether the water shader is in use (Sodium's block shaders were patched): then the rain rings on water are drawn by it. */

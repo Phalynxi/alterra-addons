@@ -107,6 +107,8 @@ public final class PostFx {
             uniform mat4 u_ShadowVP; uniform vec3 u_ShadowCam; uniform float u_ShadowOn;
             uniform vec4 u_GlowCol;     // the sunrise or sunset glow of the sky: colour and strength
             uniform vec3 u_SunTrue;     // where the sun really is (even after it has set)
+            uniform vec4 u_Tune;     // shaft, shadow, haze and glow strength
+            uniform vec4 u_Tune2;    // grade strength, underwater strength, (unused), flash strength
             uniform float u_InCloud;   // how deep inside a cloud the camera is (0 to 1)
             uniform float u_Surf;      // how far the water surface is above the camera when under water (blocks)
             uniform vec3 u_WaterFog;   // the colour of the water around a diver (UnderwaterColour)
@@ -363,7 +365,7 @@ public final class PostFx {
                     float sh = mix(shH, shM.x, shM.y);   // the shadow map near the camera; the height map beyond it
                     if (u_ShadowOn > 1.5) { frag = vec4(vec3(sh * 0.9 + 0.1 * shM.y), 1.0); return; }   // (test view: the shadow alone)
                     float cs = u_On2.x > 0.5 ? cloudShade(wpr) : 1.0;
-                    float light = mix(1.0, min(sh, cs), 0.58 * u_Sun.w * max(day, 0.5));
+                    float light = mix(1.0, min(sh, cs), 0.58 * u_Tune.y * u_Sun.w * max(day, 0.5));
                     c *= light;
                 }
                 // haze: the air between you and far things, warm towards the sun, the sky's own colour away from it
@@ -371,7 +373,7 @@ public final class PostFx {
                     vec3 hz = mix(u_Horizon, vec3(1.0, 0.86, 0.66) * (0.6 + 0.6 * day), pow(toSun, 14.0) * u_Sun.w * 0.5);
                     { vec2 dh = normalize(dir.xz + vec2(1e-4)), sh2 = normalize(u_SunTrue.xz + vec2(1e-4)); hz = mix(hz, u_GlowCol.rgb * (0.85 + 0.3 * u_GlowCol.a), clamp(u_GlowCol.a * (0.10 + 0.90 * pow(max(dot(dh, sh2), 0.0), 1.6)), 0.0, 0.92)); }   // the sunset colour belongs to the side of the sky where the sun went down
                     float a = (1.0 - exp(-max(dist - 48.0, 0.0) * (0.0012 + 0.004 * rain))) * (0.45 + 0.35 * rain);   // only far away
-                    c = mix(c, hz, a * 0.2);
+                    c = mix(c, hz, a * 0.2 * u_Tune.z);
                 }
                 #ifndef CLOUD_PASS
                 #endif
@@ -444,7 +446,7 @@ public final class PostFx {
                     if (!sky) {
                         float depthBelow = max(u_Surf - dir.y * dist, 0.0);   // how far under the surface this point is
                         vec2 sp = wp.xz + sunRefr.xz / sunRefr.y * depthBelow;   // where on the surface the light that reaches it came through
-                        c *= 1.0 + 0.22 * sunK * exp(-depthBelow * 0.05) + uwCaustic(sp, u_Params.w) * 1.7 * (0.3 + 0.7 * upF) * exp(-depthBelow * 0.06) * smoothstep(0.0, 0.7, depthBelow) * exp(-dist * 0.025) * sunK;
+                        c *= 1.0 + 0.22 * sunK * exp(-depthBelow * 0.05) + uwCaustic(sp, u_Params.w) * 1.7 * u_Tune2.y * (0.3 + 0.7 * upF) * exp(-depthBelow * 0.06) * smoothstep(0.0, 0.7, depthBelow) * exp(-dist * 0.025) * sunK;
                     }
                     float fogA = (1.0 - exp(-dist * 0.022)) * 0.85;
                     vec3 fogC = u_WaterFog;   // the biome's water colour, clear and turquoise, darker at night (UnderwaterColour: the same as the fog)
@@ -459,7 +461,7 @@ public final class PostFx {
                             vec2 sq = wp.xz - dir.xz * dist + dir.xz * ts + sunRefr.xz / sunRefr.y * dep;
                             shaft += uwBeam(sq, u_Params.w) * exp(-dep * 0.05) * exp(-ts * 0.035) * smoothstep(0.0, 1.0, dep);
                         }
-                        c += vec3(0.46, 0.84, 0.88) * shaft * (tmax / 10.0) * 0.14 * face * sunK;
+                        c += vec3(0.46, 0.84, 0.88) * shaft * (tmax / 10.0) * 0.14 * u_Tune2.y * face * sunK;
                     }
                 }
                 if (u_InCloud > 0.005 && u_Params.z < 0.5) {   // inside a cloud: everything fades into mist with distance, in thicker and thinner pockets that drift past with the wind
@@ -473,7 +475,7 @@ public final class PostFx {
                 }
                 // glow: the bright parts of the picture, softly spread
                 vec3 g = u_On.y < 0.5 ? vec3(0.0) : textureLod(u_Color, uv, 3.0).rgb * 0.4 + textureLod(u_Color, uv, 4.5).rgb * 0.35 + textureLod(u_Color, uv, 6.0).rgb * 0.25;
-                c += max(g - 0.86, 0.0) * 0.16;   // only truly bright things glow, and gently
+                c += max(g - 0.86, 0.0) * 0.16 * u_Tune.w;   // only truly bright things glow, and gently
                 // light shafts: march towards the sun on screen and count the sky seen along the way
                 if (u_SunScreen.w > 0.5 && u_Sun.w > 0.01 && u_Params.z < 0.5 && u_On.z > 0.5) {
                     vec2 to = u_SunScreen.xy - uv; float rays = 0.0, wgt = 1.0;
@@ -487,7 +489,7 @@ public final class PostFx {
                     float near = 1.0 - smoothstep(0.05, 0.7, length(to * vec2(1.4, 1.0)));
                     float sh = rays / max(wsum, 1.0);
                     float beam = 4.0 * sh * (1.0 - sh);   // shafts live where the way to the sun is partly blocked (leaves, trunks, edges): open sky or full shade gives none, so looking at the sun does not flood the screen
-                    c += vec3(1.0, 0.86, 0.62) * beam * near * u_Sun.w * (1.0 - rain) * 0.42 * u_SunVis;   // (weaker when a cloud covers the sun)   // weaker when a cloud covers the sun
+                    c += vec3(1.0, 0.86, 0.62) * beam * near * u_Sun.w * (1.0 - rain) * 0.42 * u_Tune.x * u_SunVis;   // (weaker when a cloud covers the sun)   // weaker when a cloud covers the sun
                 }
                 // the sky: a deeper blue overhead, so it is not a pale wash (the sun's glow is left alone)
                 if (sky && u_Params.z < 0.5) {
@@ -500,7 +502,8 @@ public final class PostFx {
                     c *= mix(vec3(1.0), vec3(1.05, 0.91, 0.78), kSet * 0.65);   // golden light over the land
                 }
                 if (u_On.x < 0.5) { frag = vec4(clamp(c, 0.0, 1.0), 1.0); return; }
-                c += u_Flash * vec3(0.50, 0.56, 0.75) * (sky ? 0.55 : 0.35 + 0.35 * exp(-dist * 0.012)) * 1.0;   // the flash lights the sky and the land, the near land most
+                c += u_Flash * u_Tune2.w * vec3(0.50, 0.56, 0.75) * (sky ? 0.55 : 0.35 + 0.35 * exp(-dist * 0.012)) * 1.0;   // the flash lights the sky and the land, the near land most
+                vec3 gradeIn = clamp(c, 0.0, 1.0);
                 // grade: neutral brightness (no lift of the midtones), a gentle contrast curve, colour almost as it is, warm light and slightly cool shadows, a faint vignette
                 c = clamp(c, 0.0, 1.0);
                 c = mix(c, c * c * (3.0 - 2.0 * c), 0.22);
@@ -508,7 +511,7 @@ public final class PostFx {
                 c = mix(vec3(l), c, 1.03);
                 c *= mix(vec3(0.985, 0.995, 1.015), vec3(1.015, 1.0, 0.985), smoothstep(0.2, 0.8, l));
                 vec2 v = uv - 0.5; c *= 1.0 - 0.16 * dot(v, v);
-                frag = vec4(clamp(c, 0.0, 1.0), 1.0);
+                frag = vec4(clamp(mix(gradeIn, c, u_Tune2.x), 0.0, 1.0), 1.0);
             }
             """;
 
@@ -598,7 +601,9 @@ public final class PostFx {
             GL20C.glUniform1f(u(p, "u_Surf"), Foliage.surfaceAbove);
             GL20C.glUniform1f(u(p, "u_InCloud"), dev.phi.alterra.illuminate.clouds.SkyClouds.inside());
             float[] glw = SkyGlow.glow(level, pt), stu = SkyGlow.sunTrue(level, pt);
-            GL20C.glUniform4f(u(p, "u_GlowCol"), glw[0], glw[1], glw[2], glw[3]); GL20C.glUniform3f(u(p, "u_SunTrue"), stu[0], stu[1], stu[2]);
+            GL20C.glUniform4f(u(p, "u_GlowCol"), glw[0], glw[1], glw[2], glw[3] * IlluminateConfig.get(IlluminateConfig.SUNSET_STRENGTH).floatValue());
+            GL20C.glUniform4f(u(p, "u_Tune"), IlluminateConfig.get(IlluminateConfig.SHAFT_STRENGTH).floatValue(), IlluminateConfig.get(IlluminateConfig.SHADOW_STRENGTH).floatValue(), IlluminateConfig.get(IlluminateConfig.HAZE_STRENGTH).floatValue(), IlluminateConfig.get(IlluminateConfig.GLOW_STRENGTH).floatValue());
+            GL20C.glUniform4f(u(p, "u_Tune2"), IlluminateConfig.get(IlluminateConfig.GRADE_STRENGTH).floatValue(), IlluminateConfig.get(IlluminateConfig.UNDERWATER_STRENGTH).floatValue(), 0f, IlluminateConfig.get(IlluminateConfig.FLASH_STRENGTH).floatValue()); GL20C.glUniform3f(u(p, "u_SunTrue"), stu[0], stu[1], stu[2]);
             var cpw = cam.getPosition(); GL20C.glUniform3f(u(p, "u_CamPos"), (float) (cpw.x % 4096.0), (float) cpw.y, (float) (cpw.z % 4096.0));
             // the clouds: where vanilla would put them
             float ch = level.effects().getCloudHeight();

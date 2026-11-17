@@ -24,6 +24,9 @@ public final class LibrarySettings {
                 Settings.Option.number("Storm share", "How often rain turns into the biome storm instead of plain rain or snow.", WeatherConfig.STORM_SHARE, 0.0, 2.0, 0.1, "x"),
                 Settings.Option.bool("Storms on their own", "Storms also come without rain, on their own timer.", WeatherConfig.OWN_STORMS),
                 Settings.Option.bool("Distant storms", "See a storm in the next biome on the horizon before you get there.", WeatherConfig.DISTANT)), "minecraft:compass", "Weather");
+        Settings.category(dev.phi.alterra.weather.AlterraWeather.ID, "Sound", "How loud the weather is.", List.of(
+                Settings.Option.number("Weather volume", "How loud the wind, rain and storm sounds are.", WeatherConfig.SOUND_VOLUME, 0.0, 1.5, 0.05, "x"),
+                Settings.Option.number("Tornado volume", "How loud tornadoes and dust devils are.", WeatherConfig.TORNADO_VOLUME, 0.0, 1.5, 0.05, "x")), "minecraft:note_block", "Weather");
         Settings.category(dev.phi.alterra.weather.AlterraWeather.ID, "Rain", "Rain and how the wind bends it.", List.of(
                 Settings.Option.bool("Rain ripples", "Raindrops that land on water make rings.", WeatherConfig.RIPPLES),
                 Settings.Option.bool("Wind-blown rain", "Rain and snow fall slanted by the wind and are drawn by Alterra, not vanilla.", WeatherConfig.REPLACE_RAIN),

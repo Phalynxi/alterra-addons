@@ -379,6 +379,7 @@ public final class WeatherEffects {
         loop(sm, "rain_heavy", AlterraWeather.RAIN_HEAVY.get(), (rain > 0 ? Math.max(heavy, (rain - 0.6f) * 1.2f) : 0f) * 0.85f * out);
     }
     private static void loop(SoundManager sm, String key, SoundEvent ev, float v) {
+        v *= WeatherConfig.get(WeatherConfig.SOUND_VOLUME).floatValue();
         StormSound cur = OTHER.get(key);
         if (cur != null && cur.isStopped()) { OTHER.remove(key); cur = null; }
         if (cur == null && v > 0.02f) { cur = new StormSound(ev); OTHER.put(key, cur); sm.play(cur); }
@@ -386,7 +387,7 @@ public final class WeatherEffects {
     }
 
     private static void sound(SoundManager sm, Kind k, SoundEvent ev, float max) {
-        float v = s(k) * max * (0.3f + 0.7f * outdoors);
+        float v = s(k) * max * (0.3f + 0.7f * outdoors) * WeatherConfig.get(WeatherConfig.SOUND_VOLUME).floatValue();
         StormSound cur = SOUNDS.get(k);
         if (cur != null && cur.isStopped()) { SOUNDS.remove(k); cur = null; }
         if (cur == null && v > 0.02f) { cur = new StormSound(ev); SOUNDS.put(k, cur); sm.play(cur); }

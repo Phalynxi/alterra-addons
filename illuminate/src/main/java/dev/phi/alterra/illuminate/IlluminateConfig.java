@@ -8,7 +8,7 @@ public final class IlluminateConfig {
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.BooleanValue WATER_LOOK, REFLECTIONS, CAUSTICS, WATER_WAVES, SMOOTH_WATER, SMOOTH_SNOW, CUSTOM_SNOW, FOAM, WET, METALS, LAVA_GLOW, SWAY, SWAY_PLANTS,
             SCENE_LOOK, GRADE, GLOW, SHAFTS, HAZE, CLOUDS, UNDERWATER_FOG, SHADOWS;
-    public static final ModConfigSpec.DoubleValue CAUSTIC_STRENGTH, SWAY_AMOUNT, QUALITY;
+    public static final ModConfigSpec.DoubleValue CAUSTIC_STRENGTH, SWAY_AMOUNT, QUALITY, SHAFT_STRENGTH, SHADOW_STRENGTH, HAZE_STRENGTH, GLOW_STRENGTH, GRADE_STRENGTH, UNDERWATER_STRENGTH, SUNSET_STRENGTH, CLOUD_AMOUNT, FLASH_STRENGTH;
     static {
         var b = new ModConfigSpec.Builder();
         QUALITY = b.comment("How much work the look does: 0 low (fastest), 1 medium, 2 high. Fewer cloud, shadow and shaft samples on low.").defineInRange("quality", 1.0, 0.0, 2.0);
@@ -38,6 +38,17 @@ public final class IlluminateConfig {
         SHADOWS = b.comment("Soft sun shadows of trees and overhangs (from the height of everything around), and light shafts through gaps in leaves.").define("sunShadows", false);
         CLOUDS = b.comment("Real clouds (instead of vanilla's flat ones): the same for everyone, dark when it rains. The heaviest part of the look.").define("clouds", true);
         UNDERWATER_FOG = b.comment("Under water the water's own colour closes in with distance, and light ripples over everything.").define("underwaterFog", true);
+        b.pop();
+        b.push("tuning");
+        SHAFT_STRENGTH = b.comment("How strong the light shafts through trees are.").defineInRange("shaftStrength", 1.0, 0.0, 2.0);
+        SHADOW_STRENGTH = b.comment("How dark sun shadows are.").defineInRange("shadowStrength", 1.0, 0.0, 2.0);
+        HAZE_STRENGTH = b.comment("How thick the distant haze is.").defineInRange("hazeStrength", 1.0, 0.0, 3.0);
+        GLOW_STRENGTH = b.comment("How strong the glow around bright things is.").defineInRange("glowStrength", 1.0, 0.0, 3.0);
+        GRADE_STRENGTH = b.comment("How much of the colour grade is applied.").defineInRange("gradeStrength", 1.0, 0.0, 1.5);
+        UNDERWATER_STRENGTH = b.comment("How strong the caustics and sun shafts under water are.").defineInRange("underwaterStrength", 1.0, 0.0, 2.0);
+        SUNSET_STRENGTH = b.comment("How red the clouds, haze and water get at sunrise and sunset.").defineInRange("sunsetStrength", 1.0, 0.0, 1.5);
+        CLOUD_AMOUNT = b.comment("How much of the sky the clouds cover. 1 is the usual amount.").defineInRange("cloudAmount", 1.0, 0.5, 1.5);
+        FLASH_STRENGTH = b.comment("How bright lightning flashes are.").defineInRange("flashStrength", 1.0, 0.0, 2.0);
         b.pop();
         SPEC = b.build();
     }

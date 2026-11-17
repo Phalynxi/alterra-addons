@@ -36,7 +36,7 @@ public final class Illuminate {
         Look.puddleAt = RainMap::puddle;
         Look.splashOnLand = a -> RainMap.splash(a[0], a[1], a[2], a[3]);
         dev.phi.alterra.illuminate.compat.LibrarySettings.register();   // the options, as pages of Prism Lib's settings screen
-        dev.phi.prismlib.settings.SettingsClient.install(container, ID, "Illuminate", dev.phi.prismlib.settings.ThemedSettingsScreen.Theme.DUSK);
+        dev.phi.prismlib.settings.SettingsClient.install(container, ID, "Illuminate", dev.phi.prismlib.settings.ThemedSettingsScreen.Theme.SUN);
         if (ModList.get().isLoaded("alterra")) dev.phi.alterra.illuminate.compat.AlterraSettings.register();   // its page in Alterra's settings screen
     }
 }

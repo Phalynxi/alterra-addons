@@ -194,9 +194,9 @@ public final class SkyClouds {
         RenderSystem.depthMask(false);   // puffs are soft: they do not write depth
         var ru = sh.getUniform("RMax"); if (ru != null) ru.set(rmax);
         uniform3(sh, "SunW", sun.x, sun.y, sun.z);
-        { float[] glw = dev.phi.alterra.illuminate.look.SkyGlow.glow(lv, cpt); var gu = sh.getUniform("GlowCol"); if (gu != null) gu.set(glw[0], glw[1], glw[2], glw[3]); }
+        { float[] glw = dev.phi.alterra.illuminate.look.SkyGlow.glow(lv, cpt); var gu = sh.getUniform("GlowCol"); if (gu != null) gu.set(glw[0], glw[1], glw[2], glw[3] * IlluminateConfig.get(IlluminateConfig.SUNSET_STRENGTH).floatValue()); }
         uniform3(sh, "CloudColor", (float) cc.x, (float) cc.y, (float) cc.z); uniform3(sh, "Horizon", hz[0], hz[1], hz[2]);
-        var pu = sh.getUniform("Params"); if (pu != null) { float[] tw = twilight(lv.getDayTime()); pu.set(day, tw[0], tw[1], tw[2]); }
+        var pu = sh.getUniform("Params"); if (pu != null) { float[] tw = twilight(lv.getDayTime()); float ss = IlluminateConfig.get(IlluminateConfig.SUNSET_STRENGTH).floatValue(); pu.set(day, tw[0] * ss, tw[1], tw[2]); }
         var main = mc.getMainRenderTarget();
         if (style == 1) {
             RenderSystem.enableBlend(); RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);   // premultiplied, straight into the scene at full size
@@ -304,7 +304,8 @@ public final class SkyClouds {
                 double mx = (cx + 0.5) * cell, mz = (cz + 0.5) * cell, d = Math.max(Math.abs(mx - qx), Math.abs(mz - qz));
                 if (d > outer || d < inner) continue;
                 // the shape and size of a cloud come from the weather-free cover, so a storm arriving never makes the clouds that are there swell; the weather only fills in clouds where the sky was empty (and darkens them)
-                float cb = smooth(0.47f, 0.62f, Clouds.fbm((float) (mx * 0.0065), (float) (mz * 0.0065), evo));
+                float amt = (IlluminateConfig.get(IlluminateConfig.CLOUD_AMOUNT).floatValue() - 1f) * 0.12f;   // more cover: the clouds form at a lower threshold
+                float cb = smooth(0.47f - amt, 0.62f - amt, Clouds.fbm((float) (mx * 0.0065), (float) (mz * 0.0065), evo));
                 float c = cb >= 0.05f ? cb : coverAt(mx, mz, evo, rain, thunder, cells, driftX, driftZ);
                 if (c < 0.05f) continue;
                 var r = RandomSource.create(cx * 73856093L ^ cz * 19349663L ^ (band == 1 ? 0 : band + 1) * 83492791L);   // bands 0 and 1 share a cell size: same clouds either side of 500

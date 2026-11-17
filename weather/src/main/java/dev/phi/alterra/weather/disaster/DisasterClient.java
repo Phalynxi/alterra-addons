@@ -79,6 +79,7 @@ public final class DisasterClient {
         }
         float reach = best == null ? 0f : best.type == Disasters.TORNADO ? 260f : 110f;
         float vol = best == null ? 0f : (float) Math.pow(net.minecraft.util.Mth.clamp(1.0 - (bd - best.radius) / reach, 0.0, 1.0), 1.6) * net.minecraft.util.Mth.clamp(best.strength, 0f, 1f) * (best.type == Disasters.TORNADO ? 1.5f : 0.6f);
+        vol *= dev.phi.alterra.weather.config.WeatherConfig.get(dev.phi.alterra.weather.config.WeatherConfig.SOUND_VOLUME).floatValue() * dev.phi.alterra.weather.config.WeatherConfig.get(dev.phi.alterra.weather.config.WeatherConfig.TORNADO_VOLUME).floatValue();
         if (roar != null && roar.isStopped()) roar = null;
         if (vol > 0.02f && best != null) {
             if (roar == null) { roar = new FunnelSound(); mc.getSoundManager().play(roar); org.slf4j.LoggerFactory.getLogger("Alterra Weather").info("[sound] funnel roar starts at {} blocks, volume {}", (int) bd, vol); }

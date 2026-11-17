@@ -7,7 +7,7 @@ public final class WeatherConfig {
     private WeatherConfig() {}
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.BooleanValue SANDSTORMS, FOG_BANKS, PETAL_STORMS, AURORA, BLIZZARDS, POLLEN, ASHFALL, STEP_ASIDE, ADAPT, FOLLOW_VANILLA, OWN_STORMS, DISTANT, REPLACE_RAIN, SWAY, FOOTPRINTS, SHORE_SPLASH, SWAY_PLANTS, RIPPLES, FOAM, WATER_LOOK, CAUSTICS, LAVA_GLOW, WATER_WAVES, SCENE_LOOK;
-    public static final ModConfigSpec.DoubleValue INTENSITY, STORM_SHARE, RAIN_SLANT, SWAY_AMOUNT, CAUSTIC_STRENGTH;
+    public static final ModConfigSpec.DoubleValue SOUND_VOLUME, TORNADO_VOLUME, INTENSITY, STORM_SHARE, RAIN_SLANT, SWAY_AMOUNT, CAUSTIC_STRENGTH;
     static {
         var b = new ModConfigSpec.Builder();
         SANDSTORMS = b.comment("Sandstorms in deserts.").define("sandstorms", true);
@@ -39,6 +39,8 @@ public final class WeatherConfig {
         FOOTPRINTS = b.comment("Prints and puffs of dust or snow where you and other things walk on snow, sand and mud.").define("footprints", true);
         SHORE_SPLASH = b.comment("Waves break on the shore and throw spray inland, which wets the land (more in storms and wind).").define("shoreSplashes", true);
         STEP_ASIDE = b.comment("Turn off effects that another weather or fog mod already does (Weather2, Distant Horizons fog and so on).").define("stepAside", true);
+        SOUND_VOLUME = b.comment("How loud the weather sounds are (wind, rain, storms).").defineInRange("soundVolume", 1.0, 0.0, 1.5);
+        TORNADO_VOLUME = b.comment("How loud tornadoes and dust devils are.").defineInRange("tornadoVolume", 1.0, 0.0, 1.5);
         SPEC = b.build();
     }
     public static <T> T get(ModConfigSpec.ConfigValue<T> v) {
