@@ -30,11 +30,13 @@ void main() {
     float fine = 0.5 * vnoise(wp * 1.3), fx = 0.5 * vnoise((wp + vec2(0.3, 0.0)) * 1.3), fz = 0.5 * vnoise((wp + vec2(0.0, 0.3)) * 1.3);
     vec3 n = normalize(mix(worldNormal, vec3(0.0, 1.0, 0.0), 0.25) + vec3((n0 - nx) * 0.95 + (fine - fx) * 0.40, 0.0, (n0 - nz) * 0.95 + (fine - fz) * 0.40));
     // (snow is a soft, matte blanket: facets are blended towards up above, so slopes do not flash light and dark)
-    float lit = max(dot(n, SunDir), 0.0) * smoothstep(-0.05, 0.25, SunDir.y);
+    // how bright the sky is (the fog takes the sky's colour): a storm or the night leaves the snow dull and blue-grey instead of a glowing white
+    float skyLuma = dot(FogColor.rgb, vec3(0.299, 0.587, 0.114)), skyK = smoothstep(0.04, 0.62, skyLuma);
+    float lit = max(dot(n, SunDir), 0.0) * smoothstep(-0.05, 0.25, SunDir.y) * smoothstep(0.38, 0.62, skyLuma);
     float skyUp = 0.5 + 0.5 * n.y;
     // snow takes its colour from the light: warm white in the sun, blue in the shade (it is lit by the sky), never grey
     vec3 ambient = mix(vec3(0.72, 0.80, 0.95), vec3(0.89, 0.94, 1.0), skyUp);
-    vec3 irradiance = ambient * (0.56 + 0.08 * max(worldNormal.y, 0.0)) + vec3(1.0, 0.965, 0.89) * lit * 0.26;   // tops are a soft white (never blown out), slopes and walls a step darker, not a harsh contrast   // walls and edges shade a little apart from the tops, so terraces read from afar
+    vec3 irradiance = ambient * mix(0.20, 1.0, skyK) * (0.56 + 0.08 * max(worldNormal.y, 0.0)) + vec3(1.0, 0.965, 0.89) * lit * 0.26;   // tops are a soft white (never blown out), slopes and walls a step darker, not a harsh contrast   // walls and edges shade a little apart from the tops, so terraces read from afar
     float grain = texture(Sampler0, wp * 0.18).r;   // a soft, broad grain
     vec3 albedo = vec3(0.985, 0.99, 1.0) * (0.95 + 0.10 * grain);
     // glitter: tiny crystals that catch the sun, flickering as you move

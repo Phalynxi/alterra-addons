@@ -50,6 +50,9 @@ public final class SnowSurface {
     private static final int T = 16, RADIUS = 4, PAD = 2, N = T + 2 * PAD;
     /** Columns closer than this in height (eighths of a block) are one smooth sheet; a bigger step is a step, with its own wall: snow lies in layers, it does not drape over terrain like a cloth. */
     private static final int TOL = 3;
+    private static final int CL = 8;   // columns within a block of each other share their corner heights (one smooth slope); a bigger drop is a cliff with a rounded lip and a wall
+    private static final float[] HC = new float[N * N * 4];   // the corner heights of the columns of the tile being built (NaN: not worked out yet)
+    private static final float[] CUR = new float[4];       // the corners of the column being drawn: (0,0) (1,0) (0,1) (1,1)
     private static final ResourceLocation GRAIN = ResourceLocation.fromNamespaceAndPath(Illuminate.ID, "snow_grain");
     private static ShaderInstance shader; private static boolean grainMade;
 
@@ -129,7 +132,7 @@ public final class SnowSurface {
         for (int dj = -2; dj <= 2; dj++) for (int di = -2; di <= 2; di++) column(lv, bx + di, bz + dj, (PAD + di) + (PAD + dj) * N, p);
         if (K[PAD + PAD * N] == 0) return Float.NaN;
         float fx = (float) (x - bx), fz = (float) (z - bz);
-        return Mth.lerp(fz, Mth.lerp(fx, cornerSmooth(PAD, PAD, 0, 0), cornerSmooth(PAD, PAD, 1, 0)), Mth.lerp(fx, cornerSmooth(PAD, PAD, 0, 1), cornerSmooth(PAD, PAD, 1, 1)));
+        return Mth.lerp(fz, Mth.lerp(fx, corner(PAD, PAD, 0, 0), corner(PAD, PAD, 1, 0)), Mth.lerp(fx, corner(PAD, PAD, 0, 1), corner(PAD, PAD, 1, 1)));
     }
 
     // ------------------------------------------------------------------ the mesh
@@ -148,13 +151,18 @@ public final class SnowSurface {
             int top = -1; for (int k = 0; k < n; k++) if (!used[k] && (top < 0 || S[q[k]] > S[q[top]])) top = k;
             if (top < 0) break;
             int ts = 0, tc = 0, thi = Integer.MAX_VALUE; float tlo = 0f; boolean has = false;
-            for (int k = 0; k < n; k++) if (!used[k] && S[q[top]] - S[q[k]] <= TOL) {
-                used[k] = true; ts += S[q[k]]; tc++; tlo = Math.max(tlo, K[q[k]] == 1 ? G[q[k]] + (bare ? 0.3f : 1f) : G[q[k]]); thi = Math.min(thi, S[q[k]] + 8); if (q[k] == mine) has = true;
+            for (int k = 0; k < n; k++) if (!used[k] && S[q[top]] - S[q[k]] <= CL) {
+                used[k] = true; ts += S[q[k]]; tc++; tlo = Math.max(tlo, K[q[k]] == 1 ? G[q[k]] + (bare ? 0.6f : 1f) : G[q[k]]); thi = Math.min(thi, S[q[k]] + 8); if (q[k] == mine) has = true;
             }
             if (has) { sum = ts; cnt = tc; lo = tlo; hi = thi; }
         }
         float h = cnt == 0 ? S[mine] : (float) sum / cnt;
         return Math.max(lo, Math.min(Math.max(hi, lo), h)) / 8f;
+    }
+    private static float hc(int i, int j, int a, int b) {
+        int k = ((i + j * N) << 2) + a + 2 * b; float v = HC[k];
+        if (Float.isNaN(v)) HC[k] = v = corner(i, j, a, b);
+        return v;
     }
     /** Do the four columns around a corner all lie within a block of each other (no wall or cliff between them)? */
     private static boolean single(int i, int j, int a, int b) {
@@ -190,6 +198,7 @@ public final class SnowSurface {
     }
 
     private static MeshData build(ClientLevel lv, int x0, int z0, boolean fine) {
+        java.util.Arrays.fill(HC, Float.NaN);
         BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
         float[] sl = new float[2]; float[] nx = new float[4], nz = new float[4], hh = new float[4];
         boolean any = false;
@@ -199,7 +208,7 @@ public final class SnowSurface {
             int wx = x0 + i - PAD, wz = z0 + j - PAD;
             int light = cornerLight(i, j, 0, 0);
             if (fine && !exposedAny(i, j, c)) {   // footprints: a fine grid on a top that joins its neighbours all round
-                float H = S[c] / 8f; float[] hh2 = {H, H, H, H}, nn = new float[4];
+                float[] hh2 = {hc(i, j, 0, 0), hc(i, j, 1, 0), hc(i, j, 1, 1), hc(i, j, 0, 1)}, nn = new float[4];
                 int[] na = {0, 1, 1, 0}, nb = {1, 1, 0, 0};
                 for (int sb = 0; sb < 4; sb++) for (int sa = 0; sa < 4; sa++) for (int k = 0; k < 4; k++) fineVertex(bb, wx, wz, (sa + na[k]) / 4f, (sb + nb[k]) / 4f, hh2, nn, nn, i, j);
             } else roundedColumn(bb, wx, wz, i, j, c, light);
@@ -226,8 +235,13 @@ public final class SnowSurface {
     private static boolean exposed(int i, int j, int c, int side) {
         int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
         if (!L[q]) return false;
-        if (K[q] == 1 && K[c] == 1 && S[c] - S[q] <= 8) return false;   // snow within a block below: it ramps up to meet this one (no round, no wall)
-        return K[q] == 0 ? S[q] < S[c] : S[q] < S[c] - TOL;
+        float thr = K[q] == 0 ? 0.09f : 0.02f;   // beside bare ground the snow thins out to it (no wall for a hair's breadth)
+        for (int e = 0; e < 2; e++) {   // the two corners this side shares with the neighbour
+            float mine = side < 2 ? hc(i, j, side, e) : hc(i, j, e, side - 2);
+            float theirs = K[q] == 0 ? S[q] / 8f : side < 2 ? hc(i + (side == 0 ? -1 : 1), j, 1 - side, e) : hc(i, j + (side == 2 ? -1 : 1), e, 3 - side);
+            if (mine > theirs + thr) return true;
+        }
+        return false;
     }
     /** Does the column next to (i, j) at offset (di, dj) roll over on the same side? */
     private static boolean exposedNb(int i, int j, int side, int di, int dj) { int ii = i + di, jj = j + dj, c = ii + jj * N; if (ii < 1 || jj < 1 || ii >= N - 1 || jj >= N - 1 || !L[c] || K[c] == 0) return false; return exposed(ii, jj, c, side); }
@@ -235,7 +249,9 @@ public final class SnowSurface {
     /** Where the wall on this side stops: the neighbour's snow top or its ground (never below this column's own ground). */
     private static float wallBottom(int i, int j, int c, int side) {
         int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
-        return Math.max(S[q], G[c] - 12) / 8f;   // the snow drapes over the edge of the step below it (up to a block and a half), it does not stop where its own snow ends
+        float low = Float.MAX_VALUE;
+        for (int e = 0; e < 2; e++) low = Math.min(low, K[q] == 0 ? S[q] / 8f : side < 2 ? hc(i + (side == 0 ? -1 : 1), j, 1 - side, e) : hc(i, j + (side == 2 ? -1 : 1), e, 3 - side));
+        return Math.max(low, G[c] / 8f - 24f);   // the snow drapes down the whole drop to the snow or ground below, so a cliff face of grass, dirt or stone is covered
     }
 
     /**
@@ -243,20 +259,10 @@ public final class SnowSurface {
      * quarter round rolling over into a wall that drops to the neighbour (corners where two such sides meet get a quarter dome). No sheet is stretched between
      * columns, so nothing tears: steps read as soft, rounded terraces.
      */
-    /** Snow one block higher next door (or less, but more than a joined step): this column's top ramps up to meet it at the shared edge (no wall between them). */
-    private static boolean rampUp(int c, int q) { return L[q] && K[q] == 1 && K[c] == 1 && S[q] - S[c] > TOL && S[q] - S[c] <= 8; }
-    private static final float RAMP = 0.5f;   // how far into the lower column the ramp reaches
-    /** The height of column (i, j)'s top at (fx, fz) inside it (0..1 each way): its own snow, raised towards higher snow next door by the ramps. */
+    /** The height of the column's top at (fx, fz) inside it (0..1 each way): the corner heights shared with its neighbours, so every slope runs on across the columns. */
     private static float topAt(int i, int j, double fx, double fz) {
-        int c = i + j * N; float H = S[c] / 8f, up = 0f;
-        for (int side = 0; side < 4; side++) {
-            int q = (i + (side == 0 ? -1 : side == 1 ? 1 : 0)) + (j + (side == 2 ? -1 : side == 3 ? 1 : 0)) * N;
-            if (!rampUp(c, q)) continue;
-            double d = side == 0 ? fx : side == 1 ? 1 - fx : side == 2 ? fz : 1 - fz;
-            float u = (float) Mth.clamp(1.0 - d / RAMP, 0.0, 1.0); u = u * u * (3f - 2f * u);
-            up = Math.max(up, u * (S[q] - S[c]) / 8f);
-        }
-        return H + up;
+        float x = (float) Mth.clamp(fx, 0.0, 1.0), z = (float) Mth.clamp(fz, 0.0, 1.0);
+        return Mth.lerp(z, Mth.lerp(x, CUR[0], CUR[1]), Mth.lerp(x, CUR[2], CUR[3]));
     }
     private static float topW(int i, int j, int wx, int wz, double x, double z) { return topAt(i, j, x - wx, z - wz); }
 
@@ -267,12 +273,13 @@ public final class SnowSurface {
      * joined edge the higher side closes any difference with a face, so nothing between columns can stay open.
      */
     private static void roundedColumn(BufferBuilder bb, int wx, int wz, int i, int j, int c, int light) {
+        CUR[0] = hc(i, j, 0, 0); CUR[1] = hc(i, j, 1, 0); CUR[2] = hc(i, j, 0, 1); CUR[3] = hc(i, j, 1, 1);
         float depth = (S[c] - G[c]) / 8f;
         double dcx = wx + 0.5 - camLodX, dcz = wz + 0.5 - camLodZ; boolean far = dcx * dcx + dcz * dcz > 32.0 * 32.0;   // far off a round edge is a pixel or two: plain blocks there
-        float r = far ? 0f : Math.max(0.04f, Math.min(0.32f, depth * 0.85f));
+        float r = far ? 0f : 0.16f;   // the same roundness for every column: neighbours with different depths would end their rounds differently and leave slits between their walls
         boolean e0 = exposed(i, j, c, 0), e1 = exposed(i, j, c, 1), e2 = exposed(i, j, c, 2), e3 = exposed(i, j, c, 3);
         float x0 = wx + (e0 ? r : 0f), x1 = wx + 1 - (e1 ? r : 0f), z0 = wz + (e2 ? r : 0f), z1 = wz + 1 - (e3 ? r : 0f);
-        boolean ramps = false; for (int s = 0; s < 4; s++) { int q = (i + (s == 0 ? -1 : s == 1 ? 1 : 0)) + (j + (s == 2 ? -1 : s == 3 ? 1 : 0)) * N; if (rampUp(c, q)) ramps = true; }
+        boolean ramps = Math.max(Math.max(CUR[0], CUR[1]), Math.max(CUR[2], CUR[3])) - Math.min(Math.min(CUR[0], CUR[1]), Math.min(CUR[2], CUR[3])) > 0.01f;   // a sloping top is drawn in more pieces
         // the top: one quad when flat, a 4 by 4 grid where it ramps
         int G4 = ramps ? 3 : 1;
         for (int b = 0; b < G4; b++) for (int a = 0; a < G4; a++) {
@@ -291,8 +298,8 @@ public final class SnowSurface {
             float ox = side == 0 ? -1 : side == 1 ? 1 : 0, oz = side == 2 ? -1 : side == 3 ? 1 : 0;
             float bottom = wallBottom(i, j, c, side);
             double ax, az, bx, bz;
-            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = z0; bz = z1; }
-            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = x0; bx = x1; }
+            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = z0 - (e2 ? 0.0 : 0.012); bz = z1 + (e3 ? 0.0 : 0.012); }
+            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = x0 - (e0 ? 0.0 : 0.012); bx = x1 + (e1 ? 0.0 : 0.012); }   // (a wall runs on a hair past an end that is not rounded: the walls of two columns meeting at a corner stand a hair apart, and that left a slit)
             boolean sqA = side < 2 ? (!e2 && !exposedNb(i, j, side, 0, -1)) : (!e0 && !exposedNb(i, j, side, -1, 0));
             boolean sqB = side < 2 ? (!e3 && !exposedNb(i, j, side, 0, 1)) : (!e1 && !exposedNb(i, j, side, 1, 0));
             final int LEN = (sqA || sqB || ramps) ? 3 : 1;
@@ -301,7 +308,8 @@ public final class SnowSurface {
                     double u0 = L2 / (double) LEN, u1 = (L2 + 1) / (double) LEN;
                     double px0 = Mth.lerp(u0, ax, bx), pz0 = Mth.lerp(u0, az, bz), px1 = Mth.lerp(u1, ax, bx), pz1 = Mth.lerp(u1, az, bz);
                     float t0 = topW(i, j, wx, wz, px0, pz0), t1 = topW(i, j, wx, wz, px1, pz1);
-                    if (t0 > bottom || t1 > bottom) { vertex(bb, px0, t0, pz0, ox, oz, light, 0f); vertex(bb, px1, t1, pz1, ox, oz, light, 0f); vertex(bb, px1, bottom, pz1, ox, oz, light, 0f); vertex(bb, px0, bottom, pz0, ox, oz, light, 0f); }
+                    double o = 0.012;   // a hair outside the block, so the wall does not fight the faces of the blocks under it
+                    if (t0 > bottom || t1 > bottom) { vertex(bb, px0 + ox * o, t0, pz0 + oz * o, ox, oz, light, 0f); vertex(bb, px1 + ox * o, t1, pz1 + oz * o, ox, oz, light, 0f); vertex(bb, px1 + ox * o, bottom, pz1 + oz * o, ox, oz, light, 0f); vertex(bb, px0 + ox * o, bottom, pz0 + oz * o, ox, oz, light, 0f); }
                 }
                 continue;
             }
@@ -312,8 +320,9 @@ public final class SnowSurface {
                     float th = ss / (float) ARC * Mth.HALF_PI, sp = ss / (float) ARC;
                     double lx = Mth.lerp(u, (float) ax, (float) bx), lz = Mth.lerp(u, (float) az, (float) bz);
                     float H = topW(i, j, wx, wz, lx, lz);
-                    float oR = r * Mth.sin(th), hR = H - r + r * Mth.cos(th);
-                    float oS = sp < 0.5f ? r * sp * 2f : r, hS = sp < 0.5f ? H : H - r * (sp * 2f - 1f);
+                    float rr = r + 0.012f;   // the round and its wall stand a hair outside the block, so they do not fight the faces of the block
+                    float oR = rr * Mth.sin(th), hR = H - r + r * Mth.cos(th);
+                    float oS = sp < 0.5f ? rr * sp * 2f : rr, hS = sp < 0.5f ? H : H - r * (sp * 2f - 1f);
                     float o = Mth.lerp(sq, oR, oS), h = Mth.lerp(sq, hR, hS);
                     float ny = Mth.lerp(sq, Mth.cos(th), sp < 0.5f ? 1f : 0f), nh = Mth.lerp(sq, Mth.sin(th), sp < 0.5f ? 0f : 1f);
                     vertex(bb, lx + ox * o, h, lz + oz * o, ox * nh, oz * nh, light, Math.max(0f, ny));
@@ -323,22 +332,7 @@ public final class SnowSurface {
                 double u0 = L2 / (double) LEN, u1 = (L2 + 1) / (double) LEN;
                 double px0 = Mth.lerp(u0, ax, bx), pz0 = Mth.lerp(u0, az, bz), px1 = Mth.lerp(u1, ax, bx), pz1 = Mth.lerp(u1, az, bz);
                 float t0 = topW(i, j, wx, wz, px0, pz0) - r, t1 = topW(i, j, wx, wz, px1, pz1) - r;
-                if (t0 > bottom || t1 > bottom) { vertex(bb, px0 + ox * r, t0, pz0 + oz * r, ox, oz, light, 0f); vertex(bb, px1 + ox * r, t1, pz1 + oz * r, ox, oz, light, 0f); vertex(bb, px1 + ox * r, bottom, pz1 + oz * r, ox, oz, light, 0f); vertex(bb, px0 + ox * r, bottom, pz0 + oz * r, ox, oz, light, 0f); }
-            }
-        }
-        // joined sides: wherever this top stands above the neighbour's along the shared edge, a face closes the difference (the neighbour does the same the other way round)
-        for (int side = 0; side < 4; side++) {
-            boolean ex = side == 0 ? e0 : side == 1 ? e1 : side == 2 ? e2 : e3; if (ex) continue;
-            int di = side == 0 ? -1 : side == 1 ? 1 : 0, dj = side == 2 ? -1 : side == 3 ? 1 : 0, q = (i + di) + (j + dj) * N;
-            if (!L[q] || K[q] == 0) continue;
-            float ox = di, oz = dj;
-            double ea0x = side == 0 ? wx : side == 1 ? wx + 1 : x0, ea1x = side == 0 ? wx : side == 1 ? wx + 1 : x1, ea0z = side == 2 ? wz : side == 3 ? wz + 1 : z0, ea1z = side == 2 ? wz : side == 3 ? wz + 1 : z1;
-            for (int L2 = 0; L2 < 4; L2++) {
-                double u0 = L2 / 4.0, u1 = (L2 + 1) / 4.0;
-                double px0 = Mth.lerp(u0, ea0x, ea1x), pz0 = Mth.lerp(u0, ea0z, ea1z), px1 = Mth.lerp(u1, ea0x, ea1x), pz1 = Mth.lerp(u1, ea0z, ea1z);
-                float m0 = topW(i, j, wx, wz, px0, pz0), m1 = topW(i, j, wx, wz, px1, pz1);
-                float n0 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px0, pz0) : S[q] / 8f, n1 = K[q] == 1 ? topW(i + di, j + dj, wx + di, wz + dj, px1, pz1) : S[q] / 8f;
-                if (m0 > n0 + 0.002f || m1 > n1 + 0.002f) { vertex(bb, px0, m0, pz0, ox, oz, light, 0f); vertex(bb, px1, m1, pz1, ox, oz, light, 0f); vertex(bb, px1, Math.min(m1, n1), pz1, ox, oz, light, 0f); vertex(bb, px0, Math.min(m0, n0), pz0, ox, oz, light, 0f); }
+                if (t0 > bottom || t1 > bottom) { vertex(bb, px0 + ox * (r + 0.012), t0, pz0 + oz * (r + 0.012), ox, oz, light, 0f); vertex(bb, px1 + ox * (r + 0.012), t1, pz1 + oz * (r + 0.012), ox, oz, light, 0f); vertex(bb, px1 + ox * (r + 0.012), bottom, pz1 + oz * (r + 0.012), ox, oz, light, 0f); vertex(bb, px0 + ox * r, bottom, pz0 + oz * r, ox, oz, light, 0f); }
             }
         }
         // corners where two rolling sides meet: a quarter dome, and its wall
@@ -353,15 +347,15 @@ public final class SnowSurface {
                 double[][] pq = {{p0, q0}, {p1, q0}, {p1, q1}, {p0, q1}};
                 for (double[] v : pq) {
                     float nx = (float) (Math.sin(v[0]) * Math.cos(v[1]) * sx), nz = (float) (Math.sin(v[0]) * Math.sin(v[1]) * sz), ny = (float) Math.cos(v[0]);
-                    vertex(bb, ccx + nx * r, (float) (H - r + ny * r), ccz + nz * r, nx, nz, light, ny);
+                    vertex(bb, ccx + nx * (r + 0.012), (float) (H - r + ny * r), ccz + nz * (r + 0.012), nx, nz, light, ny);
                 }
             }
             float bottom = Math.max(wallBottom(i, j, c, sx < 0 ? 0 : 1), wallBottom(i, j, c, sz < 0 ? 2 : 3)), wt = H - r;
             if (wt > bottom) for (int b = 0; b < ARC; b++) {
                 double q0 = b / (double) ARC * Math.PI / 2, q1 = (b + 1) / (double) ARC * Math.PI / 2;
                 float ax2 = (float) (Math.cos(q0) * sx), az2 = (float) (Math.sin(q0) * sz), bx2 = (float) (Math.cos(q1) * sx), bz2 = (float) (Math.sin(q1) * sz);
-                vertex(bb, ccx + ax2 * r, wt, ccz + az2 * r, ax2, az2, light, 0f); vertex(bb, ccx + bx2 * r, wt, ccz + bz2 * r, bx2, bz2, light, 0f);
-                vertex(bb, ccx + bx2 * r, bottom, ccz + bz2 * r, bx2, bz2, light, 0f); vertex(bb, ccx + ax2 * r, bottom, ccz + az2 * r, ax2, az2, light, 0f);
+                vertex(bb, ccx + ax2 * (r + 0.012), wt, ccz + az2 * (r + 0.012), ax2, az2, light, 0f); vertex(bb, ccx + bx2 * (r + 0.012), wt, ccz + bz2 * (r + 0.012), bx2, bz2, light, 0f);
+                vertex(bb, ccx + bx2 * (r + 0.012), bottom, ccz + bz2 * (r + 0.012), bx2, bz2, light, 0f); vertex(bb, ccx + ax2 * (r + 0.012), bottom, ccz + az2 * (r + 0.012), ax2, az2, light, 0f);
             }
         }
     }

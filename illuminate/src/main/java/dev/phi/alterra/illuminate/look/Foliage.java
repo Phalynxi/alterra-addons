@@ -450,9 +450,13 @@ public final class Foliage {
                                 }
                             }
                             // the water surface seen from below: past about 49 degrees from straight up it is a mirror (of the bottom, bent by the ripples), inside that a bright window to the sky
-                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && v_AlterraView.y > 0.0 && u_AlterraUnder.x > 0.5) {
+                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && (v_AlterraView.y > 0.0 || v_AlterraTop < 0.97) && u_AlterraUnder.x > 0.5) {
                                 vec2 _g = alterraSlope(v_AlterraWaveP * 2.5, u_AlterraSea, u_AlterraSea2, v_AlterraSea) * 0.16;
                                 vec3 _n = normalize(vec3(_g.x, -1.0, _g.y));
+                                if (v_AlterraTop < 0.97) {   // a side of the water seen from inside it (where the water ends at a step or a shore): the same window and mirror, about the face's own normal turned to the viewer
+                                    vec3 _fn = normalize(cross(dFdx(v_AlterraView.xyz), dFdy(v_AlterraView.xyz)));
+                                    _n = normalize((dot(_fn, v_AlterraView.xyz) > 0.0 ? -_fn : _fn) + vec3(_g.x, 0.0, _g.y) * 0.4);
+                                }
                                 vec3 _v = normalize(v_AlterraView.xyz);
                                 float _c = clamp(dot(_v, -_n), 0.0, 1.0);
                                 float _s = sqrt(1.0 - _c * _c) * 1.333;
