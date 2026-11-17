@@ -571,7 +571,7 @@ public final class Foliage {
                                 color.rgb = mix(color.rgb, _env * (color.rgb * 1.2 + 0.04) + _glint, _fr);
                             }
                             // ice keeps its picture and gets a smooth gloss: the sky and the sun or moon mirrored, no ripples
-                            if (v_AlterraView.w > 1.5 && v_AlterraView.y < 0.0) {
+                            if (v_AlterraView.w > 1.5 && v_AlterraView.y < 0.0 && abs(normalize(cross(dFdx(v_AlterraView.xyz), dFdy(v_AlterraView.xyz))).y) > 0.7) {   // (top faces only: the gloss mirrors straight up, which on a side showed as a bright patch that ended at the height of your eyes)
                                 vec3 _v = normalize(v_AlterraView.xyz);
                                 float _fr = 0.04 + 0.96 * pow(1.0 - clamp(-_v.y, 0.0, 1.0), 5.0);
                                 vec3 _r = reflect(_v, vec3(0.0, 1.0, 0.0));

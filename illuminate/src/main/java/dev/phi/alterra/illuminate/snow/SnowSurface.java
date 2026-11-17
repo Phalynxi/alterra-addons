@@ -298,10 +298,11 @@ public final class SnowSurface {
             float ox = side == 0 ? -1 : side == 1 ? 1 : 0, oz = side == 2 ? -1 : side == 3 ? 1 : 0;
             float bottom = wallBottom(i, j, c, side);
             double ax, az, bx, bz;
-            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = z0 - (e2 ? 0.0 : 0.012); bz = z1 + (e3 ? 0.0 : 0.012); }
-            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = x0 - (e0 ? 0.0 : 0.012); bx = x1 + (e1 ? 0.0 : 0.012); }   // (a wall runs on a hair past an end that is not rounded: the walls of two columns meeting at a corner stand a hair apart, and that left a slit)
-            boolean sqA = side < 2 ? (!e2 && !exposedNb(i, j, side, 0, -1)) : (!e0 && !exposedNb(i, j, side, -1, 0));
-            boolean sqB = side < 2 ? (!e3 && !exposedNb(i, j, side, 0, 1)) : (!e1 && !exposedNb(i, j, side, 1, 0));
+            // every wall and lip runs the full width of its side (and a hair past, so neighbouring walls overlap): at a corner two lips simply cross, which makes a mitred corner with no piece to open between them
+            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = wz - 0.012; bz = wz + 1 + 0.012; }
+            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = wx - 0.012; bx = wx + 1 + 0.012; }
+            boolean sqA = false;
+            boolean sqB = false;
             final int LEN = (sqA || sqB || ramps) ? 3 : 1;
             if (r <= 0f) {
                 for (int L2 = 0; L2 < LEN; L2++) {
@@ -346,7 +347,7 @@ public final class SnowSurface {
         // corners where two rolling sides meet: a quarter dome, and its wall
         boolean[][] pairs = {{e0, e2}, {e1, e2}, {e1, e3}, {e0, e3}};
         for (int k = 0; k < 4; k++) {
-            if (!pairs[k][0] || !pairs[k][1] || r <= 0f) continue;
+            if (true || !pairs[k][0] || !pairs[k][1] || r <= 0f) continue;   // (no rounded corner piece: the lips of the two sides cross in a mitre)
             float sx = (k == 0 || k == 3) ? -1 : 1, sz = (k == 0 || k == 1) ? -1 : 1;
             double ccx = sx < 0 ? wx + r : wx + 1 - r, ccz = sz < 0 ? wz + r : wz + 1 - r;
             float H = topW(i, j, wx, wz, ccx, ccz);
