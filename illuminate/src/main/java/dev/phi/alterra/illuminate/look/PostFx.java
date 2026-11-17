@@ -105,6 +105,8 @@ public final class PostFx {
             uniform vec2 u_On2;   // clouds, underwater fog     // thunder, 0 to 1
             uniform sampler2DShadow u_ShadowMap;   // the world seen from the sun (or moon): depth
             uniform mat4 u_ShadowVP; uniform vec3 u_ShadowCam; uniform float u_ShadowOn;
+            uniform vec4 u_GlowCol;     // the sunrise or sunset glow of the sky: colour and strength
+            uniform vec3 u_SunTrue;     // where the sun really is (even after it has set)
             uniform float u_InCloud;   // how deep inside a cloud the camera is (0 to 1)
             uniform float u_Surf;      // how far the water surface is above the camera when under water (blocks)
             uniform vec3 u_WaterFog;   // the colour of the water around a diver (UnderwaterColour)
@@ -367,6 +369,7 @@ public final class PostFx {
                 // haze: the air between you and far things, warm towards the sun, the sky's own colour away from it
                 if (!sky && u_Params.z < 0.5 && u_On.w > 0.5) {
                     vec3 hz = mix(u_Horizon, vec3(1.0, 0.86, 0.66) * (0.6 + 0.6 * day), pow(toSun, 14.0) * u_Sun.w * 0.5);
+                    { vec2 dh = normalize(dir.xz + vec2(1e-4)), sh2 = normalize(u_SunTrue.xz + vec2(1e-4)); hz = mix(hz, u_GlowCol.rgb * (0.85 + 0.3 * u_GlowCol.a), clamp(u_GlowCol.a * (0.10 + 0.90 * pow(max(dot(dh, sh2), 0.0), 1.6)), 0.0, 0.92)); }   // the sunset colour belongs to the side of the sky where the sun went down
                     float a = (1.0 - exp(-max(dist - 48.0, 0.0) * (0.0012 + 0.004 * rain))) * (0.45 + 0.35 * rain);   // only far away
                     c = mix(c, hz, a * 0.2);
                 }
@@ -491,6 +494,11 @@ public final class PostFx {
                     float up = clamp(dir.y, 0.0, 1.0);
                     c = mix(c, c * vec3(0.78, 0.9, 1.08), smoothstep(0.05, 0.6, up) * day * (1.0 - rain) * (1.0 - pow(toSun, 12.0)));
                 }
+                if (u_Params.z < 0.5 && day > 0.2 && u_Sun.w > 0.02) {   // as the sun sinks it reddens, and so does the light on everything (and goes back as the day comes)
+                    float kSet = (1.0 - smoothstep(0.0, 0.34, u_Sun.y)) * smoothstep(-0.02, 0.06, u_Sun.y + 0.04);
+                    if (sky) c *= mix(vec3(1.0), mix(vec3(1.0, 0.80, 0.52), vec3(1.0, 0.36, 0.14), kSet), smoothstep(0.9983, 0.9996, toSun) * kSet);   // the disc itself
+                    c *= mix(vec3(1.0), vec3(1.05, 0.91, 0.78), kSet * 0.65);   // golden light over the land
+                }
                 if (u_On.x < 0.5) { frag = vec4(clamp(c, 0.0, 1.0), 1.0); return; }
                 c += u_Flash * vec3(0.50, 0.56, 0.75) * (sky ? 0.55 : 0.35 + 0.35 * exp(-dist * 0.012)) * 1.0;   // the flash lights the sky and the land, the near land most
                 // grade: neutral brightness (no lift of the midtones), a gentle contrast curve, colour almost as it is, warm light and slightly cool shadows, a faint vignette
@@ -576,7 +584,7 @@ public final class PostFx {
             GL20C.glUniformMatrix3fv(u(p, "u_InvView"), false, invView.get(m9));
             GL20C.glUniform4f(u(p, "u_Sun"), fsx / flen, fsy / flen, 0f, fstrength * (1f - 0.85f * frain));
             GL20C.glUniform4f(u(p, "u_SunScreen"), fssx, fssy, 0f, ffront && fssx > -0.3f && fssx < 1.3f && fssy > -0.3f && fssy < 1.3f && fsun ? 1f : 0f);
-            GL20C.glUniform3f(u(p, "u_Horizon"), (float) Math.min(1, skyc.x * 0.8 + 0.16 * fday), (float) Math.min(1, skyc.y * 0.8 + 0.18 * fday), (float) Math.min(1, skyc.z * 0.8 + 0.20 * fday));
+            float[] hzg = SkyGlow.horizon(level, skyc, fday, pt); GL20C.glUniform3f(u(p, "u_Horizon"), hzg[0], hzg[1], hzg[2]);
             GL20C.glUniform3f(u(p, "u_Zenith"), (float) skyc.x, (float) skyc.y, (float) skyc.z);
             GL20C.glUniform4f(u(p, "u_Params"), fday, frain, funder ? 1f : 0f, PrismApi.clock().seconds());
             GL20C.glUniform1f(u(p, "u_Flash"), flashNow(level));
@@ -589,6 +597,8 @@ public final class PostFx {
             GL20C.glUniform3f(u(p, "u_WaterFog"), wf[0], wf[1], wf[2]);
             GL20C.glUniform1f(u(p, "u_Surf"), Foliage.surfaceAbove);
             GL20C.glUniform1f(u(p, "u_InCloud"), dev.phi.alterra.illuminate.clouds.SkyClouds.inside());
+            float[] glw = SkyGlow.glow(level, pt), stu = SkyGlow.sunTrue(level, pt);
+            GL20C.glUniform4f(u(p, "u_GlowCol"), glw[0], glw[1], glw[2], glw[3]); GL20C.glUniform3f(u(p, "u_SunTrue"), stu[0], stu[1], stu[2]);
             var cpw = cam.getPosition(); GL20C.glUniform3f(u(p, "u_CamPos"), (float) (cpw.x % 4096.0), (float) cpw.y, (float) (cpw.z % 4096.0));
             // the clouds: where vanilla would put them
             float ch = level.effects().getCloudHeight();

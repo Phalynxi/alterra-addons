@@ -94,9 +94,10 @@ public final class SkyClouds {
         float t = (float) (dayTime % 24000L);
         if (t > 18000f) t = 36000f - t;   // the morning is the evening run backwards
         else if (t < 1000f) t = 36000f - (t + 24000f);
-        float warm = smooth(11500f, 12500f, t) * (1f - smooth(13800f, 14800f, t));
+        float warm = smooth(11500f, 12500f, t) * (1f - smooth(13500f, 14300f, t));
         float red = smooth(12000f, 13000f, t);
-        return new float[] {warm, red};
+        float dim = 1f - 0.82f * smooth(12700f, 14000f, t);   // the red clouds darken as the light goes: dark rose, then night
+        return new float[] {warm, red, dim};
     }
 
     /** How deep inside a cloud the camera is (0 to 1, blended slowly): the scene pass draws the mist from it. */
@@ -183,7 +184,7 @@ public final class SkyClouds {
         double a = lv.getTimeOfDay(pt) * Math.PI * 2; var sun = new Vector3f((float) -Math.sin(a), (float) Math.cos(a), 0f);
         float day = smooth(-0.10f, 0.35f, sun.y);
         var cc = lv.getCloudColor(pt); var sky = lv.getSkyColor(cam, pt);
-        float[] hz = {(float) Math.min(1, sky.x * 0.8 + 0.16), (float) Math.min(1, sky.y * 0.8 + 0.18), (float) Math.min(1, sky.z * 0.8 + 0.20)};
+        float[] hz = dev.phi.alterra.illuminate.look.SkyGlow.horizon(lv, sky, 1f, cpt);
         float fade = 1f - Math.min(1f, PrismApi.storm().fog() * 1.15f);   // hidden in a sandstorm or blizzard
         Matrix4f base = new Matrix4f(e.getModelViewMatrix()), proj = e.getProjectionMatrix();
         float far = mc.gameRenderer.getDepthFar(), rmax = Math.max(64f, far * 0.92f);   // from the renderer, not the matrix: view bobbing is folded into the projection matrix and would swing it
@@ -193,8 +194,9 @@ public final class SkyClouds {
         RenderSystem.depthMask(false);   // puffs are soft: they do not write depth
         var ru = sh.getUniform("RMax"); if (ru != null) ru.set(rmax);
         uniform3(sh, "SunW", sun.x, sun.y, sun.z);
+        { float[] glw = dev.phi.alterra.illuminate.look.SkyGlow.glow(lv, cpt); var gu = sh.getUniform("GlowCol"); if (gu != null) gu.set(glw[0], glw[1], glw[2], glw[3]); }
         uniform3(sh, "CloudColor", (float) cc.x, (float) cc.y, (float) cc.z); uniform3(sh, "Horizon", hz[0], hz[1], hz[2]);
-        var pu = sh.getUniform("Params"); if (pu != null) { float[] tw = twilight(lv.getDayTime()); pu.set(day, tw[0], tw[1], 0f); }
+        var pu = sh.getUniform("Params"); if (pu != null) { float[] tw = twilight(lv.getDayTime()); pu.set(day, tw[0], tw[1], tw[2]); }
         var main = mc.getMainRenderTarget();
         if (style == 1) {
             RenderSystem.enableBlend(); RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);   // premultiplied, straight into the scene at full size

@@ -3,6 +3,7 @@
 uniform vec3 SunW;        // the sun's direction (world axes)
 uniform vec3 CloudColor;
 uniform vec3 Horizon;
+uniform vec4 GlowCol;     // the game's sunset or sunrise glow: colour and strength
 uniform float Fade;       // 1, less in a sandstorm or blizzard: the clouds are hidden in its fog
 uniform vec4 Params;      // x: daylight 0..1
 
@@ -45,16 +46,19 @@ void main() {
     vec3 under = vec3(0.55, 0.62, 0.74) * (0.55 + 0.45 * day);
     vec3 sunny = CloudColor * (0.95 + 0.1 * day);
     vec3 col = mix(under, sunny, smoothstep(0.12, 0.95, lit * 0.6 + shade * 0.5));
-    float twI = Params.y, twR = Params.z;   // sunset or sunrise from the clock: how strong, and how red (gold at first, orange, then red)
-    vec3 litTw = mix(mix(vec3(1.0, 0.80, 0.40), vec3(1.0, 0.52, 0.20), smoothstep(0.0, 0.5, twR)), vec3(0.96, 0.24, 0.12), smoothstep(0.45, 1.0, twR));
-    vec3 shTw = mix(vec3(0.78, 0.52, 0.38), vec3(0.58, 0.20, 0.30), twR);
-    vec3 twCol = mix(shTw, litTw, lit) * (0.62 + 0.38 * twI);
+    vec2 dirH = normalize(wpos.xz + vec2(1e-4)), sunH = normalize(SunW.xz + vec2(1e-4));
+    float sideW = pow(max(dot(dirH, sunH), 0.0), 1.5);   // 1 towards the sun, 0 away from it: the sunset colours belong to the side of the sky the sun is on
+    float twI = Params.y * (0.22 + 0.78 * sideW), twR = Params.z * (0.35 + 0.65 * sideW);   // sunset or sunrise from the clock: how strong, and how red (gold at first, orange, then red)
+    vec3 litTw = mix(mix(vec3(1.0, 0.80, 0.40), vec3(1.0, 0.52, 0.20), smoothstep(0.0, 0.5, twR)), vec3(0.86, 0.30, 0.20), smoothstep(0.45, 1.0, twR));
+    vec3 shTw = mix(vec3(0.78, 0.52, 0.38), vec3(0.50, 0.24, 0.32), twR);
+    vec3 twCol = mix(shTw, litTw, lit) * (0.62 + 0.38 * twI) * Params.w;
     col = mix(col, twCol * (0.74 + 0.28 * lit), twI * (0.58 + 0.42 * lit) * 0.92);
     col *= 1.0 - 0.62 * info.y;   // a storm cloud is dark
     float far = smoothstep(500.0, 9000.0, dist);   // aerial perspective: far clouds take on the haze
     vec3 hz = Horizon * (0.6 + 0.4 * day);
     vec3 hzTw = mix(vec3(1.0, 0.74, 0.46), vec3(0.93, 0.26, 0.17), smoothstep(0.2, 1.0, twR)) * (0.55 + 0.45 * twI);   // at sunset and sunrise the far haze (the band of distant clouds) is the warm colour of the horizon, not blue turning black
     hz = mix(hz, hzTw, twI * 0.85);
+    hz = mix(hz, GlowCol.rgb * (0.85 + 0.3 * GlowCol.a), clamp(GlowCol.a * (0.10 + 0.90 * sideW), 0.0, 0.9));
     col = mix(col, hz, far * 0.9);
     float alpha = Fade * nearFade * body * info.w * (1.0 - smoothstep(8000.0, 15000.0, dist));
     if (alpha < 0.01) discard;

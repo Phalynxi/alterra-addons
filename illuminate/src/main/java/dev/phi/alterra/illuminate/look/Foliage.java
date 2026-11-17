@@ -393,7 +393,15 @@ public final class Foliage {
                                         if (abs((v_AlterraPos.y + u_AlterraRainInfo.z) - (_tx.r * 512.0 - 64.0)) < 0.3) {   // on top of the column: how much rain water has gathered here (blended between columns, so puddles have soft shapes)
                                             vec2 _pw0 = v_AlterraPos.xz + u_AlterraCam.xz;
                                             vec2 _wuv = (_rc + 0.4 * vec2(sin(dot(_pw0, vec2(0.93, 0.61)) + 0.3), cos(dot(_pw0, vec2(0.71, -0.84)) + 1.1)) + 0.15 * vec2(sin(dot(_pw0, vec2(2.3, 1.7))), cos(dot(_pw0, vec2(-1.9, 2.5))))) / 128.0;   // the look-up is bent a little, so edges are not the block grid
-                                            vec2 _wv = texture(u_AlterraRainMap, _wuv).ba * 0.4 + 0.15 * (texture(u_AlterraRainMap, _wuv + vec2(0.65, 0.0) / 128.0).ba + texture(u_AlterraRainMap, _wuv - vec2(0.65, 0.0) / 128.0).ba + texture(u_AlterraRainMap, _wuv + vec2(0.0, 0.65) / 128.0).ba + texture(u_AlterraRainMap, _wuv - vec2(0.0, 0.65) / 128.0).ba);   // smooth between columns and blurred over about a block and a half
+                                            vec2 _cf = _wuv * 128.0 - 0.5; ivec2 _c0 = ivec2(floor(_cf)); vec2 _bf = fract(_cf); _bf = _bf * _bf * (3.0 - 2.0 * _bf);
+                                            vec2 _acc = vec2(0.0); float _wsum = 0.0, _hs = v_AlterraPos.y + u_AlterraRainInfo.z;
+                                            for (int _j = 0; _j < 2; _j++) for (int _i = 0; _i < 2; _i++) {   // smooth between the four columns round this point, but only those at the same surface height: next to a wall the taller column holds no water, and mixing it in made puddles fade out before they reached the wall
+                                                vec4 _t4 = texelFetch(u_AlterraRainMap, clamp(_c0 + ivec2(_i, _j), ivec2(0), ivec2(127)), 0);
+                                                float _same = 1.0 - step(0.3, abs(_hs - (_t4.r * 512.0 - 64.0)));
+                                                float _wgt = mix(1.0 - _bf.x, _bf.x, float(_i)) * mix(1.0 - _bf.y, _bf.y, float(_j)) * _same;
+                                                _acc += _t4.ba * _wgt; _wsum += _wgt;
+                                            }
+                                            vec2 _wv = _wsum > 0.001 ? _acc / _wsum : _tx.ba;
                                             float _rf = clamp(u_AlterraRainInfo.w - 1.0, 0.0, 1.0); _wl = mix(_wv.y, _wv.x, _rf) * 0.4;   // from what was shown to what is there now: puddles fill and dry smoothly between the map's updates
                                             _hasW = true;
                                             vec2 _fc = fract(_rc); ivec2 _ic = ivec2(floor(_rc)); float _h0 = _tx.r * 512.0 - 64.0;   // foam only where the puddle touches a block: a neighbouring column that stands up at least half a block above this one
@@ -501,9 +509,14 @@ public final class Foliage {
                                 _sky += vec3(1.0, 0.82, 0.55) * pow(_sd, 6.0) * 0.18 * u_AlterraSky.w;
                                 _sky = max(_sky, vec3(0.035, 0.055, 0.095));   // at night the mirror still shows a faint moonlit sky   // the glow of the sky around the sun, in the mirror too
                                 float _gl = pow(_sd, 700.0) * 3.0 + pow(_sd, 70.0) * 0.30 + pow(_sd, 14.0) * 0.05;   // sun or moon: sharp sparkles, a wider shimmer and a faint broad path
-                                float _twl = exp(-pow((u_AlterraSky.y - 0.03) / 0.22, 2.0)) * smoothstep(0.0, 0.3, u_AlterraSky.w);   // sunrise or sunset
-                                _gl += (pow(_sd, 4.0) * 0.30 + pow(_sd, 26.0) * 0.55) * _twl;   // a wide glowing path of the sun across the water
-                                _sky = mix(_sky, _sky * vec3(1.25, 0.80, 0.62) + vec3(0.16, 0.06, 0.02), _twl * (0.30 + 0.70 * pow(_sd, 2.0)));   // the sky in the water turns warm
+                                float _ga = abs(u_AlterraHorizon.w); float _sg = step(0.0, u_AlterraHorizon.w) * 2.0 - 1.0; vec3 _sdir = u_AlterraSky.xyz * _sg;   // the sunset glow's strength, and where the sun really is (u_AlterraSky turns into the moon once the sun is down)
+                                float _twl = smoothstep(0.04, 0.5, _ga);   // sunrise or sunset
+                                float _sdt = max(dot(_r, _sdir), 0.0);
+                                _gl += (pow(_sdt, 4.0) * 0.30 + pow(_sdt, 26.0) * 0.55) * _twl * step(0.0, u_AlterraHorizon.w);   // a wide glowing path of the sun across the water while it is up
+                                vec2 _rh = normalize(_r.xz + vec2(1e-4)), _sh = normalize(_sdir.xz + vec2(1e-4));
+                                float _gw = pow(max(dot(_rh, _sh), 0.0), 1.6) * exp(-max(_r.y, 0.0) * 3.0);   // the glow belongs to the side of the sky where the sun is, and hugs the horizon
+                                vec3 _gc = vec3(0.70 + 0.30 * _ga, 0.20 + 0.70 * _ga * _ga, 0.20);
+                                _sky = mix(_sky, _gc * (0.80 + 0.40 * _ga), clamp(_ga * (0.12 + 0.88 * _gw), 0.0, 0.95));   // the sky in the water turns the colour of the sunset, there, and only a little on the far side
                                 vec3 _hue = v_Color.rgb;
                                 bool _scene = u_AlterraScreen.z > 0.5;
                                 float _lightvFoam = clamp(max(max(_hue.r, _hue.g), _hue.b) * 1.1, 0.2, 1.0);
@@ -606,6 +619,7 @@ public final class Foliage {
                                 }
                             }
                         """);
+            if (System.getProperty("alterra.dumpShaders") != null) { try { java.nio.file.Files.writeString(java.nio.file.Path.of(System.getProperty("alterra.dumpShaders")), sodiumFragment); } catch (java.io.IOException ex) { LOG.warn("could not dump the shader: {}", ex.toString()); } }   // (a test switch)
             return sodiumFragment;
         } catch (Throwable t) { LOG.warn("Alterra Weather: no shore foam with Sodium: {}", t.toString()); return null; }
     }
@@ -870,7 +884,7 @@ public final class Foliage {
         GL20C.glUniform4f(sky, sx / len, sy / len, 0f, strength + 0.0001f);
         var sc = level.getSkyColor(cam.getPosition(), pt); float day = Math.max(0.1f, Math.min(1f, sun ? sy / len * 1.4f + 0.3f : 0.1f));
         GL20C.glUniform4f(zenith, (float) sc.x, (float) sc.y, (float) sc.z, rain);
-        GL20C.glUniform4f(horizon, (float) Math.min(1, sc.x * 0.8 + 0.16 * day), (float) Math.min(1, sc.y * 0.8 + 0.18 * day), (float) Math.min(1, sc.z * 0.8 + 0.20 * day), 1f);
+        float[] hzc = SkyGlow.horizon(level, sc, day, pt), gl = SkyGlow.glow(level, pt); GL20C.glUniform4f(horizon, hzc[0], hzc[1], hzc[2], (sun ? 1f : -1f) * Math.max(0.0001f, gl[3] * 0.9f));   // w: the sunset glow's strength, negative when the direction in u_AlterraSky is the moon's
     }
 
     /** Whether the water shader is in use (Sodium's block shaders were patched): then the rain rings on water are drawn by it. */
