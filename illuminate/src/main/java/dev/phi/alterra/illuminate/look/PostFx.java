@@ -109,12 +109,12 @@ public final class PostFx {
                 return texelFetch(u_Height, ivec2(floor(c)), 0).r * 65535.0 - 64.0 - u_HeightInfo.z;
             }
             float sunlit(vec3 p, float n) {   // 1 in the sun, 0 in the shade of trees, overhangs or terrain between this point and the sun; several rays spread a little: soft edges
-                float lit = 0.0;
+                float lit = 0.0, jit = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715)))) - 0.5;
                 for (int r = 0; r < 4; r++) {
                     if (float(r) >= n) break;
                     vec3 off = vec3(cos(float(r) * 2.4), 0.0, sin(float(r) * 2.4)) * 0.45 * float(r > 0);
                     float hit = 0.0;
-                    for (int k = 1; k <= 6; k++) { vec3 q = p + off + u_Sun.xyz * (float(k) * 2.2); if (q.y < topAt(q) - 0.05) { hit = 1.0; break; } }
+                    for (int k = 1; k <= 6; k++) { vec3 q = p + off + u_Sun.xyz * ((float(k) + jit) * 2.2); if (q.y < topAt(q) - (0.12 + 0.05 * float(k))) { hit = 1.0; break; } }   // (the start of each ray is moved a little per pixel and the margin grows with the distance: terrain steps give a fine grain, not stripes)
                     lit += 1.0 - hit;
                 }
                 return lit / max(n, 1.0);

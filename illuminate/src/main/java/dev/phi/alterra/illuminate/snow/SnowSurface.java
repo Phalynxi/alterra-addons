@@ -328,6 +328,14 @@ public final class SnowSurface {
                     vertex(bb, lx + ox * o, h, lz + oz * o, ox * nh, oz * nh, light, Math.max(0f, ny));
                 }
             }
+            {   // a plain backing wall just behind the rounded one, a little longer at both ends: wherever two pieces of the visible wall do not quite meet, snow shows through the slit, never the ground or the sky
+                double bdx = bx - ax, bdz = bz - az, blen = Math.sqrt(bdx * bdx + bdz * bdz);
+                if (blen > 1e-6) {
+                    double ux = bdx / blen * 0.04, uz = bdz / blen * 0.04, qx0 = ax - ux, qz0 = az - uz, qx1 = bx + ux, qz1 = bz + uz, off = r + 0.004;
+                    float tb0 = topW(i, j, wx, wz, ax, az) - r - 0.002f, tb1 = topW(i, j, wx, wz, bx, bz) - r - 0.002f;
+                    if (tb0 > bottom || tb1 > bottom) { vertex(bb, qx0 + ox * off, tb0, qz0 + oz * off, ox, oz, light, 0f); vertex(bb, qx1 + ox * off, tb1, qz1 + oz * off, ox, oz, light, 0f); vertex(bb, qx1 + ox * off, bottom, qz1 + oz * off, ox, oz, light, 0f); vertex(bb, qx0 + ox * off, bottom, qz0 + oz * off, ox, oz, light, 0f); }
+                }
+            }
             for (int L2 = 0; L2 < LEN; L2++) {   // the wall below the round
                 double u0 = L2 / (double) LEN, u1 = (L2 + 1) / (double) LEN;
                 double px0 = Mth.lerp(u0, ax, bx), pz0 = Mth.lerp(u0, az, bz), px1 = Mth.lerp(u1, ax, bx), pz1 = Mth.lerp(u1, az, bz);
