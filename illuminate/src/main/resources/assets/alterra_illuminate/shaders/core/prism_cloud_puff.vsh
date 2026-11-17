@@ -25,10 +25,7 @@ void main() {
     nearFade = smoothstep(0.55 * R, 1.35 * R, dist);   // a puff the camera is at or inside fades away (the in-cloud fog takes over)
     float k2 = min(1.0, RMax / max(dist, 1.0));
     vc.xyz *= k2;
-    // the card is the puff's own outline seen from here (a flat puff is a wide, low card, not a big square): its extent along the screen's x and y from the ellipsoid's radii and where world-up points on screen
-    vec3 wu = mat3(ModelViewMat) * vec3(0.0, 1.0, 0.0);
-    float ex = sqrt(UV0.x * UV0.x * (1.0 - wu.x * wu.x) + UV0.y * UV0.y * wu.x * wu.x), ey = sqrt(UV0.x * UV0.x * (1.0 - wu.y * wu.y) + UV0.y * UV0.y * wu.y * wu.y);
-    vec4 v = vc; v.xy += corner * vec2(ex, ey) * k2 * 1.3;   // (a margin for the lumps on the rim)
+    vec4 v = vc; v.xy += corner * R * k2 * 1.35;   // a card big enough to hold the whole puff, lumps included, from any side (a tighter one cut clouds into rectangles that turned with the view)
     gl_Position = ProjMat * v;
     mat3 inv = transpose(mat3(ModelViewMat));    // view axes back to world axes (the model-view matrix only turns and moves)
     wpos = inv * v.xyz; centre = inv * vc.xyz; radii = UV0 * k2;

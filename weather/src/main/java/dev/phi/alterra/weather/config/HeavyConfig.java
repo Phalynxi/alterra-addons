@@ -17,7 +17,7 @@ public final class HeavyConfig {
         WIND_MOVES_LOOSE = b.comment("Sandstorms lift loose sand off exposed edges and drop it downwind as dunes, blizzards carry snow downwind into drifts.").define("windMovesLoose", true);
         SNOW_TRACKS = b.comment("Walking on layers of snow presses them down: players and mobs leave real tracks in it.").define("snowTracks", true);
         CLOUD_RAIN = b.comment("Rain and snow fall only under thick clouds (everyone sees the same clouds; crops, fire and the rest follow them too). Rain brings more cloud and a thunderstorm nearly closes the sky.").define("cloudRain", true);
-        FINITE_WATER = b.comment("Water is a real amount: it runs off, levels out and fills things up slowly, never makes endless sources, dries up and boils. The sea and rivers stay endless below sea level.").define("finiteWater", true);
+        FINITE_WATER = b.comment("Water is a real amount: it runs off, levels out and fills things up slowly, never makes endless sources, dries up and boils. The sea and rivers stay endless below sea level. Off by default: water flows as in the game.").define("finiteWater", false);
         LIGHTNING = b.comment("Heavy thunderstorms strike lightning around the players.").define("lightning", true);
         LIGHTNING_RATE = b.comment("How often. 1 is about one strike every few seconds near each player.").defineInRange("lightningRate", 1.0, 0.1, 4.0);
         REAL_BOLTS = b.comment("What share of the strikes are real (set fires, hurt things). The rest are for show.").defineInRange("realBolts", 0.15, 0.0, 1.0);
