@@ -6,7 +6,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 repositories { mavenLocal() }   // Prism Lib is published here by its own repo (./gradlew publishToMavenLocal); JitPack later
 dependencies {
     compileOnly project(':api')
-    compileOnly 'dev.phi:prismlib:0.1.0'
+    compileOnly 'dev.phi:prismlib:1.0'
 }
 neoForge {
     version = neo_version
