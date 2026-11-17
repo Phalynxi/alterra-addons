@@ -66,11 +66,44 @@ public final class FlowMap {
         moves.put(key, new float[] {Math.max(-1.5f, Math.min(1.5f, left + d)), t});
     }
 
+    // Water under a solid ceiling: a full block of water draws its top at 8/9 and a strip of air shows under the ceiling. Where that water joins other water its top is lifted to the ceiling
+    // (a lone block of water under a ceiling stays as it is). Found one chunk per tick, only in sections that hold water.
+    private static final it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<it.unimi.dsi.fastutil.longs.LongArrayList> ceilByChunk = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>();
+    private static int scanCursor;
+    public static synchronized void scanCeilings(net.minecraft.client.multiplayer.ClientLevel level, int camX, int camZ) {
+        final int R = 3, side = 2 * R + 1, ccx = camX >> 4, ccz = camZ >> 4;
+        int i = scanCursor++ % (side * side);
+        if (i == 0) ceilByChunk.keySet().removeIf(k -> Math.abs(net.minecraft.world.level.ChunkPos.getX(k) - ccx) > R || Math.abs(net.minecraft.world.level.ChunkPos.getZ(k) - ccz) > R);
+        int chx = ccx - R + i % side, chz = ccz - R + i / side;
+        long ck = net.minecraft.world.level.ChunkPos.asLong(chx, chz);
+        var chunk = level.getChunkSource().getChunkNow(chx, chz);
+        if (chunk == null) { ceilByChunk.remove(ck); return; }
+        var found = new it.unimi.dsi.fastutil.longs.LongArrayList();
+        var p = new BlockPos.MutableBlockPos(); var q = new BlockPos.MutableBlockPos();
+        var secs = chunk.getSections();
+        for (int si = 0; si < secs.length; si++) {
+            var sec = secs[si];
+            if (sec.hasOnlyAir() || !sec.maybeHas(s -> s.getFluidState().is(net.minecraft.tags.FluidTags.WATER))) continue;
+            int y0 = (level.getMinSection() + si) << 4;
+            for (int ly = 0; ly < 16; ly++) for (int lz = 0; lz < 16; lz++) for (int lx = 0; lx < 16; lx++) {
+                FluidState fs = sec.getBlockState(lx, ly, lz).getFluidState();
+                if (!fs.is(net.minecraft.tags.FluidTags.WATER) || fs.getOwnHeight() < 0.88f) continue;
+                p.set((chx << 4) + lx, y0 + ly, (chz << 4) + lz);
+                BlockState up = level.getBlockState(q.set(p).move(0, 1, 0));
+                if (!up.getFluidState().isEmpty() || !up.isFaceSturdy(level, q, net.minecraft.core.Direction.DOWN)) continue;
+                boolean joined = false;
+                for (net.minecraft.core.Direction d : net.minecraft.core.Direction.Plane.HORIZONTAL) if (level.getFluidState(q.set(p).move(d)).is(net.minecraft.tags.FluidTags.WATER)) { joined = true; break; }
+                if (joined) found.add((((long) p.getX()) << 32) ^ (p.getZ() & 0xffffffffL));
+            }
+        }
+        if (found.isEmpty()) ceilByChunk.remove(ck); else ceilByChunk.put(ck, found);
+    }
+
     public static int texture() { return tex; }
 
     /** Every frame: the offsets around the camera into the map. */
     public static synchronized void upload(double camX, double camZ) {
-        if (moves.isEmpty() && sim.isEmpty() && !live) return;
+        if (moves.isEmpty() && sim.isEmpty() && ceilByChunk.isEmpty() && !live) return;
         float t = now();
         moves.values().removeIf(m -> t - m[1] > TIME);
         int ox = (int) Math.floor(camX) - SIZE / 2, oz = (int) Math.floor(camZ) - SIZE / 2;
@@ -108,6 +141,11 @@ public final class FlowMap {
             int x = (int) (e.getLongKey() >> 32) - ox, z = (int) e.getLongKey() - oz;
             if (x < 0 || z < 0 || x >= SIZE || z >= SIZE) continue;
             if (buf.get(x + z * SIZE) == 0f) { buf.put(x + z * SIZE, offset(e.getValue(), t)); any = true; }   // the simulation's own height wins where it has one
+        }
+        for (var lst : ceilByChunk.values()) for (int j = 0; j < lst.size(); j++) {   // the strip of air under a ceiling is closed
+            long k = lst.getLong(j); int x = (int) (k >> 32) - ox, z = (int) k - oz;
+            if (x < 0 || z < 0 || x >= SIZE || z >= SIZE) continue;
+            if (buf.get(x + z * SIZE) == 0f) { buf.put(x + z * SIZE, 1f / 9f); any = true; }
         }
         buf.rewind();
         boolean fresh = tex == 0;

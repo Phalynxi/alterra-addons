@@ -459,9 +459,10 @@ public final class Foliage {
                                 vec3 _deep = mix(v_Color.rgb, vec3(0.30, 0.75, 0.80), 0.6) * vec3(0.30, 0.55, 0.60) * (0.35 + 0.65 * u_AlterraSky.w);   // clear water lit from above: the biome tint turned turquoise (the plain tint is a strong blue, which made it navy), darker only at night
                                 vec3 _mirror = _deep * 0.95 * (0.3 + 0.7 * u_AlterraSky.w) + _deep * 0.25;   // a calm mirror: no bright moving pattern
                                 vec3 _tr = refract(_v, _n, 1.333);
-                                vec3 _window = (mix(u_AlterraHorizon.rgb, u_AlterraZenith.rgb, clamp(_tr.y * 1.5, 0.0, 1.0)) * 1.25 + 0.08) * vec3(0.78, 0.95, 1.0) + vec3(1.0, 0.96, 0.85) * pow(max(dot(_tr, u_AlterraSky.xyz), 0.0), 120.0) * 2.5 * u_AlterraSky.w;
-                                float _edge = smoothstep(0.93, 1.0, _s);   // Snell's window: the sky squeezed into a circle about 97 degrees across, a crisp edge, and a mirror beyond it
-                                color.rgb = mix(_window, _mirror, _edge) + vec3(0.55, 0.8, 0.9) * (smoothstep(0.84, 0.97, _s) - _edge) * 0.35;
+                                vec3 _window = (mix(u_AlterraHorizon.rgb, u_AlterraZenith.rgb, clamp(_tr.y * 1.5, 0.0, 1.0)) * 1.0 + 0.05) * vec3(0.78, 0.95, 1.0) + vec3(1.0, 0.96, 0.85) * pow(max(dot(_tr, u_AlterraSky.xyz), 0.0), 120.0) * 2.5 * u_AlterraSky.w;
+                                _window *= mix(1.0, 0.45, smoothstep(0.25, 0.95, _s));   // the light thins out towards the rim
+                                float _edge = smoothstep(0.78, 1.0, _s);   // Snell's window: the sky squeezed into a circle about 97 degrees across, its edge spread wide into the mirror beyond it
+                                color.rgb = mix(_window, _mirror, _edge) + vec3(0.55, 0.8, 0.9) * (smoothstep(0.6, 0.97, _s) - _edge) * 0.2;
                                 color.a = 1.0;
                             }
                             // the water look: ripple normals worked out from the position (no picture), the sky and the sun or moon mirrored by a Schlick fresnel, and a glint

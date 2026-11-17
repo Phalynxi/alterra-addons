@@ -122,6 +122,7 @@ public final class WaterFx {
 
     private static void render(RenderLevelStageEvent e, Minecraft mc, net.minecraft.client.multiplayer.ClientLevel level, net.minecraft.client.player.LocalPlayer player, boolean before) {
         long now = level.getGameTime();
+        if (Foliage.shaderWater() && IlluminateConfig.get(IlluminateConfig.SMOOTH_WATER)) FlowMap.scanCeilings(level, player.getBlockX(), player.getBlockZ());   // (one chunk per tick)
         if (now - builtAt >= 10 || now < builtAt) {
             builtAt = now; rebuild(level, player.blockPosition());
             if ((now - seaBuiltAt >= 40 || now < seaBuiltAt) && Foliage.shaderWater()) { seaBuiltAt = now; SeaState.update(level, player.blockPosition()); }   // how open the sea is around here
