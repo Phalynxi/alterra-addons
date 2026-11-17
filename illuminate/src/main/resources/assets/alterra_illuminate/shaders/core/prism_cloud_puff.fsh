@@ -46,9 +46,9 @@ void main() {
     vec3 sunny = CloudColor * (0.95 + 0.1 * day);
     vec3 col = mix(under, sunny, smoothstep(0.12, 0.95, lit * 0.6 + shade * 0.5));
     col *= 1.0 - 0.62 * info.y;   // a storm cloud is dark
-    float far = smoothstep(600.0, 16000.0, dist);
-    col = mix(col, Horizon * (0.6 + 0.4 * day), far * 0.8);
-    float alpha = Fade * nearFade * body * info.w * (1.0 - smoothstep(19000.0, 25000.0, dist));
+    float far = smoothstep(500.0, 9000.0, dist);   // aerial perspective: far clouds take on the haze
+    col = mix(col, Horizon * (0.6 + 0.4 * day), far * 0.9);
+    float alpha = Fade * nearFade * body * info.w * (1.0 - smoothstep(8000.0, 15000.0, dist));
     if (alpha < 0.01) discard;
     fragColor = vec4(col * alpha, alpha);   // premultiplied: drawn into the half-size cloud picture, then laid over the scene
 }

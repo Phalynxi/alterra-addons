@@ -36,7 +36,7 @@ public final class IlluminateConfig {
         SHAFTS = b.comment("Light shafts from the sun through gaps in trees and terrain.").define("lightShafts", true);
         HAZE = b.comment("Haze in the far distance, warm towards the sun.").define("haze", true);
         SHADOWS = b.comment("Soft sun shadows of trees and overhangs (from the height of everything around), and light shafts through gaps in leaves.").define("sunShadows", false);
-        CLOUDS = b.comment("Real clouds (instead of vanilla's flat ones): the same for everyone, dark when it rains. The heaviest part of the look: off by default.").define("clouds", false);
+        CLOUDS = b.comment("Real clouds (instead of vanilla's flat ones): the same for everyone, dark when it rains. The heaviest part of the look.").define("clouds", true);
         UNDERWATER_FOG = b.comment("Under water the water's own colour closes in with distance, and light ripples over everything.").define("underwaterFog", true);
         b.pop();
         SPEC = b.build();

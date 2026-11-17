@@ -446,7 +446,7 @@ public final class Foliage {
                                     vec3 _fnrm = normalize(cross(dFdx(v_AlterraPos), dFdy(v_AlterraPos)));
                                     float _face = 0.35 + 0.65 * abs(_fnrm.y);
                                     float _cf = alterraCaustic(v_AlterraPos.xz + u_AlterraCam.xz, u_AlterraSea.x) * exp(-_dp * 0.05) * smoothstep(0.0, 0.5, _dp) * _face * u_AlterraScreen.w * (0.15 + 0.85 * u_AlterraSky.w);   // the same soft light as on the bottom seen from above the water
-                                    color.rgb *= 1.0 + _cf * 0.16 * vec3(0.8, 1.0, 1.08);   // a faint moving light on the bottom, never a bright blotch (dark stone stays dark)   // a soft teal light, exactly as seen from above (not white, never blowing out)
+                                    color.rgb *= 1.0 + min(_cf, 1.0) * 0.055 * vec3(0.8, 1.0, 1.08);   // a faint moving light on the bottom, never a bright blotch (dark stone stays dark)   // a soft teal light, exactly as seen from above (not white, never blowing out)
                                 }
                             }
                             // the water surface seen from below: past about 49 degrees from straight up it is a mirror (of the bottom, bent by the ripples), inside that a bright window to the sky
@@ -465,7 +465,7 @@ public final class Foliage {
                                 color.a = 1.0;
                             }
                             // the water look: ripple normals worked out from the position (no picture), the sky and the sun or moon mirrored by a Schlick fresnel, and a glint
-                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && ((v_AlterraView.y < 0.0 && v_AlterraTop > 0.97) || (v_AlterraTop < 0.97 && u_AlterraUnder.x < 0.5))) {   // every face of the water, the sides and bottom too, through the same look (a side face has the face's own normal as its base): a side face (where water steps down at a shore) keeps vanilla's look (the water maths assume a surface facing up, and turned side faces black)
+                            if (v_AlterraView.w > 0.5 && v_AlterraView.w < 1.5 && ((v_AlterraTop > 0.97 && (v_AlterraView.y < 0.0 || u_AlterraUnder.x < 0.5)) || (v_AlterraTop < 0.97 && u_AlterraUnder.x < 0.5))) {   // every face of the water, the sides and bottom too, through the same look (a side face has the face's own normal as its base): a side face (where water steps down at a shore) keeps vanilla's look (the water maths assume a surface facing up, and turned side faces black)
                                 vec2 _g = alterraSlope(v_AlterraWaveP * 2.5, u_AlterraSea, u_AlterraSea2, v_AlterraSea) * 0.32;   // ripples at a smaller scale: many small waves, not a few big streaks (the slope of f(2.5x) is 2.5 times steeper, hence the factor)
                                 _g += v_AlterraSwirl.xy;   // the slope of a whirlpool
                                 float _dist = length(v_AlterraView.xyz);
@@ -484,7 +484,7 @@ public final class Foliage {
                                 if (u_AlterraSea2.x > 0.02 && _dist < 28.0) _g += alterraRain(v_AlterraWaveP, u_AlterraSea.x, u_AlterraSea2.x) * (1.0 - smoothstep(10.0, 28.0, _dist));   // raindrop rings
 
                                 vec3 _fnw = vec3(0.0, 1.0, 0.0);
-                                if (v_AlterraTop < 0.97) { _fnw = normalize(cross(dFdx(v_AlterraView.xyz), dFdy(v_AlterraView.xyz))); if (dot(_fnw, v_AlterraView.xyz) > 0.0) _fnw = -_fnw; }
+                                if (v_AlterraTop < 0.97 || v_AlterraView.y > 0.0) { _fnw = normalize(cross(dFdx(v_AlterraView.xyz), dFdy(v_AlterraView.xyz))); if (dot(_fnw, v_AlterraView.xyz) > 0.0) _fnw = -_fnw; }
                                 vec3 _n = normalize(_fnw + vec3(-_g.x, 0.0, -_g.y));
                                 vec3 _v = normalize(v_AlterraView.xyz);
                                 float _nv = clamp(dot(-_v, _n), 0.0, 1.0);
@@ -521,7 +521,7 @@ public final class Foliage {
                                     if (u_AlterraScreen.w > 0.0 && _sw < 900.0) {   // caustics on the bottom seen through the water: they fade slowly with depth (clear water shows them far down), and weaker by night and in rain
                                         vec3 _bottom = normalize(v_AlterraView.xyz) * (length(v_AlterraView.xyz) + _d);
                                         _cfv = alterraCaustic(_bottom.xz + (v_AlterraWaveP - v_AlterraView.xz), u_AlterraSea.x) * exp(-_d * 0.05) * smoothstep(0.0, 0.5, _d) * (1.0 - smoothstep(22.0, 60.0, length(v_AlterraView.xyz))) * u_AlterraScreen.w * (0.15 + 0.85 * u_AlterraSky.w);
-                                        _under = min(_under * (1.0 + _cfv * 0.30 * vec3(0.75, 1.0, 1.1)) + vec3(0.0, 0.025, 0.035) * _cfv, vec3(0.9));   // a soft teal light, not white; capped so sand never blows out
+                                        _under = min(_under * (1.0 + min(_cfv, 1.0) * 0.10 * vec3(0.75, 1.0, 1.1)) + vec3(0.0, 0.008, 0.012) * min(_cfv, 1.0), vec3(0.9));   // a soft teal light, not white; capped so sand never blows out
                                     }
                                     // tropical: turquoise over the shallows turning to a clear vivid blue in the deep (never a dark navy by day); the bottom shows through and loses red first
                                     float _lightv = clamp(max(max(_hue.r, _hue.g), _hue.b) * 1.1, 0.12, 1.0);
@@ -685,6 +685,7 @@ public final class Foliage {
                 var atlas = mc.getModelManager().getAtlas(net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS);
                 for (String n : new String[] {"water_still", "water_flow"}) { var wsp = atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/" + n)); LOG.info("Alterra Illuminate: water sprite {} at u {}..{} v {}..{} ({})", n, wsp.getU0(), wsp.getU1(), wsp.getV0(), wsp.getV1(), wsp.contents().name()); paint(data, wsp, 2); }
                 paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/snow")), 3, (byte) 23);
+                for (String sn : new String[] {"block/grass_block_snow", "block/podzol_side_snow", "block/mycelium_side_snow"}) { var sp = atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace(sn)); if (!sp.contents().name().getPath().equals("missingno")) paint(data, sp, 3, (byte) 23); }   // snowy ground's snow-capped sides are drawn by the snow surface too (its walls cover them)
                 paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/powder_snow")), 3, (byte) 23);   // powder snow is drawn by the snow surface too   // snow (a small alpha, between nothing and the metals' 80): the tops of its layers are smoothed
                 for (String n : new String[] {"ice", "frosted_ice_0", "frosted_ice_1", "frosted_ice_2", "frosted_ice_3", "packed_ice", "blue_ice"}) paint(data, atlas.getSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/" + n)), 3);   // ice (alpha): a smooth, glossy surface
             } catch (Throwable ignored) { }
@@ -782,7 +783,7 @@ public final class Foliage {
             if (loc[30] >= 0 && loc[31] >= 0) {   // water easing between levels
                 var cp = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
                 boolean on = FlowMap.live && FlowMap.texture() != 0 && IlluminateConfig.get(IlluminateConfig.SMOOTH_WATER);
-                GL20C.glUniform4f(loc[31], (float) (cp.x - FlowMap.originX), (float) (cp.z - FlowMap.originZ), 1f / FlowMap.SIZE, on ? (dev.phi.alterra.illuminate.water.OwnWater.drawing() ? 2f : 1f) : 0f);
+                GL20C.glUniform4f(loc[31], (float) (cp.x - FlowMap.originX), (float) (cp.z - FlowMap.originZ), 1f / FlowMap.SIZE, on ? 1f : 0f);
                 if (on) { GlUpload.bind(GL13C.GL_TEXTURE0 + FlowMap.UNIT, FlowMap.texture()); GL20C.glUniform1i(loc[30], FlowMap.UNIT); com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0); }
             }
             if (loc[32] >= 0 && loc[33] >= 0) {   // the snow surface
@@ -929,7 +930,7 @@ public final class Foliage {
     /** Whether the camera is under water, and where the surface above it is (relative to the camera): the shader then draws the surface as a mirror and window and lights the ground with caustics. */
     private static void underUniform(int loc) {
         var mc = Minecraft.getInstance(); var level = mc.level; var cam = mc.gameRenderer.getMainCamera();
-        if (level == null || cam.getEntity() == null || !cam.getEntity().isUnderWater() || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK)) { GL20C.glUniform4f(loc, 0f, 0f, 0f, 0f); return; }
+        if (level == null || cam.getFluidInCamera() != net.minecraft.world.level.material.FogType.WATER || !IlluminateConfig.get(IlluminateConfig.WATER_LOOK)) { GL20C.glUniform4f(loc, 0f, 0f, 0f, 0f); return; }
         var p = new net.minecraft.core.BlockPos.MutableBlockPos(cam.getBlockPosition().getX(), cam.getBlockPosition().getY(), cam.getBlockPosition().getZ());
         for (int i = 0; i < 80 && level.getFluidState(p.above()).is(net.minecraft.tags.FluidTags.WATER); i++) p.move(0, 1, 0);
         float surface = (float) (p.getY() + level.getFluidState(p).getHeight(level, p));

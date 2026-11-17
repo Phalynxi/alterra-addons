@@ -21,7 +21,6 @@ public final class Illuminate {
         container.registerConfig(ModConfig.Type.CLIENT, IlluminateConfig.SPEC);
         bus.addListener(dev.phi.alterra.illuminate.clouds.SkyClouds::registerShaders);   // the cloud shaders
         bus.addListener(dev.phi.alterra.illuminate.look.WhirlCore::registerShader);   // the whirlpool core
-        bus.addListener(dev.phi.alterra.illuminate.water.OwnWater::registerShader);   // our own water surface
         bus.addListener(dev.phi.alterra.illuminate.snow.SnowSurface::registerShader);   // the snow surface's own shader
         dev.phi.prismlib.service.Services.register(dev.phi.prismlib.api.SnowSurfaceProvider.class, (lv, x, z) -> lv instanceof net.minecraft.client.multiplayer.ClientLevel cl ? dev.phi.alterra.illuminate.snow.SnowSurface.heightAt(cl, x, z) : Float.NaN, 100, ID);   // what sits on the snow asks where it is
         dev.phi.prismlib.service.Services.register(dev.phi.prismlib.api.DisturbanceListener.class, (level, d) -> {   // a wheel on the snow, seen on this client: it presses a dent as well (the weather mod presses the layers on the server)

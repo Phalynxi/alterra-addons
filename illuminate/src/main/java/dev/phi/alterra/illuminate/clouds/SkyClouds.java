@@ -63,7 +63,7 @@ public final class SkyClouds {
     // ------------------------------------------------------------------ the meshes
     /** Distance bands, near to far: cell size, from, to (blocks). Each band is its own mesh, drawn far to near (so the soft blending is in the right order), rebuilt on its own schedule:
      *  the near bands often, the far ones hardly ever (they only slide with the view, which is all the eye can tell at that distance). One band is rebuilt per frame at most. */
-    private static final double[][] BANDS = {{112, 0, 2800}, {384, 1800, 9500}, {1280, 6500, 26000}};   // two lattices only: a cloud keeps its shape all the way out to 5 km, and the one change of lattice is far away, faded
+    private static final double[][] BANDS = {{112, 0, 2800}, {384, 1800, 8000}, {1280, 5500, 16000}};   // two lattices only: a cloud keeps its shape all the way out to 5 km, and the one change of lattice is far away, faded
     private static final double[] MOVE = {200, 600, 1600};
     private static final long[] AGE = {40000, 90000, 150000};
     private static final int NB = BANDS.length;
@@ -331,7 +331,7 @@ public final class SkyClouds {
 
     /** Cirrus: thin high streaks, stretched along the wind, over everything (no storm, no shade). */
     private static void cirrus(List<Puff> puffs, double qx, double qz, float evo) {
-        double couter = 24000.0;
+        double couter = 14000.0;
         int cx0 = (int) Math.floor((qx - couter) / CIRRUS_CELL), cx1 = (int) Math.floor((qx + couter) / CIRRUS_CELL), cz0 = (int) Math.floor((qz - couter) / CIRRUS_CELL), cz1 = (int) Math.floor((qz + couter) / CIRRUS_CELL);
         for (int cz = cz0; cz <= cz1; cz++) for (int cx = cx0; cx <= cx1; cx++) {
             double mx = (cx + 0.5) * CIRRUS_CELL, mz = (cz + 0.5) * CIRRUS_CELL;
