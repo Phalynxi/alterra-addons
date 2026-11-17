@@ -204,6 +204,21 @@ public final class SnowSurface {
                 for (int sb = 0; sb < 4; sb++) for (int sa = 0; sa < 4; sa++) for (int k = 0; k < 4; k++) fineVertex(bb, wx, wz, (sa + na[k]) / 4f, (sb + nb[k]) / 4f, hh2, nn, nn, i, j);
             } else roundedColumn(bb, wx, wz, i, j, c, light);
         }
+        // buried snow (a snow block or powder snow with other blocks above it, which the surface scan does not reach): its open faces, plain
+        var bp = new BlockPos.MutableBlockPos();
+        for (int j = PAD; j < PAD + T; j++) for (int i = PAD; i < PAD + T; i++) {
+            int c = i + j * N; if (!L[c]) continue;
+            int wx = x0 + i - PAD, wz = z0 + j - PAD, from = (K[c] == 1 ? G[c] / 8 : S[c] / 8) - 1, light = cornerLight(i, j, 0, 0);
+            for (int y = from; y > from - 24; y--) {
+                var st = lv.getBlockState(bp.set(wx, y, wz));
+                if (!(st.is(Blocks.SNOW_BLOCK) || st.is(Blocks.POWDER_SNOW))) continue;
+                for (var d : net.minecraft.core.Direction.values()) {
+                    var nb = lv.getBlockState(bp.set(wx + d.getStepX(), y + d.getStepY(), wz + d.getStepZ()));
+                    if (nb.is(Blocks.SNOW_BLOCK) || nb.is(Blocks.POWDER_SNOW) || nb.isSolidRender(lv, bp)) continue;
+                    any = true; cubeFace(bb, wx, y, wz, d, light);
+                }
+            }
+        }
         return any ? bb.build() : null;   // (a builder that is not built is simply dropped)
     }
     private static final int ARC = 3;   // segments in a quarter round
@@ -368,6 +383,20 @@ public final class SnowSurface {
                 vertex(bb, ccx + bx2 * r, bottom, ccz + bz2 * r, bx2, bz2, light, 0f); vertex(bb, ccx + ax2 * r, bottom, ccz + az2 * r, ax2, az2, light, 0f);
             }
         }
+    }
+
+    /** One face of a whole block of snow (buried snow seen from a cave or a cliff), facing d. */
+    private static void cubeFace(BufferBuilder bb, int x, int y, int z, net.minecraft.core.Direction d, int light) {
+        float nx = d.getStepX(), ny = d.getStepY(), nz = d.getStepZ();
+        float[][] q = switch (d) {
+            case UP -> new float[][] {{0, 1, 1}, {1, 1, 1}, {1, 1, 0}, {0, 1, 0}};
+            case DOWN -> new float[][] {{0, 0, 0}, {1, 0, 0}, {1, 0, 1}, {0, 0, 1}};
+            case NORTH -> new float[][] {{0, 1, 0}, {1, 1, 0}, {1, 0, 0}, {0, 0, 0}};
+            case SOUTH -> new float[][] {{1, 1, 1}, {0, 1, 1}, {0, 0, 1}, {1, 0, 1}};
+            case WEST -> new float[][] {{0, 1, 1}, {0, 1, 0}, {0, 0, 0}, {0, 0, 1}};
+            default -> new float[][] {{1, 1, 0}, {1, 1, 1}, {1, 0, 1}, {1, 0, 0}};
+        };
+        for (float[] v : q) vertex(bb, x + v[0], y + v[1], z + v[2], nx, nz, light, ny < 0 ? 0f : ny);
     }
 
     /** A vertex of a fine quad inside column (wx, wz) at fractions (fa, fb) of it: the smoothed surface plus the dent, its slope from both, darker where it is pressed. */

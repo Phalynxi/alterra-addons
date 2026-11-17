@@ -199,6 +199,8 @@ public final class WaterSim {
         };
         for (long k : keys) {
             p.set(k);
+            boolean edge = !l.isLoaded(p.below()); for (Direction d : SIDES) if (!l.isLoaded(p.relative(d))) { edge = true; break; }
+            if (edge) continue;   // next to ground that is not loaded: it holds still until that is there (not a wall to pile up against, not a hole to pour into)
             boolean endless = FiniteWater.endless(l, p);
             float a = endless ? 1f : m.amount.get(k);
             if (a <= 0f && !endless) continue;
