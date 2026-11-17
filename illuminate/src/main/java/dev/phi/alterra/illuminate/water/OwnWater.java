@@ -36,7 +36,7 @@ public final class OwnWater {
     private OwnWater() {}
     public static final boolean ON = !"false".equals(System.getProperty("alterra.ownwater"));   // on (switch off with -Dalterra.ownwater=false)
     /** Is our surface drawing the water around the camera now (then the game's own water is not drawn there)? */
-    public static boolean drawing() { var mc = Minecraft.getInstance(); return ON && shader != null && FlowMap.live && mc.level != null && mc.gameRenderer.getMainCamera().getFluidInCamera() != net.minecraft.world.level.material.FogType.WATER; }
+    public static boolean drawing() { var mc = Minecraft.getInstance(); return ON && shader != null && FlowMap.live && mc.level != null; }
     private static boolean warned; private static long logAt;
     private static ShaderInstance shader, fallShader; private static VertexBuffer grid; private static int depthTex, depthFbo, dw, dh;
 
@@ -87,7 +87,6 @@ public final class OwnWater {
     public static void render(RenderLevelStageEvent e) {
         if (!ON || e.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS || shader == null || !FlowMap.live || FlowMap.heightTexture() == 0) return;
         var mc = Minecraft.getInstance(); var lv = mc.level; if (lv == null) return;
-        if (mc.gameRenderer.getMainCamera().getFluidInCamera() == net.minecraft.world.level.material.FogType.WATER) return;   // (from below: later)
         if (grid == null) makeGrid();
         var cam = e.getCamera().getPosition(); var main = mc.getMainRenderTarget();
         copyDepth(main);
@@ -104,6 +103,7 @@ public final class OwnWater {
         set3("Tint", ((tint >> 16) & 255) / 255f, ((tint >> 8) & 255) / 255f, (tint & 255) / 255f);
         set4("Wave", PrismApi.clock().seconds(), (float) w.x, (float) w.z, Math.min(1f, (float) w.length()));
         set4("Screen", main.width, main.height, 0.05f, mc.gameRenderer.getDepthFar());
+        { var uu = shader.getUniform("Under"); if (uu != null) uu.set(mc.gameRenderer.getMainCamera().getFluidInCamera() == net.minecraft.world.level.material.FogType.WATER ? 1f : 0f); }
         shader.setSampler("Heights", FlowMap.heightTexture()); shader.setSampler("SceneDepth", depthTex);
         float[] wh = dev.phi.alterra.illuminate.maps.WhirlMap.INFO;
         set4("WhirlInfo", wh[0], wh[1], wh[2], wh[3] > 0.5f && dev.phi.alterra.illuminate.maps.WhirlMap.texture() != 0 ? 1f : 0f);

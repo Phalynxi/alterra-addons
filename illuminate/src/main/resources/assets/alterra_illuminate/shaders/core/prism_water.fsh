@@ -6,7 +6,8 @@ uniform vec3 SkyH;      // the sky at the horizon
 uniform vec3 SkyZ;      // the sky overhead
 uniform vec3 Tint;      // the water's own colour here (the biome's)
 uniform vec4 Wave;      // x: time, yz: the wind, w: how rough
-uniform vec4 Screen;    // xy: the screen size, z: near, w: far
+uniform vec4 Screen;
+uniform float Under;    // 1 when the camera is under the water    // xy: the screen size, z: near, w: far
 
 in vec3 rel;
 in vec2 wpos;
@@ -50,6 +51,17 @@ void main() {
     float shallow = 1.0 - exp(-thick * 0.16);
     vec3 body = mix(mix(Tint, vec3(0.35, 0.80, 0.78), 0.55) * 1.05, Tint * vec3(0.34, 0.58, 0.86), shallow) * (0.55 + 0.45 * SunW.w);   // clear turquoise over the shallows, blue in the deep
     vec3 col = mix(body, sky, clamp(fr * 1.15, 0.0, 1.0)) + glint;
+    if (Under > 0.5 && v.y > 0.0) {   // seen from under the water: a bright window to the sky straight up (inside about 49 degrees), a mirror of the deep water outside it
+        vec3 nd = -n;
+        float c = clamp(dot(-v, nd), 0.0, 1.0), sn = sqrt(1.0 - c * c) * 1.333;
+        float win = 1.0 - smoothstep(0.93, 1.0, sn);
+        vec3 tr = refract(v, nd, 1.333);
+        vec3 skyIn = mix(SkyH, SkyZ, clamp(tr.y * 1.5, 0.0, 1.0)) * 1.2 + vec3(1.0, 0.95, 0.85) * pow(max(dot(tr, SunW.xyz), 0.0), 80.0) * 2.0 * SunW.w;
+        vec3 deep = Tint * vec3(0.30, 0.55, 0.62) * (0.35 + 0.65 * SunW.w);
+        col = mix(deep, skyIn, win);
+        fragColor = vec4(col, 0.95 * smoothstep(0.02, 0.35, wet));
+        return;
+    }
     if (foamAmt > 0.01) {   // white water where a fall lands: churning, breaking up into drifting patches as it spreads
         float t2 = Wave.x;
         float pat = fn(wpos * 1.7 + vec2(t2 * 0.6, -t2 * 0.4)) * 0.55 + fn(wpos * 4.1 - vec2(t2 * 1.1, t2 * 0.7)) * 0.45;
