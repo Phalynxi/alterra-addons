@@ -299,8 +299,8 @@ public final class SnowSurface {
             float bottom = wallBottom(i, j, c, side);
             double ax, az, bx, bz;
             // every wall and lip runs the full width of its side (and a hair past, so neighbouring walls overlap): at a corner two lips simply cross, which makes a mitred corner with no piece to open between them
-            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = wz - 0.012; bz = wz + 1 + 0.012; }
-            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = wx - 0.012; bx = wx + 1 + 0.012; }
+            if (side < 2) { double ex0 = side == 0 ? wx + r : wx + 1 - r; ax = ex0; bx = ex0; az = wz - 0.03; bz = wz + 1 + 0.03; }
+            else { double ez0 = side == 2 ? wz + r : wz + 1 - r; az = ez0; bz = ez0; ax = wx - 0.03; bx = wx + 1 + 0.03; }
             boolean sqA = false;
             boolean sqB = false;
             final int LEN = (sqA || sqB || ramps) ? 3 : 1;
@@ -332,7 +332,7 @@ public final class SnowSurface {
             {   // a plain backing wall just behind the rounded one, a little longer at both ends: wherever two pieces of the visible wall do not quite meet, snow shows through the slit, never the ground or the sky
                 double bdx = bx - ax, bdz = bz - az, blen = Math.sqrt(bdx * bdx + bdz * bdz);
                 if (blen > 1e-6) {
-                    double ux = bdx / blen * 0.04, uz = bdz / blen * 0.04, qx0 = ax - ux, qz0 = az - uz, qx1 = bx + ux, qz1 = bz + uz, off = r + 0.004;
+                    double ux = bdx / blen * 0.12, uz = bdz / blen * 0.12, qx0 = ax - ux, qz0 = az - uz, qx1 = bx + ux, qz1 = bz + uz, off = r + 0.004;
                     float tb0 = topW(i, j, wx, wz, ax, az) - r - 0.002f, tb1 = topW(i, j, wx, wz, bx, bz) - r - 0.002f;
                     if (tb0 > bottom || tb1 > bottom) { vertex(bb, qx0 + ox * off, tb0, qz0 + oz * off, ox, oz, light, 0f); vertex(bb, qx1 + ox * off, tb1, qz1 + oz * off, ox, oz, light, 0f); vertex(bb, qx1 + ox * off, bottom, qz1 + oz * off, ox, oz, light, 0f); vertex(bb, qx0 + ox * off, bottom, qz0 + oz * off, ox, oz, light, 0f); }
                 }

@@ -32,6 +32,18 @@ import java.nio.ByteBuffer;
 @EventBusSubscriber(modid = Illuminate.ID, value = Dist.CLIENT)
 public final class PostFx {
     private static final float[] M16 = new float[16], M9 = new float[9], FUNNEL = new float[32];   // matrix scratch for the uniforms, render thread only
+    private static int lastFlashTime; private static long flashStart = -1;
+    private static float pulse(float t, float t0, float attack, float decay) { float x = t - t0; if (x < 0f) return 0f; if (x < attack) return x / attack; return (float) Math.exp(-(x - attack) / decay); }
+    /** A lightning flash as light: it starts when the game flashes the sky (which it does for only a couple of ticks), rises in a few hundredths of a second, flickers once more, and is gone within half a second. */
+    private static float flashNow(net.minecraft.client.multiplayer.ClientLevel level) {
+        int ft = level.getSkyFlashTime(); long now = System.nanoTime() / 1_000_000L;
+        if (ft > 0 && lastFlashTime == 0) flashStart = now;
+        lastFlashTime = ft;
+        if (flashStart < 0) return 0f;
+        float t = (now - flashStart) / 1000f;
+        if (t > 0.8f) return 0f;
+        return Math.min(1f, pulse(t, 0f, 0.025f, 0.07f) + 0.55f * pulse(t, 0.17f, 0.02f, 0.10f));
+    }
     private PostFx() {}
     private static final Logger LOG = com.mojang.logging.LogUtils.getLogger();
     private static int program = -1, vao, color, depth, w, h; private static boolean failed;
@@ -65,7 +77,7 @@ public final class PostFx {
             in vec2 uv;
             out vec4 frag;
             uniform sampler2D u_Color, u_Depth;
-            uniform mat4 u_InvProj; uniform mat3 u_InvView;
+            uniform mat4 u_InvProj, u_Proj; uniform mat3 u_InvView;
             uniform vec4 u_Sun;        // sun (or moon) direction in the world, how strong
             uniform vec4 u_SunScreen;  // where the sun is on screen, 1 when it is in front
             uniform vec3 u_Horizon, u_Zenith;
@@ -86,6 +98,7 @@ public final class PostFx {
             uniform float u_FunnelN;      // how many
             uniform float u_Shadows;      // 1: sun shadows and shafts through leaves on   // how far the clouds have changed (they form and fade)   // the clouds' own pass (premultiplied colour, cover)
             uniform float u_Storm;
+            uniform float u_Flash;   // a lightning flash right now (0 to 1): rises in a few hundredths of a second, flickers, dies away fast
             uniform vec4 u_Cells[4];   // regional storm cells: x, z relative to the camera, radius, level
             uniform float u_CellsN;
             uniform vec4 u_On;    // colour grade, glow, light shafts, haze
@@ -108,16 +121,42 @@ public final class PostFx {
                 if (u_HeightInfo.w < 0.5 || c.x < 0.0 || c.y < 0.0 || c.x >= 128.0 || c.y >= 128.0) return -1e4;
                 return texelFetch(u_Height, ivec2(floor(c)), 0).r * 65535.0 - 64.0 - u_HeightInfo.z;
             }
-            float sunlit(vec3 p, float n) {   // 1 in the sun, 0 in the shade of trees, overhangs or terrain between this point and the sun; several rays spread a little: soft edges
-                float lit = 0.0, jit = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715)))) - 0.5;
-                for (int r = 0; r < 4; r++) {
-                    if (float(r) >= n) break;
-                    vec3 off = vec3(cos(float(r) * 2.4), 0.0, sin(float(r) * 2.4)) * 0.45 * float(r > 0);
-                    float hit = 0.0;
-                    for (int k = 1; k <= 6; k++) { vec3 q = p + off + u_Sun.xyz * ((float(k) + jit) * 2.2); if (q.y < topAt(q) - (0.12 + 0.05 * float(k))) { hit = 1.0; break; } }   // (the start of each ray is moved a little per pixel and the margin grows with the distance: terrain steps give a fine grain, not stripes)
-                    lit += 1.0 - hit;
+            float topAtF(vec3 p) {   // the same, smoothed between the texels (heights are whole blocks: a nearest lookup made blocky shadow edges)
+                vec2 c = p.xz + u_HeightInfo.xy - 0.5;
+                if (u_HeightInfo.w < 0.5 || c.x < 0.0 || c.y < 0.0 || c.x >= 127.0 || c.y >= 127.0) return -1e4;
+                ivec2 i = ivec2(floor(c)); vec2 f = fract(c); f = f * f * (3.0 - 2.0 * f);
+                float a = texelFetch(u_Height, i, 0).r, b = texelFetch(u_Height, i + ivec2(1, 0), 0).r, cc = texelFetch(u_Height, i + ivec2(0, 1), 0).r, d = texelFetch(u_Height, i + ivec2(1, 1), 0).r;
+                return mix(mix(a, b, f.x), mix(cc, d, f.x), f.y) * 65535.0 - 64.0 - u_HeightInfo.z;
+            }
+            float sunlit(vec3 p, float n) {   // the far part of the shadow: 1 in the sun, 0 in the shade of trees, overhangs or terrain between this point and the sun, from the height of everything around. One ray, finely stepped, and its edge is as soft as one step's rise (several offset rays made overlapping copies of every shadow)
+                float hit = 0.0, rise = 0.25 + 1.2 * max(u_Sun.y, 0.25);
+                for (int k = 1; k <= 14; k++) {
+                    vec3 q = p + u_Sun.xyz * (float(k) * 1.0 + 0.4);
+                    float over = topAtF(q) - q.y;
+                    hit = max(hit, smoothstep(0.04 * float(k), 0.04 * float(k) + rise, over));
                 }
-                return lit / max(n, 1.0);
+                return 1.0 - hit;
+            }
+            float sunScreen(vec3 vp, vec3 nrm) {   // the near part: a ray from the surface towards the sun through the depth buffer, so whatever is drawn casts a shadow (leaves, entities, ships, anything that moves), with no map to go blocky
+                vec3 sv = transpose(u_InvView) * u_Sun.xyz;
+                if (dot(nrm, sv) < 0.02) return 1.0;   // facing away from the sun: its own light already makes it dark
+                float dd = length(vp), occ = 0.0, t = 0.04, stepL = 0.05;
+                vec3 start = vp + nrm * (0.02 + 0.012 * dd);
+                for (int i = 0; i < 20; i++) {   // only the first few blocks: contact shadows (what is drawn cannot tell what is off the screen, so a long reach made shadows that moved with the view; the height map owns the long shadows)
+                    t += stepL; stepL *= 1.12;
+                    vec3 q = start + sv * t;
+                    vec4 cl = u_Proj * vec4(q, 1.0);
+                    if (cl.w <= 0.01) break;
+                    vec2 suv = cl.xy / cl.w * 0.5 + 0.5;
+                    if (suv.x < 0.0 || suv.y < 0.0 || suv.x > 1.0 || suv.y > 1.0) break;
+                    float sd = texture(u_Depth, suv).r;
+                    if (sd >= 0.99999) continue;
+                    vec4 sp = u_InvProj * vec4(suv * 2.0 - 1.0, sd * 2.0 - 1.0, 1.0);
+                    float diff = sp.z / sp.w - q.z;   // > 0: the surface drawn there is nearer than the ray, so the ray is behind it
+                    float thick = 0.8 + 0.4 * t;      // something much nearer than the ray is not what shades this point
+                    occ = max(occ, smoothstep(0.03 + 0.02 * t, 0.16 + 0.06 * t, diff) * (1.0 - smoothstep(thick, thick * 2.0 + 1.0, diff)));
+                }
+                return 1.0 - occ;
             }
             float cellCover(vec2 rel) {   // how strongly a storm cell is over this point (as StormCell.at)
                 float s = 0.0;
@@ -231,6 +270,7 @@ public final class PostFx {
                 float d = texture(u_Depth, uv).r; bool sky = d >= 0.99999;
                 vec4 vp = u_InvProj * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0); vp /= vp.w;
                 vec3 dir = normalize(u_InvView * vp.xyz); float dist = length(vp.xyz);
+                vec3 vnrm = normalize(cross(dFdx(vp.xyz), dFdy(vp.xyz))); if (dot(vnrm, vp.xyz) > 0.0) vnrm = -vnrm;   // the surface's normal in view space, taken here where every pixel runs it
                 #ifdef CLOUD_PASS
                 {   // the cloud pass draws into the sky map, not the screen: this texel's direction (azimuth round, elevation from just below the horizon to straight up, packed towards the horizon where the clouds are small)
                     float az = (uv.x * 2.0 - 1.0) * 3.14159265, el = mix(-0.10, 1.5707963, pow(uv.y, 1.7));
@@ -286,7 +326,7 @@ public final class PostFx {
                 // sunlight: soft shadows of trees and overhangs, the clouds' shadows drifting over the land, and a dimmer, softer day when a cloud covers the sun
                 if (!sky && u_Params.z < 0.5 && u_Sun.w > 0.02 && (u_Shadows > 0.5 || u_On2.x > 0.5)) {
                     vec3 wpr = dir * dist;
-                    float sh = (dist < 72.0 && u_Shadows > 0.5) ? sunlit(wpr, 1.0 + u_Quality * 1.5) : 1.0;
+                    float sh = (dist < 72.0 && u_Shadows > 0.5) ? min(sunlit(wpr, 1.0 + u_Quality * 1.5), sunScreen(vp.xyz, vnrm)) : 1.0;
                     float cs = u_On2.x > 0.5 ? cloudShade(wpr) : 1.0;
                     float light = mix(1.0, min(sh, cs), 0.45 * u_Sun.w * day);
                     c *= light;
@@ -392,6 +432,7 @@ public final class PostFx {
                     c = mix(c, c * vec3(0.78, 0.9, 1.08), smoothstep(0.05, 0.6, up) * day * (1.0 - rain) * (1.0 - pow(toSun, 12.0)));
                 }
                 if (u_On.x < 0.5) { frag = vec4(clamp(c, 0.0, 1.0), 1.0); return; }
+                c += u_Flash * vec3(0.50, 0.56, 0.75) * (sky ? 0.55 : 0.35 + 0.35 * exp(-dist * 0.012)) * 1.0;   // the flash lights the sky and the land, the near land most
                 // grade: neutral brightness (no lift of the midtones), a gentle contrast curve, colour almost as it is, warm light and slightly cool shadows, a faint vignette
                 c = clamp(c, 0.0, 1.0);
                 c = mix(c, c * c * (3.0 - 2.0 * c), 0.22);
@@ -471,12 +512,14 @@ public final class PostFx {
             GL20C.glUniform1i(u(p, "u_Color"), 0); GL20C.glUniform1i(u(p, "u_Depth"), 1);
             float[] m16 = M16, m9 = M9;
             GL20C.glUniformMatrix4fv(u(p, "u_InvProj"), false, invProj.get(m16));
+            GL20C.glUniformMatrix4fv(u(p, "u_Proj"), false, proj.get(m16));
             GL20C.glUniformMatrix3fv(u(p, "u_InvView"), false, invView.get(m9));
             GL20C.glUniform4f(u(p, "u_Sun"), fsx / flen, fsy / flen, 0f, fstrength * (1f - 0.85f * frain));
             GL20C.glUniform4f(u(p, "u_SunScreen"), fssx, fssy, 0f, ffront && fssx > -0.3f && fssx < 1.3f && fssy > -0.3f && fssy < 1.3f && fsun ? 1f : 0f);
             GL20C.glUniform3f(u(p, "u_Horizon"), (float) Math.min(1, skyc.x * 0.8 + 0.16 * fday), (float) Math.min(1, skyc.y * 0.8 + 0.18 * fday), (float) Math.min(1, skyc.z * 0.8 + 0.20 * fday));
             GL20C.glUniform3f(u(p, "u_Zenith"), (float) skyc.x, (float) skyc.y, (float) skyc.z);
             GL20C.glUniform4f(u(p, "u_Params"), fday, frain, funder ? 1f : 0f, PrismApi.clock().seconds());
+            GL20C.glUniform1f(u(p, "u_Flash"), flashNow(level));
             GL20C.glUniform1f(u(p, "u_Storm"), Math.max(level.getThunderLevel(pt), PrismApi.storm().heavy(level)));
             int ncells = Sky.cells(level, pt); GL20C.glUniform4fv(u(p, "u_Cells"), Sky.CELLS); GL20C.glUniform1f(u(p, "u_CellsN"), ncells);
             GL20C.glUniform1f(u(p, "u_CloudFade"), 1f - Math.min(1f, PrismApi.storm().fog() * 1.15f));

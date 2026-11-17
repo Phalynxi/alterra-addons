@@ -79,7 +79,7 @@ public final class SkyClouds {
     private static final Mesh[] prevVb = new Mesh[NB + 1]; private static final VertexBuffer[] prevTower = new VertexBuffer[NB];
     private static final double[] prevX = new double[NB + 1], prevZ = new double[NB + 1]; private static final long[] fadeStart = new long[NB + 1];
     private static double prevTowerX, prevTowerZ; private static long towerFade;
-    private static final float XFADE_MS = 1f;   // (an instant swap: the cells are stable, a rebuild changes almost nothing, and fading drew every band twice)
+    private static final float XFADE_MS = 1200f;   // a rebuilt band fades in over the old one: the clouds change smoothly, never in a jump
     private static float fadeT(long start, long now) { return start == 0 ? 1f : Mth.clamp((now - start) / XFADE_MS, 0f, 1f); }
     private static void swapBand(int i, long now) { close(prevVb[i]); prevVb[i] = bandVb[i]; prevX[i] = bandX[i]; prevZ[i] = bandZ[i]; bandVb[i] = null; fadeStart[i] = prevVb[i] != null ? now : 0; }
     private static void swapTowers(long now) { boolean any = false; for (int i = 0; i < NB; i++) { close(prevTower[i]); prevTower[i] = towerVb[i]; towerVb[i] = null; any |= prevTower[i] != null; } prevTowerX = towerX; prevTowerZ = towerZ; towerFade = any ? now : 0; }
@@ -200,7 +200,7 @@ public final class SkyClouds {
         }
         VertexBuffer.unbind();
         if (style == 1 && inCloud > 0.01f) {   // inside a cloud: everything goes soft and pale, more the deeper in
-            float g = (float) Math.min(1.0, cc.x * (0.75 + 0.25 * day));
+            float g = (float) Math.min(1.0, cc.x * (0.75 + 0.25 * day)) * (1f - 0.68f * storm0);   // inside a storm cloud it is dark grey, not white
             RenderSystem.disableDepthTest(); RenderSystem.setShader(net.minecraft.client.renderer.GameRenderer::getPositionColorShader);
             var bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             Matrix4f id = new Matrix4f(); int a8 = Math.round(Math.min(0.92f, inCloud * 0.92f) * fade * 255f);
@@ -285,7 +285,9 @@ public final class SkyClouds {
             for (int cz = iz0; cz <= iz1; cz++) for (int cx = ix0; cx <= ix1; cx++) {
                 double mx = (cx + 0.5) * cell, mz = (cz + 0.5) * cell, d = Math.max(Math.abs(mx - qx), Math.abs(mz - qz));
                 if (d > outer || d < inner) continue;
-                float c = coverAt(mx, mz, evo, rain, thunder, cells, driftX, driftZ);
+                // the shape and size of a cloud come from the weather-free cover, so a storm arriving never makes the clouds that are there swell; the weather only fills in clouds where the sky was empty (and darkens them)
+                float cb = smooth(0.47f, 0.62f, Clouds.fbm((float) (mx * 0.0065), (float) (mz * 0.0065), evo));
+                float c = cb >= 0.05f ? cb : coverAt(mx, mz, evo, rain, thunder, cells, driftX, driftZ);
                 if (c < 0.05f) continue;
                 var r = RandomSource.create(cx * 73856093L ^ cz * 19349663L ^ (band == 1 ? 0 : band + 1) * 83492791L);   // bands 0 and 1 share a cell size: same clouds either side of 500
                 float kind = Clouds.noise((float) (mx * 0.00045), (float) (mz * 0.00045), 9.1f);
