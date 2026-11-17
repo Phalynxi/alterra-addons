@@ -2,7 +2,7 @@ package dev.phi.alterra.weather.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-/** Client settings of Alterra Weather (config/alterra_weather-client.toml, also on Alterra's settings screen). */
+/** Client settings of Atmos (config/alterra_weather-client.toml, also on Alterra's settings screen). */
 public final class WeatherConfig {
     private WeatherConfig() {}
     public static final ModConfigSpec SPEC;

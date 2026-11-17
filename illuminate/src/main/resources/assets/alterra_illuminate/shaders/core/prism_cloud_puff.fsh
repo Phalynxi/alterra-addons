@@ -48,11 +48,16 @@ void main() {
     vec3 col = mix(under, sunny, smoothstep(0.12, 0.95, lit * 0.6 + shade * 0.5));
     vec2 dirH = normalize(wpos.xz + vec2(1e-4)), sunH = normalize(SunW.xz + vec2(1e-4));
     float sideW = pow(max(dot(dirH, sunH), 0.0), 1.5);   // 1 towards the sun, 0 away from it: the sunset colours belong to the side of the sky the sun is on
-    float twI = Params.y * (0.22 + 0.78 * sideW), twR = Params.z * (0.35 + 0.65 * sideW);   // sunset or sunrise from the clock: how strong, and how red (gold at first, orange, then red)
+    float bandE = exp(-max(normalize(wpos).y, 0.0) * 5.0);   // 1 at the horizon, fading with height: the sunset is a band along the horizon, like the sky's own
+    float twI = Params.y * (0.22 + 0.78 * sideW) * (0.15 + 0.85 * bandE), twR = Params.z * (0.35 + 0.65 * sideW);   // sunset or sunrise from the clock: how strong, and how red (gold at first, orange, then red)
     vec3 litTw = mix(mix(vec3(1.0, 0.80, 0.40), vec3(1.0, 0.52, 0.20), smoothstep(0.0, 0.5, twR)), vec3(0.86, 0.30, 0.20), smoothstep(0.45, 1.0, twR));
     vec3 shTw = mix(vec3(0.78, 0.52, 0.38), vec3(0.50, 0.24, 0.32), twR);
     vec3 twCol = mix(shTw, litTw, lit) * (0.62 + 0.38 * twI) * Params.w;
     col = mix(col, twCol * (0.74 + 0.28 * lit), twI * (0.58 + 0.42 * lit) * 0.92);
+    {   // and the sky's real glow (the game's own red band): the clouds along the horizon on the sun's side take its colour for as long as the sky has it
+        float gw = GlowCol.a * bandE * (0.18 + 0.82 * sideW);
+        col = mix(col, GlowCol.rgb * (0.50 + 0.50 * GlowCol.a) * (0.80 + 0.35 * lit), clamp(gw * 1.35, 0.0, 0.92));
+    }
     col *= 1.0 - 0.62 * info.y;   // a storm cloud is dark
     float far = smoothstep(500.0, 9000.0, dist);   // aerial perspective: far clouds take on the haze
     vec3 hz = Horizon * (0.6 + 0.4 * day);

@@ -175,7 +175,17 @@ public final class AlterraKitchen {
     public static final Supplier<BlockEntityType<KegBlockEntity>> KEG_BE = BLOCK_ENTITIES.register("keg",
             () -> BlockEntityType.Builder.of(KegBlockEntity::new, KEG.get()).build(null));
 
+    /** In the Prism Lib hub (if the library is there) with its logo: found by reflection, Kitchen does not depend on the library. */
+    private static void hub() {
+        if (!net.neoforged.fml.ModList.get().isLoaded("prismlib")) return;
+        try {
+            Class.forName("dev.phi.prismlib.hub.PrismHub").getMethod("registerWithTexture", String.class, String.class, String.class, ResourceLocation.class, java.util.function.Function.class)
+                    .invoke(null, ID, "Kitchen", "Dishes, tastes and stations", id("textures/gui/hub_logo.png"), null);
+        } catch (ReflectiveOperationException | LinkageError e) { org.slf4j.LoggerFactory.getLogger("Alterra Kitchen").warn("Kitchen could not register in the Prism Lib hub: {}", e.toString()); }
+    }
+
     public AlterraKitchen(IEventBus bus) {
+        if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT) hub();
         registerDecor();
         registerJuices();
         registerFoods();

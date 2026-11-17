@@ -38,7 +38,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.List;
 import java.util.function.Supplier;
 
-/** Alterra Weather. Which biomes get which storm is set by the biome tags alterra_weather:weather/*. */
+/** Atmos. Which biomes get which storm is set by the biome tags alterra_weather:weather/*. */
 @Mod(AlterraWeather.ID)
 public final class AlterraWeather {
     public static final String ID = "alterra_weather";
@@ -82,7 +82,7 @@ public final class AlterraWeather {
         container.registerConfig(ModConfig.Type.COMMON, HeavyConfig.SPEC);
         container.registerConfig(ModConfig.Type.COMMON, DisasterConfig.SPEC, "alterra_weather-disasters.toml");
         dev.phi.alterra.weather.compat.LibrarySettings.register();   // the options, as pages of Prism Lib's settings screen
-        if (FMLEnvironment.dist == Dist.CLIENT) dev.phi.prismlib.settings.SettingsClient.install(container, ID, "Alterra Weather");
+        if (FMLEnvironment.dist == Dist.CLIENT) dev.phi.prismlib.settings.SettingsClient.install(container, ID, "Atmos");
         if (ModList.get().isLoaded("alterra")) dev.phi.alterra.weather.compat.AlterraLink.register();   // the wind for Alterra addons, and the settings pages
         if (FMLEnvironment.dist == Dist.CLIENT) WeatherClient.init(bus);
     }

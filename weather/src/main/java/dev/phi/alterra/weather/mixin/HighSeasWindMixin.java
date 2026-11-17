@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Create: Deep Seas (High Seas) sails on our wind: its regional wind is replaced by Alterra Weather's (which already follows rain, thunder and the heavy storms), in its units (its sails are tuned to about 9 at full strength).
+ * Create: Deep Seas (High Seas) sails on our wind: its regional wind is replaced by Atmos's (which already follows rain, thunder and the heavy storms), in its units (its sails are tuned to about 9 at full strength).
  * Its own height, biome and shelter factors still apply on top. Only applied when Deep Seas is installed.
  */
 @Pseudo

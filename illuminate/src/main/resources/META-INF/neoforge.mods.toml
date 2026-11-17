@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
 [[mods]]
 modId="alterra_illuminate"
 version="@VERSION@"
-displayName="Alterra Illuminate"
+displayName="Illuminate"
 description='''The look of Alterra with Sodium and no shader pack: water that reflects and refracts, caustics, swaying leaves, wet ground and puddles, shining metal, soft light and haze, light shafts and real clouds. Every part can be switched off on its own.'''
 authors="Phalynxi"
 

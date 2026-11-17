@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/Phalynxi/alterra-addons/issues"
 [[mods]]
 modId="alterra_weather"
 version="@VERSION@"
-displayName="Alterra Weather"
+displayName="Atmos"
 description='''Sandstorms, blizzards, fog, petals, pollen, ash and an aurora in Alterra's biomes. They run on their own timer, not on vanilla rain.'''
 authors="Phalynxi"
 
