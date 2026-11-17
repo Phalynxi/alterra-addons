@@ -11,6 +11,7 @@ uniform vec4 Screen;    // xy: the screen size, z: near, w: far
 in vec3 rel;
 in vec2 wpos;
 in float wet;
+in float foamAmt;
 
 out vec4 fragColor;
 
@@ -27,6 +28,8 @@ vec2 slope(vec2 p) {
     }
     return g * (0.10 + 0.10 * Wave.w);
 }
+float fh(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float fn(vec2 p) { vec2 i = floor(p), q = fract(p); q = q * q * (3.0 - 2.0 * q); return mix(mix(fh(i), fh(i + vec2(1, 0)), q.x), mix(fh(i + vec2(0, 1)), fh(i + vec2(1, 1)), q.x), q.y); }
 float lin(float d) { float n = Screen.z, f = Screen.w; return 2.0 * n * f / (f + n - (2.0 * d - 1.0) * (f - n)); }
 
 void main() {
@@ -47,6 +50,13 @@ void main() {
     float shallow = 1.0 - exp(-thick * 0.16);
     vec3 body = mix(mix(Tint, vec3(0.35, 0.80, 0.78), 0.55) * 1.05, Tint * vec3(0.34, 0.58, 0.86), shallow) * (0.55 + 0.45 * SunW.w);   // clear turquoise over the shallows, blue in the deep
     vec3 col = mix(body, sky, clamp(fr * 1.15, 0.0, 1.0)) + glint;
+    if (foamAmt > 0.01) {   // white water where a fall lands: churning, breaking up into drifting patches as it spreads
+        float t2 = Wave.x;
+        float pat = fn(wpos * 1.7 + vec2(t2 * 0.6, -t2 * 0.4)) * 0.55 + fn(wpos * 4.1 - vec2(t2 * 1.1, t2 * 0.7)) * 0.45;
+        float w = smoothstep(1.0 - foamAmt, 1.15 - foamAmt * 0.6, pat + foamAmt * 0.35);
+        col = mix(col, vec3(0.93, 0.97, 1.0) * (0.55 + 0.45 * SunW.w), clamp(w, 0.0, 0.95));
+        fr = max(fr, w * 0.6);
+    }
     float edge = smoothstep(0.02, 0.35, wet) * smoothstep(0.0, 0.6, thick + 0.1);   // a soft shore, no hard block edge
     float alpha = clamp(mix(0.30, 0.86, shallow) * edge + fr * 0.4 * edge, 0.0, 1.0);   // the bed shows through shallow water
     fragColor = vec4(col, alpha);

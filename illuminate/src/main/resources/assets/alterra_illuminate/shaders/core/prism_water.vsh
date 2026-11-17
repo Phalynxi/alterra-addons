@@ -13,6 +13,7 @@ uniform vec4 WhirlInfo;   // xy: camera relative to that grid's corner, z: 1 ove
 out vec3 rel;      // the point relative to the camera
 out vec2 wpos;     // world x, z (wrapped) for the ripple pattern
 out float wet;     // how much of this point is water (soft at the shore)
+out float foamAmt; // white water where a fall lands
 
 vec2 cell(ivec2 c) { c = clamp(c, ivec2(0), ivec2(int(Grid.z) - 1)); return texelFetch(Heights, c, 0).rg; }
 float cr(float a, float b, float c, float d, float t) { return b + 0.5 * t * (c - a + t * (2.0 * a - 5.0 * b + 4.0 * c - d + t * (3.0 * (b - c) + d - a))); }
@@ -37,8 +38,9 @@ void main() {
     }
     float h = clamp(cr(rows[0], rows[1], rows[2], rows[3], t.y), lo, hi);   // no overshoot above or below the water around
     wet = mix(mix(c11.g, c21.g, t.x), mix(c12.g, c22.g, t.x), t.y);
+    foamAmt = mix(mix(texelFetch(Heights, clamp(i0 + ivec2(1, 1), ivec2(0), ivec2(int(Grid.z) - 1)), 0).b, texelFetch(Heights, clamp(i0 + ivec2(2, 1), ivec2(0), ivec2(int(Grid.z) - 1)), 0).b, t.x), mix(texelFetch(Heights, clamp(i0 + ivec2(1, 2), ivec2(0), ivec2(int(Grid.z) - 1)), 0).b, texelFetch(Heights, clamp(i0 + ivec2(2, 2), ivec2(0), ivec2(int(Grid.z) - 1)), 0).b, t.x), t.y);
     vec3 p = vec3(Grid.x + g.x, h + Cam.w, Grid.y + g.y);
-    if (none) { p.y = Cam.w - 300.0; wet = 0.0; }
+    if (none) { p.y = Cam.w - 300.0; wet = 0.0; foamAmt = 0.0; }
     if (WhirlInfo.w > 0.5) { vec2 wg = (p.xz + WhirlInfo.xy) * WhirlInfo.z; if (wg.x > 0.0 && wg.y > 0.0 && wg.x < 1.0 && wg.y < 1.0) p.y += textureLod(Whirl, wg, 0.0).r; }   // a whirlpool pulls the surface down
     rel = p; wpos = p.xz + Cam.xz;
     gl_Position = ProjMat * ModelViewMat * vec4(p, 1.0);

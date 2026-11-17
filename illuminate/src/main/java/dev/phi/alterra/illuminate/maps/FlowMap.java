@@ -76,7 +76,8 @@ public final class FlowMap {
     private static final long[] colKey = new long[SIZE * SIZE]; private static final int[] colY = new int[SIZE * SIZE]; private static final float[] colOwn = new float[SIZE * SIZE];
     private static int scanRow; private static final boolean[] colFall = new boolean[SIZE * SIZE], fallCol = new boolean[SIZE * SIZE]; private static final float[] colFallTop = new float[SIZE * SIZE], colFallBot = new float[SIZE * SIZE]; private static final it.unimi.dsi.fastutil.longs.LongOpenHashSet dirty = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
     /** For the own water surface: per column the drawn surface height (relative to surfaceBaseY) and 1 where there is water, 0 where not. */
-    private static final FloatBuffer hbuf = org.lwjgl.BufferUtils.createFloatBuffer(SIZE * SIZE * 2);
+    private static final FloatBuffer hbuf = org.lwjgl.BufferUtils.createFloatBuffer(SIZE * SIZE * 4);   // r: height, g: water, b: foam (where falls land), a: unused
+    private static final float[] foam = new float[SIZE * SIZE];
     private static int htex; public static volatile double surfaceBaseY;
     public static int heightTexture() { return htex; }
     /** The falls found this frame: per edge x, z (the block the water leaves), dx, dz (the way it falls), top and bottom heights (world). */
@@ -123,7 +124,8 @@ public final class FlowMap {
         }
         // smooth over neighbouring water of about the same level (a pool and the river falling into it stay apart): steps of flowing water become a slope
         buf.clear(); for (int i = 0; i < SIZE * SIZE * 2; i++) buf.put(0f);
-        hbuf.clear(); for (int i = 0; i < SIZE * SIZE * 2; i++) hbuf.put(0f);
+        hbuf.clear(); for (int i = 0; i < SIZE * SIZE * 4; i++) hbuf.put(0f);
+        java.util.Arrays.fill(foam, 0f);
         double baseY = Math.floor(net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().y);
         boolean any = false; float ease = Math.min(1f, dt * 14f); int fc = 0;
         for (int z = 0; z < SIZE; z++) for (int x = 0; x < SIZE; x++) {
@@ -139,7 +141,7 @@ public final class FlowMap {
             int wx = ox + x, wz = oz + z, slot = Math.floorMod(wx, SIZE) + Math.floorMod(wz, SIZE) * SIZE; long key = (((long) wx) << 32) ^ (wz & 0xffffffffL);
             if (shownKey[slot] != key || Float.isNaN(shownH[slot])) { shownKey[slot] = key; shownH[slot] = Math.min(want, (float) Math.floor(h0) + 0.02f); }   // new water rises from its floor
             shownH[slot] += (want - shownH[slot]) * ease;
-            hbuf.put(i * 2, (float) (shownH[slot] - baseY)); hbuf.put(i * 2 + 1, 1f);
+            hbuf.put(i * 4, (float) (shownH[slot] - baseY)); hbuf.put(i * 4 + 1, 1f);
             float off = shownH[slot] - blk[i];
             if (Math.abs(off) > 0.002f) { buf.put(i * 2, Math.max(-1.5f, Math.min(1.5f, off))); any = true; }
         }
@@ -158,6 +160,16 @@ public final class FlowMap {
             GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL30C.GL_RG16F, SIZE, SIZE, 0, GL30C.GL_RG, GL11C.GL_FLOAT, buf);
         } else GL11C.glTexSubImage2D(GL11C.GL_TEXTURE_2D, 0, 0, 0, SIZE, SIZE, GL30C.GL_RG, GL11C.GL_FLOAT, buf);
         com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
+        // foam where falls land: strongest at the impact, fading over about three blocks
+        for (int k = 0; k < fc; k++) {
+            int fx = (int) fallBuf[k * 6] - ox, fz = (int) fallBuf[k * 6 + 1] - oz; float drop = fallBuf[k * 6 + 4] - fallBuf[k * 6 + 5], power = Math.min(1f, 0.35f + drop * 0.08f);
+            for (int dz = -3; dz <= 3; dz++) for (int dx = -3; dx <= 3; dx++) {
+                int xx = fx + dx, zz = fz + dz; if (xx < 0 || zz < 0 || xx >= SIZE || zz >= SIZE) continue;
+                float d = (float) Math.sqrt(dx * dx + dz * dz), f = power * Math.max(0f, 1f - d / 3.5f);
+                int ii = xx + zz * SIZE; foam[ii] = Math.max(foam[ii], f);
+            }
+        }
+        for (int ii = 0; ii < SIZE * SIZE; ii++) if (foam[ii] > 0f) hbuf.put(ii * 4 + 2, foam[ii]);
         // the height map for the own water surface (32-bit: absolute heights would lose detail in 16)
         hbuf.rewind(); boolean hfresh = htex == 0;
         if (hfresh) htex = GL11C.glGenTextures();
@@ -165,8 +177,8 @@ public final class FlowMap {
         if (hfresh) {
             GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_NEAREST); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_NEAREST);
             GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL13C.GL_CLAMP_TO_EDGE); GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL13C.GL_CLAMP_TO_EDGE);
-            GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL30C.GL_RG32F, SIZE, SIZE, 0, GL30C.GL_RG, GL11C.GL_FLOAT, hbuf);
-        } else GL11C.glTexSubImage2D(GL11C.GL_TEXTURE_2D, 0, 0, 0, SIZE, SIZE, GL30C.GL_RG, GL11C.GL_FLOAT, hbuf);
+            GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL30C.GL_RGBA32F, SIZE, SIZE, 0, GL11C.GL_RGBA, GL11C.GL_FLOAT, hbuf);
+        } else GL11C.glTexSubImage2D(GL11C.GL_TEXTURE_2D, 0, 0, 0, SIZE, SIZE, GL11C.GL_RGBA, GL11C.GL_FLOAT, hbuf);
         com.mojang.blaze3d.platform.GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
         surfaceBaseY = baseY;
         originX = ox; originZ = oz; live = any;
