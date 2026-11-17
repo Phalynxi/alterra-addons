@@ -475,10 +475,11 @@ public final class PostFx {
                 if (u_SunScreen.w > 0.5 && u_Sun.w > 0.01 && u_Params.z < 0.5 && u_On.z > 0.5) {
                     vec2 to = u_SunScreen.xy - uv; float rays = 0.0, wgt = 1.0;
                     float wsum = 0.0;
-                    for (int i = 0; i < 32; i++) {
-                        vec2 q = uv + to * (float(i) + 0.5) / 32.0;
+                    for (int i = 0; i < 24; i++) {
+                        vec2 q = uv + to * (float(i) + 0.5) / 24.0;
                         if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) break;
-                        rays += step(0.99999, texture(u_Depth, q).r) * wgt; wsum += wgt; wgt *= 0.955;
+                        float lum = dot(textureLod(u_Color, q, 3.0).rgb, vec3(0.299, 0.587, 0.114));   // a blurred copy of the picture: bright where the sky shows, dark where leaves and ground block it, with no pixel-sized steps (those made the shafts grainy)
+                        rays += smoothstep(0.36, 0.66, lum) * wgt; wsum += wgt; wgt *= 0.95;
                     }
                     float near = 1.0 - smoothstep(0.05, 0.7, length(to * vec2(1.4, 1.0)));
                     float sh = rays / max(wsum, 1.0);
