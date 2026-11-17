@@ -103,6 +103,8 @@ public final class PostFx {
             uniform float u_CellsN;
             uniform vec4 u_On;    // colour grade, glow, light shafts, haze
             uniform vec2 u_On2;   // clouds, underwater fog     // thunder, 0 to 1
+            uniform sampler2DShadow u_ShadowMap;   // the world seen from the sun (or moon): depth
+            uniform mat4 u_ShadowVP; uniform vec3 u_ShadowCam; uniform float u_ShadowOn;
             uniform float u_InCloud;   // how deep inside a cloud the camera is (0 to 1)
             uniform float u_Surf;      // how far the water surface is above the camera when under water (blocks)
             uniform vec3 u_WaterFog;   // the colour of the water around a diver (UnderwaterColour)
@@ -138,6 +140,19 @@ public final class PostFx {
                     hit = max(hit, smoothstep(0.04 * float(k), 0.04 * float(k) + rise, over));
                 }
                 return 1.0 - hit;
+            }
+            vec2 shadowFromMap(vec3 wpr, vec3 nW) {   // x: 1 in the light, 0 in shadow (soft filtered edges); y: how much the map counts here (0 outside it, fading in over its border)
+                vec3 p = wpr + u_ShadowCam + nW * 0.07;   // moved off the surface along its normal, so a face does not shadow itself
+                vec4 cl = u_ShadowVP * vec4(p, 1.0); vec3 sc = cl.xyz / cl.w * 0.5 + 0.5;
+                float edge = min(min(sc.x, 1.0 - sc.x), min(sc.y, 1.0 - sc.y));
+                if (edge < 0.0 || sc.z > 1.0) return vec2(1.0, 0.0);
+                float ndl = max(dot(nW, u_Sun.xyz), 0.0);
+                float bias = 0.00035 + 0.0010 * (1.0 - ndl);
+                const vec2 K[12] = vec2[12](vec2(-0.326, -0.406), vec2(-0.840, -0.074), vec2(-0.696, 0.457), vec2(-0.203, 0.621), vec2(0.962, -0.195), vec2(0.473, -0.480), vec2(0.519, 0.767), vec2(0.185, -0.893), vec2(0.507, 0.064), vec2(0.896, 0.412), vec2(-0.322, -0.933), vec2(-0.792, -0.598));
+                float r = 2.6 / 2048.0, lit = 0.0;
+                for (int i = 0; i < 12; i++) lit += texture(u_ShadowMap, vec3(sc.xy + K[i] * r, sc.z - bias));
+                lit /= 12.0;
+                return vec2(lit, smoothstep(0.0, 0.06, edge));
             }
             float sunScreen(vec3 vp, vec3 nrm) {   // the near part: a ray from the surface towards the sun through the depth buffer, so whatever is drawn casts a shadow (leaves, entities, ships, anything that moves), with no map to go blocky
                 vec3 sv = transpose(u_InvView) * u_Sun.xyz;
@@ -341,9 +356,12 @@ public final class PostFx {
                 // sunlight: soft shadows of trees and overhangs, the clouds' shadows drifting over the land, and a dimmer, softer day when a cloud covers the sun
                 if (!sky && u_Params.z < 0.5 && u_Sun.w > 0.02 && (u_Shadows > 0.5 || u_On2.x > 0.5)) {
                     vec3 wpr = dir * dist;
-                    float sh = (dist < 72.0 && u_Shadows > 0.5) ? min(sunlit(wpr, 1.0 + u_Quality * 1.5), sunScreen(vp.xyz, vnrm)) : 1.0;
+                    vec2 shM = (u_ShadowOn > 0.5 && u_Shadows > 0.5) ? shadowFromMap(wpr, normalize(u_InvView * vnrm)) : vec2(1.0, 0.0);
+                    float shH = (shM.y < 0.999 && dist < 72.0 && u_Shadows > 0.5) ? sunlit(wpr, 1.0 + u_Quality * 1.5) : 1.0;
+                    float sh = mix(shH, shM.x, shM.y);   // the shadow map near the camera; the height map beyond it
+                    if (u_ShadowOn > 1.5) { frag = vec4(vec3(sh * 0.9 + 0.1 * shM.y), 1.0); return; }   // (test view: the shadow alone)
                     float cs = u_On2.x > 0.5 ? cloudShade(wpr) : 1.0;
-                    float light = mix(1.0, min(sh, cs), 0.45 * u_Sun.w * day);
+                    float light = mix(1.0, min(sh, cs), 0.58 * u_Sun.w * max(day, 0.5));
                     c *= light;
                 }
                 // haze: the air between you and far things, warm towards the sun, the sky's own colour away from it
@@ -593,6 +611,8 @@ public final class PostFx {
             // the height map (leaves too) for shadows and shafts, and how much sun gets through the clouds here
             var camp = cam.getPosition();
             HeightMap.update(level, camp.x, camp.z);
+            final boolean shadowOn = IlluminateConfig.get(IlluminateConfig.SHADOWS) && strength > 0.02f
+                    && dev.phi.alterra.illuminate.shadow.ShadowMap.render(level, camp.x, camp.y, camp.z, sx / len, sy / len, 0f);
             float sunVis = 1f;
             if (sun && sy / len > 0.05f) {
                 double tUp = (250.0 + 20.0 - camp.y) / (sy / len);
@@ -603,6 +623,10 @@ public final class PostFx {
             float quality = (float) Math.round(IlluminateConfig.get(IlluminateConfig.QUALITY));
             java.util.function.IntConsumer extra = p -> {
                 GL20C.glUniform1i(u(p, "u_Height"), 4);
+                GL20C.glUniform1i(u(p, "u_ShadowMap"), dev.phi.alterra.illuminate.shadow.ShadowMap.UNIT);
+                GL20C.glUniformMatrix4fv(u(p, "u_ShadowVP"), false, dev.phi.alterra.illuminate.shadow.ShadowMap.matrix());
+                GL20C.glUniform3f(u(p, "u_ShadowCam"), (float) (camp.x - dev.phi.alterra.illuminate.shadow.ShadowMap.originX), (float) (camp.y - dev.phi.alterra.illuminate.shadow.ShadowMap.originY), (float) (camp.z - dev.phi.alterra.illuminate.shadow.ShadowMap.originZ));
+                GL20C.glUniform1f(u(p, "u_ShadowOn"), shadowOn ? (Boolean.getBoolean("alterra.shadowDebug") ? 2f : 1f) : 0f);
                 GL20C.glUniform4f(u(p, "u_HeightInfo"), (float) (camp.x - HeightMap.originX), (float) (camp.z - HeightMap.originZ), (float) camp.y, HeightMap.ready ? 1f : 0f);
                 GL20C.glUniform1f(u(p, "u_SunVis"), fSunVis);
                 GL20C.glUniform1f(u(p, "u_Quality"), quality);
@@ -615,7 +639,9 @@ public final class PostFx {
                 GL20C.glUniform4fv(u(p, "u_Funnel"), fu); GL20C.glUniform1f(u(p, "u_FunnelN"), fnc);
                 GL20C.glUniform1f(u(p, "u_Shadows"), IlluminateConfig.get(IlluminateConfig.SHADOWS) ? 1f : 0f);
             };
-            GlUpload.bind(GL13C.GL_TEXTURE4, HeightMap.texture()); GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
+            GlUpload.bind(GL13C.GL_TEXTURE4, HeightMap.texture());
+            if (shadowOn) GlUpload.bind(GL13C.GL_TEXTURE0 + dev.phi.alterra.illuminate.shadow.ShadowMap.UNIT, dev.phi.alterra.illuminate.shadow.ShadowMap.texture());
+            GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
             // everything else (the clouds are geometry now: clouds/SkyClouds)
             rt.bindWrite(true);
             GlStateManager._glUseProgram(program); setAll.accept(program); extra.accept(program);
@@ -625,6 +651,7 @@ public final class PostFx {
             GL11C.glDrawArrays(GL11C.GL_TRIANGLES, 0, 3);
             GL30C.glBindVertexArray(0);
             GlUpload.bind(GL13C.GL_TEXTURE4, 0);
+            if (shadowOn) GlUpload.bind(GL13C.GL_TEXTURE0 + dev.phi.alterra.illuminate.shadow.ShadowMap.UNIT, 0);
             GlUpload.bind(GL13C.GL_TEXTURE3, 0);
             GlUpload.bind(GL13C.GL_TEXTURE2, 0); GlStateManager._activeTexture(GL13C.GL_TEXTURE0);
             com.mojang.blaze3d.vertex.BufferUploader.invalidate();
