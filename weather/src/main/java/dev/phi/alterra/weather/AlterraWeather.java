@@ -63,7 +63,7 @@ public final class AlterraWeather {
     private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, ID);
     public static final Supplier<SoundEvent> WIND_DUST = sound("wind_dust"), WIND_SNOW = sound("wind_snow"), ASH_RUMBLE = sound("ash_rumble"), FOG_HUSH = sound("fog_hush"),
             PETAL_RUSTLE = sound("petal_rustle"), POLLEN_HUM = sound("pollen_hum"), AURORA_CHIME = sound("aurora_chime"),
-            RAIN_LIGHT = sound("rain_light"), RAIN_HEAVY = sound("rain_heavy");
+            RAIN_LIGHT = sound("rain_light"), RAIN_HEAVY = sound("rain_heavy"), TORNADO_ROAR = sound("tornado_roar");
     private static Supplier<SoundEvent> sound(String name) { return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ID, name))); }
 
     public AlterraWeather(IEventBus bus, ModContainer container) {

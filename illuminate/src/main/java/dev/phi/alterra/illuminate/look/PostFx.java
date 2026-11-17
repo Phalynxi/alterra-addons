@@ -478,8 +478,8 @@ public final class PostFx {
                     for (int i = 0; i < 24; i++) {
                         vec2 q = uv + to * (float(i) + 0.5) / 24.0;
                         if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) break;
-                        float lum = dot(textureLod(u_Color, q, 3.0).rgb, vec3(0.299, 0.587, 0.114));   // a blurred copy of the picture: bright where the sky shows, dark where leaves and ground block it, with no pixel-sized steps (those made the shafts grainy)
-                        rays += smoothstep(0.36, 0.66, lum) * wgt; wsum += wgt; wgt *= 0.95;
+                        float lum = dot(textureLod(u_Color, q, 4.5).rgb, vec3(0.299, 0.587, 0.114));   // a blurred copy of the picture: bright where the sky shows, dark where leaves and ground block it, with no pixel-sized steps (those made the shafts grainy)
+                        rays += smoothstep(0.30, 0.70, lum) * wgt; wsum += wgt; wgt *= 0.95;
                     }
                     float near = 1.0 - smoothstep(0.05, 0.7, length(to * vec2(1.4, 1.0)));
                     float sh = rays / max(wsum, 1.0);

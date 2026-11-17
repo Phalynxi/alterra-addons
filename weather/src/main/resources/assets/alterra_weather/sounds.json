@@ -79,5 +79,14 @@
       }
     ],
     "subtitle": "subtitles.alterra_weather.aurora_chime"
+  },
+  "tornado_roar": {
+    "sounds": [
+      {
+        "name": "alterra_weather:tornado_roar",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.alterra_weather.tornado_roar"
   }
 }

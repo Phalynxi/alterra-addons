@@ -68,6 +68,28 @@ public final class DisasterClient {
         surfaces = out;
     }
 
+    private static FunnelSound roar;
+    /** One continuous roar for the nearest tornado or dust devil: louder the nearer and stronger it is, panned towards it, faded in and out. */
+    private static void tickRoar(Minecraft mc, net.minecraft.world.phys.Vec3 cam, F[] near) {
+        F best = null; double bd = 1e18;
+        for (F f : near) {
+            if (f == null || (f.type != Disasters.TORNADO && f.type != Disasters.DUST_DEVIL)) continue;
+            double d = Math.hypot(f.x - cam.x, f.z - cam.z);
+            if (d < bd) { bd = d; best = f; }
+        }
+        float reach = best == null ? 0f : best.type == Disasters.TORNADO ? 260f : 110f;
+        float vol = best == null ? 0f : (float) Math.pow(net.minecraft.util.Mth.clamp(1.0 - (bd - best.radius) / reach, 0.0, 1.0), 1.6) * net.minecraft.util.Mth.clamp(best.strength, 0f, 1f) * (best.type == Disasters.TORNADO ? 1.5f : 0.6f);
+        if (roar != null && roar.isStopped()) roar = null;
+        if (vol > 0.02f && best != null) {
+            if (roar == null) { roar = new FunnelSound(); mc.getSoundManager().play(roar); org.slf4j.LoggerFactory.getLogger("Alterra Weather").info("[sound] funnel roar starts at {} blocks, volume {}", (int) bd, vol); }
+            // the camera's heading turns the world's direction into left and right
+            double dx = best.x - cam.x, dz = best.z - cam.z, len = Math.max(1e-3, Math.hypot(dx, dz)); dx /= len; dz /= len;
+            float yaw = mc.gameRenderer.getMainCamera().getYRot() * net.minecraft.util.Mth.DEG_TO_RAD;
+            double rx = dx * Math.cos(yaw) + dz * Math.sin(yaw), rz = -dx * Math.sin(yaw) + dz * Math.cos(yaw);   // relative to where you look
+            roar.target(Math.min(1.4f, vol), best.type == Disasters.TORNADO ? 0.92f + 0.12f * best.strength : 1.15f, rx, rz);
+        } else if (roar != null) roar.end();
+    }
+
     @SubscribeEvent
     public static void tick(ClientTickEvent.Post e) {
         var mc = Minecraft.getInstance(); var level = mc.level;
@@ -92,6 +114,7 @@ public final class DisasterClient {
             list.add(new Funnel(type, f.x, f.y, f.z, f.radius, topRadius(f.type, f.radius), f.top, f.strength, Math.signum(f.top)));
         }
         funnels = list;
+        tickRoar(mc, cam, near);
         tickSims(level);
         if (mc.player.getVehicle() instanceof net.minecraft.world.entity.vehicle.Boat boat && !mc.isPaused()) {   // the boat you drive is yours to steer: the water turns it, here in your game
             for (F f : near) {

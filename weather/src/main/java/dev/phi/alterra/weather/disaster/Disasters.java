@@ -128,7 +128,7 @@ public final class Disasters {
             if (!l.hasChunkAt(BlockPos.containing(e.x, 64, e.z))) { it.remove(); continue; }
             if (DisasterConfig.get(DisasterConfig.PULL_THINGS)) { if (e.type == VORTEX) Vortex.apply(l, e); else pull(l, e); }
             if (e.type == TORNADO && DisasterConfig.get(DisasterConfig.TORNADO_BLOCKS)) { lift(l, e); orbit(l, e); }
-            if (e.type != VORTEX && l.getGameTime() % 24 == e.id % 24) l.playSound(null, BlockPos.containing(e.x, e.y + 6, e.z), AlterraWeather.WIND_DUST.get(), net.minecraft.sounds.SoundSource.WEATHER, 3f + e.radius * 0.3f, e.type == TORNADO ? 0.55f : 0.8f);
+            // (the roar of a funnel is a continuous sound on each client that is near it: DisasterClient / FunnelSound)
         }
         Vortex.refresh(events);
         if (l.getGameTime() % 2 == 0) sync(l, events);

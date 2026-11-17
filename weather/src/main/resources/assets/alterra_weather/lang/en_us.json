@@ -9,5 +9,6 @@
   "subtitles.alterra_weather.rain_light": "Rain falls",
   "subtitles.alterra_weather.rain_heavy": "Rain pours",
   "block.alterra_weather.drain": "Drain",
-  "block.alterra_weather.slush": "Slush"
+  "block.alterra_weather.slush": "Slush",
+  "subtitles.alterra_weather.tornado_roar": "Tornado roars"
 }

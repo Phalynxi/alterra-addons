@@ -86,6 +86,19 @@ public final class SkyClouds {
     private static double buildQx, buildQz, towerX, towerZ; private static long builtAt, towerAt; private static float builtRain = -1f, builtThunder = -1f; private static int builtStyle = -1, towerSig;
     private static final double CIRRUS_CELL = 900.0;
     private record Job(List<Puff> puffs, double x, double z) {}
+    /**
+     * Sunset and sunrise as the clock has them: {intensity, redness}. From about 11500 the clouds warm to pale gold, turn orange by 12300 and red by 13000, stay red a while and are gone by about 14500;
+     * the morning is the same in the other direction (about 21500 to 1000).
+     */
+    private static float[] twilight(long dayTime) {
+        float t = (float) (dayTime % 24000L);
+        if (t > 18000f) t = 36000f - t;   // the morning is the evening run backwards
+        else if (t < 1000f) t = 36000f - (t + 24000f);
+        float warm = smooth(11500f, 12500f, t) * (1f - smooth(13800f, 14800f, t));
+        float red = smooth(12000f, 13000f, t);
+        return new float[] {warm, red};
+    }
+
     /** How deep inside a cloud the camera is (0 to 1, blended slowly): the scene pass draws the mist from it. */
     private static final boolean FORCE_IN = Boolean.getBoolean("alterra.forceInCloud");   // (a test switch: pretend to be deep inside a cloud)
     public static float inside() { return FORCE_IN ? 1f : inCloud; }
@@ -181,7 +194,7 @@ public final class SkyClouds {
         var ru = sh.getUniform("RMax"); if (ru != null) ru.set(rmax);
         uniform3(sh, "SunW", sun.x, sun.y, sun.z);
         uniform3(sh, "CloudColor", (float) cc.x, (float) cc.y, (float) cc.z); uniform3(sh, "Horizon", hz[0], hz[1], hz[2]);
-        var pu = sh.getUniform("Params"); if (pu != null) pu.set(day, 0f, 0f, 0f);
+        var pu = sh.getUniform("Params"); if (pu != null) { float[] tw = twilight(lv.getDayTime()); pu.set(day, tw[0], tw[1], 0f); }
         var main = mc.getMainRenderTarget();
         if (style == 1) {
             RenderSystem.enableBlend(); RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, com.mojang.blaze3d.platform.GlStateManager.SourceFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);   // premultiplied, straight into the scene at full size
@@ -295,7 +308,8 @@ public final class SkyClouds {
                 var r = RandomSource.create(cx * 73856093L ^ cz * 19349663L ^ (band == 1 ? 0 : band + 1) * 83492791L);   // bands 0 and 1 share a cell size: same clouds either side of 500
                 float kind = Clouds.noise((float) (mx * 0.00045), (float) (mz * 0.00045), 9.1f);
                 int type = kind < 0.34f ? STRATO : kind < 0.72f ? CUMULUS : ALTO;
-                float stormHere = Mth.clamp(storm0 + influence(cells, mx - driftX, mz - driftZ) * 0.9f, 0f, 1f);
+                float nearK = 1f - smooth(400f, 2600f, (float) Math.hypot(mx - qx, mz - qz));   // rain darkens the clouds overhead, not every cloud in the world (that made all of them look stormy while you stood in a storm)
+                float stormHere = Mth.clamp(storm0 * nearK + influence(cells, mx - driftX, mz - driftZ) * 0.9f, 0f, 1f);
                 float tall = 0.55f + 0.9f * Clouds.noise((float) (mx * 0.0011), (float) (mz * 0.0011), 3.7f);
                 float r0 = (float) (cell * (0.50 + 0.35 * c));
                 float thick, ratio, y0, spread; int n;
