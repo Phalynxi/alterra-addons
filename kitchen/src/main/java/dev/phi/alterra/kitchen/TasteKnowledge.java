@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Taste, flavour and poison are a secret until you have eaten that very food (a plain food or drink by its kind, a dish by its kind and exactly what is in it)
- * and written it in an Explorer's Journal you carry: the notes live on the book. Lose the book and what you found out is gone; anyone holding it can read them. Creative players are no exception.
+ * and written it in an Traveller's Handbook you carry: the notes live on the book. Lose the book and what you found out is gone; anyone holding it can read them. Creative players are no exception.
  */
 public final class TasteKnowledge {
     private TasteKnowledge() {}
@@ -45,6 +45,6 @@ public final class TasteKnowledge {
         var have = j.get(AlterraKitchen.JOURNAL_NOTES.get());
         var l = new ArrayList<>(have == null ? java.util.List.<Integer>of() : have.keys()); l.add(key(st));
         j.set(AlterraKitchen.JOURNAL_NOTES.get(), new TastedSet(l));
-        p.displayClientMessage(net.minecraft.network.chat.Component.literal("Noted in your Explorer's Journal.").withStyle(net.minecraft.ChatFormatting.GRAY), true);
+        p.displayClientMessage(net.minecraft.network.chat.Component.literal("Noted in your Traveller's Handbook.").withStyle(net.minecraft.ChatFormatting.GRAY), true);
     }
 }

@@ -33,3 +33,29 @@ screen closes.
 ## Field guide
 
 No call needed, add `<modid>_guide.json` ([field-guide.md](field-guide.md)).
+
+## Rivers
+
+```java
+AlterraApi.riverSurface(ServerLevel level, int x, int z)   // the river's water surface over the column, NaN when there is none
+AlterraApi.isRiver(level, x, z)
+```
+
+Without Alterra these answer "no river".
+
+## Biomes
+
+```java
+AlterraApi.biomes()            // every Alterra biome: id, display name, dimension, enabled
+AlterraApi.biomeEnabled(id)    // whether it is switched on in Alterra's settings (true when unknown)
+```
+
+## Loading tips
+
+```java
+AlterraApi.addLoadingTip("Your tip")   // shown on the loading screen among Alterra's own
+```
+
+## Version
+
+`AlterraApi.apiVersion()` is 2 (1: tab, settings, wind, compat; 2: rivers, biomes, loading tips). Check it before calling newer methods.

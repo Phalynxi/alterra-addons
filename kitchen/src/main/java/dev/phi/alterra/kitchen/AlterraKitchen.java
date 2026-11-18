@@ -53,7 +53,7 @@ public final class AlterraKitchen {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(net.minecraft.core.registries.Registries.FLUID, ID);
 
     public static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(ID);
-    /** What the Explorer's Journal knows about food: kept on the book itself, so what you discover is lost with it and shared with anyone who holds it. */
+    /** What the Traveller's Handbook knows about food: kept on the book itself, so what you discover is lost with it and shared with anyone who holds it. */
     public static final Supplier<net.minecraft.core.component.DataComponentType<TastedSet>> JOURNAL_NOTES = COMPONENTS.registerComponentType("journal_notes", b -> b.persistent(TastedSet.CODEC).networkSynchronized(TastedSet.STREAM_CODEC));
     public static final Supplier<net.minecraft.core.component.DataComponentType<Dish>> DISH = COMPONENTS.registerComponentType("dish", b -> b.persistent(Dish.CODEC).networkSynchronized(Dish.STREAM_CODEC));
     public static final DeferredRegister<net.minecraft.world.item.crafting.RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, ID);

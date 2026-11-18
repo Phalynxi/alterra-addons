@@ -69,4 +69,35 @@ public final class AlterraApi {
         CATEGORIES.add(new Category(name, description, icon, List.copyOf(options)));
     }
     public static List<Category> settingsCategories() { return List.copyOf(CATEGORIES); }
+
+    // ---------------------------------------------------------------- rivers
+    /** Answers where Alterra's rivers run (the core sets it). */
+    public interface RiverProvider { float surface(net.minecraft.server.level.ServerLevel level, int x, int z); }
+    private static volatile RiverProvider RIVERS;
+    public static void setRiverProvider(RiverProvider provider) { RIVERS = provider; }
+    /** The water surface (a height) of an Alterra river over a column, or NaN when there is no river there or no Alterra. */
+    public static float riverSurface(net.minecraft.server.level.ServerLevel level, int x, int z) { var p = RIVERS; return p == null ? Float.NaN : p.surface(level, x, z); }
+    /** Whether an Alterra river runs over the column. */
+    public static boolean isRiver(net.minecraft.server.level.ServerLevel level, int x, int z) { return !Float.isNaN(riverSurface(level, x, z)); }
+
+    // ---------------------------------------------------------------- biomes
+    /** One of Alterra's biomes: its id (without the namespace), display name, dimension (overworld, nether, end) and whether it is switched on in the settings. */
+    public record BiomeInfo(String id, String name, String dimension, boolean enabled) {}
+    public interface BiomeProvider { List<BiomeInfo> biomes(); }
+    private static volatile BiomeProvider BIOMES;
+    public static void setBiomeProvider(BiomeProvider provider) { BIOMES = provider; }
+    /** Every biome Alterra adds (empty without Alterra). */
+    public static List<BiomeInfo> biomes() { var p = BIOMES; return p == null ? List.of() : p.biomes(); }
+    /** Whether the Alterra biome with this id is switched on (true when it is not known). */
+    public static boolean biomeEnabled(String id) { for (var b : biomes()) if (b.id().equals(id)) return b.enabled(); return true; }
+
+    // ---------------------------------------------------------------- loading screen
+    private static final List<String> TIPS = new CopyOnWriteArrayList<>();
+    /** A tip for the loading screen, shown among Alterra's own. */
+    public static void addLoadingTip(String tip) { TIPS.add(tip); }
+    public static List<String> loadingTips() { return List.copyOf(TIPS); }
+
+    // ---------------------------------------------------------------- version
+    /** The version of this API (bumped when something is added): an addon can check it before using newer calls. 2: rivers, biomes, loading tips. */
+    public static int apiVersion() { return 2; }
 }
